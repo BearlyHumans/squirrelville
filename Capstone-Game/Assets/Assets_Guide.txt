@@ -1,0 +1,29 @@
+For ease of use generally we sort assets by type in Unity.
+The folders we have currently are:
+
+-Builds: For builds of the game. Is ignored in git by default.
+-Editor: For scripts that change the editor. DW about this ;)
+-Resources: All traditional assets. Create sub files as necessary.
+   -Art: 2D art, UI etc.
+   -Models: 3D models and Rigs.
+   -Music: music.
+   -Particles: particle systems and assets exclusive to them.
+   -Prefabs: ANY prefab you make should go here.
+   -Sounds: SFX.
+-Scenes: scenes
+   -TeamScenes: When you want to edit a scene make a copy of it called.
+	[SCENE NAME]_[YOUR NAME] and put it in here to avoid conflicts.
+-Scripts: all C# scripts (except editor) should go here.
+-StoreAssets: any assets or packages we get from elsewhere (e.g. unity store)
+
+**IMPORTANT NOTE**
+Any assets you want to load during the runtime of the game need to be
+in a folder called 'Resources', which is why I keep all of them in there
+by default. We might seperate them when we get to opimization but for 
+now that's why the folder is called that. Prefabs ESPECIALLY need to
+be in the Resources folder or they are much harder to use.
+
+Editor scripts allow us to add automatic processes and things like
+buttons to the editor, but they need to be in a folder called
+'Editor' to work. If you're finding something difficult/repetetive
+ask if we can make a script to help.
