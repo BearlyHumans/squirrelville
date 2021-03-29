@@ -34,6 +34,7 @@ public class SquirrelController : MonoBehaviour
         vals.jumpPressed = -10;
         vals.lastGrounded = -10;
         vals.lastJump = -10;
+        vals.lastOnSurface = -10;
     }
 
     // Start is called before the first frame update
@@ -164,7 +165,7 @@ public class SquirrelController : MonoBehaviour
             }
         }
 
-        //If the player is not trying to move or jump, or if movement is disabled, slow movement INSTEAD of applying input.
+        //If the player is not trying to move, apply stopping force.
         if ((desiredDirection.magnitude < 0.01f)) //&& !(Time.time < vals.jumpPressed + settings.checkJumpTime)) || disableMovement)
         {
 
@@ -181,7 +182,15 @@ public class SquirrelController : MonoBehaviour
                 else
                     LateralVelocityNew = LateralVelocityNew.normalized * Mathf.Max(0, LateralVelocityNew.magnitude - (settings.airStoppingForce * Time.deltaTime));
             }
+            vals.moving = false;
         }
+        else
+            vals.moving = true;
+
+        float z = TransformedNewVelocity.z;
+        if (TransformedNewVelocity.z.Inside(-settings.wallStickTriggerRange, settings.wallStickTriggerRange))
+            TransformedNewVelocity.z += settings.wallStickForce;
+
         
         if (LateralVelocityNew.magnitude > settings.maxSpeed / 5)
             refs.body.rotation = Quaternion.LookRotation(transform.TransformVector(LateralVelocityNew), -transform.forward);
@@ -189,11 +198,6 @@ public class SquirrelController : MonoBehaviour
         //Add the vertical component back, convert it to world-space, and set the new velocity to it.
         LateralVelocityNew += new Vector3(0, 0, TransformedNewVelocity.z);
         newVelocity = transform.TransformVector(LateralVelocityNew);
-
-        //DEBUG DISPLAY.
-        //PlaneVelocity.x = Mathf.Round(LateralVelocityNew.x * 100f) / 100f;
-        //PlaneVelocity.y = Mathf.Round(LateralVelocityNew.y * 100f) / 100f;
-        //VerticalVelocity = Mathf.Round(TransformedNewVelocity.z * 100f) / 100f;
 
         Vector3 finalVelocityChange = newVelocity - refs.RB.velocity;
 
@@ -206,48 +210,6 @@ public class SquirrelController : MonoBehaviour
         }
 
         refs.RB.velocity += finalVelocityChange;
-
-        /*
-        //If the player is not trying to move or jump, or if movement is disabled, slow movement INSTEAD of applying input.
-        if ((desiredDirection.magnitude < 0.01f && !Input.GetButton("Jump")) || disableMovement)
-        {
-
-            Vector3 NewVelocity = refs.RB.velocity;
-
-            //Jump to zero velocity when below max speed and on the ground to give more control and prevent gliding.
-            if (refs.RB.velocity.magnitude < alteredMaxSpeed / 2)
-                refs.RB.velocity = new Vector3();
-            else
-            {
-                //Apply a 'friction' force to the player.
-                if (Grounded)
-                    NewVelocity = NewVelocity.normalized * Mathf.Max(0, NewVelocity.magnitude - (settings.stoppingForce * Time.deltaTime));
-                else
-                    NewVelocity = NewVelocity.normalized * Mathf.Max(0, NewVelocity.magnitude - (settings.airStoppingForce * Time.deltaTime));
-                refs.RB.velocity = NewVelocity;
-            }
-        }
-        else //Jump if required, then apply movement to velocity.
-        {
-            //If the player has requested a jump recently, apply a force and set the last jump time.
-            if (Time.time < vals.jumpPressed + settings.checkJumpTime)
-            {
-                refs.RB.velocity += -transform.forward * settings.jumpForce;
-                vals.lastJump = Time.time;
-                vals.jumpPressed = -5;
-            }
-
-            refs.RB.velocity += finalVelocityChange;
-
-            //Additional jump force if button is held
-            if (Time.time < LastJumpTime + MaxJumpTime)
-            {
-                if (Input.GetButton("Jump"))
-                    refs.RB.velocity += -transform.forward * JumpVelocityPerSecondHeld * Time.deltaTime;
-            }
-
-        }
-        */
     }
 
     private void CheckGravity()
@@ -270,21 +232,44 @@ public class SquirrelController : MonoBehaviour
 
     private void RotateToWall()
     {
-        Debug.Log("Raycasting");
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 3))
+        //Raycasts:
+        RaycastHit FRhit;
+        RaycastHit FLhit;
+        RaycastHit BRhit;
+        RaycastHit BLhit;
+        RaycastHit mainHit;
+        bool FR = Physics.Raycast(refs.surfaceDetectorFR.position, refs.surfaceDetectorFR.up, out FRhit, settings.surfaceDetectDistance);
+        bool FL = Physics.Raycast(refs.surfaceDetectorFL.position, refs.surfaceDetectorFL.up, out FLhit, settings.surfaceDetectDistance);
+        bool BR = Physics.Raycast(refs.surfaceDetectorBR.position, refs.surfaceDetectorBR.up, out BRhit, settings.surfaceDetectDistance);
+        bool BL = Physics.Raycast(refs.surfaceDetectorBL.position, refs.surfaceDetectorBL.up, out BLhit, settings.surfaceDetectDistance);
+        bool Main = Physics.Raycast(transform.position, transform.forward, out mainHit, settings.surfaceDetectDistance);
+
+        //Diagnose:
+
+        if (FR || FL || Main)
         {
-            Debug.Log("Raycast hit: " + hit.collider.name);
-            Vector3 dir = hit.normal;
+            Vector3 dir = mainHit.normal;
+            if (FR && FL)
+            {
+                if (Main && BR && BL)
+                {
+                    dir = (FRhit.normal + FLhit.normal + BLhit.normal + BRhit.normal + mainHit.normal) / 5;
+                }
+            }
 
             CustomIntuitiveSnapRotation(-dir);
+            vals.lastOnSurface = Time.time;
+        }
+        else if (Time.time > vals.lastOnSurface + settings.noSurfResetTime)
+        {
+            CustomIntuitiveSnapRotation(Vector3.down);
+            vals.lastOnSurface = Time.time;
         }
     }
 
     private void CustomIntuitiveSnapRotation(Vector3 direction)
     {
         Quaternion CameraPreRotation = refs.head.transform.rotation;
-        Debug.Log("Pre: " + CameraPreRotation.eulerAngles);
         Vector3 OriginalFacing = refs.head.transform.forward; //Remember that forward is down (the feet of the player) to let LookRotation work.
 
         //Rotate the players 'body'.
@@ -298,7 +283,6 @@ public class SquirrelController : MonoBehaviour
         float Signed = Vector3.SignedAngle(OriginalFacing, refs.head.transform.forward, transform.right);
         vals.cameraAngle -= Signed;
         refs.head.transform.rotation = CameraPreRotation;
-        Debug.Log("Post: " + refs.head.transform.rotation.eulerAngles);
     }
 
     [System.Serializable]
@@ -308,6 +292,10 @@ public class SquirrelController : MonoBehaviour
         public Transform head;
         public Transform body;
         public Camera camera;
+        public Transform surfaceDetectorFR;
+        public Transform surfaceDetectorFL;
+        public Transform surfaceDetectorBR;
+        public Transform surfaceDetectorBL;
     }
 
     [System.Serializable]
@@ -345,6 +333,12 @@ public class SquirrelController : MonoBehaviour
         /// <summary> Minimum angle for the vertical motion of the camera. </summary>
         public float cameraClampMin = 0;
 
+        [Header("Wallclimb Settings")]
+        public float surfaceDetectDistance = 2;
+        public float wallStickForce = 0.1f;
+        public float wallStickTriggerRange = 0.3f;
+        public float noSurfResetTime = 0.2f;
+
         [Header("Misc")]
         /// <summary> [Depreciated] Force applied when climbing. </summary>
         public float wallClimbForce = 1;
@@ -365,5 +359,7 @@ public class SquirrelController : MonoBehaviour
         public float lastGrounded;
         public float jumpPressed;
         public float cameraAngle;
+        public float lastOnSurface;
+        public bool moving;
     }
 }
