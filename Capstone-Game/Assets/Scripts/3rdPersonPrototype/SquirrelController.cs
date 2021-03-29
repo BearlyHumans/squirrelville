@@ -25,6 +25,15 @@ public class SquirrelController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         refs.RB.useGravity = false;
+
+        Initialize();
+    }
+
+    private void Initialize()
+    {
+        vals.jumpPressed = -10;
+        vals.lastGrounded = -10;
+        vals.lastJump = -10;
     }
 
     // Start is called before the first frame update
@@ -41,11 +50,7 @@ public class SquirrelController : MonoBehaviour
         CheckGravity();
         UpdCamera();
         UpdMove();
-        //Rotate();
-        //Move();
-        //Jump();
         RotateToWall();
-        //WallClimb();
     }
 
     private bool CheckPause()
@@ -83,7 +88,7 @@ public class SquirrelController : MonoBehaviour
         //Apply the mouse input.
         vals.cameraAngle -= Input.GetAxis("Mouse Y") * settings.mouseSense;
         //Clamp the angle.
-        vals.cameraAngle = Mathf.Clamp(vals.cameraAngle, settings.cameraClampMin, settings.cameraClampMax);
+        //vals.cameraAngle = Mathf.Clamp(vals.cameraAngle, settings.cameraClampMin, settings.cameraClampMax);
 
         Quaternion NewRot = new Quaternion();
         NewRot.eulerAngles = new Vector3(vals.cameraAngle, refs.head.localRotation.y, 0);
@@ -179,7 +184,7 @@ public class SquirrelController : MonoBehaviour
         }
         
         if (LateralVelocityNew.magnitude > settings.maxSpeed / 5)
-            refs.body.rotation = Quaternion.LookRotation(transform.TransformVector(LateralVelocityNew), Vector3.up);
+            refs.body.rotation = Quaternion.LookRotation(transform.TransformVector(LateralVelocityNew), -transform.forward);
 
         //Add the vertical component back, convert it to world-space, and set the new velocity to it.
         LateralVelocityNew += new Vector3(0, 0, TransformedNewVelocity.z);
@@ -253,22 +258,6 @@ public class SquirrelController : MonoBehaviour
             refs.RB.useGravity = true;
     }
 
-    private void Rotate()
-    {
-        float xAxis = Input.GetAxis("Mouse X") * settings.mouseSense;
-        float yAxis = Input.GetAxis("Mouse Y") * settings.mouseSense;
-
-        transform.Rotate(0, 0, -xAxis);
-        //refs.head.Rotate(-yAxis, 0, 0);
-        Vector3 eRot = refs.head.rotation.eulerAngles;
-        eRot = new Vector3(ClampCam(eRot.x - yAxis), eRot.y, eRot.z);
-        Quaternion rot = new Quaternion();
-        rot.eulerAngles = eRot;
-        refs.head.rotation = rot;
-
-        refs.RB.angularVelocity = Vector3.zero;
-    }
-
     public float ClampCam(float val)
     {
         if (val > settings.cameraClampMax)
@@ -279,49 +268,37 @@ public class SquirrelController : MonoBehaviour
         return val;
     }
 
-    private void Move()
-    {
-        float xAxis = Input.GetAxis("Horizontal");
-        float yAxis = Input.GetAxis("Vertical");
-        float yVel = refs.RB.velocity.y;
-        refs.RB.velocity = transform.forward * yAxis * settings.OLDspeed + transform.right * xAxis * settings.OLDspeed + Vector3.up * yVel;
-    }
-
-    private void Jump()
-    {
-        if (Input.GetButtonDown("Jump"))
-        {
-            if (triggers.feet.triggered)
-                refs.RB.velocity += transform.up * settings.jumpForce;
-        }
-    }
-
     private void RotateToWall()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        Debug.Log("Raycasting");
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 3))
         {
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, -transform.up, out hit, 3))
-            {
-                Vector3 dir = hit.normal;
-                Quaternion rot;
-                rot = Quaternion.LookRotation(transform.forward, hit.normal);
-                transform.rotation = rot;
-            }
+            Debug.Log("Raycast hit: " + hit.collider.name);
+            Vector3 dir = hit.normal;
+
+            CustomIntuitiveSnapRotation(-dir);
         }
     }
 
-    private void WallClimb()
+    private void CustomIntuitiveSnapRotation(Vector3 direction)
     {
-        if (triggers.wallClimb.triggered)
-        {
-            if (Input.GetKey(KeyCode.W))
-            {
-                Vector3 vel = refs.RB.velocity;
-                vel.y = settings.wallClimbForce;
-                refs.RB.velocity = vel;
-            }
-        }
+        Quaternion CameraPreRotation = refs.head.transform.rotation;
+        Debug.Log("Pre: " + CameraPreRotation.eulerAngles);
+        Vector3 OriginalFacing = refs.head.transform.forward; //Remember that forward is down (the feet of the player) to let LookRotation work.
+
+        //Rotate the players 'body'.
+        transform.rotation = Quaternion.LookRotation(direction, refs.head.transform.right);
+        transform.rotation = Quaternion.LookRotation(direction, refs.head.transform.forward);
+        Quaternion NewRot = new Quaternion();
+        NewRot.eulerAngles = new Vector3(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, transform.localRotation.eulerAngles.z + 90);
+        transform.localRotation = NewRot;
+
+        //Calculate the angle difference between the two rotations, then save the 'number of full rotations' it represents.
+        float Signed = Vector3.SignedAngle(OriginalFacing, refs.head.transform.forward, transform.right);
+        vals.cameraAngle -= Signed;
+        refs.head.transform.rotation = CameraPreRotation;
+        Debug.Log("Post: " + refs.head.transform.rotation.eulerAngles);
     }
 
     [System.Serializable]
@@ -339,8 +316,6 @@ public class SquirrelController : MonoBehaviour
         [Header("Movement Settings")]
         /// <summary> Force applied when player holds movement input. Controlls how quickly max speed is reached and how much forces can be countered. </summary>
         public float acceleration = 1;
-        /// <summary> Velocity of movement for old basic move code. </summary>
-        public float OLDspeed = 1;
         /// <summary> The horizontal speed at which no new acceleration is allowed by the player. </summary>
         public float maxSpeed = 1;
         /// <summary> Multiplier for the ammount of acceleration applied while in the air. </summary>
