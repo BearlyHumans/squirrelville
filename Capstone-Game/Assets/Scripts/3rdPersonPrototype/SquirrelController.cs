@@ -158,7 +158,7 @@ namespace Player
                 Vector3 NewVelocity = refs.RB.velocity;
 
                 //Jump to zero velocity when below max speed and on the ground to give more control and prevent gliding.
-                if (Grounded && LateralVelocityNew.magnitude < alteredMaxSpeed / 2)
+                if (Grounded && LateralVelocityNew.magnitude < alteredMaxSpeed * settings.haltAtFractionOfMaxSpeed)
                     LateralVelocityNew = new Vector3();
                 else
                 {
@@ -178,7 +178,7 @@ namespace Player
                 TransformedNewVelocity.z += settings.wallStickForce;
 
 
-            if (LateralVelocityNew.magnitude > settings.maxSpeed / 5)
+            if (LateralVelocityNew.magnitude > settings.maxSpeed * settings.turningThreshold)
                 refs.body.rotation = Quaternion.LookRotation(transform.TransformVector(LateralVelocityNew), -transform.forward);
 
             //Add the vertical component back, convert it to world-space, and set the new velocity to it.
@@ -326,6 +326,12 @@ namespace Player
             public float stoppingForce = 1;
             [Tooltip("Rate at which speed falls to zero when not moving and in the air.")]
             public float airStoppingForce = 1;
+            [Tooltip("Fraction of the max speed at which a grounded player will fully stop.")]
+            [Range(0, 1)]
+            public float haltAtFractionOfMaxSpeed = 1;
+            [Tooltip("Fraction of speed which the character model will rotate at.")]
+            [Range(0, 1)]
+            public float turningThreshold = 0.2f;
 
             [Header("Jump Settings")]
             [Tooltip("Force applied when the player jumps.")]
