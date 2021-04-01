@@ -8,7 +8,11 @@ namespace Player
     {
 
         public Transform horizontalPivot;
+        public Transform cam;
         public CameraSettings settings = new CameraSettings();
+
+        public float debugAngleY = 0;
+        public float debugAngleX = 0;
 
         private float cameraAngle = 0;
         private Vector3 velocity = Vector3.zero;
@@ -54,7 +58,30 @@ namespace Player
             float rotationX = -Input.GetAxis("Mouse X") * settings.mouseSense;
             transform.localRotation *= Quaternion.AngleAxis(rotationX, Vector3.down);
 
-            //CAMERA CLAMPING/COLLITIONS
+            //CAMERA CLAMPING/COLLISIONS
+            /*
+            float xAngle = Vector3.Angle(transform.forward, -charTransform.forward);
+            debugAngleX = xAngle;
+            if (xAngle > settings.clampAngle)
+            {
+                //Clamp Left-Right
+                if (Vector3.Angle(transform.forward, charTransform.right) < settings.clampAngle)
+                    Debug.Log("X Left");// transform.Rotate(0, -(settings.clampAngle - xAngle), 0);
+                else
+                    Debug.Log("X Right");// transform.Rotate(0, (settings.clampAngle - xAngle), 0);
+            }
+
+            float yAngle = Vector3.Angle(horizontalPivot.forward, charTransform.up);
+            debugAngleY = yAngle;
+            if (yAngle > settings.clampAngle)
+            {
+                //Clamp Up-Down
+                if (Vector3.Angle(horizontalPivot.forward, charTransform.forward) < settings.clampAngle)
+                    horizontalPivot.Rotate((settings.clampAngle - yAngle), 0, 0);
+                else
+                    horizontalPivot.Rotate(-(settings.clampAngle - yAngle), 0, 0);
+            }
+            */
         }
 
         [System.Serializable]
@@ -70,6 +97,7 @@ namespace Player
             [Tooltip("Distance from the player at which the camera will forcefully keep up (ignoring acceleration).")]
             public float maxDistance = 1;
             public float mouseSense = 1;
+            public float clampAngle = 80f;
         }
     }
 }
