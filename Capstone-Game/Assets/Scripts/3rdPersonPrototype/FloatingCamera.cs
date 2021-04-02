@@ -14,7 +14,7 @@ namespace Player
         public float debugAngleY = 0;
         public float debugAngleX = 0;
 
-        private float cameraAngle = 0;
+        private float cameraVAngle = 0;
         private Vector3 velocity = Vector3.zero;
         private float speed = 0;
 
@@ -49,10 +49,12 @@ namespace Player
 
 
             //CAMERA ROTATION
-            cameraAngle = cameraAngle - Input.GetAxis("Mouse Y") * settings.mouseSense;
+            cameraVAngle = cameraVAngle - Input.GetAxis("Mouse Y") * settings.mouseSense;
+            //Clamp the angle.
+            cameraVAngle = Mathf.Clamp(cameraVAngle, -settings.clampAngle, settings.clampAngle);
 
             Quaternion NewRot = new Quaternion();
-            NewRot.eulerAngles = new Vector3(cameraAngle, horizontalPivot.localRotation.y, 0);
+            NewRot.eulerAngles = new Vector3(cameraVAngle, horizontalPivot.localRotation.y, 0);
             horizontalPivot.localRotation = NewRot;
 
             float rotationX = -Input.GetAxis("Mouse X") * settings.mouseSense;
