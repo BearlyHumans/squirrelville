@@ -218,12 +218,7 @@ namespace Player
 
         public float ClampCam(float val)
         {
-            if (val > settings.C.cameraClampMax)
-                return settings.C.cameraClampMax;
-            else if (val < settings.C.cameraClampMin)
-                return settings.C.cameraClampMin;
-
-            return val;
+            return Mathf.Clamp(val, settings.C.cameraClampMin, settings.C.cameraClampMax);
         }
 
         private void RotateToWall()
