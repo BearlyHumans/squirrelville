@@ -75,12 +75,7 @@ namespace Player
         {
             //--------------------------MOVEMENT PHYSICS + INPUTS--------------------------//
             //INPUT
-            Vector3 desiredDirection = new Vector3();
-            Vector3 camForward = Vector3.Cross(transform.forward, refs.fCam.transform.right);
-            desiredDirection += camForward * Input.GetAxis("Vertical");
-            desiredDirection += refs.fCam.transform.right * Input.GetAxis("Horizontal");
-
-            desiredDirection.Normalize();
+            Vector3 desiredDirection = GetDesiredDirection();
 
             if (Grounded)
             {
@@ -93,11 +88,7 @@ namespace Player
             float alteredMaxSpeed = settings.M.maxSpeed;
 
             //Calculate the ideal velocity from the input and the acceleration settings.
-            Vector3 newVelocity;
-            if (Grounded)
-                newVelocity = refs.RB.velocity + (desiredDirection * settings.M.acceleration * Time.deltaTime);
-            else
-                newVelocity = refs.RB.velocity + (desiredDirection * settings.M.acceleration * settings.M.airControlFactor * Time.deltaTime);
+            Vector3 newVelocity = CalculateNewVelocity(desiredDirection);
 
             //Transform current and ideal velocity to local space so non-vertical (lateral) speed can be calculated and limited.
             Vector3 TransformedOldVelocity = transform.InverseTransformVector(refs.RB.velocity);
@@ -107,6 +98,28 @@ namespace Player
             Vector3 LateralVelocityOld = new Vector3(TransformedOldVelocity.x, TransformedOldVelocity.y, 0);
             Vector3 LateralVelocityNew = new Vector3(TransformedNewVelocity.x, TransformedNewVelocity.y, 0);
 
+            LateralVelocityNew = ClampLateralVelocity(alteredMaxSpeed, LateralVelocityOld, LateralVelocityNew);
+            LateralVelocityNew = ApplyStoppingForce(desiredDirection, alteredMaxSpeed, LateralVelocityNew);
+
+            //Apply a small force towards (rotated) down when velocity is near 0, to make sure player sticks to walls.
+            float z = TransformedNewVelocity.z;
+            if (TransformedNewVelocity.z.Inside(-settings.WC.wallStickTriggerRange, settings.WC.wallStickTriggerRange))
+                TransformedNewVelocity.z += settings.WC.wallStickForce;
+
+            //Rotate the character if the lateral velocity is above a threshold.
+            if (LateralVelocityNew.magnitude > settings.M.maxSpeed * settings.M.turningThreshold)
+                refs.body.rotation = Quaternion.LookRotation(transform.TransformVector(LateralVelocityNew), -transform.forward);
+
+            //Add the vertical component back, convert it to world-space, and set the new velocity to it.
+            LateralVelocityNew += new Vector3(0, 0, TransformedNewVelocity.z);
+            newVelocity = transform.TransformVector(LateralVelocityNew);
+
+            Vector3 finalVelocityChange = newVelocity - refs.RB.velocity;
+            refs.RB.velocity += finalVelocityChange;
+        }
+
+        private Vector3 ClampLateralVelocity(float alteredMaxSpeed, Vector3 LateralVelocityOld, Vector3 LateralVelocityNew)
+        {
             //If the local lateral velocity of the player is above the max speed, do not allow any increases in speed due to input.
             if (LateralVelocityNew.magnitude > alteredMaxSpeed)
             {
@@ -133,6 +146,11 @@ namespace Player
                 }
             }
 
+            return LateralVelocityNew;
+        }
+
+        private Vector3 ApplyStoppingForce(Vector3 desiredDirection, float alteredMaxSpeed, Vector3 LateralVelocityNew)
+        {
             //If the player is not trying to move and not jumping, apply stopping force.
             if (desiredDirection.magnitude < 0.01f && !vals.jumping)
             {
@@ -152,21 +170,24 @@ namespace Player
             else
                 vals.moving = true;
 
-            //Apply a small force towards (rotated) down when velocity is near 0, to make sure player sticks to walls. 
-            float z = TransformedNewVelocity.z;
-            if (TransformedNewVelocity.z.Inside(-settings.WC.wallStickTriggerRange, settings.WC.wallStickTriggerRange))
-                TransformedNewVelocity.z += settings.WC.wallStickForce;
+            return LateralVelocityNew;
+        }
 
-            //Rotate the character if the lateral velocity is above a threshold.
-            if (LateralVelocityNew.magnitude > settings.M.maxSpeed * settings.M.turningThreshold)
-                refs.body.rotation = Quaternion.LookRotation(transform.TransformVector(LateralVelocityNew), -transform.forward);
+        private Vector3 CalculateNewVelocity(Vector3 desiredDirection)
+        {
+            if (Grounded)
+                return refs.RB.velocity + (desiredDirection * settings.M.acceleration * Time.deltaTime);
+            else
+                return refs.RB.velocity + (desiredDirection * settings.M.acceleration * settings.M.airControlFactor * Time.deltaTime);
+        }
 
-            //Add the vertical component back, convert it to world-space, and set the new velocity to it.
-            LateralVelocityNew += new Vector3(0, 0, TransformedNewVelocity.z);
-            newVelocity = transform.TransformVector(LateralVelocityNew);
-
-            Vector3 finalVelocityChange = newVelocity - refs.RB.velocity;
-            refs.RB.velocity += finalVelocityChange;
+        private Vector3 GetDesiredDirection()
+        {
+            Vector3 desiredDirection = new Vector3();
+            Vector3 camForward = Vector3.Cross(transform.forward, refs.fCam.transform.right);
+            desiredDirection += camForward * Input.GetAxis("Vertical");
+            desiredDirection += refs.fCam.transform.right * Input.GetAxis("Horizontal");
+            return desiredDirection.normalized;
         }
 
         private void UpdateJump()
