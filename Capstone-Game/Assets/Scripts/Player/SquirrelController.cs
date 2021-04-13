@@ -57,20 +57,10 @@ namespace Player
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                if (debugPause)
-                {
-                    debugPause = false;
-                    Cursor.lockState = CursorLockMode.Locked;
-                    Cursor.visible = false;
-                    Time.timeScale = 1;
-                }
-                else
-                {
-                    debugPause = true;
-                    Cursor.lockState = CursorLockMode.None;
-                    Cursor.visible = true;
-                    Time.timeScale = 0;
-                }
+                debugPause = !debugPause;
+                Cursor.visible = debugPause;
+                Time.timeScale = debugPause ? 0 : 1;
+                Cursor.lockState = debugPause ? CursorLockMode.None : CursorLockMode.Locked;
             }
 
             return debugPause;
