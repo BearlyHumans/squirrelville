@@ -213,10 +213,7 @@ namespace Player
 
         private void CheckGravity()
         {
-            if (Grounded)
-                refs.RB.useGravity = false;
-            else
-                refs.RB.useGravity = true;
+            refs.RB.useGravity = !Grounded;
         }
 
         public float ClampCam(float val)
