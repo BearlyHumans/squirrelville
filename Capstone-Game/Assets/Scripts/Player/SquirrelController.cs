@@ -46,9 +46,9 @@ namespace Player
             if (CheckPause())
                 return;
             CheckGravity();
-            UpdCamera();
-            UpdMove();
-            UpdJump();
+            UpdateCamera();
+            UpdateMovement();
+            UpdateJump();
             JumpOnWall();
             RotateToWall();
         }
@@ -66,12 +66,12 @@ namespace Player
             return debugPause;
         }
 
-        private void UpdCamera()
+        private void UpdateCamera()
         {
-            refs.fCam.UpdCamera(transform, refs.RB);
+            refs.fCam.UpdateCamera(transform, refs.RB);
         }
 
-        private void UpdMove()
+        private void UpdateMovement()
         {
             //--------------------------MOVEMENT PHYSICS + INPUTS--------------------------//
             //INPUT
@@ -169,7 +169,7 @@ namespace Player
             refs.RB.velocity += finalVelocityChange;
         }
 
-        private void UpdJump()
+        private void UpdateJump()
         {
             //Request a jump if the player presses the button.
             //This helps make jumping more consistent if conditions are false on intermittent frames.

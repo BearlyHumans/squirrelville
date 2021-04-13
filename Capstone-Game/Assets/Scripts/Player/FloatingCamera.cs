@@ -18,7 +18,7 @@ namespace Player
         private Vector3 velocity = Vector3.zero;
         private float speed = 0;
 
-        public void UpdCamera(Transform charTransform, Rigidbody RB)
+        public void UpdateCamera(Transform charTransform, Rigidbody RB)
         {
             //CAMERA TRANSLATION
             if (settings.lockToPlayer)
