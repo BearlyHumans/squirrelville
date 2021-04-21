@@ -15,7 +15,8 @@ namespace Player
         private SCStoredValues vals = new SCStoredValues();
 
         /// <summary> Time and inputs are not simulated when this is true. </summary>
-        public bool debugPause = false;
+        private bool debugPause = false;
+        private Canvas pauseMenu;
 
         private bool Grounded
         {
@@ -31,6 +32,11 @@ namespace Player
             Initialize();
         }
 
+        void Start()
+        {
+            GetOrMakePause();
+        }
+
         private void Initialize()
         {
             vals.jumpPressed = -10;
@@ -38,6 +44,20 @@ namespace Player
             vals.lastJump = -10;
             vals.jumping = false;
             vals.lastOnSurface = -10;
+        }
+
+        private void GetOrMakePause()
+        {
+            if (PauseMenu.singleton == null)
+            {
+                Canvas pre = Resources.Load<Canvas>("Prefabs/PauseCanvas(Dummy)");
+                pauseMenu = Instantiate(pre);
+            }
+            else
+            {
+                pauseMenu = PauseMenu.singleton;
+            }
+            Pause();
         }
 
         // Update is called once per frame
@@ -58,22 +78,30 @@ namespace Player
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 if (debugPause)
-                {
-                    debugPause = false;
-                    Cursor.lockState = CursorLockMode.Locked;
-                    Cursor.visible = false;
-                    Time.timeScale = 1;
-                }
+                    UnPause();
                 else
-                {
-                    debugPause = true;
-                    Cursor.lockState = CursorLockMode.None;
-                    Cursor.visible = true;
-                    Time.timeScale = 0;
-                }
+                    Pause();
             }
 
             return debugPause;
+        }
+
+        private void Pause()
+        {
+            debugPause = true;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            Time.timeScale = 0;
+            pauseMenu.enabled = true;
+        }
+
+        private void UnPause()
+        {
+            debugPause = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            Time.timeScale = 1;
+            pauseMenu.enabled = false;
         }
 
         private void UpdCamera()
