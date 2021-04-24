@@ -11,12 +11,12 @@ namespace Player
         public SCReferences refs = new SCReferences();
         public SCSettings settings = new SCSettings();
         public SCTriggers triggers = new SCTriggers();
+        public SCChildren behaviourScripts = new SCChildren();
 
         private SCStoredValues vals = new SCStoredValues();
 
         /// <summary> Time and inputs are not simulated when this is true. </summary>
         private bool debugPause = false;
-        private Canvas pauseMenu;
 
         private bool Grounded
         {
@@ -46,33 +46,43 @@ namespace Player
             vals.lastOnSurface = -10;
         }
 
+        /// <summary> Makes sure the controller has a reference to the singleton pause-menu object, possibly by creating a new one.
+        /// Call in Start() and NOT Awake() for best results. </summary>
         private void GetOrMakePause()
         {
             if (PauseMenu.singleton == null)
             {
                 Canvas pre = Resources.Load<Canvas>("Prefabs/PauseCanvas(Dummy)");
-                pauseMenu = Instantiate(pre);
+                refs.pauseMenu = Instantiate(pre);
             }
             else
             {
-                pauseMenu = PauseMenu.singleton;
+                refs.pauseMenu = PauseMenu.singleton;
             }
             Pause();
         }
 
-        // Update is called once per frame
+        /// <summary> Runs all updates for the squirrel character. This is done by calling ManualUpdate() in child scripts based on a statemachine.
+        /// Also calls update in camera, and skips ALL calls if the game is paused. </summary>
         void Update()
         {
             if (CheckPause())
                 return;
-            CheckGravity();
-            UpdCamera();
-            UpdMove();
-            UpdJump();
-            JumpOnWall();
-            RotateToWall();
+
+            refs.fCam.UpdCamera(transform, refs.RB);
+
+            if (vals.mState == MovementState.moveAndClimb)
+            {
+                behaviourScripts.moveAndClimb.ManualUpdate();
+            }
+            else if (vals.mState == MovementState.ball)
+            {
+                behaviourScripts.moveAndClimb.ManualUpdate();
+            }
         }
 
+        /// <summary> Checks if escape has been pressed (change to include controller buttons etc later),
+        /// then swaps between paused/not if pressed, and returns true if the game is paused so that update functions can be skipped. </summary>
         private bool CheckPause()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -86,268 +96,43 @@ namespace Player
             return debugPause;
         }
 
+        /// <summary> Changes settings and (should) run animations required for pausing the game. </summary>
         private void Pause()
         {
             debugPause = true;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             Time.timeScale = 0;
-            pauseMenu.enabled = true;
+            refs.pauseMenu.enabled = true;
         }
 
+        /// <summary> Changes settings and (should) run animations required for UNpausing the game. </summary>
         private void UnPause()
         {
             debugPause = false;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             Time.timeScale = 1;
-            pauseMenu.enabled = false;
+            refs.pauseMenu.enabled = false;
         }
 
-        private void UpdCamera()
+        private void EnterBallState()
         {
-            refs.fCam.UpdCamera(transform, refs.RB);
+            //Disable normal collider
+            //Enable ball collider
+            //Change model
+
+            vals.mState = MovementState.ball;
         }
 
-        private void UpdMove()
+        private void EnterRunState()
         {
-            //--------------------------MOVEMENT PHYSICS + INPUTS--------------------------//
-            //INPUT
-            Vector3 desiredDirection = new Vector3();
-            Vector3 camForward = Vector3.Cross(transform.forward, refs.fCam.transform.right);
-            desiredDirection += camForward * Input.GetAxis("Vertical");
-            desiredDirection += refs.fCam.transform.right * Input.GetAxis("Horizontal");
 
-            desiredDirection.Normalize();
-
-            if (Grounded)
-            {
-                vals.lastGrounded = Time.time;
-                if (Time.time > vals.lastJump + settings.J.jumpCooldown)
-                    vals.jumping = false;
-            }
-
-            //Factor any modifiers like sneaking or slow effects into the max speed;
-            float alteredMaxSpeed = settings.M.maxSpeed;
-
-            //Calculate the ideal velocity from the input and the acceleration settings.
-            Vector3 newVelocity;
-            if (Grounded)
-                newVelocity = refs.RB.velocity + (desiredDirection * settings.M.acceleration * Time.deltaTime);
-            else
-                newVelocity = refs.RB.velocity + (desiredDirection * settings.M.acceleration * settings.M.airControlFactor * Time.deltaTime);
-
-            //Transform current and ideal velocity to local space so non-vertical (lateral) speed can be calculated and limited.
-            Vector3 TransformedOldVelocity = transform.InverseTransformVector(refs.RB.velocity);
-            Vector3 TransformedNewVelocity = transform.InverseTransformVector(newVelocity);
-
-            //Get lateral speed by cutting out local-z component (Must be z for LookRotation function to work. Would otherwise be y).
-            Vector3 LateralVelocityOld = new Vector3(TransformedOldVelocity.x, TransformedOldVelocity.y, 0);
-            Vector3 LateralVelocityNew = new Vector3(TransformedNewVelocity.x, TransformedNewVelocity.y, 0);
-
-            //If the local lateral velocity of the player is above the max speed, do not allow any increases in speed due to input.
-            if (LateralVelocityNew.magnitude > alteredMaxSpeed)
-            {
-                //If the new movement would speed up the player.
-                if (LateralVelocityNew.magnitude > LateralVelocityOld.magnitude)
-                {
-                    //If the player was not at max speed yet, set them to the max speed, otherwise revert to the old speed (direction changes allowed in both cases).
-                    if (LateralVelocityOld.magnitude < alteredMaxSpeed)
-                        LateralVelocityNew = LateralVelocityNew.normalized * alteredMaxSpeed;
-                    else
-                        LateralVelocityNew = LateralVelocityNew.normalized * LateralVelocityOld.magnitude;
-                }
-
-                //FRICTION
-                //If the new lateral velocity is still greater than the max speed, reduce it by the relevant amount until it is AT the max speed.
-                if (LateralVelocityNew.magnitude > settings.M.maxSpeed)
-                {
-                    if (Grounded && !vals.jumping)
-                        LateralVelocityNew = LateralVelocityNew.normalized
-                            * Mathf.Max(settings.M.maxSpeed, LateralVelocityNew.magnitude - settings.M.frictionForce * Time.deltaTime);
-                    else
-                        LateralVelocityNew = LateralVelocityNew.normalized
-                            * Mathf.Max(settings.M.maxSpeed, LateralVelocityNew.magnitude - (settings.M.frictionForce * settings.M.airControlFactor) * Time.deltaTime);
-                }
-            }
-
-            //If the player is not trying to move and not jumping, apply stopping force.
-            if (desiredDirection.magnitude < 0.01f && !vals.jumping)
-            {
-                //Jump to zero velocity when below max speed and on the ground to give more control and prevent gliding.
-                if (Grounded && LateralVelocityNew.magnitude < alteredMaxSpeed * settings.M.haltAtFractionOfMaxSpeed)
-                    LateralVelocityNew = new Vector3();
-                else
-                {
-                    //Otherwise apply a 'friction' force to the player.
-                    if (Grounded)
-                        LateralVelocityNew = LateralVelocityNew.normalized * Mathf.Max(0, LateralVelocityNew.magnitude - (settings.M.stoppingForce * Time.deltaTime));
-                    else
-                        LateralVelocityNew = LateralVelocityNew.normalized * Mathf.Max(0, LateralVelocityNew.magnitude - (settings.M.airStoppingForce * Time.deltaTime));
-                }
-                vals.moving = false;
-            }
-            else
-                vals.moving = true;
-
-            //Apply a small force towards (rotated) down when velocity is near 0, to make sure player sticks to walls. 
-            float z = TransformedNewVelocity.z;
-            if (TransformedNewVelocity.z.Inside(-settings.WC.wallStickTriggerRange, settings.WC.wallStickTriggerRange))
-                TransformedNewVelocity.z += settings.WC.wallStickForce;
-
-            //Rotate the character if the lateral velocity is above a threshold.
-            if (LateralVelocityNew.magnitude > settings.M.maxSpeed * settings.M.turningThreshold)
-                refs.body.rotation = Quaternion.LookRotation(transform.TransformVector(LateralVelocityNew), -transform.forward);
-
-            //Add the vertical component back, convert it to world-space, and set the new velocity to it.
-            LateralVelocityNew += new Vector3(0, 0, TransformedNewVelocity.z);
-            newVelocity = transform.TransformVector(LateralVelocityNew);
-
-            Vector3 finalVelocityChange = newVelocity - refs.RB.velocity;
-            refs.RB.velocity += finalVelocityChange;
         }
 
-        private void UpdJump()
+        private void EnterGlideState()
         {
-            //Request a jump if the player presses the button.
-            //This helps make jumping more consistent if conditions are false on intermittent frames.
-            if (Input.GetButtonDown("Jump"))
-                vals.jumpPressed = Time.time;
 
-            //If the player wants to and is able to jump, apply a force and set the last jump time.
-            bool tryingToJump = Time.time < vals.jumpPressed + settings.J.checkJumpTime;
-            bool groundedOrCoyotee = Grounded || Time.time < vals.lastGrounded + settings.J.coyoteeTime;
-            bool jumpOffCooldown = Time.time > vals.lastJump + settings.J.jumpCooldown;
-            if (tryingToJump && groundedOrCoyotee && jumpOffCooldown)
-            {
-                vals.jumping = true;
-                vals.lastJump = Time.time;
-                vals.jumpPressed = -5;
-
-                bool forwardJump = vals.moving && settings.J.allowForwardJumps;
-                if (forwardJump)
-                {
-                    //Do a 'forward' jump relative to the character.
-                    Debug.Log("Forwards Jump");
-                    refs.RB.velocity += -transform.forward * settings.J.jumpForce * settings.J.forwardJumpVerticalFraction;
-                    refs.RB.velocity += refs.body.forward * settings.J.forwardJumpForce;
-                }
-                else if (Vector3.Angle(transform.forward, Vector3.down) > settings.J.onWallAngle)
-                { //If player is rotated to face the ground.
-                    //Do a wall jump (biased towards up instead of out).
-                    Debug.Log("Wall Jump");
-                    refs.RB.velocity += -transform.forward * settings.J.jumpForce * (1 - settings.J.standingWallJumpVerticalRatio);
-                    refs.RB.velocity += Vector3.up * settings.J.jumpForce * settings.J.standingWallJumpVerticalRatio;
-                }
-                else
-                {
-                    //Do a normal jump.
-                    Debug.Log("Normal Jump");
-                    refs.RB.velocity += -transform.forward * settings.J.jumpForce;
-                }
-
-            }
-        }
-
-        private void CheckGravity()
-        {
-            if (Grounded)
-                refs.RB.useGravity = false;
-            else
-                refs.RB.useGravity = true;
-        }
-
-        public float ClampCam(float val)
-        {
-            if (val > settings.C.cameraClampMax)
-                return settings.C.cameraClampMax;
-            else if (val < settings.C.cameraClampMin)
-                return settings.C.cameraClampMin;
-
-            return val;
-        }
-
-        private void RotateToWall()
-        {
-            //Raycasts:
-            RaycastHit FRhit;
-            RaycastHit FLhit;
-            RaycastHit BRhit;
-            RaycastHit BLhit;
-            RaycastHit mainHit;
-            bool FR = Physics.Raycast(refs.surfaceDetectorFR.position, refs.surfaceDetectorFR.up, out FRhit, settings.WC.surfaceDetectRange);
-            bool FL = Physics.Raycast(refs.surfaceDetectorFL.position, refs.surfaceDetectorFL.up, out FLhit, settings.WC.surfaceDetectRange);
-            bool BR = Physics.Raycast(refs.surfaceDetectorBR.position, refs.surfaceDetectorBR.up, out BRhit, settings.WC.surfaceDetectRange);
-            bool BL = Physics.Raycast(refs.surfaceDetectorBL.position, refs.surfaceDetectorBL.up, out BLhit, settings.WC.surfaceDetectRange);
-            bool Main = Physics.Raycast(transform.position, transform.forward, out mainHit, settings.WC.surfaceDetectRange);
-
-            //Diagnose:
-
-            if (FR || FL || Main)
-            {
-                Vector3 dir = mainHit.normal;
-                if (FR && FL)
-                {
-                    if (Main && BR && BL)
-                    {
-                        dir = (FRhit.normal + FLhit.normal + BLhit.normal + BRhit.normal + mainHit.normal) / 5;
-                    }
-                }
-
-                CustomIntuitiveSnapRotation(-dir);
-                vals.lastOnSurface = Time.time;
-            }
-            else if (Time.time > vals.lastOnSurface + settings.WC.noSurfResetTime)
-            {
-                CustomIntuitiveSnapRotation(Vector3.down);
-                vals.lastOnSurface = Time.time;
-            }
-        }
-
-        private void CustomIntuitiveSnapRotation(Vector3 direction)
-        {
-            Quaternion CameraPreRotation = refs.head.transform.rotation;
-            Vector3 OriginalFacing = refs.head.transform.forward; //Remember that forward is down (the feet of the player) to let LookRotation work.
-
-            //Rotate the players 'body'.
-            transform.rotation = Quaternion.LookRotation(direction, transform.right);
-            Quaternion NewRot = new Quaternion();
-            NewRot.eulerAngles = new Vector3(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, transform.localRotation.eulerAngles.z + 90);
-            transform.localRotation = NewRot;
-
-            //Calculate the angle difference between the two rotations, then save the 'number of full rotations' it represents.
-            float Signed = Vector3.SignedAngle(OriginalFacing, refs.head.transform.forward, transform.right);
-            vals.cameraAngle -= Signed;
-            refs.head.transform.rotation = CameraPreRotation;
-        }
-
-        private void JumpOnWall()
-        {
-            if (Input.GetButtonDown("Jump"))
-                StartCoroutine(JumpOnWallChecks());
-        }
-
-        private IEnumerator JumpOnWallChecks()
-        {
-            int i = 0;
-            while (i < settings.WC.jumpDetectRepeats)
-            {
-                yield return new WaitForSeconds(settings.WC.jumpDetectDelay);
-                ++i;
-
-                if (Grounded && !vals.jumping)
-                    break;
-
-                RaycastHit mainHit;
-                bool Main = Physics.Raycast(refs.body.position, refs.body.forward, out mainHit, settings.WC.jumpDetectRange);
-                if (Main)
-                {
-                    Vector3 dir = mainHit.normal;
-                    CustomIntuitiveSnapRotation(-dir);
-                    vals.lastOnSurface = Time.time;
-                    break;
-                }
-            }
         }
 
         [System.Serializable]
@@ -358,12 +143,8 @@ namespace Player
             public Transform body;
             public Camera camera;
             public FloatingCamera fCam;
-            public Transform surfaceDetectorFR;
-            public Transform surfaceDetectorFL;
-            public Transform surfaceDetectorBR;
-            public Transform surfaceDetectorBL;
+            public Canvas pauseMenu;
         }
-
 
         [System.Serializable]
         public class SCTriggers
@@ -372,6 +153,15 @@ namespace Player
             public MovementTrigger feet;
             /// <summary> Trigger which is used to determine if the player is running into a wall, to trigger wall climbing. </summary>
             public MovementTrigger wallClimb;
+        }
+
+        [System.Serializable]
+        public class SCChildren
+        {
+            public SquirrelMoveAndClimb moveAndClimb;
+            public SquirrelGlide glide;
+            public SquirrelBall ball;
+            public SquirrelFoodGrabber foodGrabber;
         }
 
         private struct SCStoredValues
@@ -383,12 +173,21 @@ namespace Player
             public float cameraAngle;
             public float lastOnSurface;
             public bool moving;
+            public MovementState mState;
+        }
+
+        private enum MovementState
+        {
+            moveAndClimb,
+            ball,
+            glide
         }
     }
 }
 
 //Put in seperate namespace since no other code should need to use this.
 //Also seperated to sub-classes for ease of use in editor and autocomplete.
+/*
 namespace SquirrelControllerSettings
 {
     [System.Serializable]
@@ -487,3 +286,4 @@ namespace SquirrelControllerSettings
         }
     }
 }
+*/
