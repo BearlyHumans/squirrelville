@@ -8,6 +8,9 @@ public class PauseMenu : MonoBehaviour
 
     void Awake()
     {
-        singleton = GetComponent<Canvas>();
+        if (singleton == null)
+            singleton = GetComponent<Canvas>();
+        else
+            Destroy(gameObject);
     }
 }

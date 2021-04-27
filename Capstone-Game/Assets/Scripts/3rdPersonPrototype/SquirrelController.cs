@@ -9,7 +9,7 @@ namespace Player
     public class SquirrelController : MonoBehaviour
     {
         //~~~~~~~~~~ CLASS VARIABLES ~~~~~~~~~~
-
+        
         public SCReferences refs = new SCReferences();
         public SCChildren behaviourScripts = new SCChildren();
 
@@ -113,7 +113,7 @@ namespace Player
             {
                 behaviourScripts.ball.ManualUpdate();
             }
-            else if (vals.mState == MovementState.ball)
+            else if (vals.mState == MovementState.glide)
             {
                 behaviourScripts.glide.ManualUpdate();
             }
