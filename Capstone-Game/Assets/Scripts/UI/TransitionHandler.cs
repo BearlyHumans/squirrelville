@@ -1,19 +1,42 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(Animation))]
 public class TransitionHandler : MonoBehaviour
 {
-    public Animation anim;
+    private Animation anim;
+    public AnimationClip enterAnimClip;
+    public AnimationClip exitAnimClip;
     public UnityEvent transitionEvent;
+
+    private void Awake()
+    {
+        anim = GetComponent<Animation>();
+        anim.playAutomatically = false;
+    }
 
     [ContextMenu("Transition")]
     public void Transition()
     {
-        anim.Play();
+        if (enterAnimClip != null)
+        {
+            anim.AddClip(enterAnimClip, "enter");
+            anim.Play("enter");
+        }
+        else
+        {
+            OnTransitionEnded();
+        }
     }
 
     public void OnTransitionEnded()
     {
         transitionEvent.Invoke();
+
+        if (exitAnimClip != null)
+        {
+            anim.AddClip(exitAnimClip, "exit");
+            anim.Play("exit");
+        }
     }
 }

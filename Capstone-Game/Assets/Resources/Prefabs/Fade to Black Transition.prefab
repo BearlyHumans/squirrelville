@@ -88,8 +88,8 @@ GameObject:
   - component: {fileID: 7648991614336149663}
   - component: {fileID: 7648991614336149662}
   - component: {fileID: 7648991614336150368}
-  - component: {fileID: 937324710610210675}
-  - component: {fileID: 2766019733201793209}
+  - component: {fileID: 7567919212703172597}
+  - component: {fileID: 6651715456874983142}
   m_Layer: 5
   m_Name: Fade to Black Transition
   m_TagString: Untagged
@@ -190,7 +190,22 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &937324710610210675
+--- !u!111 &7567919212703172597
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7648991614336150371}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
+--- !u!114 &6651715456874983142
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -202,20 +217,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b7dc05e4277fcd4bb0ff13ac618e596, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 2766019733201793209}
---- !u!111 &2766019733201793209
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7648991614336150371}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 3a5c598d8385f394aa1b4a2ae62622e2, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 3a5c598d8385f394aa1b4a2ae62622e2, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  enterAnimClip: {fileID: 7400000, guid: 3a5c598d8385f394aa1b4a2ae62622e2, type: 2}
+  exitAnimClip: {fileID: 7400000, guid: 4f909c39dc9691d40a8ab25ff4b09075, type: 2}
+  transitionEvent:
+    m_PersistentCalls:
+      m_Calls: []
