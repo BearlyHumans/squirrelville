@@ -376,6 +376,14 @@ PrefabInstance:
       propertyPath: animator
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 2766019733201793209, guid: df395665693be5843af184b645fbda43, type: 3}
+      propertyPath: m_Animations.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2766019733201793209, guid: df395665693be5843af184b645fbda43, type: 3}
+      propertyPath: m_Animations.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7648991614336149661, guid: df395665693be5843af184b645fbda43, type: 3}
       propertyPath: m_Pivot.x
       value: 0
