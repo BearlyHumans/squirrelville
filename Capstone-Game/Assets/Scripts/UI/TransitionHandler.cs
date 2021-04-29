@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Animation))]
 public class TransitionHandler : MonoBehaviour
