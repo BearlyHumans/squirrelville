@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Animation))]
 public class TransitionHandler : MonoBehaviour
@@ -13,6 +14,7 @@ public class TransitionHandler : MonoBehaviour
     {
         anim = GetComponent<Animation>();
         anim.playAutomatically = false;
+        DontDestroyOnLoad(this.gameObject);
     }
 
     [ContextMenu("Transition")]
