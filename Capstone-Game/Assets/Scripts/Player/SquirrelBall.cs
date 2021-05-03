@@ -27,7 +27,7 @@ namespace Player
 
         private bool Grounded
         {
-            get { return vals.lastOnSurface < 1; }
+            get { return PARENT.TouchingSomething; }
         }
 
         //~~~~~~~~~~ EVENTS ~~~~~~~~~~
@@ -38,6 +38,35 @@ namespace Player
         }
 
         private void UpdMove()
+        {
+            //--------------------------MOVEMENT PHYSICS + INPUTS--------------------------//
+            //INPUT
+            Vector3 desiredDirection = new Vector3();
+            Vector3 camForward = Vector3.Cross(Vector3.down, ParentRefs.fCam.transform.right);
+            desiredDirection += camForward * Input.GetAxis("Vertical");
+            desiredDirection += ParentRefs.fCam.transform.right * Input.GetAxis("Horizontal");
+
+            desiredDirection.Normalize();
+            
+            if (Grounded)
+            {
+                vals.lastGrounded = Time.time;
+                if (Time.time > vals.lastJump + settings.J.jumpCooldown)
+                    vals.jumping = false;
+            }
+
+            Vector3 addedVelocity;
+            if (Grounded)
+                addedVelocity = (desiredDirection * settings.M.acceleration * Time.deltaTime);
+            else
+                addedVelocity = (desiredDirection * settings.M.acceleration * settings.M.airControlFactor * Time.deltaTime);
+
+            addedVelocity = addedVelocity * Mathf.Min(1, (settings.M.maxSpeed / ParentRefs.RB.velocity.magnitude));
+
+            ParentRefs.RB.velocity += addedVelocity;
+        }
+
+        private void UpdMoveOLD()
         {
             //--------------------------MOVEMENT PHYSICS + INPUTS--------------------------//
             //INPUT
@@ -139,7 +168,7 @@ namespace Player
 
             //If the player wants to and is able to jump, apply a force and set the last jump time.
             bool tryingToJump = Time.time < vals.jumpPressed + settings.J.checkJumpTime;
-            bool groundedOrCoyotee = Grounded || Time.time < vals.lastGrounded + settings.J.coyoteeTime;
+            bool groundedOrCoyotee = Grounded;
             bool jumpOffCooldown = Time.time > vals.lastJump + settings.J.jumpCooldown;
             if (tryingToJump && groundedOrCoyotee && jumpOffCooldown)
             {
@@ -147,28 +176,7 @@ namespace Player
                 vals.lastJump = Time.time;
                 vals.jumpPressed = -5;
 
-                bool forwardJump = vals.moving && settings.J.allowForwardJumps;
-                if (forwardJump)
-                {
-                    //Do a 'forward' jump relative to the character.
-                    //Debug.Log("Forwards Jump");
-                    ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * settings.J.forwardJumpVerticalFraction;
-                    ParentRefs.RB.velocity += ParentRefs.body.forward * settings.J.forwardJumpForce;
-                }
-                else if (Vector3.Angle(transform.forward, Vector3.down) > settings.J.onWallAngle)
-                { //If player is rotated to face the ground.
-                  //Do a wall jump (biased towards up instead of out).
-                  //Debug.Log("Wall Jump");
-                    ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * (1 - settings.J.standingWallJumpVerticalRatio);
-                    ParentRefs.RB.velocity += Vector3.up * settings.J.jumpForce * settings.J.standingWallJumpVerticalRatio;
-                }
-                else
-                {
-                    //Do a normal jump.
-                    //Debug.Log("Normal Jump");
-                    ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce;
-                }
-
+                ParentRefs.RB.velocity += Vector3.up * settings.J.jumpForce;
             }
         }
         
