@@ -61,102 +61,17 @@ namespace Player
             else
                 addedVelocity = (desiredDirection * settings.M.acceleration * settings.M.airControlFactor * Time.deltaTime);
 
-            addedVelocity = addedVelocity * Mathf.Min(1, (settings.M.maxSpeed / ParentRefs.RB.velocity.magnitude));
+            Vector3 newVel = ParentRefs.RB.velocity + addedVelocity;
+            float oldMag = ParentRefs.RB.velocity.magnitude;
+            float addedMag = addedVelocity.magnitude;
+            //If the new movement would speed up the player.
+            if (oldMag != 0 && newVel.magnitude > (oldMag + (addedMag / 2f)))
+                addedVelocity = addedVelocity * Mathf.Min(1, (settings.M.maxSpeed / oldMag));
+            else if (oldMag != 0 && newVel.magnitude < (oldMag - (addedMag / 2f)))
+                addedVelocity = addedVelocity * 1.2f;
+
 
             ParentRefs.RB.velocity += addedVelocity;
-        }
-
-        private void UpdMoveOLD()
-        {
-            //--------------------------MOVEMENT PHYSICS + INPUTS--------------------------//
-            //INPUT
-            Vector3 desiredDirection = new Vector3();
-            Vector3 camForward = Vector3.Cross(Vector3.down, ParentRefs.fCam.transform.right);
-            desiredDirection += camForward * Input.GetAxis("Vertical");
-            desiredDirection += ParentRefs.fCam.transform.right * Input.GetAxis("Horizontal");
-
-            desiredDirection.Normalize();
-
-            if (Grounded)
-            {
-                vals.lastGrounded = Time.time;
-                if (Time.time > vals.lastJump + settings.J.jumpCooldown)
-                    vals.jumping = false;
-            }
-
-            //Factor any modifiers like sneaking or slow effects into the max speed;
-            float alteredMaxSpeed = settings.M.maxSpeed;
-
-            //Calculate the ideal velocity from the input and the acceleration settings.
-            Vector3 newVelocity;
-            if (Grounded)
-                newVelocity = ParentRefs.RB.velocity + (desiredDirection * settings.M.acceleration * Time.deltaTime);
-            else
-                newVelocity = ParentRefs.RB.velocity + (desiredDirection * settings.M.acceleration * settings.M.airControlFactor * Time.deltaTime);
-
-            //Transform current and ideal velocity to local space so non-vertical (lateral) speed can be calculated and limited.
-            Vector3 TransformedOldVelocity = transform.InverseTransformVector(ParentRefs.RB.velocity);
-            Vector3 TransformedNewVelocity = transform.InverseTransformVector(newVelocity);
-
-            //Get lateral speed by cutting out local-z component (Must be z for LookRotation function to work. Would otherwise be y).
-            Vector3 LateralVelocityOld = new Vector3(TransformedOldVelocity.x, TransformedOldVelocity.y, 0);
-            Vector3 LateralVelocityNew = new Vector3(TransformedNewVelocity.x, TransformedNewVelocity.y, 0);
-
-            //If the local lateral velocity of the player is above the max speed, do not allow any increases in speed due to input.
-            if (LateralVelocityNew.magnitude > alteredMaxSpeed)
-            {
-                //If the new movement would speed up the player.
-                if (LateralVelocityNew.magnitude > LateralVelocityOld.magnitude)
-                {
-                    //If the player was not at max speed yet, set them to the max speed, otherwise revert to the old speed (direction changes allowed in both cases).
-                    if (LateralVelocityOld.magnitude < alteredMaxSpeed)
-                        LateralVelocityNew = LateralVelocityNew.normalized * alteredMaxSpeed;
-                    else
-                        LateralVelocityNew = LateralVelocityNew.normalized * LateralVelocityOld.magnitude;
-                }
-
-                //FRICTION
-                //If the new lateral velocity is still greater than the max speed, reduce it by the relevant amount until it is AT the max speed.
-                if (LateralVelocityNew.magnitude > settings.M.maxSpeed)
-                {
-                    if (Grounded && !vals.jumping)
-                        LateralVelocityNew = LateralVelocityNew.normalized
-                            * Mathf.Max(settings.M.maxSpeed, LateralVelocityNew.magnitude - settings.M.frictionForce * Time.deltaTime);
-                    else
-                        LateralVelocityNew = LateralVelocityNew.normalized
-                            * Mathf.Max(settings.M.maxSpeed, LateralVelocityNew.magnitude - (settings.M.frictionForce * settings.M.airControlFactor) * Time.deltaTime);
-                }
-            }
-
-            //If the player is not trying to move and not jumping, apply stopping force.
-            if (desiredDirection.magnitude < 0.01f && !vals.jumping)
-            {
-                //Jump to zero velocity when below max speed and on the ground to give more control and prevent gliding.
-                if (Grounded && LateralVelocityNew.magnitude < alteredMaxSpeed * settings.M.haltAtFractionOfMaxSpeed)
-                    LateralVelocityNew = new Vector3();
-                else
-                {
-                    //Otherwise apply a 'friction' force to the player.
-                    if (Grounded)
-                        LateralVelocityNew = LateralVelocityNew.normalized * Mathf.Max(0, LateralVelocityNew.magnitude - (settings.M.stoppingForce * Time.deltaTime));
-                    else
-                        LateralVelocityNew = LateralVelocityNew.normalized * Mathf.Max(0, LateralVelocityNew.magnitude - (settings.M.airStoppingForce * Time.deltaTime));
-                }
-                vals.moving = false;
-            }
-            else
-                vals.moving = true;
-
-            //Rotate the character if the lateral velocity is above a threshold.
-            if (LateralVelocityNew.magnitude > settings.M.maxSpeed * settings.M.turningThreshold)
-                ParentRefs.body.rotation = Quaternion.LookRotation(transform.TransformVector(LateralVelocityNew), -transform.forward);
-
-            //Add the vertical component back, convert it to world-space, and set the new velocity to it.
-            LateralVelocityNew += new Vector3(0, 0, TransformedNewVelocity.z);
-            newVelocity = transform.TransformVector(LateralVelocityNew);
-
-            Vector3 finalVelocityChange = newVelocity - ParentRefs.RB.velocity;
-            ParentRefs.RB.velocity += finalVelocityChange;
         }
 
         private void UpdJump()
