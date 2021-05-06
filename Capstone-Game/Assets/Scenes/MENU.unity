@@ -331,6 +331,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b68ae7d39dcc046b102bfbf73c98e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &73709013 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6180149705775515931, guid: 6568fcdd22224c64497b0a58c25670d8, type: 3}
+  m_PrefabInstance: {fileID: 6180149705030064923}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &156744438
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -539,6 +550,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 24100000, guid: 34ca02f6309a2f549b4732abe7199d62, type: 2}
+  musicVolumeSlider: {fileID: 73709013}
+  sfxVolumeSlider: {fileID: 2054651052}
   resolutionDropdown: {fileID: 1038408840}
 --- !u!1001 &403250117
 PrefabInstance:
@@ -943,9 +956,17 @@ PrefabInstance:
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 6180149705775516389, guid: 6568fcdd22224c64497b0a58c25670d8, type: 3}
+      propertyPath: m_Name
+      value: SFX Volume Slider
+      objectReference: {fileID: 0}
     - target: {fileID: 6180149706024456728, guid: 6568fcdd22224c64497b0a58c25670d8, type: 3}
       propertyPath: m_text
       value: SFX Volume
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180149706024456730, guid: 6568fcdd22224c64497b0a58c25670d8, type: 3}
+      propertyPath: m_Name
+      value: SFX Volume Text
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6568fcdd22224c64497b0a58c25670d8, type: 3}
@@ -2655,6 +2676,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2054651052 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6180149705775515931, guid: 6568fcdd22224c64497b0a58c25670d8, type: 3}
+  m_PrefabInstance: {fileID: 519004261}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2102369200
 GameObject:
   m_ObjectHideFlags: 0
@@ -3033,6 +3065,34 @@ PrefabInstance:
       value: OptionsMenu, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5621617742760707917, guid: 9417372fd638b3744903b83b7714cfe8, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898484555389874197, guid: 9417372fd638b3744903b83b7714cfe8, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898484555389874197, guid: 9417372fd638b3744903b83b7714cfe8, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898484555389874197, guid: 9417372fd638b3744903b83b7714cfe8, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 349160088}
+    - target: {fileID: 8898484555389874197, guid: 9417372fd638b3744903b83b7714cfe8, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898484555389874197, guid: 9417372fd638b3744903b83b7714cfe8, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetResolution
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898484555389874197, guid: 9417372fd638b3744903b83b7714cfe8, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: OptionsMenu, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898484555389874197, guid: 9417372fd638b3744903b83b7714cfe8, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
