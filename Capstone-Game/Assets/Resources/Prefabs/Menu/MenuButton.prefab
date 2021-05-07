@@ -147,6 +147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightTextColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightFontScale: 1.1
 --- !u!1 &2705339448836743879
 GameObject:
   m_ObjectHideFlags: 0
