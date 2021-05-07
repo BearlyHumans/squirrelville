@@ -15,6 +15,11 @@ public class MainMenu : MonoBehaviour
         anim.Play("MainToOptionsMenu");
     }
 
+    public void Credits()
+    {
+        anim.Play("MainToCreditsMenu");
+    }
+
     public void Quit()
     {
         Debug.Log("Quit");
