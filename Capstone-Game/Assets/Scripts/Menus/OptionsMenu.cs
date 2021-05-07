@@ -12,6 +12,7 @@ public class OptionsMenu : MonoBehaviour
     public TMP_Dropdown resolutionDropdown;
     private Resolution[] resolutions;
     private Resolution selectedResolution;
+    public Animation anim;
 
     private void Start()
     {
@@ -76,5 +77,10 @@ public class OptionsMenu : MonoBehaviour
 
         PlayerPrefs.SetInt("resolutionWidth", res.width);
         PlayerPrefs.SetInt("resolutionHeight", res.height);
+    }
+
+    public void Back()
+    {
+        anim.Play("OptionsToMainMenu");
     }
 }
