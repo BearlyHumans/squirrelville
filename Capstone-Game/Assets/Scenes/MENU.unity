@@ -1615,6 +1615,7 @@ GameObject:
   - component: {fileID: 829599413}
   - component: {fileID: 829599412}
   - component: {fileID: 829599416}
+  - component: {fileID: 829599417}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1728,6 +1729,18 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &829599417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 829599411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5f899f23339da641a1d6a97a686d7f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &875884334
 GameObject:
   m_ObjectHideFlags: 0
@@ -3043,6 +3056,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Begin Button
       objectReference: {fileID: 0}
+    - target: {fileID: 2705339448263182174, guid: d34ea7d6c1c674f4d87ad5be4300bfb7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2705339448263182175, guid: d34ea7d6c1c674f4d87ad5be4300bfb7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3159,6 +3176,10 @@ PrefabInstance:
       propertyPath: m_text
       value: Begin
       objectReference: {fileID: 0}
+    - target: {fileID: 8217440538484888984, guid: d34ea7d6c1c674f4d87ad5be4300bfb7, type: 3}
+      propertyPath: rectTransform
+      value: 
+      objectReference: {fileID: 1389965311}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d34ea7d6c1c674f4d87ad5be4300bfb7, type: 3}
 --- !u!1001 &5621617741035250326

@@ -1,10 +1,13 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+[RequireComponent(typeof(Button))]
 public class MenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private TMP_Text text;
+    private Button button;
     public Color highlightTextColor;
     private Color defaultTextColor;
     public float highlightFontScale = 1.0f;
@@ -13,6 +16,7 @@ public class MenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     private void Awake()
     {
         text = GetComponentInChildren<TMP_Text>();
+        button = GetComponent<Button>();
         defaultTextColor = text.color;
         defaultFontSize = text.fontSize;
     }
