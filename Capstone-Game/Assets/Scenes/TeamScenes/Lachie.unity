@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 1
+  waitForThisLong: 0
 --- !u!1 &17750681
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,6 +347,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 1
+  waitForThisLong: 0
 --- !u!4 &198660026 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e54bb2d5f404b474790638e3a0c3b6a5, type: 3}
@@ -807,6 +809,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 1
+  waitForThisLong: 0
 --- !u!1 &417261984
 GameObject:
   m_ObjectHideFlags: 0
@@ -1915,8 +1918,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31d72aa5e57329240b19538fbe187f95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkingPause: 0
-  pausedTime: 2
+  walkingPause: 1
   turnAroundChance: 0.2
   pathPoints:
   - {fileID: 937236485}
@@ -2206,6 +2208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 1
+  waitForThisLong: 0
 --- !u!1 &967781841
 GameObject:
   m_ObjectHideFlags: 0
@@ -2777,6 +2780,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 1
+  waitForThisLong: 0
 --- !u!1 &1518581465
 GameObject:
   m_ObjectHideFlags: 0

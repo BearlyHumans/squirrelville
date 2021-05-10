@@ -13,10 +13,6 @@ public class Humans : MonoBehaviour
     [Tooltip("Do you want to npc to pause on each point?")]
     [SerializeField]
     bool walkingPause;
-    
-    [Tooltip("Time the Npc pauses on each point")]
-    [SerializeField]
-    float pausedTime = 0f;
 
     [Tooltip("added change for NPC to turn around")]
     [SerializeField]
@@ -46,6 +42,9 @@ public class Humans : MonoBehaviour
 
     float chaseTimer;
     Transform target;
+
+    //-------------Activities--------//
+    float activityTimer = 10f;
 
     public void Start() 
     {
@@ -109,7 +108,7 @@ public class Humans : MonoBehaviour
                 {
                     waitTimer += Time.deltaTime;
 
-                    if(waitTimer >= pausedTime)
+                    if(waitTimer >= pathPoints[currentPathPt].waitForThisLong)
                     {
                         waiting = false;
 
@@ -117,11 +116,7 @@ public class Humans : MonoBehaviour
                         SetDest();
                     }
                 }
-                if (distance <= range)
-                {   
-                    Debug.Log("State Swap: Chase Target");
-                    currentState = HumanStates.Chase;
-                }
+               
                 break;
             }
 
@@ -142,7 +137,31 @@ public class Humans : MonoBehaviour
                     Debug.Log("State Swap: Walking around");
                     currentState = HumanStates.WalkingAround;
                 }
+
+                if (navMesh.stoppingDistance > range)
+                {
+                    Debug.Log("in range");
+                }
                 
+                break;
+            }
+
+            case HumanStates.Catch:
+            {
+                
+                if (activityTimer > 0f)
+                {   
+                    Debug.Log(activityTimer);
+                    Debug.Log("Doing Activity");
+                    activityTimer -= Time.deltaTime;
+                    
+                }
+                else
+                {
+                    Debug.Log("State Swap: Walking around");
+                    activityTimer = 10f;
+                    currentState = HumanStates.WalkingAround;
+                }
                 break;
             }
         }
@@ -155,6 +174,7 @@ public class Humans : MonoBehaviour
             Vector3 targetVector = pathPoints[currentPathPt].transform.position;
             navMesh.SetDestination(targetVector);
             walking = true;
+            Debug.Log(currentPathPt);
         }
     }
 
@@ -168,6 +188,7 @@ public class Humans : MonoBehaviour
         if (walkForward)
         {
             currentPathPt = (currentPathPt + 1) % pathPoints.Count;
+            
         }
         else 
         {
@@ -175,6 +196,7 @@ public class Humans : MonoBehaviour
             if (currentPathPt < 0)
             {
                 currentPathPt = pathPoints.Count - 1;
+                
             }
         }
     }
