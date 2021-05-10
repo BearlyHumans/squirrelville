@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 013a7bf883377bc4381cb3e2816757f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 1
+  radius: 0.5
   waitForThisLong: 0
 --- !u!1 &17750681
 GameObject:
@@ -346,7 +346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 013a7bf883377bc4381cb3e2816757f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 1
+  radius: 0.5
   waitForThisLong: 0
 --- !u!4 &198660026 stripped
 Transform:
@@ -808,7 +808,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 013a7bf883377bc4381cb3e2816757f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 1
+  radius: 0.5
   waitForThisLong: 0
 --- !u!1 &417261984
 GameObject:
@@ -1894,7 +1894,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 2.5
+  m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -1927,7 +1927,7 @@ MonoBehaviour:
   - {fileID: 6157056}
   - {fileID: 89989006}
   range: 2
-  chaseTime: 10
+  chaseTime: 5
 --- !u!1 &843461517
 GameObject:
   m_ObjectHideFlags: 0
@@ -2207,8 +2207,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 013a7bf883377bc4381cb3e2816757f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 1
-  waitForThisLong: 0
+  radius: 0.5
+  waitForThisLong: 10
 --- !u!1 &967781841
 GameObject:
   m_ObjectHideFlags: 0
@@ -2779,7 +2779,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 013a7bf883377bc4381cb3e2816757f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 1
+  radius: 0.5
   waitForThisLong: 0
 --- !u!1 &1518581465
 GameObject:

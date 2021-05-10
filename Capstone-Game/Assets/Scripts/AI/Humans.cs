@@ -33,18 +33,17 @@ public class Humans : MonoBehaviour
     //--------------Chase----------------//
     [Tooltip("Detection Radius")]
     [SerializeField]
-    public float range = 10f;
+    public float range = 2f;
 
     // ### would a distance be better then timer
     [Tooltip("How long does the human chase the player")]
     [SerializeField]
-    float chaseTime = 10f;
+    float chaseTime = 5f;
 
-    float chaseTimer;
+    float chaseTimer = 5f;
     Transform target;
 
     //-------------Activities--------//
-    float activityTimer = 10f;
 
     public void Start() 
     {
@@ -52,6 +51,7 @@ public class Humans : MonoBehaviour
         // ### singleton - ask jake about game controller.
         target = GameObject.FindWithTag("Player").transform;
         float chaseTimer = chaseTime;
+        Debug.Log(chaseTimer);
 
         if(navMesh == null)
         {
@@ -76,7 +76,7 @@ public class Humans : MonoBehaviour
     public void Update() 
     {
         float distance = Vector3.Distance(target.position, transform.position);
-        
+        Debug.Log(chaseTimer);
         // Change states into classes.
 
         // remember what was doing last - Stack
@@ -116,6 +116,13 @@ public class Humans : MonoBehaviour
                         SetDest();
                     }
                 }
+
+                if (distance <= range)
+                {   
+                    Debug.Log("State Swap: Chase Target");
+                    
+                    currentState = HumanStates.Chase;
+                }
                
                 break;
             }
@@ -125,7 +132,6 @@ public class Humans : MonoBehaviour
                 
                 navMesh.SetDestination(target.position);
                 
-                
                 if (chaseTimer > 0f)
                 {   
                     chaseTimer -= Time.deltaTime;
@@ -134,34 +140,20 @@ public class Humans : MonoBehaviour
                 else
                 {
                     chaseTimer = chaseTime;
+                    
                     Debug.Log("State Swap: Walking around");
+                    SetDest();
                     currentState = HumanStates.WalkingAround;
-                }
 
-                if (navMesh.stoppingDistance > range)
-                {
-                    Debug.Log("in range");
                 }
-                
+   
+    
                 break;
             }
 
             case HumanStates.Catch:
             {
                 
-                if (activityTimer > 0f)
-                {   
-                    Debug.Log(activityTimer);
-                    Debug.Log("Doing Activity");
-                    activityTimer -= Time.deltaTime;
-                    
-                }
-                else
-                {
-                    Debug.Log("State Swap: Walking around");
-                    activityTimer = 10f;
-                    currentState = HumanStates.WalkingAround;
-                }
                 break;
             }
         }
@@ -174,7 +166,6 @@ public class Humans : MonoBehaviour
             Vector3 targetVector = pathPoints[currentPathPt].transform.position;
             navMesh.SetDestination(targetVector);
             walking = true;
-            Debug.Log(currentPathPt);
         }
     }
 
