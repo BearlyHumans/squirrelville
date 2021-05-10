@@ -117,7 +117,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_IsActive
-    path: BeginMenu
+    path: Begin Menu
     classID: 1
     script: {fileID: 0}
   - curve:
@@ -145,7 +145,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchoredPosition.x
-    path: BeginMenu
+    path: Begin Menu
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -173,7 +173,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchoredPosition.y
-    path: BeginMenu
+    path: Begin Menu
     classID: 224
     script: {fileID: 0}
   m_PPtrCurves: []
@@ -306,7 +306,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_IsActive
-    path: BeginMenu
+    path: Begin Menu
     classID: 1
     script: {fileID: 0}
   - curve:
@@ -334,7 +334,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchoredPosition.x
-    path: BeginMenu
+    path: Begin Menu
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -362,7 +362,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchoredPosition.y
-    path: BeginMenu
+    path: Begin Menu
     classID: 224
     script: {fileID: 0}
   m_EulerEditorCurves: []
