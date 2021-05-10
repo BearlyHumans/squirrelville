@@ -200,6 +200,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Resume Button
       objectReference: {fileID: 0}
+    - target: {fileID: 2705339448263182174, guid: d34ea7d6c1c674f4d87ad5be4300bfb7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2705339448263182175, guid: d34ea7d6c1c674f4d87ad5be4300bfb7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
