@@ -28,7 +28,9 @@ public class Humans : MonoBehaviour
     bool waiting;
     bool walkForward;
     float waitTimer;
-    //------------------------------------//
+
+
+
 
     //--------------Chase----------------//
     [Tooltip("Detection Radius")]
@@ -38,20 +40,22 @@ public class Humans : MonoBehaviour
     // ### would a distance be better then timer
     [Tooltip("How long does the human chase the player")]
     [SerializeField]
-    float chaseTime = 5f;
+    float chaseTime = 0f;
 
-    float chaseTimer = 5f;
+    float chaseTimer = 15f;
     Transform target;
 
-    //-------------Activities--------//
+    
 
     public void Start() 
     {
         navMesh = this.GetComponent<NavMeshAgent>();
         // ### singleton - ask jake about game controller.
         target = GameObject.FindWithTag("Player").transform;
+        
+        // why is this broken?
         float chaseTimer = chaseTime;
-        Debug.Log(chaseTimer);
+        
 
         if(navMesh == null)
         {
@@ -75,15 +79,16 @@ public class Humans : MonoBehaviour
 
     public void Update() 
     {
+        
         float distance = Vector3.Distance(target.position, transform.position);
-        Debug.Log(chaseTimer);
         // Change states into classes.
 
         // remember what was doing last - Stack
 
         // render human current task / point
 
-        // 
+
+
         switch(currentState)
         {
             case HumanStates.WalkingAround:
@@ -117,13 +122,7 @@ public class Humans : MonoBehaviour
                     }
                 }
 
-                if (distance <= range)
-                {   
-                    Debug.Log("State Swap: Chase Target");
-                    
-                    currentState = HumanStates.Chase;
-                }
-               
+                FoVCheck();
                 break;
             }
 
@@ -135,6 +134,7 @@ public class Humans : MonoBehaviour
                 if (chaseTimer > 0f)
                 {   
                     chaseTimer -= Time.deltaTime;
+                    Debug.Log(chaseTimer);
                     
                 }
                 else
@@ -157,6 +157,20 @@ public class Humans : MonoBehaviour
                 break;
             }
         }
+    }
+
+    private void FoVCheck()
+    {
+        float distance = Vector3.Distance(target.position, transform.position);
+        Vector3 targetDir = target.position - transform.position;
+        float angleToPlayer = (Vector3.Angle(targetDir, transform.forward));
+ 
+        if ((angleToPlayer >= -45 && angleToPlayer <= 45) && (distance <= range))// 180° FOV
+        {
+            Debug.DrawLine(target.position, transform.position, Color.green);
+            Debug.Log("Chasing player");
+            currentState = HumanStates.Chase;
+        }   
     } 
 
     private void SetDest()

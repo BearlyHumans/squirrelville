@@ -1926,8 +1926,8 @@ MonoBehaviour:
   - {fileID: 1470353095}
   - {fileID: 6157056}
   - {fileID: 89989006}
-  range: 2
-  chaseTime: 5
+  range: 5
+  chaseTime: 15
 --- !u!1 &843461517
 GameObject:
   m_ObjectHideFlags: 0
