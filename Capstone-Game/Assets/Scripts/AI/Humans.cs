@@ -40,9 +40,9 @@ public class Humans : MonoBehaviour
     // ### would a distance be better then timer
     [Tooltip("How long does the human chase the player")]
     [SerializeField]
-    float chaseTime = 0f;
+    float chaseTime = 10f;
 
-    float chaseTimer = 15f;
+    float chaseTimer;
     Transform target;
 
     
@@ -54,7 +54,10 @@ public class Humans : MonoBehaviour
         target = GameObject.FindWithTag("Player").transform;
         
         // why is this broken?
-        float chaseTimer = chaseTime;
+        chaseTimer = chaseTime;
+
+        Debug.Log(chaseTimer);
+        Debug.Log("Start, timer");
         
 
         if(navMesh == null)
@@ -81,12 +84,14 @@ public class Humans : MonoBehaviour
     {
         
         float distance = Vector3.Distance(target.position, transform.position);
+        
         // Change states into classes.
 
         // remember what was doing last - Stack
 
         // render human current task / point
-
+        Debug.Log(chaseTimer);
+        Debug.Log("Update, timer");
 
 
         switch(currentState)
@@ -134,7 +139,7 @@ public class Humans : MonoBehaviour
                 if (chaseTimer > 0f)
                 {   
                     chaseTimer -= Time.deltaTime;
-                    Debug.Log(chaseTimer);
+                    
                     
                 }
                 else
@@ -163,9 +168,10 @@ public class Humans : MonoBehaviour
     {
         float distance = Vector3.Distance(target.position, transform.position);
         Vector3 targetDir = target.position - transform.position;
+        float angle = 45f;
         float angleToPlayer = (Vector3.Angle(targetDir, transform.forward));
  
-        if ((angleToPlayer >= -45 && angleToPlayer <= 45) && (distance <= range))// 180° FOV
+        if ((angleToPlayer >= -angle && angleToPlayer <= angle) && (distance <= range))// 180° FOV
         {
             Debug.DrawLine(target.position, transform.position, Color.green);
             Debug.Log("Chasing player");
