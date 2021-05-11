@@ -45,20 +45,15 @@ public class Humans : MonoBehaviour
     float chaseTimer;
     Transform target;
 
-    
 
     public void Start() 
     {
         navMesh = this.GetComponent<NavMeshAgent>();
-        // ### singleton - ask jake about game controller.
-        target = GameObject.FindWithTag("Player").transform;
-        
-        // why is this broken?
-        chaseTimer = chaseTime;
 
-        Debug.Log(chaseTimer);
-        Debug.Log("Start, timer");
-        
+        // singleton - ask jake about game controller.
+        target = GameObject.FindWithTag("Player").transform;
+
+        chaseTimer = chaseTime;
 
         if(navMesh == null)
         {
@@ -90,10 +85,7 @@ public class Humans : MonoBehaviour
         // remember what was doing last - Stack
 
         // render human current task / point
-        Debug.Log(chaseTimer);
-        Debug.Log("Update, timer");
-
-
+    
         switch(currentState)
         {
             case HumanStates.WalkingAround:
@@ -135,11 +127,12 @@ public class Humans : MonoBehaviour
             {
                 
                 navMesh.SetDestination(target.position);
-                
+                FoVCheck();
+
                 if (chaseTimer > 0f)
                 {   
                     chaseTimer -= Time.deltaTime;
-                    
+                    Debug.Log(chaseTimer);
                     
                 }
                 else
@@ -173,7 +166,8 @@ public class Humans : MonoBehaviour
  
         if ((angleToPlayer >= -angle && angleToPlayer <= angle) && (distance <= range))// 180° FOV
         {
-            Debug.DrawLine(target.position, transform.position, Color.green);
+            chaseTimer = chaseTime;
+            Debug.DrawLine(target.position, transform.position, Color.red);
             Debug.Log("Chasing player");
             currentState = HumanStates.Chase;
         }   
