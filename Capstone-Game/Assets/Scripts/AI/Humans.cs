@@ -163,14 +163,22 @@ public class Humans : MonoBehaviour
         Vector3 targetDir = target.position - transform.position;
         float angle = 45f;
         float angleToPlayer = (Vector3.Angle(targetDir, transform.forward));
+
+        RaycastHit hit;
  
-        if ((angleToPlayer >= -angle && angleToPlayer <= angle) && (distance <= range))// 180° FOV
+        if ((angleToPlayer >= -angle && angleToPlayer <= angle) && (distance <= range))
         {
-            chaseTimer = chaseTime;
-            Debug.DrawLine(target.position, transform.position, Color.red);
-            Debug.Log("Chasing player");
-            currentState = HumanStates.Chase;
-        }   
+            if(Physics.Linecast (transform.position, target.transform.position, out hit))
+            {
+                if(hit.transform.tag == "Player")
+                {
+                    chaseTimer = chaseTime;
+                    Debug.DrawLine(target.position, transform.position, Color.red);
+                    Debug.Log("Chasing player");
+                    currentState = HumanStates.Chase;
+                }
+            }
+        }
     } 
 
     private void SetDest()
