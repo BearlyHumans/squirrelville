@@ -167,7 +167,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 0.5
-  waitForThisLong: 5
+  boundry: 15
+  waitForThisLong: 0
 --- !u!1 &17750681
 GameObject:
   m_ObjectHideFlags: 0
@@ -347,7 +348,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 0.5
-  waitForThisLong: 15
+  boundry: 15
+  waitForThisLong: 0
 --- !u!4 &198660026 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e54bb2d5f404b474790638e3a0c3b6a5, type: 3}
@@ -809,7 +811,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 0.5
-  waitForThisLong: 2
+  boundry: 15
+  waitForThisLong: 0
 --- !u!1 &417261984
 GameObject:
   m_ObjectHideFlags: 0
@@ -2099,8 +2102,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 917105481}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -45.09, y: 8.84367, z: 32.89}
-  m_LocalScale: {x: 2.6964653, y: 2.6964653, z: 2.6964653}
+  m_LocalPosition: {x: -43.68, y: 8.84, z: 32.64}
+  m_LocalScale: {x: 4.906063, y: 2.6964653, z: 6.185109}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -2208,7 +2211,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 0.5
-  waitForThisLong: 10
+  boundry: 15
+  waitForThisLong: 0
 --- !u!1 &967781841
 GameObject:
   m_ObjectHideFlags: 0
@@ -2780,6 +2784,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 0.5
+  boundry: 15
   waitForThisLong: 0
 --- !u!1 &1518581465
 GameObject:

@@ -8,11 +8,20 @@ public class WayPoints : MonoBehaviour
     protected float radius = 0.1f;
 
     [SerializeField]
+    public float boundry = 15f;
+
+    [SerializeField]
     public float waitForThisLong = 0f;
     
     public virtual void OnDrawGizmos() 
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, radius);
+        Gizmos.DrawWireSphere(transform.position, radius); 
+    }
+
+    void OnDrawGizmosSelected() 
+    {
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireSphere(transform.position, boundry);   
     }
 }

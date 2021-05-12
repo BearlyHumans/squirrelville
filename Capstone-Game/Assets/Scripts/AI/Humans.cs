@@ -45,7 +45,6 @@ public class Humans : MonoBehaviour
     float chaseTimer;
     Transform target;
 
-
     public void Start() 
     {
         navMesh = this.GetComponent<NavMeshAgent>();
@@ -126,26 +125,32 @@ public class Humans : MonoBehaviour
             case HumanStates.Chase:
             {
                 
-                navMesh.SetDestination(target.position);
-                FoVCheck();
+                
+                if(checkBoundry() == true)
+                {
+                    FoVCheck();
+                    navMesh.SetDestination(target.position);
 
-                if (chaseTimer > 0f)
-                {   
-                    chaseTimer -= Time.deltaTime;
-                    Debug.Log(chaseTimer);
+                    if (chaseTimer > 0f)
+                    {   
+                        chaseTimer -= Time.deltaTime;
                     
+                    }
+                    else
+                    {
+                        chaseTimer = chaseTime;
+                        
+                        Debug.Log("State Swap: Walking around");
+                        SetDest();
+                        currentState = HumanStates.WalkingAround;
+                    }
                 }
                 else
                 {
-                    chaseTimer = chaseTime;
-                    
-                    Debug.Log("State Swap: Walking around");
                     SetDest();
                     currentState = HumanStates.WalkingAround;
-
                 }
-   
-    
+                
                 break;
             }
 
@@ -176,6 +181,7 @@ public class Humans : MonoBehaviour
                     Debug.DrawLine(target.position, transform.position, Color.red);
                     Debug.Log("Chasing player");
                     currentState = HumanStates.Chase;
+                    
                 }
             }
         }
@@ -187,9 +193,26 @@ public class Humans : MonoBehaviour
         {
             Vector3 targetVector = pathPoints[currentPathPt].transform.position;
             navMesh.SetDestination(targetVector);
+            Debug.Log(currentPathPt);
             walking = true;
         }
     }
+
+    bool checkBoundry()
+    {
+        if(Vector3.Distance(pathPoints[currentPathPt].transform.position, 
+            transform.position) > pathPoints[currentPathPt].boundry)
+        {
+            Debug.Log("outside boundery");
+
+            return false;
+            
+
+        }    
+        Debug.Log("Inside boundery");
+        return true;
+    }
+
 
     private void ChangePathPt()
     {
