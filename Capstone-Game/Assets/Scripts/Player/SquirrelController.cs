@@ -94,7 +94,7 @@ namespace Player
             if (CheckPause())
                 return;
 
-            refs.fCam.UpdateCamera(transform, refs.RB);
+            refs.fCam.UpdateCamFromImput();
 
             //Debug State Changes
             if (Input.GetKeyDown(KeyCode.B))
@@ -192,7 +192,8 @@ namespace Player
             public Transform head;
             public Transform body;
             public Camera camera;
-            public FloatingCamera fCam;
+            //public FloatingCamera fCam;
+            public CameraFollow fCam;
             public Canvas pauseMenu;
             public GameObject runBody;
             public GameObject ballBody;
