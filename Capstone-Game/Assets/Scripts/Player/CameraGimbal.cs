@@ -1,0 +1,137 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CameraGimbal : MonoBehaviour
+{
+    [Header("References:")]
+    public GameObject cameraTarget;
+    public Camera dollyCamera;
+    public Transform belowPoint;
+
+    private Transform CamObj
+    {
+        get { return dollyCamera.transform; }
+    }
+
+    [Header("Gimbal Settings:")]
+    public float CameraMoveSpeed = 120.0f;
+    public float upperClampAngle = 80.0f;
+    public float lowerClampAngle = -20.0f;
+    public float zoomAngle = -10.0f;
+    public float inputSensitivity = 150.0f;
+    public bool invertY = false;
+
+    [Header("Dolly Settings:")]
+    [SerializeField, Range(0.0f, 10.0f)]
+    public float minDistance = 1.0f;
+    [SerializeField, Range(0.0f, 10.0f)]
+    public float maxDistance = 4.0f;
+    public LayerMask sphereLayers;
+    public float collisionPadding = 0.9f;
+    public float smallSphereRadius = 1f;
+    public float largeSphereRadius = 2f;
+    
+    [Header("Shared Settings:")]
+    public LayerMask rayLayers;
+    [SerializeField, Range(0.0f, 30.0f)]
+    public float smooth = 10.0f;
+
+    [Header("Public For Debug:")]
+    public Vector3 dollyDirAdjusted;
+    public float dollyDistance;
+    public float finalInputX;
+    public float finalInputY;
+
+    public string DEBUGString = "Null";
+
+    //Gimbal values
+    private float rotY = 0.0f;
+    private float rotX = 0.0f;
+
+    //Dolly values
+    private Vector3 dollyDir;
+    private Vector3 desiredCameraPos;
+
+
+    void Awake()
+    {
+        Vector3 rot = transform.localRotation.eulerAngles;
+        rotY = rot.y;
+        rotX = rot.x;
+
+        dollyDir = CamObj.localPosition.normalized;
+        dollyDistance = CamObj.localPosition.magnitude;
+    }
+
+    public void UpdateCamRotFromImput()
+    {
+        //Get input and invert or transform it.
+        float inputX = Input.GetAxis("Mouse X");
+        float inputY = Input.GetAxis("Mouse Y");
+        if (invertY)
+            inputY = -inputY;
+        finalInputX = inputX;
+        finalInputY = inputY;
+
+
+        rotY += finalInputX * inputSensitivity * Time.deltaTime;
+        if (finalInputY > 0 || PlayerCanSeeBelowPoint())
+            rotX += finalInputY * inputSensitivity * Time.deltaTime;
+
+        rotX = Mathf.Clamp(rotX, lowerClampAngle, upperClampAngle);
+
+        Quaternion localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
+        transform.rotation = localRotation;
+    }
+
+    public void UpdateCamPos()
+    {
+        // Move towards target
+        transform.position = Vector3.MoveTowards(transform.position, cameraTarget.transform.position, CameraMoveSpeed * Time.deltaTime);
+    }
+
+    public void UpdateDolly()
+    {
+        //Cause the camera to zoom in if it is below the zoom angle.
+        float zoomedMax = maxDistance;
+        if (rotX < zoomAngle)
+        {
+            float range = maxDistance - minDistance;
+            float fraction = 1 - ((rotX - zoomAngle) / (lowerClampAngle - zoomAngle));
+            zoomedMax = minDistance + range * fraction;
+            Debug.Log("New Zoomed Max = " + zoomedMax);
+        }
+            
+        desiredCameraPos = transform.TransformPoint(dollyDir * zoomedMax);
+
+        //Move the camera closer if certain bad conditions are found:
+        RaycastHit hit;
+        if (Physics.Linecast(transform.position, desiredCameraPos, out hit, rayLayers.value))
+        { //If line of sight is blocked by the specified layer(s), move in quickly (10x smooth speed).
+            dollyDistance = Mathf.Clamp((hit.distance - collisionPadding), minDistance, zoomedMax);
+            if (hit.collider.CompareTag("CameraSolid"))
+                CamObj.localPosition = Vector3.Lerp(CamObj.localPosition, dollyDir * dollyDistance, Time.deltaTime * smooth * 10);
+        }
+        else if (Physics.CheckSphere(CamObj.position, smallSphereRadius, sphereLayers.value))
+        { //If the camera is VERY near or inside an object in specified layer(s), move in at a smooth speed.
+            dollyDistance = Mathf.Clamp(dollyDistance - Time.deltaTime * smooth, minDistance, zoomedMax);
+            CamObj.localPosition = Vector3.Lerp(CamObj.localPosition, dollyDir * dollyDistance, Time.deltaTime * smooth);
+        }
+        else if (!Physics.CheckSphere(CamObj.position, largeSphereRadius, sphereLayers.value))
+        { //If the camera is NOT near any specified objects, move out again at the smooth speed.
+            //(MUST be defined by a larger sphere than the previous check to prevent flickering)
+            dollyDistance = zoomedMax;
+            CamObj.localPosition = Vector3.Lerp(CamObj.localPosition, dollyDir * dollyDistance, Time.deltaTime * smooth);
+        }
+    }
+
+    private bool PlayerCanSeeBelowPoint()
+    {
+        RaycastHit hit;
+        if (Physics.Linecast(transform.position, belowPoint.position, out hit, rayLayers.value))
+            return false;
+
+        return true;
+    }
+}
