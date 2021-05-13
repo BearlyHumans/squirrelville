@@ -48,12 +48,11 @@ public class Humans : MonoBehaviour
     public void Start() 
     {
         navMesh = this.GetComponent<NavMeshAgent>();
-
+        chaseTimer = chaseTime;
         // singleton - ask jake about game controller.
         target = GameObject.FindWithTag("Player").transform;
 
-        chaseTimer = chaseTime;
-
+        currentState = HumanStates.PathFollowing;
         if(navMesh == null)
         {
             Debug.Log("No nav mesh");
@@ -67,6 +66,7 @@ public class Humans : MonoBehaviour
             }
             else
             {
+                SetDest();
                 Debug.Log("Add more points to walk between");
             }
         }
@@ -85,72 +85,25 @@ public class Humans : MonoBehaviour
 
         // render human current task / point
     
+        // -----States------
         switch(currentState)
         {
-            case HumanStates.WalkingAround:
+            case HumanStates.PathFollowing:
             {
-                if(walking && navMesh.remainingDistance <= 1.0f)
-                {
-                    walking = false;
-                    
-                    if(walkingPause)
-                    {
-                        waiting = true;
-                        waitTimer = 0f;
-                    }
-                    else
-                    {
-                        ChangePathPt();
-                        SetDest();
-                    }
-                }
-
-                if(waiting)
-                {
-                    waitTimer += Time.deltaTime;
-
-                    if(waitTimer >= pathPoints[currentPathPt].waitForThisLong)
-                    {
-                        waiting = false;
-
-                        ChangePathPt();
-                        SetDest();
-                    }
-                }
-
-                FoVCheck();
+                PathFollowingBehaviour();
                 break;
             }
 
             case HumanStates.Chase:
             {
+                ChaseBehaviour();
                 
-                
-                if(checkBoundry() == true)
-                {
-                    FoVCheck();
-                    navMesh.SetDestination(target.position);
+                break;
+            }
 
-                    if (chaseTimer > 0f)
-                    {   
-                        chaseTimer -= Time.deltaTime;
-                    
-                    }
-                    else
-                    {
-                        chaseTimer = chaseTime;
-                        
-                        Debug.Log("State Swap: Walking around");
-                        SetDest();
-                        currentState = HumanStates.WalkingAround;
-                    }
-                }
-                else
-                {
-                    SetDest();
-                    currentState = HumanStates.WalkingAround;
-                }
-                
+            case HumanStates.Friendly:
+            {
+                FriendlyBehaviour();
                 break;
             }
 
@@ -162,7 +115,77 @@ public class Humans : MonoBehaviour
         }
     }
 
-    private void FoVCheck()
+    private void ChaseBehaviour()
+    {
+        
+                
+        if(checkBoundry() == true)
+        {
+            SeePlayer();
+            navMesh.SetDestination(target.position);
+
+            if (chaseTimer > 0f)
+            {   
+                chaseTimer -= Time.deltaTime;
+                    
+            }
+            else
+            {
+                chaseTimer = chaseTime;
+                        
+                Debug.Log("State Swap: Walking around");
+                SetDest();
+                currentState = HumanStates.PathFollowing;
+            }
+        }
+        else
+        {
+            SetDest();
+            currentState = HumanStates.PathFollowing;
+        }
+                
+    }
+
+    private void FriendlyBehaviour()
+    {
+        Debug.Log("Feed friendly squirrel");
+    }
+
+    private void PathFollowingBehaviour()
+    {
+        if(walking && navMesh.remainingDistance <= 1.0f)
+        {
+            walking = false;
+                    
+            if(walkingPause)
+            {
+                waiting = true;
+                waitTimer = 0f;
+            }
+            else
+            {
+                ChangePathPt();
+                SetDest();
+            }
+        }
+
+        if(waiting)
+        {
+            waitTimer += Time.deltaTime;
+
+            if(waitTimer >= pathPoints[currentPathPt].waitForThisLong)
+            {
+                waiting = false;
+
+                ChangePathPt();
+                SetDest();
+            }
+        }
+
+        SeePlayer();
+    }
+
+    private void SeePlayer()
     {
         float distance = Vector3.Distance(target.position, transform.position);
         Vector3 targetDir = target.position - transform.position;
@@ -177,26 +200,21 @@ public class Humans : MonoBehaviour
             {
                 if(hit.transform.tag == "Player")
                 {
-                    chaseTimer = chaseTime;
-                    Debug.DrawLine(target.position, transform.position, Color.red);
-                    Debug.Log("Chasing player");
-                    currentState = HumanStates.Chase;
+                    if(gameObject.tag == "Agressive")
+                    {
+                        chaseTimer = chaseTime;
+                        Debug.DrawLine(target.position, transform.position, Color.red);
+                        currentState = HumanStates.Chase;
+                    }
+                    else if(gameObject.tag == "Friendly")
+                    {
+                        currentState = HumanStates.Friendly;
+                    }
                     
                 }
             }
         }
     } 
-
-    private void SetDest()
-    {
-        if (pathPoints != null)
-        {
-            Vector3 targetVector = pathPoints[currentPathPt].transform.position;
-            navMesh.SetDestination(targetVector);
-            Debug.Log(currentPathPt);
-            walking = true;
-        }
-    }
 
     bool checkBoundry()
     {
@@ -206,13 +224,21 @@ public class Humans : MonoBehaviour
             Debug.Log("outside boundery");
 
             return false;
-            
-
         }    
         Debug.Log("Inside boundery");
         return true;
     }
 
+    private void SetDest()
+    {
+        if (pathPoints != null)
+        {
+            Vector3 targetVector = pathPoints[currentPathPt].transform.position;
+            navMesh.SetDestination(targetVector);
+            
+            walking = true;
+        }
+    }
 
     private void ChangePathPt()
     {
@@ -245,9 +271,10 @@ public class Humans : MonoBehaviour
 
     private enum HumanStates
     {
-        WalkingAround,
+        PathFollowing,
         Chase,
-        Catch
+        Catch,
+        Friendly,
     }
 
 }
