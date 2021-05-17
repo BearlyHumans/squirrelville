@@ -64,6 +64,7 @@ public class CameraGimbal : MonoBehaviour
         dollyDistance = CamObj.localPosition.magnitude;
     }
 
+    /// <summary> Change the rotation of the camera parent based on inputs. </summary>
     public void UpdateCamRotFromImput()
     {
         //Get input and invert or transform it.
@@ -85,12 +86,14 @@ public class CameraGimbal : MonoBehaviour
         transform.rotation = localRotation;
     }
 
+    /// <summary> Move the camera gameobject towards the target at the move speed. </summary>
     public void UpdateCamPos()
     {
         // Move towards target
         transform.position = Vector3.MoveTowards(transform.position, cameraTarget.transform.position, CameraMoveSpeed * Time.deltaTime);
     }
 
+    /// <summary> Adjust the distance between the camera and the rotation parent based on the angle and nearby obstacles. </summary>
     public void UpdateDolly()
     {
         //Cause the camera to zoom in if it is below the zoom angle.
@@ -100,7 +103,6 @@ public class CameraGimbal : MonoBehaviour
             float range = maxDistance - minDistance;
             float fraction = 1 - ((rotX - zoomAngle) / (lowerClampAngle - zoomAngle));
             zoomedMax = minDistance + range * fraction;
-            Debug.Log("New Zoomed Max = " + zoomedMax);
         }
             
         desiredCameraPos = transform.TransformPoint(dollyDir * zoomedMax);
@@ -126,6 +128,7 @@ public class CameraGimbal : MonoBehaviour
         }
     }
 
+    /// <summary> Checks if there is line of sight between the player (i.e. the camera parent's position) and a point a small distance below the actual camera. </summary>
     private bool PlayerCanSeeBelowPoint()
     {
         RaycastHit hit;
