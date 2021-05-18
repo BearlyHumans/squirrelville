@@ -94,7 +94,7 @@ namespace Player
             if (CheckPause())
                 return;
 
-            refs.fCam.UpdateCamera(transform, refs.RB);
+            refs.fCam.UpdateCamRotFromImput();
 
             //Debug State Changes
             if (Input.GetKeyDown(KeyCode.B))
@@ -117,6 +117,9 @@ namespace Player
             {
                 behaviourScripts.glide.ManualUpdate();
             }
+
+            refs.fCam.UpdateCamPos();
+            refs.fCam.UpdateDolly();
         }
 
         /// <summary> Checks if escape has been pressed (change to include controller buttons etc later),
@@ -192,7 +195,8 @@ namespace Player
             public Transform head;
             public Transform body;
             public Camera camera;
-            public FloatingCamera fCam;
+            //public FloatingCamera fCam;
+            public CameraGimbal fCam;
             public Canvas pauseMenu;
             public GameObject runBody;
             public GameObject ballBody;
