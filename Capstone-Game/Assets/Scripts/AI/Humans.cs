@@ -200,7 +200,7 @@ public class Humans : MonoBehaviour
             {
                 if(hit.transform.tag == "Player")
                 {
-                    if(gameObject.tag == "Agressive")
+                    if(gameObject.tag == "Aggressive")
                     {
                         chaseTimer = chaseTime;
                         Debug.DrawLine(target.position, transform.position, Color.red);
