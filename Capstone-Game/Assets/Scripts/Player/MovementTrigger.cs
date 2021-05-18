@@ -31,4 +31,9 @@ public class MovementTrigger : MonoBehaviour
     {
         triggered = false;
     }
+
+    private void OnDisable()
+    {
+        triggered = false;
+    }
 }

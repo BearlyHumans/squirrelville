@@ -17,6 +17,8 @@ namespace Player
         public SCRunModeSettings settings = new SCRunModeSettings();
         public SCTriggers triggers = new SCTriggers();
 
+        public string debugString = "null";
+
         private SCRunStoredValues vals = new SCRunStoredValues();
         
         //~~~~~~~~~~ PROPERTIES ~~~~~~~~~~
@@ -48,18 +50,19 @@ namespace Player
             UpdJump();
             JumpOnWall();
             RotateToWall();
+            RotatePlayerBody();
         }
 
         private void UpdMove()
         {
             //--------------------------MOVEMENT PHYSICS + INPUTS--------------------------//
             //INPUT
-            Vector3 desiredDirection = new Vector3();
+            vals.desiredDirection = new Vector3();
             Vector3 camForward = Vector3.Cross(transform.forward, ParentRefs.fCam.transform.right);
-            desiredDirection += camForward * Input.GetAxis("Vertical");
-            desiredDirection += ParentRefs.fCam.transform.right * Input.GetAxis("Horizontal");
+            vals.desiredDirection += camForward * Input.GetAxis("Vertical");
+            vals.desiredDirection += ParentRefs.fCam.transform.right * Input.GetAxis("Horizontal");
 
-            desiredDirection.Normalize();
+            vals.desiredDirection.Normalize();
 
             if (Grounded)
             {
@@ -73,9 +76,9 @@ namespace Player
             //Calculate the ideal velocity from the input and the acceleration settings.
             Vector3 newVelocity;
             if (Grounded)
-                newVelocity = ParentRefs.RB.velocity + (desiredDirection * settings.M.acceleration * Time.deltaTime);
+                newVelocity = ParentRefs.RB.velocity + (vals.desiredDirection * settings.M.acceleration * Time.deltaTime);
             else
-                newVelocity = ParentRefs.RB.velocity + (desiredDirection * settings.M.acceleration * settings.M.airControlFactor * Time.deltaTime);
+                newVelocity = ParentRefs.RB.velocity + (vals.desiredDirection * settings.M.acceleration * settings.M.airControlFactor * Time.deltaTime);
 
             //Transform current and ideal velocity to local space so non-vertical (lateral) speed can be calculated and limited.
             Vector3 TransformedOldVelocity = transform.InverseTransformVector(ParentRefs.RB.velocity);
@@ -112,7 +115,7 @@ namespace Player
             }
 
             //If the player is not trying to move and not jumping, apply stopping force.
-            if (desiredDirection.magnitude < 0.01f && !vals.jumping)
+            if (vals.desiredDirection.magnitude < 0.01f && !vals.jumping)
             {
                 //Jump to zero velocity when below max speed and on the ground to give more control and prevent gliding.
                 if (Grounded && LateralVelocityNew.magnitude < alteredMaxSpeed * settings.M.haltAtFractionOfMaxSpeed)
@@ -137,7 +140,11 @@ namespace Player
 
             //Rotate the character if the lateral velocity is above a threshold.
             if (LateralVelocityNew.magnitude > settings.M.maxSpeed * settings.M.turningThreshold)
+            {
+                //Quaternion bodyPreRotation = ParentRefs.model.rotation;
                 ParentRefs.body.rotation = Quaternion.LookRotation(transform.TransformVector(LateralVelocityNew), -transform.forward);
+                //ParentRefs.model.rotation = bodyPreRotation;
+            }
 
             //Add the vertical component back, convert it to world-space, and set the new velocity to it.
             LateralVelocityNew += new Vector3(0, 0, TransformedNewVelocity.z);
@@ -199,6 +206,43 @@ namespace Player
         private void RotateToWall()
         {
             //Raycasts:
+            RaycastHit mainHit;
+            bool Main = Physics.Raycast(transform.position, transform.forward, out mainHit, settings.WC.surfaceDetectRange);
+            RaycastHit frontHit;
+            RaycastHit backHit;
+            
+            bool front = Physics.Raycast(refs.frontCheckRay.position, -refs.frontCheckRay.up, out frontHit, settings.WC.surfaceDetectRange);
+            bool back = Physics.Raycast(refs.backCheckRay.position, -refs.backCheckRay.up, out backHit, settings.WC.surfaceDetectRange);
+
+            Vector3 dir = Vector3.down;
+
+            /*
+            if (front && back)
+            {
+                dir = frontHit.normal + backHit.normal;
+
+                CustomIntuitiveSnapRotation(-dir);
+                vals.lastOnSurface = Time.time;
+            }
+            */
+            if (Main)
+            {
+                dir = mainHit.normal;
+
+                CustomIntuitiveSnapRotation(-dir);
+                vals.lastOnSurface = Time.time;
+            }
+            else if (Time.time > vals.lastOnSurface + settings.WC.noSurfResetTime)
+            {
+                CustomIntuitiveSnapRotation(Vector3.down);
+                vals.lastOnSurface = Time.time;
+            }
+        }
+
+        /*
+        private void OLDRotateToWall()
+        {
+            //Raycasts:
             RaycastHit FRhit;
             RaycastHit FLhit;
             RaycastHit BRhit;
@@ -232,17 +276,27 @@ namespace Player
                 vals.lastOnSurface = Time.time;
             }
         }
+        */
+
+        private void RotatePlayerBody()
+        {
+            //Quaternion zero = new Quaternion();
+            ParentRefs.model.rotation = Quaternion.RotateTowards(ParentRefs.model.rotation, ParentRefs.body.rotation, settings.WC.rotateDegreesPerSecond * Time.deltaTime);
+            //ParentRefs.model.localRotation = Quaternion.Lerp(ParentRefs.model.localRotation, zero, 1f);
+        }
 
         private void CustomIntuitiveSnapRotation(Vector3 direction)
         {
-            //Quaternion CameraPreRotation = ParentRefs.head.transform.rotation;
-            Vector3 OriginalFacing = ParentRefs.head.transform.forward; //Remember that forward is down (the feet of the player) to let LookRotation work.
+            Quaternion bodyPreRotation = ParentRefs.model.rotation;
 
-            //Rotate the players 'body'.
+            //Rotate the body 'holder' with the scripts attatched to it.
+            //Remember that forward is rotated to face down (the feet of the player) to let LookRotation work.
             transform.rotation = Quaternion.LookRotation(direction, transform.right);
-            Quaternion NewRot = new Quaternion();
-            NewRot.eulerAngles = new Vector3(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, transform.localRotation.eulerAngles.z + 90);
-            transform.localRotation = NewRot;
+            Quaternion newRot = new Quaternion();
+            newRot.eulerAngles = new Vector3(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, transform.localRotation.eulerAngles.z + 90);
+            transform.localRotation = newRot;
+            
+            ParentRefs.model.rotation = bodyPreRotation;
         }
 
         private void JumpOnWall()
@@ -258,24 +312,45 @@ namespace Player
             int i = 0;
             while (i < settings.WC.jumpDetectRepeats)
             {
-                yield return new WaitForSeconds(settings.WC.jumpDetectDelay);
-                ++i;
-
                 if (Grounded && !vals.jumping)
                     break;
 
                 RaycastHit mainHit;
-                bool Main = Physics.Raycast(ParentRefs.body.position, ParentRefs.body.forward, out mainHit, settings.WC.jumpDetectRange);
-                if (Main)
+
+                Vector3 sphereStart;
+                Vector3 sphereDir;
+                if (vals.desiredDirection != Vector3.zero)
+                {
+                    sphereStart = refs.climbCheckRay.position - (vals.desiredDirection * settings.WC.sphereDetectRadius);
+                    sphereDir = vals.desiredDirection;
+                }
+                else
+                {
+                    sphereStart = refs.climbCheckRay.position - (ParentRefs.body.forward * settings.WC.sphereDetectRadius);
+                    sphereDir = ParentRefs.body.forward;
+                }
+
+                bool foundTarget = false;
+                if (Physics.SphereCast(sphereStart, settings.WC.sphereDetectRadius, sphereDir, out mainHit, 1, settings.WC.climableLayers.value))
+                {
+                    foundTarget = true;
+                    debugString = mainHit.collider.name;
+                    Debug.DrawLine(ParentRefs.body.position, mainHit.point);
+                }
+
+                if (foundTarget)
                 {
                     Vector3 dir = mainHit.normal;
                     CustomIntuitiveSnapRotation(-dir);
                     vals.lastOnSurface = Time.time;
                     break;
                 }
+
+                yield return new WaitForSeconds(settings.WC.jumpDetectDelay);
+                ++i;
             }
         }
-        
+
         //~~~~~~~~~~ DATA STRUCTURES ~~~~~~~~~~
 
         [System.Serializable]
@@ -293,15 +368,17 @@ namespace Player
             public float jumpPressed;
             public bool jumping;
             public bool moving;
+            public Vector3 desiredDirection;
+            public Quaternion targetBodyRot;
         }
 
         [System.Serializable]
         public class MovementRefs
         {
-            public Transform surfaceDetectorFR;
-            public Transform surfaceDetectorFL;
-            public Transform surfaceDetectorBR;
-            public Transform surfaceDetectorBL;
+            public Transform backCheckRay;
+            public Transform frontCheckRay;
+            public Transform acuteCheckRay;
+            public Transform climbCheckRay;
         }
 
         [System.Serializable]
@@ -369,6 +446,12 @@ namespace Player
             public class SCWallClimbSettings
             {
                 [Header("Wallclimb Settings")]
+                [Tooltip("The layers of objects the player is allowed to climb on.")]
+                public LayerMask climableLayers = new LayerMask();
+                [Tooltip("Size of the sphere-cast that will detect surfaces to climb on. Larger means more forgiving controls, but also more likely to get objects behind the player.")]
+                public float sphereDetectRadius = 0.3f;
+                [Tooltip("Length of the sphere-cast that detects surfaces. Larger means the check will find objects further from the player.")]
+                public float sphereDetectDistance = 0.5f;
                 [Tooltip("Distance from the center of the character from which walls below will be detected.")]
                 public float surfaceDetectRange = 0.15f;
                 [Tooltip("Force applied when the character is near a wall to ensure they stick to it.")]
@@ -383,6 +466,8 @@ namespace Player
                 public float jumpDetectRange = 0.3f;
                 [Tooltip("Number of checks (with jumpDetectDelay time between) done after the character has jumped. Also stopped by being Grounded.")]
                 public int jumpDetectRepeats = 20;
+                [Tooltip("How quickly the squirrel model rotates to face the correct direction.")]
+                public float rotateDegreesPerSecond = 360;
             }
         }
     }

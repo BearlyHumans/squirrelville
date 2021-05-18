@@ -192,10 +192,9 @@ namespace Player
         public class SCReferences
         {
             public Rigidbody RB;
-            public Transform head;
             public Transform body;
+            public Transform model;
             public Camera camera;
-            //public FloatingCamera fCam;
             public CameraGimbal fCam;
             public Canvas pauseMenu;
             public GameObject runBody;
