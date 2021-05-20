@@ -211,8 +211,8 @@ namespace Player
             RaycastHit frontHit;
             RaycastHit backHit;
             
-            bool front = Physics.Raycast(refs.frontCheckRay.position, -refs.frontCheckRay.up, out frontHit, settings.WC.surfaceDetectRange);
-            bool back = Physics.Raycast(refs.backCheckRay.position, -refs.backCheckRay.up, out backHit, settings.WC.surfaceDetectRange);
+            //bool front = Physics.Raycast(refs.frontCheckRay.position, -refs.frontCheckRay.up, out frontHit, settings.WC.surfaceDetectRange);
+            //bool back = Physics.Raycast(refs.backCheckRay.position, -refs.backCheckRay.up, out backHit, settings.WC.surfaceDetectRange);
 
             Vector3 dir = Vector3.down;
 
