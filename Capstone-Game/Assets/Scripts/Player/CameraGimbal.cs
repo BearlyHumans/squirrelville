@@ -50,7 +50,7 @@ public class CameraGimbal : MonoBehaviour
     //Gimbal values
     private float rotY = 0.0f;
     private float rotX = 0.0f;
-    private float difference = 0.0f;
+    private float playerAngle = 0.0f;
 
     //Dolly values
     private Vector3 dollyDir;
@@ -84,16 +84,8 @@ public class CameraGimbal : MonoBehaviour
             rotX += finalInputY * inputSensitivity * Time.deltaTime;
 
 
-        difference = Vector3.Angle(Vector3.up, -cameraTarget.transform.forward);
-        Debug.Log("difference: " + difference);
-        /*
-        relativeRotX = Vector3.SignedAngle(-cameraTarget.transform.forward, CamObj.up, CamObj.right);
-        float oldAngle = relativeRotX;
-        relativeRotX = Mathf.Clamp(relativeRotX, lowerRelativeClampAngle, upperRelativeClampAngle);
-        float delta = relativeRotX - oldAngle;
-        rotX += delta;
-        */
-        float oldRelativeAngle = rotX + difference;
+        playerAngle = Vector3.Angle(Vector3.up, -cameraTarget.transform.forward);
+        float oldRelativeAngle = rotX + playerAngle;
         float newRelativeAngle = Mathf.Clamp(oldRelativeAngle, lowerRelativeClampAngle, upperRelativeClampAngle);
         Debug.Log(newRelativeAngle);
         float delta = newRelativeAngle - oldRelativeAngle;
@@ -116,10 +108,10 @@ public class CameraGimbal : MonoBehaviour
     {
         //Cause the camera to zoom in if it is below the zoom angle.
         float zoomedMax = maxDistance;
-        if ((rotX + difference) < relativeZoomAngle)
+        if ((rotX + playerAngle) < relativeZoomAngle)
         {
             float range = maxDistance - minDistance;
-            float fraction = 1 - (((rotX + difference) - relativeZoomAngle) / (lowerRelativeClampAngle - relativeZoomAngle));
+            float fraction = 1 - (((rotX + playerAngle) - relativeZoomAngle) / (lowerRelativeClampAngle - relativeZoomAngle));
             zoomedMax = minDistance + range * fraction;
         }
             
