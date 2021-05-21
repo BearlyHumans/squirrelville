@@ -16,9 +16,11 @@ public class CameraGimbal : MonoBehaviour
 
     [Header("Gimbal Settings:")]
     public float CameraMoveSpeed = 120.0f;
-    public float upperClampAngle = 80.0f;
-    public float lowerClampAngle = -20.0f;
-    public float zoomAngle = -10.0f;
+    public float upperWorldClampAngle = 70.0f;
+    public float lowerWorldClampAngle = -89.0f;
+    public float upperRelativeClampAngle = 150.0f;
+    public float lowerRelativeClampAngle = 0.0f;
+    public float relativeZoomAngle = 30.0f;
     public float inputSensitivity = 150.0f;
     public bool invertY = false;
 
@@ -48,6 +50,7 @@ public class CameraGimbal : MonoBehaviour
     //Gimbal values
     private float rotY = 0.0f;
     private float rotX = 0.0f;
+    private float playerAngle = 0.0f;
 
     //Dolly values
     private Vector3 dollyDir;
@@ -80,7 +83,14 @@ public class CameraGimbal : MonoBehaviour
         if (finalInputY > 0 || PlayerCanSeeBelowPoint())
             rotX += finalInputY * inputSensitivity * Time.deltaTime;
 
-        rotX = Mathf.Clamp(rotX, lowerClampAngle, upperClampAngle);
+
+        playerAngle = Vector3.Angle(Vector3.up, -cameraTarget.transform.forward);
+        float oldRelativeAngle = rotX + playerAngle;
+        float newRelativeAngle = Mathf.Clamp(oldRelativeAngle, lowerRelativeClampAngle, upperRelativeClampAngle);
+        Debug.Log(newRelativeAngle);
+        float delta = newRelativeAngle - oldRelativeAngle;
+        rotX += delta;
+        rotX = Mathf.Clamp(rotX, lowerWorldClampAngle, upperWorldClampAngle);
 
         Quaternion localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
         transform.rotation = localRotation;
@@ -98,10 +108,10 @@ public class CameraGimbal : MonoBehaviour
     {
         //Cause the camera to zoom in if it is below the zoom angle.
         float zoomedMax = maxDistance;
-        if (rotX < zoomAngle)
+        if ((rotX + playerAngle) < relativeZoomAngle)
         {
             float range = maxDistance - minDistance;
-            float fraction = 1 - ((rotX - zoomAngle) / (lowerClampAngle - zoomAngle));
+            float fraction = 1 - (((rotX + playerAngle) - relativeZoomAngle) / (lowerRelativeClampAngle - relativeZoomAngle));
             zoomedMax = minDistance + range * fraction;
         }
             
