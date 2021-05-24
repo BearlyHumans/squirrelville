@@ -207,24 +207,9 @@ namespace Player
         {
             //Raycasts:
             RaycastHit mainHit;
-            bool Main = Physics.Raycast(transform.position, transform.forward, out mainHit, settings.WC.surfaceDetectRange);
-            RaycastHit frontHit;
-            RaycastHit backHit;
-            
-            //bool front = Physics.Raycast(refs.frontCheckRay.position, -refs.frontCheckRay.up, out frontHit, settings.WC.surfaceDetectRange);
-            //bool back = Physics.Raycast(refs.backCheckRay.position, -refs.backCheckRay.up, out backHit, settings.WC.surfaceDetectRange);
+            bool Main = Physics.Raycast(refs.climbRotateCheckRay.position, -refs.climbRotateCheckRay.up, out mainHit, settings.WC.surfaceDetectRange, settings.WC.rotateToLayers);
 
             Vector3 dir = Vector3.down;
-
-            /*
-            if (front && back)
-            {
-                dir = frontHit.normal + backHit.normal;
-
-                CustomIntuitiveSnapRotation(-dir);
-                vals.lastOnSurface = Time.time;
-            }
-            */
             if (Main)
             {
                 dir = mainHit.normal;
@@ -239,50 +224,10 @@ namespace Player
             }
         }
 
-        /*
-        private void OLDRotateToWall()
-        {
-            //Raycasts:
-            RaycastHit FRhit;
-            RaycastHit FLhit;
-            RaycastHit BRhit;
-            RaycastHit BLhit;
-            RaycastHit mainHit;
-            bool FR = Physics.Raycast(refs.surfaceDetectorFR.position, refs.surfaceDetectorFR.up, out FRhit, settings.WC.surfaceDetectRange);
-            bool FL = Physics.Raycast(refs.surfaceDetectorFL.position, refs.surfaceDetectorFL.up, out FLhit, settings.WC.surfaceDetectRange);
-            bool BR = Physics.Raycast(refs.surfaceDetectorBR.position, refs.surfaceDetectorBR.up, out BRhit, settings.WC.surfaceDetectRange);
-            bool BL = Physics.Raycast(refs.surfaceDetectorBL.position, refs.surfaceDetectorBL.up, out BLhit, settings.WC.surfaceDetectRange);
-            bool Main = Physics.Raycast(transform.position, transform.forward, out mainHit, settings.WC.surfaceDetectRange);
-
-            //Diagnose:
-
-            if (FR || FL || Main)
-            {
-                Vector3 dir = mainHit.normal;
-                if (FR && FL)
-                {
-                    if (Main && BR && BL)
-                    {
-                        dir = (FRhit.normal + FLhit.normal + BLhit.normal + BRhit.normal + mainHit.normal) / 5;
-                    }
-                }
-
-                CustomIntuitiveSnapRotation(-dir);
-                vals.lastOnSurface = Time.time;
-            }
-            else if (Time.time > vals.lastOnSurface + settings.WC.noSurfResetTime)
-            {
-                CustomIntuitiveSnapRotation(Vector3.down);
-                vals.lastOnSurface = Time.time;
-            }
-        }
-        */
-
         private void RotatePlayerBody()
         {
-            //Quaternion zero = new Quaternion();
             ParentRefs.model.rotation = Quaternion.RotateTowards(ParentRefs.model.rotation, ParentRefs.body.rotation, settings.WC.rotateDegreesPerSecond * Time.deltaTime);
-            //ParentRefs.model.localRotation = Quaternion.Lerp(ParentRefs.model.localRotation, zero, 1f);
+            ParentRefs.model.localPosition = Vector3.MoveTowards(ParentRefs.model.localPosition, Vector3.zero, 5f * Time.deltaTime);
         }
 
         private void CustomIntuitiveSnapRotation(Vector3 direction)
@@ -302,49 +247,108 @@ namespace Player
         private void JumpOnWall()
         {
             if (Input.GetButtonDown("Jump"))
-                StartCoroutine(JumpOnWallChecks());
+            {
+                if (vals.climbing)
+                {
+                    CustomIntuitiveSnapRotation(Vector3.down);
+                    vals.climbing = false;
+                }
+                else
+                    FindClimbWall();
+            }
+            else
+            {
+                RaycastHit hit;
+                if (FindClimbableWall(out hit))
+                {
+                    refs.climbPointDisplay.position = hit.point;
+                    refs.climbPointDisplay.gameObject.SetActive(true);
+                }
+                else
+                    refs.climbPointDisplay.gameObject.SetActive(false);
+            }
+        }
+
+        private bool FindClimbWall()
+        {
+            /*
+            RaycastHit mainHit;
+
+            Vector3 sphereStart;
+            Vector3 sphereDir;
+            if (vals.desiredDirection != Vector3.zero)
+            {
+                sphereStart = refs.startClimbCheckRay.position - (vals.desiredDirection * settings.WC.sphereDetectRadius);
+                sphereDir = vals.desiredDirection;
+            }
+            else
+            {
+                sphereStart = refs.startClimbCheckRay.position - (ParentRefs.body.forward * settings.WC.sphereDetectRadius);
+                sphereDir = ParentRefs.body.forward;
+            }
+
+            bool foundSurface = false;
+            if (Physics.SphereCast(sphereStart, settings.WC.sphereDetectRadius, sphereDir, out mainHit, 1, settings.WC.climableLayers.value))
+            {
+                foundSurface = true;
+                debugString = mainHit.collider.name;
+                Debug.DrawLine(ParentRefs.body.position, mainHit.point);
+            }
+            */
+
+            RaycastHit mainHit;
+
+            if (FindClimbableWall(out mainHit))
+            {
+                Vector3 dir = mainHit.normal;
+                Debug.Log("Rotating to [" + mainHit.collider.name + "] at point: " + mainHit.point);
+                vals.climbing = true;
+                CustomIntuitiveSnapRotation(-dir);
+                Vector3 oldPos = ParentRefs.model.position;
+                transform.position = mainHit.point;
+                ParentRefs.model.position = oldPos;
+                vals.lastOnSurface = Time.time;
+                return true;
+            }
+            return false;
+        }
+
+        private bool FindClimbableWall(out RaycastHit hit)
+        {
+            RaycastHit mainHit;
+
+            Vector3 sphereStart;
+            Vector3 sphereDir;
+            if (vals.desiredDirection != Vector3.zero)
+            {
+                sphereStart = refs.startClimbCheckRay.position - (vals.desiredDirection * settings.WC.sphereDetectRadius);
+                sphereDir = vals.desiredDirection;
+            }
+            else
+            {
+                sphereStart = refs.startClimbCheckRay.position - (ParentRefs.body.forward * settings.WC.sphereDetectRadius);
+                sphereDir = ParentRefs.body.forward;
+            }
+
+            bool found = Physics.SphereCast(sphereStart, settings.WC.sphereDetectRadius, sphereDir, out mainHit, 1, settings.WC.climableLayers.value);
+
+            hit = mainHit;
+            return found;
         }
 
         //~~~~~~~~~~ COROUTINES ~~~~~~~~~~
 
         private IEnumerator JumpOnWallChecks()
         {
+            vals.searchingForWall = true;
             int i = 0;
             while (i < settings.WC.jumpDetectRepeats)
             {
                 if (Grounded && !vals.jumping)
                     break;
 
-                RaycastHit mainHit;
-
-                Vector3 sphereStart;
-                Vector3 sphereDir;
-                if (vals.desiredDirection != Vector3.zero)
-                {
-                    sphereStart = refs.climbCheckRay.position - (vals.desiredDirection * settings.WC.sphereDetectRadius);
-                    sphereDir = vals.desiredDirection;
-                }
-                else
-                {
-                    sphereStart = refs.climbCheckRay.position - (ParentRefs.body.forward * settings.WC.sphereDetectRadius);
-                    sphereDir = ParentRefs.body.forward;
-                }
-
-                bool foundTarget = false;
-                if (Physics.SphereCast(sphereStart, settings.WC.sphereDetectRadius, sphereDir, out mainHit, 1, settings.WC.climableLayers.value))
-                {
-                    foundTarget = true;
-                    debugString = mainHit.collider.name;
-                    Debug.DrawLine(ParentRefs.body.position, mainHit.point);
-                }
-
-                if (foundTarget)
-                {
-                    Vector3 dir = mainHit.normal;
-                    CustomIntuitiveSnapRotation(-dir);
-                    vals.lastOnSurface = Time.time;
+                if (FindClimbWall())
                     break;
-                }
 
                 yield return new WaitForSeconds(settings.WC.jumpDetectDelay);
                 ++i;
@@ -368,6 +372,8 @@ namespace Player
             public float jumpPressed;
             public bool jumping;
             public bool moving;
+            public bool searchingForWall;
+            public bool climbing;
             public Vector3 desiredDirection;
             public Quaternion targetBodyRot;
         }
@@ -375,10 +381,12 @@ namespace Player
         [System.Serializable]
         public class MovementRefs
         {
+            public Transform climbPointDisplay;
             public Transform backCheckRay;
             public Transform frontCheckRay;
             public Transform acuteCheckRay;
-            public Transform climbCheckRay;
+            public Transform startClimbCheckRay;
+            public Transform climbRotateCheckRay;
         }
 
         [System.Serializable]
@@ -448,6 +456,8 @@ namespace Player
                 [Header("Wallclimb Settings")]
                 [Tooltip("The layers of objects the player is allowed to climb on.")]
                 public LayerMask climableLayers = new LayerMask();
+                [Tooltip("The layers of objects the player is allowed to climb on.")]
+                public LayerMask rotateToLayers = new LayerMask();
                 [Tooltip("Size of the sphere-cast that will detect surfaces to climb on. Larger means more forgiving controls, but also more likely to get objects behind the player.")]
                 public float sphereDetectRadius = 0.3f;
                 [Tooltip("Length of the sphere-cast that detects surfaces. Larger means the check will find objects further from the player.")]
