@@ -8,6 +8,8 @@ public class Inventory : MonoBehaviour
     private Rigidbody squirrelrb;
     public Transform mouth;
     public float throwSpeed = 1.0f;
+    public float pickupCooldown = 0.0f;
+    private float pickupTime = 0.0f;
 
     private void Awake()
     {
@@ -17,8 +19,12 @@ public class Inventory : MonoBehaviour
     public void PickupFood(GameObject food)
     {
         // Assumes GameObject is food
+
+        if (Time.time < pickupTime) return;
+
         foodStack.Push(food);
         food.SetActive(false);
+        pickupTime = Time.time + pickupCooldown;
         Debug.Log($"Picked up {food.name}");
     }
 
