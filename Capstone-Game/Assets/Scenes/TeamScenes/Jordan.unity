@@ -2155,6 +2155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouth: {fileID: 780412834}
   throwSpeed: 1
+  pickupCooldown: 0.5
 --- !u!1001 &1003622552
 PrefabInstance:
   m_ObjectHideFlags: 0

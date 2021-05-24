@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Inventory : MonoBehaviour
+public class FoodHandler : MonoBehaviour
 {
     private Stack<GameObject> foodStack = new Stack<GameObject>();
     private Rigidbody squirrelrb;

@@ -1,13 +1,13 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Inventory))]
+[RequireComponent(typeof(FoodHandler))]
 public class SquirrelFoodGrabber : MonoBehaviour
 {
-    private Inventory inventory;
+    private FoodHandler foodHandler;
 
     private void Awake()
     {
-        inventory = GetComponent<Inventory>();
+        foodHandler = GetComponent<FoodHandler>();
     }
 
     void Update()
@@ -17,13 +17,13 @@ public class SquirrelFoodGrabber : MonoBehaviour
             GameObject food = GameObject.FindWithTag("Food");
             if (food != null)
             {
-                inventory.PickupFood(food);
+                foodHandler.PickupFood(food);
             }
         }
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            inventory.ThrowFood();
+            foodHandler.ThrowFood();
         }
     }
 }
