@@ -19,7 +19,7 @@ public class Inventory : MonoBehaviour
         // Assumes GameObject is food
         foodStack.Push(food);
         food.SetActive(false);
-        Debug.Log($"Picked up food: {food.name}");
+        Debug.Log($"Picked up {food.name}");
     }
 
     [ContextMenu("Throw food")]
@@ -30,13 +30,12 @@ public class Inventory : MonoBehaviour
         GameObject food = foodStack.Pop();
 
         Rigidbody foodrb = food.GetComponent<Rigidbody>();
-        foodrb.position = mouth.position;
-        foodrb.velocity = mouth.forward * throwSpeed;
-        foodrb.velocity += squirrelrb.velocity;
-        foodrb.rotation = Quaternion.identity;
+        foodrb.transform.position = mouth.position;
+        foodrb.velocity = squirrelrb.velocity + mouth.forward * throwSpeed;
+        foodrb.transform.rotation = Quaternion.identity;
 
         food.SetActive(true);
 
-        Debug.Log($"Threw up food: {food.name}");
+        Debug.Log($"Threw up {food.name}");
     }
 }
