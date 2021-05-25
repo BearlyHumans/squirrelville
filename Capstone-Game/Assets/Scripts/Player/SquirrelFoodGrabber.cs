@@ -6,8 +6,13 @@ public class SquirrelFoodGrabber : MonoBehaviour
 {
     private Stack<GameObject> foodStack = new Stack<GameObject>();
     private Rigidbody squirrelrb;
-    [Tooltip("The position of the mouth rotated in the direction food will be spat out towards")]
-    public Transform mouth;
+
+    [Header("Mouth")]
+
+    [Tooltip("The position of the mouth for the normal state rotated in the direction food will be spat out towards")]
+    public Transform normalMouth;
+    [Tooltip("The position of the mouth for the ball state rotated in the direction food will be spat out towards")]
+    public Transform ballMouth;
 
     [Header("Picking up food")]
 
@@ -78,10 +83,11 @@ public class SquirrelFoodGrabber : MonoBehaviour
         if (foodStack.Count == 0) return;
 
         GameObject food = foodStack.Pop();
-
         Rigidbody foodrb = food.GetComponent<Rigidbody>();
-        foodrb.transform.position = mouth.position;
-        foodrb.velocity = squirrelrb.velocity + mouth.forward * throwVelocity;
+        Transform activeMouth = normalMouth.gameObject.activeInHierarchy ? normalMouth : ballMouth;
+
+        foodrb.transform.position = activeMouth.position;
+        foodrb.velocity = squirrelrb.velocity + activeMouth.forward * throwVelocity;
         foodrb.transform.rotation = Quaternion.identity;
 
         food.SetActive(true);
