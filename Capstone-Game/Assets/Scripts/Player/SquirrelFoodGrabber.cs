@@ -92,6 +92,11 @@ public class SquirrelFoodGrabber : MonoBehaviour
         Debug.Log($"Threw up {food.name}");
     }
 
+    int GetFoodCount()
+    {
+        return foodStack.Count;
+    }
+
     private GameObject[] GetFoodInRange()
     {
         List<GameObject> food = new List<GameObject>();
