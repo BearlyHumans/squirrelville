@@ -70,6 +70,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
         // Assumes GameObject is food
 
         if (Time.time < pickupTime) return;
+        if (!normalMouth.gameObject.activeInHierarchy) return;
 
         foodStack.Push(food);
         food.SetActive(false);

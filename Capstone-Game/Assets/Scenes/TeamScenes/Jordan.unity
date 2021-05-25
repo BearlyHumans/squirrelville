@@ -2140,8 +2140,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d49162572d3ed84c98fa66a642f051b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalMouth: {fileID: 0}
-  ballMouth: {fileID: 0}
+  normalMouth: {fileID: 780412834}
+  ballMouth: {fileID: 1676750032}
   pickupDelay: 0.4
   pickupRadius: 0.6
   throwVelocity: 1
@@ -2910,7 +2910,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1453256705
 Transform:
   m_ObjectHideFlags: 0
@@ -3491,7 +3491,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1880903106
 Transform:
   m_ObjectHideFlags: 0
