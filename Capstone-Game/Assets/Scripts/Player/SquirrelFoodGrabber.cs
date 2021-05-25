@@ -108,14 +108,10 @@ public class SquirrelFoodGrabber : MonoBehaviour
     {
         List<GameObject> food = new List<GameObject>();
 
-        Collider[] colliders = Physics.OverlapSphere(squirrelrb.position, pickupRadius);
+        Collider[] colliders = Physics.OverlapSphere(squirrelrb.position, pickupRadius, LayerMask.GetMask("Food"));
         foreach (Collider collider in colliders)
         {
-            GameObject obj = collider.gameObject;
-            if (obj.tag == "Food")
-            {
-                food.Add(obj);
-            }
+            food.Add(collider.gameObject);
         }
 
         return food.ToArray();
