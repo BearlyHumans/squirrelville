@@ -69,6 +69,8 @@ namespace Player
                 behaviourScripts.glide = GetComponent<SquirrelGlide>();
             if (behaviourScripts.foodGrabber == null)
                 behaviourScripts.foodGrabber = GetComponent<SquirrelFoodGrabber>();
+
+            EnterRunState();
         }
 
         /// <summary> Makes sure the controller has a reference to the singleton pause-menu object, possibly by creating a new one.
@@ -168,6 +170,9 @@ namespace Player
             refs.RB.constraints = RigidbodyConstraints.None;
             refs.RB.useGravity = true;
 
+            refs.fCam.UseRelativeAngles = false;
+            refs.fCam.cameraTarget = gameObject;
+
             vals.mState = MovementState.ball;
         }
 
@@ -177,6 +182,9 @@ namespace Player
             refs.ballBody.SetActive(false);
 
             refs.RB.constraints = RigidbodyConstraints.FreezeRotation;
+
+            refs.fCam.UseRelativeAngles = true;
+            refs.fCam.cameraTarget = refs.model.gameObject;
 
             vals.mState = MovementState.moveAndClimb;
         }

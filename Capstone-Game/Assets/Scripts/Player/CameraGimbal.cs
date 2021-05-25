@@ -47,7 +47,14 @@ public class CameraGimbal : MonoBehaviour
 
     public string DEBUGString = "Null";
 
+    public bool UseRelativeAngles
+    {
+        get { return useRelativeAngles; }
+        set { useRelativeAngles = value; }
+    }
+
     //Gimbal values
+    private bool useRelativeAngles = true;
     private float rotY = 0.0f;
     private float rotX = 0.0f;
     private float playerAngle = 0.0f;
@@ -83,11 +90,12 @@ public class CameraGimbal : MonoBehaviour
         if (finalInputY > 0 || PlayerCanSeeBelowPoint())
             rotX += finalInputY * inputSensitivity * Time.deltaTime;
 
-
-        playerAngle = Vector3.Angle(Vector3.up, cameraTarget.transform.up);
+        if (useRelativeAngles)
+            playerAngle = Vector3.Angle(Vector3.up, cameraTarget.transform.up);
+        else
+            playerAngle = 0;
         float oldRelativeAngle = rotX + playerAngle;
         float newRelativeAngle = Mathf.Clamp(oldRelativeAngle, lowerRelativeClampAngle, upperRelativeClampAngle);
-        Debug.Log(newRelativeAngle);
         float delta = newRelativeAngle - oldRelativeAngle;
         rotX += delta;
         rotX = Mathf.Clamp(rotX, lowerWorldClampAngle, upperWorldClampAngle);
