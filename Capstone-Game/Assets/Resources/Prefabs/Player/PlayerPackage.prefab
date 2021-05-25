@@ -1005,9 +1005,11 @@ MonoBehaviour:
   dollyCamera: {fileID: 1512199469109834488}
   belowPoint: {fileID: 1512199468572587539}
   CameraMoveSpeed: 120
-  upperClampAngle: 80
-  lowerClampAngle: -10
-  zoomAngle: 20
+  upperWorldClampAngle: 70
+  lowerWorldClampAngle: -89
+  upperRelativeClampAngle: 150
+  lowerRelativeClampAngle: 0
+  relativeZoomAngle: 30
   inputSensitivity: 150
   invertY: 1
   minDistance: 0.4
@@ -2186,7 +2188,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1512199470241416143
 Transform:
   m_ObjectHideFlags: 0
