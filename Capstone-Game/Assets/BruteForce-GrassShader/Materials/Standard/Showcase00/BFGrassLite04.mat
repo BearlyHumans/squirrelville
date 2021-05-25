@@ -87,17 +87,19 @@ Material:
     - _GlossyReflections: 1
     - _GrassCut: 0
     - _GrassSaturation: 2.65
-    - _GrassShading: 0.127
+    - _GrassShading: 0.343
     - _GrassThinness: 0.7
     - _GrassThinnessIntersection: 1.24
     - _Metallic: 0
-    - _MinimumNumberStacks: 2
+    - _MinimumNumberStacks: 11.69
     - _Mode: 0
     - _NoisePower: 1.45
     - _NumberOfStacks: 17
     - _OcclusionStrength: 1
     - _OffsetValue: 1.5
     - _Parallax: 0.02
+    - _ProceduralDistance: 5.5
+    - _ProceduralStrength: 1.5
     - _RTEffect: 1
     - _RimMax: 0.467
     - _RimMin: 0.248
@@ -111,6 +113,7 @@ Material:
     - _TilingN2: 0.05
     - _TilingN3: 0.7
     - _UVSec: 0
+    - _UsePR: 0
     - _UseRT: 1
     - _WindForce: 0.22
     - _WindMovement: 0.2
@@ -125,3 +128,4 @@ Material:
     - _ProjectedShadowColor: {r: 0.13443395, g: 0.5, b: 0.3870955, a: 1}
     - _RimColor: {r: 0.11296551, g: 0.156, b: 0.04841379, a: 1}
     - _SelfShadowColor: {r: 0.18803798, g: 0.29799998, b: 0.25258088, a: 1}
+  m_BuildTextureStacks: []
