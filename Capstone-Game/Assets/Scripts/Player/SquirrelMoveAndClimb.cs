@@ -39,6 +39,8 @@ namespace Player
         {
             if (PARENT == null)
                 GetComponentInParent<SquirrelController>();
+
+            vals.lastRotationDir = Vector3.down;
         }
 
         //~~~~~~~~~~ FUNCTIONS ~~~~~~~~~~
@@ -49,8 +51,8 @@ namespace Player
             UpdMove();
             UpdJump();
             JumpOnWall();
-            RotateToWall();
-            RotatePlayerBody();
+            FindAndRotateToWall();
+            RotateModel();
         }
 
         private void UpdMove()
@@ -133,7 +135,14 @@ namespace Player
             else
                 vals.moving = true;
 
-            //Apply a small force towards (rotated) down when velocity is near 0, to make sure player sticks to walls. 
+            //Delete the 'upwards' force (relative to player rotation), if requested by the climbing system.
+            if (vals.eliminateUpForce)
+            {
+                vals.eliminateUpForce = false;
+                TransformedNewVelocity.z = 0;
+            }
+
+            //Apply a small force towards (relative) down when velocity is near 0, to make sure player sticks to walls. 
             float z = TransformedNewVelocity.z;
             if (TransformedNewVelocity.z.Inside(-settings.WC.wallStickTriggerRange, settings.WC.wallStickTriggerRange))
                 TransformedNewVelocity.z += settings.WC.wallStickForce;
@@ -203,7 +212,7 @@ namespace Player
                 ParentRefs.RB.useGravity = true;
         }
 
-        private void RotateToWall()
+        private void FindAndRotateToWall()
         {
             //Raycasts:
             RaycastHit mainHit;
@@ -215,6 +224,17 @@ namespace Player
                 dir = mainHit.normal;
 
                 CustomIntuitiveSnapRotation(-dir);
+
+                if (Vector3.Angle(vals.lastRotationDir, dir) > 10f)
+                {
+                    //Teleport to the point, while maintaining the models position so it moves smoothly.
+                    //Vector3 oldPos = ParentRefs.model.position;
+                    //transform.position = mainHit.point;
+                    //ParentRefs.model.position = oldPos;
+                    vals.eliminateUpForce = true;
+                }
+                vals.lastRotationDir = dir;
+
                 vals.lastOnSurface = Time.time;
             }
             else if (Time.time > vals.lastOnSurface + settings.WC.noSurfResetTime)
@@ -224,10 +244,10 @@ namespace Player
             }
         }
 
-        private void RotatePlayerBody()
+        private void RotateModel()
         {
             ParentRefs.model.rotation = Quaternion.RotateTowards(ParentRefs.model.rotation, ParentRefs.body.rotation, settings.WC.rotateDegreesPerSecond * Time.deltaTime);
-            ParentRefs.model.localPosition = Vector3.MoveTowards(ParentRefs.model.localPosition, Vector3.zero, 5f * Time.deltaTime);
+            ParentRefs.model.localPosition = Vector3.MoveTowards(ParentRefs.model.localPosition, Vector3.zero, settings.WC.moveUnitsPerSecond * Time.deltaTime);
         }
 
         private void CustomIntuitiveSnapRotation(Vector3 direction)
@@ -248,13 +268,7 @@ namespace Player
         {
             if (Input.GetButtonDown("Jump"))
             {
-                if (vals.climbing)
-                {
-                    CustomIntuitiveSnapRotation(Vector3.down);
-                    vals.climbing = false;
-                }
-                else
-                    FindClimbWall();
+                TeleportToClimbWall();
             }
             else
             {
@@ -269,45 +283,23 @@ namespace Player
             }
         }
 
-        private bool FindClimbWall()
+        private bool TeleportToClimbWall()
         {
-            /*
-            RaycastHit mainHit;
-
-            Vector3 sphereStart;
-            Vector3 sphereDir;
-            if (vals.desiredDirection != Vector3.zero)
-            {
-                sphereStart = refs.startClimbCheckRay.position - (vals.desiredDirection * settings.WC.sphereDetectRadius);
-                sphereDir = vals.desiredDirection;
-            }
-            else
-            {
-                sphereStart = refs.startClimbCheckRay.position - (ParentRefs.body.forward * settings.WC.sphereDetectRadius);
-                sphereDir = ParentRefs.body.forward;
-            }
-
-            bool foundSurface = false;
-            if (Physics.SphereCast(sphereStart, settings.WC.sphereDetectRadius, sphereDir, out mainHit, 1, settings.WC.climableLayers.value))
-            {
-                foundSurface = true;
-                debugString = mainHit.collider.name;
-                Debug.DrawLine(ParentRefs.body.position, mainHit.point);
-            }
-            */
-
             RaycastHit mainHit;
 
             if (FindClimbableWall(out mainHit))
             {
+                //Rotate so feet are on new surface.
                 Vector3 dir = mainHit.normal;
-                Debug.Log("Rotating to [" + mainHit.collider.name + "] at point: " + mainHit.point);
-                vals.climbing = true;
                 CustomIntuitiveSnapRotation(-dir);
+                //Teleport to the point, while maintaining the models position so it moves smoothly.
                 Vector3 oldPos = ParentRefs.model.position;
                 transform.position = mainHit.point;
                 ParentRefs.model.position = oldPos;
+                //Set relevant variables.
                 vals.lastOnSurface = Time.time;
+                //Set velocity to zero to mitigate weird physics.
+                ParentRefs.RB.velocity = Vector3.zero;
                 return true;
             }
             return false;
@@ -332,28 +324,29 @@ namespace Player
 
             bool found = Physics.SphereCast(sphereStart, settings.WC.sphereDetectRadius, sphereDir, out mainHit, 1, settings.WC.climableLayers.value);
 
+            //Do a second, larger pass if no target was found with the small forwards check.
+            if (!found)
+            {
+                float secondPassRadius = settings.WC.sphereDetectRadius * settings.WC.secondPassMultiplier;
+                if (vals.desiredDirection != Vector3.zero)
+                {
+                    sphereStart = refs.startClimbCheckRay.position - (vals.desiredDirection * secondPassRadius);
+                    sphereDir = vals.desiredDirection;
+                }
+                else
+                {
+                    sphereStart = refs.startClimbCheckRay.position - (ParentRefs.body.forward * secondPassRadius);
+                    sphereDir = ParentRefs.body.forward;
+                }
+
+                found = Physics.SphereCast(sphereStart, secondPassRadius, sphereDir, out mainHit, 1, settings.WC.climableLayers.value);
+            }
+
             hit = mainHit;
             return found;
         }
 
         //~~~~~~~~~~ COROUTINES ~~~~~~~~~~
-
-        private IEnumerator JumpOnWallChecks()
-        {
-            vals.searchingForWall = true;
-            int i = 0;
-            while (i < settings.WC.jumpDetectRepeats)
-            {
-                if (Grounded && !vals.jumping)
-                    break;
-
-                if (FindClimbWall())
-                    break;
-
-                yield return new WaitForSeconds(settings.WC.jumpDetectDelay);
-                ++i;
-            }
-        }
 
         //~~~~~~~~~~ DATA STRUCTURES ~~~~~~~~~~
 
@@ -372,8 +365,8 @@ namespace Player
             public float jumpPressed;
             public bool jumping;
             public bool moving;
-            public bool searchingForWall;
-            public bool climbing;
+            public bool eliminateUpForce;
+            public Vector3 lastRotationDir;
             public Vector3 desiredDirection;
             public Quaternion targetBodyRot;
         }
@@ -460,24 +453,24 @@ namespace Player
                 public LayerMask rotateToLayers = new LayerMask();
                 [Tooltip("Size of the sphere-cast that will detect surfaces to climb on. Larger means more forgiving controls, but also more likely to get objects behind the player.")]
                 public float sphereDetectRadius = 0.3f;
+                [Tooltip("Multiplier to the sphere-cast radius for the second climable check pass.")]
+                public float secondPassMultiplier = 5f;
                 [Tooltip("Length of the sphere-cast that detects surfaces. Larger means the check will find objects further from the player.")]
                 public float sphereDetectDistance = 0.5f;
                 [Tooltip("Distance from the center of the character from which walls below will be detected.")]
                 public float surfaceDetectRange = 0.15f;
+                [Tooltip("If the angle between the current rotation and the new rotation when climbing is above this value, remove the vertical velocity to help the player stich to the wall.")]
+                public float wallStickDangerAngle = 10f;
                 [Tooltip("Force applied when the character is near a wall to ensure they stick to it.")]
                 public float wallStickForce = 0.2f;
                 [Tooltip("Range of velocity (at normal to wall) within which sticking force is applied.")]
                 public float wallStickTriggerRange = 0.5f;
                 [Tooltip("Time away from a surface before the character rotates to face the ground.")]
                 public float noSurfResetTime = 0.2f;
-                [Tooltip("Time between checks for surfaces in front of the character.")]
-                public float jumpDetectDelay = 0.05f;
-                [Tooltip("Distance from the center of the character from which walls in front will be detected.")]
-                public float jumpDetectRange = 0.3f;
-                [Tooltip("Number of checks (with jumpDetectDelay time between) done after the character has jumped. Also stopped by being Grounded.")]
-                public int jumpDetectRepeats = 20;
                 [Tooltip("How quickly the squirrel model rotates to face the correct direction.")]
                 public float rotateDegreesPerSecond = 360;
+                [Tooltip("How quickly the squirrel model moves back to alignment when the physics object is teleported.")]
+                public float moveUnitsPerSecond = 5f;
             }
         }
     }
