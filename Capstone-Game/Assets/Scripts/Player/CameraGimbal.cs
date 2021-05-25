@@ -84,7 +84,7 @@ public class CameraGimbal : MonoBehaviour
             rotX += finalInputY * inputSensitivity * Time.deltaTime;
 
 
-        playerAngle = Vector3.Angle(Vector3.up, -cameraTarget.transform.forward);
+        playerAngle = Vector3.Angle(Vector3.up, cameraTarget.transform.up);
         float oldRelativeAngle = rotX + playerAngle;
         float newRelativeAngle = Mathf.Clamp(oldRelativeAngle, lowerRelativeClampAngle, upperRelativeClampAngle);
         Debug.Log(newRelativeAngle);
