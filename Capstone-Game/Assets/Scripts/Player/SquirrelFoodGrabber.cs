@@ -9,7 +9,9 @@ public class SquirrelFoodGrabber : MonoBehaviour
     public Transform mouth;
 
     [Header("Picking up food")]
-    public float pickupCooldown = 0.0f;
+
+    [Tooltip("What the delay between picking up food will be (in seconds)")]
+    public float pickupDelay = 0.0f;
     private float pickupTime = 0.0f;
 
     [Header("Throwing up food")]
@@ -33,7 +35,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.O))
+        if (Input.GetKey(KeyCode.Mouse0))
         {
             GameObject food = GameObject.FindWithTag("Food");
             if (food != null)
@@ -42,12 +44,12 @@ public class SquirrelFoodGrabber : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             throwDelay = initialThrowDelay;
         }
 
-        if (Input.GetKey(KeyCode.P))
+        if (Input.GetKey(KeyCode.Mouse1))
         {
             if (Time.time < throwTime) return;
 
@@ -63,7 +65,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
 
         foodStack.Push(food);
         food.SetActive(false);
-        pickupTime = Time.time + pickupCooldown;
+        pickupTime = Time.time + pickupDelay;
         Debug.Log($"Picked up {food.name}");
     }
 
