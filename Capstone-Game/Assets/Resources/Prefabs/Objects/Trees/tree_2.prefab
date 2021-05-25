@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 3453906643309932441}
   - component: {fileID: 1200804313006164611}
   - component: {fileID: 7796427478996743213}
+  - component: {fileID: 4901081166253188504}
   m_Layer: 0
   m_Name: Cube.012
   m_TagString: Untagged
@@ -113,6 +114,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &4901081166253188504
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5356257500738211745}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5741174448488666723, guid: c14002ba1efd7b94e822835819be74c0, type: 3}
 --- !u!1 &8060953025371908977
 GameObject:
   m_ObjectHideFlags: 0
@@ -124,6 +139,7 @@ GameObject:
   - component: {fileID: 8313371715051381498}
   - component: {fileID: 1455713755554021993}
   - component: {fileID: 3356093961416176732}
+  - component: {fileID: 1066897307472853074}
   m_Layer: 0
   m_Name: Tree_6_LP
   m_TagString: Untagged
@@ -194,3 +210,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1066897307472853074
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8060953025371908977}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 7112789307596584896, guid: c14002ba1efd7b94e822835819be74c0, type: 3}
