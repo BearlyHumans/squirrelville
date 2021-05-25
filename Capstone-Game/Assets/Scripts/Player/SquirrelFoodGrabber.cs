@@ -6,12 +6,15 @@ public class SquirrelFoodGrabber : MonoBehaviour
 {
     private Stack<GameObject> foodStack = new Stack<GameObject>();
     private Rigidbody squirrelrb;
+    [Tooltip("The position of the mouth rotated in the direction food will be spat out towards")]
     public Transform mouth;
 
     [Header("Picking up food")]
 
     [Tooltip("What the delay between picking up food will be (in seconds)")]
-    public float pickupDelay = 0.0f;
+    public float pickupDelay = 0.5f;
+    [Tooltip("How far away food can be picked up from")]
+    public float pickupRadius = 1.0f;
     private float pickupTime = 0.0f;
 
     [Header("Throwing up food")]
@@ -22,7 +25,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
     public float initialThrowDelay = 1.0f;
     [Tooltip("How much the delay will be divided by after each food is spat out (in seconds)")]
     [Min(1)]
-    public float throwDelayDivisor = 2.0f;
+    public float throwDelayDivisor = 1.5f;
     [Tooltip("What the shortest delay can be between spitting out food (in seconds)")]
     public float minThrowDelay = 0.2f;
     private float throwTime = 0.0f;
@@ -37,7 +40,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            GameObject food = GameObject.FindWithTag("Food");
+            GameObject food = GetNearestFood();
             if (food != null)
             {
                 PickupFood(food);
@@ -87,5 +90,43 @@ public class SquirrelFoodGrabber : MonoBehaviour
         throwDelay = Mathf.Max(throwDelay / throwDelayDivisor, minThrowDelay);
 
         Debug.Log($"Threw up {food.name}");
+    }
+
+    private GameObject[] GetFoodInRange()
+    {
+        List<GameObject> food = new List<GameObject>();
+
+        Collider[] colliders = Physics.OverlapSphere(squirrelrb.position, pickupRadius);
+        foreach (Collider collider in colliders)
+        {
+            GameObject obj = collider.gameObject;
+            if (obj.tag == "Food")
+            {
+                food.Add(obj);
+            }
+        }
+
+        return food.ToArray();
+    }
+
+    private GameObject GetNearestFood()
+    {
+        GameObject closestObj = null;
+        float closestDistSqr = Mathf.Infinity;
+
+        GameObject[] food = GetFoodInRange();
+        foreach (GameObject obj in food)
+        {
+            Vector3 deltaPos = obj.transform.position - squirrelrb.position;
+            float distSqr = deltaPos.sqrMagnitude;
+
+            if (distSqr < closestDistSqr)
+            {
+                closestDistSqr = distSqr;
+                closestObj = obj;
+            }
+        }
+
+        return closestObj;
     }
 }

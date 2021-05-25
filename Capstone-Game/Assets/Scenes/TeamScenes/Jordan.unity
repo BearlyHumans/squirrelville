@@ -2141,7 +2141,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouth: {fileID: 780412834}
-  pickupCooldown: 0
+  pickupDelay: 0.4
+  pickupRadius: 0.6
   throwVelocity: 1
   initialThrowDelay: 0.6
   throwDelayDivisor: 1.5
