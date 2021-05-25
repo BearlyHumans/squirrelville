@@ -45,6 +45,7 @@ namespace Player
 
         //~~~~~~~~~~ FUNCTIONS ~~~~~~~~~~
 
+        /// <summary> Call all the update steps for movement, climing and jumping. </summary>
         public override void ManualUpdate()
         {
             CheckGravity();
@@ -55,6 +56,7 @@ namespace Player
             RotateModel();
         }
 
+        /// <summary> Perform all the movement functions of the player, including making all forces including friction and input relative to the players rotation. </summary>
         private void UpdMove()
         {
             //--------------------------MOVEMENT PHYSICS + INPUTS--------------------------//
@@ -163,6 +165,7 @@ namespace Player
             ParentRefs.RB.velocity += finalVelocityChange;
         }
 
+        /// <summary> Check for jump input, and do the appropriate jump for the situation (needs work). </summary>
         private void UpdJump()
         {
             //Request a jump if the player presses the button.
@@ -204,6 +207,7 @@ namespace Player
             }
         }
 
+        /// <summary> Turn gravity off when the player is touching something so climbing works. </summary>
         private void CheckGravity()
         {
             if (Grounded)
@@ -212,6 +216,7 @@ namespace Player
                 ParentRefs.RB.useGravity = true;
         }
 
+        /// <summary> Rotate the player so their feet are aligned with the surface beneath them, based on a downwards raycast (need to add better checks for 90deg angles). </summary>
         private void FindAndRotateToWall()
         {
             //Raycasts:
@@ -225,12 +230,8 @@ namespace Player
 
                 CustomIntuitiveSnapRotation(-dir);
 
-                if (Vector3.Angle(vals.lastRotationDir, dir) > 10f)
+                if (Vector3.Angle(vals.lastRotationDir, dir) > settings.WC.wallStickDangerAngle)
                 {
-                    //Teleport to the point, while maintaining the models position so it moves smoothly.
-                    //Vector3 oldPos = ParentRefs.model.position;
-                    //transform.position = mainHit.point;
-                    //ParentRefs.model.position = oldPos;
                     vals.eliminateUpForce = true;
                 }
                 vals.lastRotationDir = dir;
