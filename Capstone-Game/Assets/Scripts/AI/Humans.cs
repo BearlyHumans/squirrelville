@@ -22,6 +22,8 @@ public class Humans : MonoBehaviour
     [SerializeField]
     List<WayPoints> pathPoints;
 
+    public HomePoint homePoint;
+
     NavMeshAgent navMesh;
     int currentPathPt;
     bool walking;
@@ -91,6 +93,7 @@ public class Humans : MonoBehaviour
             case HumanStates.PathFollowing:
             {
                 PathFollowingBehaviour();
+                
                 break;
             }
 
@@ -187,6 +190,7 @@ public class Humans : MonoBehaviour
 
     private void SeePlayer()
     {
+        
         float distance = Vector3.Distance(target.position, transform.position);
         Vector3 targetDir = target.position - transform.position;
         float angle = 45f;
@@ -218,15 +222,15 @@ public class Humans : MonoBehaviour
 
     bool checkBoundry()
     {
-        if(Vector3.Distance(pathPoints[currentPathPt].transform.position, 
-            transform.position) > pathPoints[currentPathPt].boundry)
+        float dist = Vector3.Distance(homePoint.transform.position, transform.position);
+        if (dist > homePoint.boundary)
         {
-            Debug.Log("outside boundery");
-
             return false;
-        }    
-        Debug.Log("Inside boundery");
-        return true;
+        }
+        else
+        {
+             return true;
+        } 
     }
 
     private void SetDest()
