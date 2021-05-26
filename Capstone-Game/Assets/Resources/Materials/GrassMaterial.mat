@@ -148,7 +148,7 @@ Material:
     - _TilingN3: 1
     - _UVSec: 0
     - _UseBiplanar: 1
-    - _WindForce: 0.35
+    - _WindForce: 0.05
     - _WindMovement: 0.2
     - _ZWrite: 1
     m_Colors:
