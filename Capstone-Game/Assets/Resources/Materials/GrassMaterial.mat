@@ -134,7 +134,7 @@ Material:
     - _NoisePower: 2
     - _NumberOfStacks: 17
     - _OcclusionStrength: 1
-    - _OffsetValue: 3.75
+    - _OffsetValue: 1.21
     - _Parallax: 0.02
     - _RTEffect: 1
     - _RimMax: 0.62
