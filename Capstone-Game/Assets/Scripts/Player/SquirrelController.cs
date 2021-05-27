@@ -171,7 +171,7 @@ namespace Player
             refs.RB.useGravity = true;
 
             refs.fCam.UseRelativeAngles = false;
-            refs.fCam.cameraTarget = gameObject;
+            refs.fCam.cameraTarget = refs.ballModel.gameObject;
 
             vals.mState = MovementState.ball;
         }
@@ -201,6 +201,7 @@ namespace Player
         {
             public Rigidbody RB;
             public Transform body;
+            public Transform ballModel;
             public Transform model;
             public Camera camera;
             public CameraGimbal fCam;
