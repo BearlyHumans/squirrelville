@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 33608249623639546}
   - component: {fileID: 23057364819996382}
   - component: {fileID: 65911217953193204}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: sushi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,9 +26,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1959857656465376}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.8543904, y: 2.8543904, z: 2.8543904}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -60,9 +60,9 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c48ed0c67054fc24da0ac1cced5a308c, type: 2}
-  - {fileID: 2100000, guid: 700ae469e5be9ac4095d29b97116027a, type: 2}
-  - {fileID: 2100000, guid: 11a8c080607cf47c299aff53087e0334, type: 2}
+  - {fileID: 2100000, guid: 9d5a21d3b3f781b48bdf8e160cf40bf3, type: 2}
+  - {fileID: 2100000, guid: ac2bdd1066c7fd541a3487d890da2793, type: 2}
+  - {fileID: 2100000, guid: 20c686f900593914ab8b3d34df4b68bd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
