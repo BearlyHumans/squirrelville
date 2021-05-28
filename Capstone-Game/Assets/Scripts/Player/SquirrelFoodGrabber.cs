@@ -21,6 +21,9 @@ public class SquirrelFoodGrabber : MonoBehaviour
     [Tooltip("How far away food can be picked up from")]
     public float pickupRadius = 1.0f;
     private float pickupTime = 0.0f;
+    [Tooltip("The maximum number of food that can be in the player's inventory at once (-1 to disable)")]
+    [Min(-1)]
+    public int maxFoodInInventory = 10; // -1 to disable
 
     [Header("Throwing up food")]
 
@@ -43,7 +46,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.Mouse0))
+        if (Input.GetKey(KeyCode.Mouse0) && CanEatFood())
         {
             GameObject food = GetNearestFood();
             if (food != null)
@@ -99,7 +102,12 @@ public class SquirrelFoodGrabber : MonoBehaviour
         Debug.Log($"Threw up {food.name}");
     }
 
-    int GetFoodCount()
+    public bool CanEatFood()
+    {
+        return maxFoodInInventory < 0 || GetFoodCount() < maxFoodInInventory;
+    }
+
+    public int GetFoodCount()
     {
         return foodStack.Count;
     }
