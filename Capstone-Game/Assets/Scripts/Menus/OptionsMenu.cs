@@ -10,6 +10,7 @@ public class OptionsMenu : MonoBehaviour
     public Slider musicVolumeSlider;
     public Slider sfxVolumeSlider;
     public TMP_Dropdown resolutionDropdown;
+    public Toggle fullscreenToggle;
     private Resolution[] resolutions;
     private Resolution selectedResolution;
     public Animation anim;
@@ -24,12 +25,13 @@ public class OptionsMenu : MonoBehaviour
     {
         musicVolumeSlider.value = PlayerPrefs.GetFloat("musicVolume", 1.0f);
         sfxVolumeSlider.value = PlayerPrefs.GetFloat("sfxVolume", 1.0f);
+        fullscreenToggle.isOn = PlayerPrefs.GetInt("fullscreen", 1) == 1;
 
         selectedResolution = new Resolution();
         selectedResolution.width = PlayerPrefs.GetInt("resolutionWidth", Screen.currentResolution.width);
         selectedResolution.height = PlayerPrefs.GetInt("resolutionHeight", Screen.currentResolution.height);
 
-        Screen.SetResolution(selectedResolution.width, selectedResolution.height, Screen.fullScreen);
+        Screen.SetResolution(selectedResolution.width, selectedResolution.height, fullscreenToggle.isOn);
     }
 
     private void InitResolutionDropdown()
@@ -77,6 +79,11 @@ public class OptionsMenu : MonoBehaviour
 
         PlayerPrefs.SetInt("resolutionWidth", res.width);
         PlayerPrefs.SetInt("resolutionHeight", res.height);
+    }
+
+    public void SetFullcreen(bool fullscreen)
+    {
+        PlayerPrefs.SetInt("fullscreen", fullscreen ? 1 : 0);
     }
 
     public void Back()
