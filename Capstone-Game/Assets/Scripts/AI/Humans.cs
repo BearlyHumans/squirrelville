@@ -13,6 +13,10 @@ public class Humans : MonoBehaviour
     [Tooltip("Do you want to npc to pause on each point?")]
     [SerializeField]
     bool walkingPause;
+    
+    [Tooltip("Time the Npc pauses on each point")]
+    [SerializeField]
+    float pausedTime = 0f;
 
     [Tooltip("added change for NPC to turn around")]
     [SerializeField]
@@ -28,14 +32,12 @@ public class Humans : MonoBehaviour
     bool waiting;
     bool walkForward;
     float waitTimer;
-
-
-
+    //------------------------------------//
 
     //--------------Chase----------------//
     [Tooltip("Detection Radius")]
     [SerializeField]
-    public float range = 2f;
+    public float range = 10f;
 
     // ### would a distance be better then timer
     [Tooltip("How long does the human chase the player")]
@@ -48,11 +50,10 @@ public class Humans : MonoBehaviour
     public void Start() 
     {
         navMesh = this.GetComponent<NavMeshAgent>();
-        chaseTimer = chaseTime;
-        // singleton - ask jake about game controller.
+        // ### singleton - ask jake about game controller.
         target = GameObject.FindWithTag("Player").transform;
+        float chaseTimer = chaseTime;
 
-        currentState = HumanStates.PathFollowing;
         if(navMesh == null)
         {
             Debug.Log("No nav mesh");
@@ -66,7 +67,6 @@ public class Humans : MonoBehaviour
             }
             else
             {
-                SetDest();
                 Debug.Log("Add more points to walk between");
             }
         }
@@ -76,7 +76,6 @@ public class Humans : MonoBehaviour
 
     public void Update() 
     {
-        
         float distance = Vector3.Distance(target.position, transform.position);
         
         // Change states into classes.
@@ -84,150 +83,70 @@ public class Humans : MonoBehaviour
         // remember what was doing last - Stack
 
         // render human current task / point
-    
-        // -----States------
+
+        // 
         switch(currentState)
         {
-            case HumanStates.PathFollowing:
+            case HumanStates.WalkingAround:
             {
-                PathFollowingBehaviour();
+                if(walking && navMesh.remainingDistance <= 1.0f)
+                {
+                    walking = false;
+                    
+                    if(walkingPause)
+                    {
+                        waiting = true;
+                        waitTimer = 0f;
+                    }
+                    else
+                    {
+                        ChangePathPt();
+                        SetDest();
+                    }
+                }
+
+                if(waiting)
+                {
+                    waitTimer += Time.deltaTime;
+
+                    if(waitTimer >= pausedTime)
+                    {
+                        waiting = false;
+
+                        ChangePathPt();
+                        SetDest();
+                    }
+                }
+                if (distance <= range)
+                {   
+                    Debug.Log("State Swap: Chase Target");
+                    currentState = HumanStates.Chase;
+                }
                 break;
             }
 
             case HumanStates.Chase:
             {
-                ChaseBehaviour();
                 
-                break;
-            }
-
-            case HumanStates.Friendly:
-            {
-                FriendlyBehaviour();
-                break;
-            }
-
-            case HumanStates.Catch:
-            {
+                navMesh.SetDestination(target.position);
                 
-                break;
-            }
-        }
-    }
-
-    private void ChaseBehaviour()
-    {
-        
                 
-        if(checkBoundry() == true)
-        {
-            SeePlayer();
-            navMesh.SetDestination(target.position);
-
-            if (chaseTimer > 0f)
-            {   
-                chaseTimer -= Time.deltaTime;
-                    
-            }
-            else
-            {
-                chaseTimer = chaseTime;
-                        
-                Debug.Log("State Swap: Walking around");
-                SetDest();
-                currentState = HumanStates.PathFollowing;
-            }
-        }
-        else
-        {
-            SetDest();
-            currentState = HumanStates.PathFollowing;
-        }
-                
-    }
-
-    private void FriendlyBehaviour()
-    {
-        Debug.Log("Feed friendly squirrel");
-    }
-
-    private void PathFollowingBehaviour()
-    {
-        if(walking && navMesh.remainingDistance <= 1.0f)
-        {
-            walking = false;
-                    
-            if(walkingPause)
-            {
-                waiting = true;
-                waitTimer = 0f;
-            }
-            else
-            {
-                ChangePathPt();
-                SetDest();
-            }
-        }
-
-        if(waiting)
-        {
-            waitTimer += Time.deltaTime;
-
-            if(waitTimer >= pathPoints[currentPathPt].waitForThisLong)
-            {
-                waiting = false;
-
-                ChangePathPt();
-                SetDest();
-            }
-        }
-
-        SeePlayer();
-    }
-
-    private void SeePlayer()
-    {
-        float distance = Vector3.Distance(target.position, transform.position);
-        Vector3 targetDir = target.position - transform.position;
-        float angle = 45f;
-        float angleToPlayer = (Vector3.Angle(targetDir, transform.forward));
-
-        RaycastHit hit;
- 
-        if ((angleToPlayer >= -angle && angleToPlayer <= angle) && (distance <= range))
-        {
-            if(Physics.Linecast (transform.position, target.transform.position, out hit))
-            {
-                if(hit.transform.tag == "Player")
-                {
-                    if(gameObject.tag == "Aggressive")
-                    {
-                        chaseTimer = chaseTime;
-                        Debug.DrawLine(target.position, transform.position, Color.red);
-                        currentState = HumanStates.Chase;
-                    }
-                    else if(gameObject.tag == "Friendly")
-                    {
-                        currentState = HumanStates.Friendly;
-                    }
+                if (chaseTimer > 0f)
+                {   
+                    chaseTimer -= Time.deltaTime;
                     
                 }
+                else
+                {
+                    chaseTimer = chaseTime;
+                    Debug.Log("State Swap: Walking around");
+                    currentState = HumanStates.WalkingAround;
+                }
+                
+                break;
             }
         }
     } 
-
-    bool checkBoundry()
-    {
-        if(Vector3.Distance(pathPoints[currentPathPt].transform.position, 
-            transform.position) > pathPoints[currentPathPt].boundry)
-        {
-            Debug.Log("outside boundery");
-
-            return false;
-        }    
-        Debug.Log("Inside boundery");
-        return true;
-    }
 
     private void SetDest()
     {
@@ -235,7 +154,6 @@ public class Humans : MonoBehaviour
         {
             Vector3 targetVector = pathPoints[currentPathPt].transform.position;
             navMesh.SetDestination(targetVector);
-            
             walking = true;
         }
     }
@@ -250,7 +168,6 @@ public class Humans : MonoBehaviour
         if (walkForward)
         {
             currentPathPt = (currentPathPt + 1) % pathPoints.Count;
-            
         }
         else 
         {
@@ -258,7 +175,6 @@ public class Humans : MonoBehaviour
             if (currentPathPt < 0)
             {
                 currentPathPt = pathPoints.Count - 1;
-                
             }
         }
     }
@@ -271,10 +187,9 @@ public class Humans : MonoBehaviour
 
     private enum HumanStates
     {
-        PathFollowing,
+        WalkingAround,
         Chase,
-        Catch,
-        Friendly,
+        Catch
     }
 
 }

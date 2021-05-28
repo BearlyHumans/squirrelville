@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4606863368001060}
   - component: {fileID: 33623758462132430}
   - component: {fileID: 23203727070289496}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: apple
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,9 +25,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1846160755511594}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.7956097, y: 1.7956097, z: 1.7956097}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 48b31daa83ddb854fadd9402702394e4, type: 2}
+  - {fileID: 2100000, guid: ac2bdd1066c7fd541a3487d890da2793, type: 2}
   - {fileID: 2100000, guid: 6e3ac6e47b4d7a44685dfef9bf209413, type: 2}
   - {fileID: 2100000, guid: 87ff71ffc286b91449d2296928632aed, type: 2}
   m_StaticBatchInfo:

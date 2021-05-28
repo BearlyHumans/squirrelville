@@ -5,23 +5,11 @@ using UnityEngine;
 public class WayPoints : MonoBehaviour
 {
     [SerializeField]
-    protected float radius = 0.1f;
-
-    [SerializeField]
-    public float boundry = 15f;
-
-    [SerializeField]
-    public float waitForThisLong = 0f;
+    protected float radius = 0.5f;
     
     public virtual void OnDrawGizmos() 
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, radius); 
-    }
-
-    void OnDrawGizmosSelected() 
-    {
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawWireSphere(transform.position, boundry);   
+        Gizmos.DrawWireSphere(transform.position, radius);
     }
 }
