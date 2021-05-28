@@ -3,8 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Humans : MonoBehaviour
+public enum HumanStates
+{
+    PathFollowing,
+    Chase,
+    Catch,
+    Friendly,
+}
 
+public class Humans : MonoBehaviour
 {
     //------------States------------------//
     private HumanStates currentState;
@@ -22,7 +29,10 @@ public class Humans : MonoBehaviour
     [SerializeField]
     List<WayPoints> pathPoints;
 
+    [Tooltip("adds a home area that acts as boundary")]
     public HomePoint homePoint;
+
+    public GameObject burger;
 
     NavMeshAgent navMesh;
     int currentPathPt;
@@ -31,15 +41,20 @@ public class Humans : MonoBehaviour
     bool walkForward;
     float waitTimer;
 
+    //--------------Friendly----------------//
+    [Tooltip("Is the NPC friendly?")]
+    [SerializeField]
+    public bool isFriendly;
 
-
+    bool givenfood = false;
+    float watchedFor = 0.0f;
+    float watchTimer = 10.0f;
 
     //--------------Chase----------------//
     [Tooltip("Detection Radius")]
     [SerializeField]
     public float range = 2f;
 
-    // ### would a distance be better then timer
     [Tooltip("How long does the human chase the player")]
     [SerializeField]
     float chaseTime = 10f;
@@ -80,48 +95,43 @@ public class Humans : MonoBehaviour
     {
         
         float distance = Vector3.Distance(target.position, transform.position);
-        
-        // Change states into classes.
-
-        // remember what was doing last - Stack
-
-        // render human current task / point
     
         // -----States------
         switch(currentState)
         {
             case HumanStates.PathFollowing:
             {
-                PathFollowingBehaviour();
-                
+                PathFollowingState();
                 break;
             }
 
             case HumanStates.Chase:
             {
-                ChaseBehaviour();
-                
+                ChaseState();
                 break;
             }
 
             case HumanStates.Friendly:
             {
-                FriendlyBehaviour();
+                FriendlyState();
                 break;
             }
 
             case HumanStates.Catch:
             {
-                
+                CatchingState();
                 break;
             }
         }
     }
 
-    private void ChaseBehaviour()
+    private void CatchingState()
     {
-        
-                
+        //
+    }
+
+    private void ChaseState()
+    {  
         if(checkBoundry() == true)
         {
             SeePlayer();
@@ -136,7 +146,6 @@ public class Humans : MonoBehaviour
             {
                 chaseTimer = chaseTime;
                         
-                Debug.Log("State Swap: Walking around");
                 SetDest();
                 currentState = HumanStates.PathFollowing;
             }
@@ -149,13 +158,38 @@ public class Humans : MonoBehaviour
                 
     }
 
-    private void FriendlyBehaviour()
+    private void FriendlyState()
     {
-        Debug.Log("Feed friendly squirrel");
+        watchedFor += Time.deltaTime;
+        facePlayer();
+        navMesh.SetDestination(transform.position);
+        if (!givenfood)
+        {
+           Instantiate(burger, new Vector3(transform.position.x, transform.position.y , transform.position.z), Quaternion.identity); 
+           givenfood = true;
+        }
+        if(watchedFor > watchTimer )
+        {
+            currentState = HumanStates.PathFollowing;
+        }
     }
 
-    private void PathFollowingBehaviour()
+    private void PathFollowingState()
     {
+        bool canSee = SeePlayer();
+        
+        if(canSee)
+        {
+            if(isFriendly)
+            {
+                currentState = HumanStates.Friendly;
+            }
+            else
+            {
+                currentState = HumanStates.Chase;
+            }
+        }
+
         if(walking && navMesh.remainingDistance <= 1.0f)
         {
             walking = false;
@@ -185,10 +219,16 @@ public class Humans : MonoBehaviour
             }
         }
 
-        SeePlayer();
+        
+    }
+    public void facePlayer()
+    {
+        Vector3 direction = (target.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
 
-    private void SeePlayer()
+    private bool SeePlayer()
     {
         
         float distance = Vector3.Distance(target.position, transform.position);
@@ -204,20 +244,11 @@ public class Humans : MonoBehaviour
             {
                 if(hit.transform.tag == "Player")
                 {
-                    if(gameObject.tag == "Aggressive")
-                    {
-                        chaseTimer = chaseTime;
-                        Debug.DrawLine(target.position, transform.position, Color.red);
-                        currentState = HumanStates.Chase;
-                    }
-                    else if(gameObject.tag == "Friendly")
-                    {
-                        currentState = HumanStates.Friendly;
-                    }
-                    
+                    return true;
                 }
             }
         }
+        return false;
     } 
 
     bool checkBoundry()
@@ -272,14 +303,5 @@ public class Humans : MonoBehaviour
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, range);
     }
-
-    private enum HumanStates
-    {
-        PathFollowing,
-        Chase,
-        Catch,
-        Friendly,
-    }
-
 }
 
