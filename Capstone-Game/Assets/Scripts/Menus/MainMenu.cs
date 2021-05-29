@@ -14,6 +14,11 @@ public class MainMenu : MonoBehaviour
         anim.Play("MainToOptionsMenu");
     }
 
+    public void Controls()
+    {
+        anim.Play("MainToControlsMenu");
+    }
+
     public void Credits()
     {
         anim.Play("MainToCreditsMenu");
