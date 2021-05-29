@@ -19,7 +19,7 @@ public class FoodStockpileArea : MonoBehaviour
 
         foreach (GameObject obj in food)
         {
-            if (mesh.bounds.Contains(obj.transform.position))
+            if (obj.activeInHierarchy && mesh.bounds.Contains(obj.transform.position))
             {
                 foodInArea.Add(obj);
             }
