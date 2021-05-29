@@ -790,7 +790,7 @@ GameObject:
   - component: {fileID: 713811273}
   - component: {fileID: 713811272}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Food Collected Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1234,6 +1234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4af18490b3f03144b8f5c2c860b95788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  label: {fileID: 713811272}
 --- !u!1001 &874723221
 PrefabInstance:
   m_ObjectHideFlags: 0
