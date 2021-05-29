@@ -13,6 +13,7 @@ public class FoodStockpileArea : MonoBehaviour
     {
         mesh = GetComponent<MeshRenderer>();
         food = GetAllFood();
+        mesh.enabled = false;
     }
 
     private void Update()
