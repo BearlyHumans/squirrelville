@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4856839097378503465}
   - component: {fileID: 4856839097378503471}
   - component: {fileID: 4856839097378503464}
+  - component: {fileID: -2926954866201104494}
   m_Layer: 10
   m_Name: Banana
   m_TagString: Untagged
@@ -113,3 +114,15 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4856839097378503460}
   m_Mesh: {fileID: 4300000, guid: cf1f790a6d9173649ad22dee0e7471e9, type: 3}
+--- !u!114 &-2926954866201104494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4856839097378503460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cef92ec7cbee8d45bbe047b2e2eac89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

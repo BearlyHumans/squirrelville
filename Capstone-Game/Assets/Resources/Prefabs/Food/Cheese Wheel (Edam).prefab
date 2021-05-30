@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5813453335236107986}
   - component: {fileID: 5190859745870419852}
   - component: {fileID: 225853859863056923}
+  - component: {fileID: -8791884560026120839}
   m_Layer: 10
   m_Name: Cheese Wheel (Edam)
   m_TagString: Untagged
@@ -114,3 +115,15 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4243590249806967581}
   m_Mesh: {fileID: 4300000, guid: b0941336be3bf4e43a08e7eeeed5d1f8, type: 3}
+--- !u!114 &-8791884560026120839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4243590249806967581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cef92ec7cbee8d45bbe047b2e2eac89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
