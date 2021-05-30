@@ -50,6 +50,8 @@ public class PauseMenu : MonoBehaviour
     public void Options()
     {
         Debug.Log("Options");
+        SceneManager.LoadScene(0);
+        Debug.Log("I SURVIVED!");
     }
 
     public void Controls()
