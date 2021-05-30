@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using TMPro;
 
 [RequireComponent(typeof(MeshRenderer))]
@@ -10,6 +11,9 @@ public class FoodStockpileArea : MonoBehaviour
     private Collider trigger;
     public TMP_Text label;
     private Food[] oldFoodInArea;
+
+    public UnityEvent foodEnterEvent;
+    public UnityEvent foodExitEvent;
 
     private void Start()
     {
@@ -22,13 +26,14 @@ public class FoodStockpileArea : MonoBehaviour
     {
         label.text = $"Food collected: {GetFoodCount()}";
 
+        // Detect when food is eaten from within the area
         if (oldFoodInArea != null)
         {
             foreach (Food food in oldFoodInArea)
             {
-                if (food.isEaten())
+                if (food.isEaten() && foodExitEvent != null)
                 {
-                    Debug.Log($"{food.name} was eaten");
+                    foodExitEvent.Invoke();
                 }
             }
         }
@@ -38,17 +43,17 @@ public class FoodStockpileArea : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (Food.IsFood(other.gameObject))
+        if (Food.IsFood(other.gameObject) && foodEnterEvent != null)
         {
-            Debug.Log($"{other.name} entered");
+            foodEnterEvent.Invoke();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (Food.IsFood(other.gameObject))
+        if (Food.IsFood(other.gameObject) && foodExitEvent != null)
         {
-            Debug.Log($"{other.name} rolled out");
+            foodExitEvent.Invoke();
         }
     }
 
