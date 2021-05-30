@@ -78,7 +78,6 @@ public class SquirrelFoodGrabber : MonoBehaviour
         foodStack.Push(food);
         food.SetActive(false);
         pickupTime = Time.time + pickupDelay;
-        Debug.Log($"Picked up {food.name}");
     }
 
     [ContextMenu("Throw food")]
@@ -98,8 +97,6 @@ public class SquirrelFoodGrabber : MonoBehaviour
 
         throwTime = Time.time + throwDelay;
         throwDelay = Mathf.Max(throwDelay / throwDelayDivisor, minThrowDelay);
-
-        Debug.Log($"Threw up {food.name}");
     }
 
     public bool CanEatFood()
