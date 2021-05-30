@@ -38,7 +38,6 @@ public class PauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         paused = false;
-        Debug.Log("Resume");
     }
 
     public void Pause()
@@ -48,7 +47,6 @@ public class PauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         paused = true;
-        Debug.Log("Pause");
     }
 
     public void MainMenu()
