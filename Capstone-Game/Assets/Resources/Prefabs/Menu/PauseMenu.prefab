@@ -64,7 +64,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &355080688871547148
 MonoBehaviour:
@@ -364,6 +364,10 @@ PrefabInstance:
     - target: {fileID: 5312333601805722020, guid: f1ad784ca6024534895668913043967c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312333601805722021, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5312333602161715984, guid: f1ad784ca6024534895668913043967c, type: 3}
       propertyPath: m_IsActive
