@@ -3,13 +3,10 @@ using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
 
-[RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(Collider))]
 public class FoodArea : MonoBehaviour
 {
-    private MeshRenderer mesh;
     private Collider trigger;
-    public TMP_Text label;
     private Food[] oldFoodInArea;
 
     public UnityEvent<GameObject> foodEnterEvent;
@@ -17,15 +14,11 @@ public class FoodArea : MonoBehaviour
 
     private void Start()
     {
-        mesh = GetComponent<MeshRenderer>();
         trigger = GetComponent<Collider>();
-        mesh.enabled = false;
     }
 
     private void Update()
     {
-        label.text = $"Food collected: {GetFoodCount()}";
-
         // Detect when food is eaten from within the area
         if (oldFoodInArea != null)
         {
@@ -39,6 +32,12 @@ public class FoodArea : MonoBehaviour
         }
 
         oldFoodInArea = GetFoodInArea();
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = new Color(1, 0, 0, 0.5f);
+        Gizmos.DrawCube(transform.position, new Vector3(1, 1, 1));
     }
 
     private void OnTriggerEnter(Collider other)
@@ -64,7 +63,8 @@ public class FoodArea : MonoBehaviour
 
         foreach (Food food in foodArr)
         {
-            if (!food.isEaten() && mesh.bounds.Contains(food.transform.position))
+            Bounds foodBounds = food.GetComponent<Collider>().bounds;
+            if (!food.isEaten() && trigger.bounds.Intersects(foodBounds))
             {
                 foodInArea.Add(food);
             }

@@ -790,6 +790,7 @@ GameObject:
   - component: {fileID: 713811271}
   - component: {fileID: 713811273}
   - component: {fileID: 713811272}
+  - component: {fileID: 713811274}
   m_Layer: 5
   m_Name: Food Collected Label
   m_TagString: Untagged
@@ -913,6 +914,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 713811270}
   m_CullTransparentMesh: 1
+--- !u!114 &713811274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713811270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d2ca23e68d37cf4fac1aaf78b46fc64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  foodArea: {fileID: 2144601847}
 --- !u!1001 &724526226
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1721,6 +1735,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe3c3a5300d07ed439780fc32840bef9, type: 3}
+--- !u!114 &2144601847 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 72102205805499060, guid: dd02b14593c983f4897594244f1d3445, type: 3}
+  m_PrefabInstance: {fileID: 72102204994899521}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4af18490b3f03144b8f5c2c860b95788, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &72102204994899521
 PrefabInstance:
   m_ObjectHideFlags: 0
