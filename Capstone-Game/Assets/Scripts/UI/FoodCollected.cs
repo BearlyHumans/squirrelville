@@ -5,13 +5,13 @@ using TMPro;
 public class FoodCollected : MonoBehaviour
 {
     private TMP_Text label;
-    public FoodArea foodArea;
+    public ObjectArea foodStockpileArea;
     private string prefix;
 
     private void Start()
     {
-        foodArea.foodEnterEvent.AddListener((_) => UpdateLabel());
-        foodArea.foodExitEvent.AddListener((_) => UpdateLabel());
+        foodStockpileArea.enterEvent.AddListener((_) => UpdateLabel());
+        foodStockpileArea.exitEvent.AddListener((_) => UpdateLabel());
     }
 
     private void Awake()
@@ -23,6 +23,6 @@ public class FoodCollected : MonoBehaviour
 
     private void UpdateLabel()
     {
-        label.text = prefix + foodArea.GetFoodCount();
+        label.text = prefix + foodStockpileArea.GetObjectCount();
     }
 }

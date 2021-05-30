@@ -44,10 +44,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4af18490b3f03144b8f5c2c860b95788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  foodEnterEvent:
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  enterEvent:
     m_PersistentCalls:
       m_Calls: []
-  foodExitEvent:
+  exitEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!65 &3055250373652761354
