@@ -6,6 +6,7 @@ public class PauseMenu : MonoBehaviour
     /// <summary> Whether the game is currently paused </summary>
     public static bool paused = false;
     public GameObject pauseMenu;
+    public GameObject mainMenu;
 
     private void Start()
     {
@@ -18,7 +19,10 @@ public class PauseMenu : MonoBehaviour
         {
             if (paused)
             {
-                Resume();
+                if (!mainMenu.activeInHierarchy)
+                {
+                    Resume();
+                }
             }
             else
             {
@@ -45,18 +49,6 @@ public class PauseMenu : MonoBehaviour
         Cursor.visible = true;
         paused = true;
         Debug.Log("Pause");
-    }
-
-    public void Options()
-    {
-        Debug.Log("Options");
-        SceneManager.LoadScene(0);
-        Debug.Log("I SURVIVED!");
-    }
-
-    public void Controls()
-    {
-        Debug.Log("Controls");
     }
 
     public void MainMenu()
