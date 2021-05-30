@@ -5,21 +5,21 @@ using TMPro;
 
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(Collider))]
-public class FoodStockpileArea : MonoBehaviour
+public class FoodArea : MonoBehaviour
 {
     private MeshRenderer mesh;
     private Collider trigger;
     public TMP_Text label;
     private Food[] oldFoodInArea;
 
-    public UnityEvent foodEnterEvent;
-    public UnityEvent foodExitEvent;
+    public UnityEvent<GameObject> foodEnterEvent;
+    public UnityEvent<GameObject> foodExitEvent;
 
     private void Start()
     {
         mesh = GetComponent<MeshRenderer>();
         trigger = GetComponent<Collider>();
-        // mesh.enabled = false;
+        mesh.enabled = false;
     }
 
     private void Update()
@@ -33,7 +33,7 @@ public class FoodStockpileArea : MonoBehaviour
             {
                 if (food.isEaten() && foodExitEvent != null)
                 {
-                    foodExitEvent.Invoke();
+                    foodExitEvent.Invoke(food.gameObject);
                 }
             }
         }
@@ -45,7 +45,7 @@ public class FoodStockpileArea : MonoBehaviour
     {
         if (Food.IsFood(other.gameObject) && foodEnterEvent != null)
         {
-            foodEnterEvent.Invoke();
+            foodEnterEvent.Invoke(other.gameObject);
         }
     }
 
@@ -53,7 +53,7 @@ public class FoodStockpileArea : MonoBehaviour
     {
         if (Food.IsFood(other.gameObject) && foodExitEvent != null)
         {
-            foodExitEvent.Invoke();
+            foodExitEvent.Invoke(other.gameObject);
         }
     }
 
