@@ -3,15 +3,19 @@ using UnityEngine;
 using TMPro;
 
 [RequireComponent(typeof(MeshRenderer))]
+[RequireComponent(typeof(Collider))]
 public class FoodStockpileArea : MonoBehaviour
 {
     private MeshRenderer mesh;
+    private Collider trigger;
     private GameObject[] food;
     public TMP_Text label;
+    private GameObject[] oldFoodInArea;
 
     private void Start()
     {
         mesh = GetComponent<MeshRenderer>();
+        trigger = GetComponent<Collider>();
         food = GetAllFood();
         mesh.enabled = false;
     }
@@ -19,6 +23,37 @@ public class FoodStockpileArea : MonoBehaviour
     private void Update()
     {
         label.text = $"Food collected: {GetFoodCount()}";
+
+        if (oldFoodInArea != null)
+        {
+            foreach (GameObject obj in oldFoodInArea)
+            {
+                if (!obj.activeInHierarchy)
+                {
+                    Debug.Log($"{obj.name} was eaten");
+                }
+            }
+        }
+
+        oldFoodInArea = GetFoodInArea();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        int foodLayer = LayerMask.NameToLayer("Food");
+        if (other.gameObject.layer == foodLayer)
+        {
+            Debug.Log($"{other.name} entered");
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        int foodLayer = LayerMask.NameToLayer("Food");
+        if (other.gameObject.layer == foodLayer)
+        {
+            Debug.Log($"{other.name} rolled out");
+        }
     }
 
     public GameObject[] GetFoodInArea()
