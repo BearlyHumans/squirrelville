@@ -7,6 +7,7 @@ public class PauseMenu : MonoBehaviour
     public static bool paused = false;
     public GameObject pauseMenu;
     public GameObject mainMenu;
+    public GameObject quitConfirmationPrompt;
 
     private void Start()
     {
@@ -19,7 +20,11 @@ public class PauseMenu : MonoBehaviour
         {
             if (paused)
             {
-                if (!mainMenu.activeInHierarchy)
+                if (quitConfirmationPrompt.activeInHierarchy)
+                {
+                    quitConfirmationPrompt.SetActive(false);
+                }
+                else if (!mainMenu.activeInHierarchy)
                 {
                     Resume();
                 }
