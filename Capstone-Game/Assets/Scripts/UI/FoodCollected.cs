@@ -6,6 +6,7 @@ public class FoodCollected : MonoBehaviour
 {
     private TMP_Text label;
     public FoodArea foodArea;
+    private string prefix;
 
     private void Start()
     {
@@ -16,11 +17,12 @@ public class FoodCollected : MonoBehaviour
     private void Awake()
     {
         label = GetComponent<TMP_Text>();
+        prefix = label.text;
         UpdateLabel();
     }
 
     private void UpdateLabel()
     {
-        label.text = $"Food collected: {foodArea.GetFoodCount()}";
+        label.text = prefix + foodArea.GetFoodCount();
     }
 }

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using TMPro;
 
 [RequireComponent(typeof(Collider))]
 public class FoodArea : MonoBehaviour
