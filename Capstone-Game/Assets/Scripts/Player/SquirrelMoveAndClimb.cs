@@ -328,11 +328,8 @@ namespace Player
 
             if (FindClimbableWall(out mainHit, distMultiplier))
             {
-                if (Physics.Raycast(transform.position, mainHit.point - transform.position, Vector3.Distance(transform.position, mainHit.point) - 0.1f, settings.WC.climableLayers))
-                {
-                    Debug.Log("Aborting Climb - No Line of Sight.");
+                if (Physics.Raycast(transform.position, mainHit.point - transform.position, Vector3.Distance(transform.position, mainHit.point) - 0.01f, settings.WC.rotateToLayers))
                     return false; //Aborts if there is no line of sight between the player and the chosen point.
-                }
                 //Rotate so feet are on new surface.
                 Vector3 dir = mainHit.normal;
                 CustomIntuitiveSnapRotation(-dir);
