@@ -1,16 +1,62 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
-    public static Canvas singleton;
+    /// <summary> Whether the game is currently paused </summary>
+    public static bool paused = false;
+    public GameObject pauseMenu;
+    public GameObject mainMenu;
+    public GameObject quitConfirmationPrompt;
 
-    void Awake()
+    private void Start()
     {
-        if (singleton == null)
-            singleton = GetComponent<Canvas>();
-        else
-            Destroy(gameObject);
+        Resume();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (paused)
+            {
+                if (quitConfirmationPrompt.activeInHierarchy)
+                {
+                    quitConfirmationPrompt.SetActive(false);
+                }
+                else if (!mainMenu.activeInHierarchy)
+                {
+                    Resume();
+                }
+            }
+            else
+            {
+                Pause();
+            }
+        }
+    }
+
+    public void Resume()
+    {
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        paused = false;
+    }
+
+    public void Pause()
+    {
+        pauseMenu.SetActive(true);
+        Time.timeScale = 0;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        paused = true;
+    }
+
+    public void MainMenu()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(0);
     }
 }

@@ -15,9 +15,6 @@ namespace Player
 
         private SCStoredValues vals = new SCStoredValues();
 
-        /// <summary> Time and inputs are not simulated when this is true. </summary>
-        private bool debugPause = false;
-
         //~~~~~~~~~~ PROPERTIES ~~~~~~~~~~
 
         public bool TouchingSomething
@@ -29,16 +26,9 @@ namespace Player
 
         void Awake()
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
             refs.RB.useGravity = false;
 
             Initialize();
-        }
-
-        void Start()
-        {
-            GetOrMakePause();
         }
 
         void OnCollisionStay(Collision collision)
@@ -73,27 +63,11 @@ namespace Player
             EnterRunState();
         }
 
-        /// <summary> Makes sure the controller has a reference to the singleton pause-menu object, possibly by creating a new one.
-        /// Call in Start() and NOT Awake() for best results. </summary>
-        private void GetOrMakePause()
-        {
-            if (PauseMenu.singleton == null)
-            {
-                Canvas pre = Resources.Load<Canvas>("Prefabs/PauseCanvas(Dummy)");
-                refs.pauseMenu = Instantiate(pre);
-            }
-            else
-            {
-                refs.pauseMenu = PauseMenu.singleton;
-            }
-            Pause();
-        }
-
         /// <summary> Runs all updates for the squirrel character. This is done by calling ManualUpdate() in child scripts based on a statemachine.
         /// Also calls update in camera, and skips ALL calls if the game is paused. </summary>
         void Update()
         {
-            if (CheckPause())
+            if (PauseMenu.paused)
                 return;
 
             refs.fCam.UpdateCamRotFromImput();
@@ -122,41 +96,6 @@ namespace Player
 
             refs.fCam.UpdateCamPos();
             refs.fCam.UpdateDolly();
-        }
-
-        /// <summary> Checks if escape has been pressed (change to include controller buttons etc later),
-        /// then swaps between paused/not if pressed, and returns true if the game is paused so that update functions can be skipped. </summary>
-        private bool CheckPause()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                if (debugPause)
-                    UnPause();
-                else
-                    Pause();
-            }
-
-            return debugPause;
-        }
-
-        /// <summary> Changes settings and (should) run animations required for pausing the game. </summary>
-        private void Pause()
-        {
-            debugPause = true;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            Time.timeScale = 0;
-            refs.pauseMenu.enabled = true;
-        }
-
-        /// <summary> Changes settings and (should) run animations required for UNpausing the game. </summary>
-        private void UnPause()
-        {
-            debugPause = false;
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            Time.timeScale = 1;
-            refs.pauseMenu.enabled = false;
         }
 
         private void EnterBallState()
@@ -206,7 +145,6 @@ namespace Player
             public Camera camera;
             public CameraGimbal fCam;
             public Animator animator;
-            public Canvas pauseMenu;
             public GameObject runBody;
             public GameObject ballBody;
         }
