@@ -66,7 +66,7 @@ public class Humans : MonoBehaviour
     {
         navMesh = this.GetComponent<NavMeshAgent>();
         chaseTimer = chaseTime;
-        // singleton - ask jake about game controller.
+        
         target = GameObject.FindWithTag("Player").transform;
 
         currentState = HumanStates.PathFollowing;
