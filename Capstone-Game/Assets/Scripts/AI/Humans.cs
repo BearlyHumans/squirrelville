@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+
+//------------States------------------//
 public enum HumanStates
 {
     PathFollowing,
@@ -11,8 +13,9 @@ public enum HumanStates
 }
 public class Humans : MonoBehaviour
 {
-    //------------States------------------//
+    
     private HumanStates currentState;
+
     //----------Path Following -----------//
     [Tooltip("Do you want to npc to pause on each point?")]
     [SerializeField]
@@ -32,13 +35,16 @@ public class Humans : MonoBehaviour
     bool waiting;
     bool walkForward;
     float waitTimer;
+
     //--------------Friendly----------------//
     [Tooltip("Is the NPC friendly?")]
     [SerializeField]
     public bool isFriendly;
+    
     bool givenfood = false;
     float watchedFor = 0.0f;
     float watchTimer = 10.0f;
+
     //--------------Chase----------------//
     [Tooltip("Detection Radius")]
     [SerializeField]
@@ -48,6 +54,7 @@ public class Humans : MonoBehaviour
     float chaseTime = 10f;
     float chaseTimer;
     Transform target;
+
     public void Start() 
     {
         navMesh = this.GetComponent<NavMeshAgent>();
@@ -75,6 +82,7 @@ public class Humans : MonoBehaviour
             }
         }
     }
+
     public void Update() 
     {
         
@@ -105,10 +113,12 @@ public class Humans : MonoBehaviour
             }
         }
     }
+
     private void CatchingState()
     {
         
     }
+
     private void ChaseState()
     {  
         if(checkBoundry() == true)
@@ -135,6 +145,7 @@ public class Humans : MonoBehaviour
         }
                 
     }
+
     private void FriendlyState()
     {
         watchedFor += Time.deltaTime;
@@ -150,6 +161,7 @@ public class Humans : MonoBehaviour
             currentState = HumanStates.PathFollowing;
         }
     }
+
     private void PathFollowingState()
     {
         bool canSee = SeePlayer();
@@ -192,6 +204,7 @@ public class Humans : MonoBehaviour
         }
         
     }
+
     public void facePlayer()
     {
         Vector3 direction = (target.position - transform.position).normalized;
@@ -220,6 +233,7 @@ public class Humans : MonoBehaviour
         }
         return false;
     } 
+
     bool checkBoundry()
     {
         float dist = Vector3.Distance(homePoint.transform.position, transform.position);
@@ -232,6 +246,7 @@ public class Humans : MonoBehaviour
             return true;
         } 
     }
+
     private void SetDest()
     {
         if (pathPoints != null)
@@ -242,6 +257,7 @@ public class Humans : MonoBehaviour
             walking = true;
         }
     }
+
     private void ChangePathPt()
     {
         if (UnityEngine.Random.Range(0f, 1f) <= turnAroundChance)
@@ -263,6 +279,7 @@ public class Humans : MonoBehaviour
             }
         }
     }
+
     void OnDrawGizmosSelected() 
     {
         Gizmos.color = Color.blue;
