@@ -54,7 +54,19 @@ namespace Player
             JumpOnWall();
             FindAndRotateToWall();
             RotateModel();
+            UpdAnimator();
         }
+
+        private void UpdAnimator()
+        {
+            if (vals.moving)
+                ParentRefs.animator.SetInteger("MoveState", 1);
+            else if (vals.jumping)
+                ParentRefs.animator.SetInteger("MoveState", 2);
+            else
+                ParentRefs.animator.SetInteger("MoveState", 0);
+        }
+    
 
         /// <summary> Perform all the movement functions of the player, including making all forces including friction and input relative to the players rotation. </summary>
         private void UpdMove()
