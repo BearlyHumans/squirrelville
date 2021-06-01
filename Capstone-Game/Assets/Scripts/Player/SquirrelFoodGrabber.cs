@@ -46,6 +46,8 @@ public class SquirrelFoodGrabber : MonoBehaviour
 
     private void Update()
     {
+        if (PauseMenu.paused) return;
+
         if (Input.GetKey(KeyCode.Mouse0) && CanEatFood())
         {
             GameObject food = GetNearestFood();
