@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8750980974192692976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8580723754945813588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cef92ec7cbee8d45bbe047b2e2eac89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1001 &5616155945475452745
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4243590249806967581, guid: a3abfff05cbfd064e9fd78c58433529b, type: 3}
+      propertyPath: m_Name
+      value: Cheese Wheel (Brie)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4620698198474704824, guid: a3abfff05cbfd064e9fd78c58433529b, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4620698198474704824, guid: a3abfff05cbfd064e9fd78c58433529b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4620698198474704824, guid: a3abfff05cbfd064e9fd78c58433529b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4620698198474704824, guid: a3abfff05cbfd064e9fd78c58433529b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4620698198474704824, guid: a3abfff05cbfd064e9fd78c58433529b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4620698198474704824, guid: a3abfff05cbfd064e9fd78c58433529b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4620698198474704824, guid: a3abfff05cbfd064e9fd78c58433529b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4620698198474704824, guid: a3abfff05cbfd064e9fd78c58433529b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4620698198474704824, guid: a3abfff05cbfd064e9fd78c58433529b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4620698198474704824, guid: a3abfff05cbfd064e9fd78c58433529b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4620698198474704824, guid: a3abfff05cbfd064e9fd78c58433529b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5190859745870419852, guid: a3abfff05cbfd064e9fd78c58433529b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f9c4a99059a34d842b70997d0245fde2, type: 2}
+    - target: {fileID: 5190859745870419852, guid: a3abfff05cbfd064e9fd78c58433529b, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: a6c5db515b4e26a468041e9e22e41af4, type: 2}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a3abfff05cbfd064e9fd78c58433529b, type: 3}
+--- !u!1 &8580723754945813588 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4243590249806967581, guid: a3abfff05cbfd064e9fd78c58433529b, type: 3}
+  m_PrefabInstance: {fileID: 5616155945475452745}
+  m_PrefabAsset: {fileID: 0}
