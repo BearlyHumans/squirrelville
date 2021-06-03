@@ -34,9 +34,14 @@ public class Humans : MonoBehaviour
     public HomePoint homePoint;
 
 
+    //---sphere cast ---//
+    private Vector3 origin;
+    private Vector3 sDirection;
+    public LayerMask layerMask;
+
     // --- burger---- /
     public GameObject burger;
-    GameObject burgerPreFab;
+    
 
     NavMeshAgent navMesh;
     float distance;
@@ -83,7 +88,7 @@ public class Humans : MonoBehaviour
     Transform target;
     GameObject squrrielTarget;
 
-
+    
 
     public void Start() 
     {
@@ -153,21 +158,23 @@ public class Humans : MonoBehaviour
 
     private void CatchingState()
     {
+        // start timer?
+        hasCaughtRecently = true;
+
+        //currently caught
+        caught = true;
+
         facePlayer();
         foodGraber.ThrowFood();  
         squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-        if(caught)
-        {
-            Invoke("unFreezePlayer", 10.0f);  
-            caught = false;
-        }
-        else
-        {
-            
-            currentState = HumanStates.PathFollowing;
-        }
+        checkForFood();
 
-        
+        if(!caught)
+        {
+            Invoke("unFreezePlayer", 5.0f);  
+            currentState = HumanStates.PathFollowing;
+            
+        }
     }
 
     private void ChaseState()
@@ -185,8 +192,6 @@ public class Humans : MonoBehaviour
                 chaseTimer -= Time.deltaTime;
                 if(distance < 1.0f)
                 {
-                    hasCaughtRecently = true;
-                    caught = true;
                     currentState = HumanStates.Catch;
                 }
                 
@@ -283,6 +288,30 @@ public class Humans : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
 
+    void checkForFood()
+    {
+        float radius = 5.0f;
+        Debug.Log("checking");
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius, layerMask);
+
+        
+        if(hitColliders.Length == 0)
+        {
+            Debug.Log("No food");
+            
+            caught = false;
+            Invoke("canCatchPlayer", 10.0f);
+        }
+        else
+        {
+            Debug.Log("delete");
+            foreach (var hitCollider in hitColliders)
+            {
+                Destroy(hitCollider);
+            } 
+        }
+    }
+
     bool SeePlayer()
     {
         
@@ -301,6 +330,7 @@ public class Humans : MonoBehaviour
                     if(!hasCaughtRecently)
                         return true;
                 }
+                
             }
         }
         return false;
@@ -321,11 +351,12 @@ public class Humans : MonoBehaviour
 
     void unFreezePlayer()
     {
-        Debug.Log("test");
-        squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-        
+        squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+    }
+
+    void canCatchPlayer()
+    {
         hasCaughtRecently = false;
-      
     }
 
     private void SetDest()
