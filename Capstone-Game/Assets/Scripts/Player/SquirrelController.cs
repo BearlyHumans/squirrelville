@@ -101,6 +101,13 @@ namespace Player
             refs.fCam.UpdateDolly();
         }
 
+        private bool CanEnterBallState()
+        {
+            int foodCount = behaviourScripts.foodGrabber.GetFoodCount();
+            int foodCountBallForm = behaviourScripts.foodGrabber.foodCountBallForm;
+            return foodCount >= foodCountBallForm;
+        }
+
         private void EnterBallState()
         {
             //Disable normal collider
