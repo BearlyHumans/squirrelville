@@ -16,6 +16,10 @@ public class Humans : MonoBehaviour
     
     private HumanStates currentState;
 
+    //---------Food Graber Script---------//
+    private SquirrelFoodGrabber foodGraber;
+    private GameObject foodController;
+
     //----------Path Following -----------//
     [Tooltip("Do you want to npc to pause on each point?")]
     [SerializeField]
@@ -29,7 +33,9 @@ public class Humans : MonoBehaviour
     [Tooltip("adds a home area that acts as boundary")]
     public HomePoint homePoint;
     public GameObject burger;
+
     NavMeshAgent navMesh;
+    float distance;
     int currentPathPt;
     bool walking;
     bool waiting;
@@ -62,7 +68,11 @@ public class Humans : MonoBehaviour
 
     public void Start() 
     {
+        foodController = GameObject.FindWithTag("Player");
+        foodGraber = foodController.GetComponent<SquirrelFoodGrabber>();
+
         navMesh = this.GetComponent<NavMeshAgent>();
+
         chaseTimer = chaseTime;
         // singleton - ask jake about game controller.
 
@@ -91,7 +101,7 @@ public class Humans : MonoBehaviour
     public void Update() 
     {
         
-        float distance = Vector3.Distance(target.position, transform.position);
+        distance = Vector3.Distance(target.position, transform.position);
         timeToFood += Time.deltaTime;
         // -----States------
         switch(currentState)
@@ -121,7 +131,8 @@ public class Humans : MonoBehaviour
 
     private void CatchingState()
     {
-        
+        facePlayer();
+        foodGraber.ThrowFood();
     }
 
     private void ChaseState()
@@ -130,9 +141,15 @@ public class Humans : MonoBehaviour
         {
             SeePlayer();
             navMesh.SetDestination(target.position);
+            
             if (chaseTimer > 0f)
             {   
                 chaseTimer -= Time.deltaTime;
+                if(distance < 1.0f)
+                {
+                    currentState = HumanStates.Catch;
+                }
+                
                     
             }
             else
