@@ -42,6 +42,10 @@ public class Humans : MonoBehaviour
     bool walkForward;
     float waitTimer;
 
+    [Tooltip("Angle in which the NPC can see player")]
+    [SerializeField]
+    public float detectionAngle = 70;
+
     //--------------Friendly----------------//
     [Tooltip("Is the NPC friendly?")]
     [SerializeField]
@@ -64,7 +68,14 @@ public class Humans : MonoBehaviour
     [SerializeField]
     float chaseTime = 10f;
     float chaseTimer;
+
+    
+    
+
     Transform target;
+    GameObject squrrielTarget;
+
+
 
     public void Start() 
     {
@@ -77,6 +88,7 @@ public class Humans : MonoBehaviour
         // singleton - ask jake about game controller.
 
         target = GameObject.FindWithTag("Player").transform;
+        squrrielTarget = GameObject.FindWithTag("Player");
 
         currentState = HumanStates.PathFollowing;
         if(navMesh == null)
@@ -103,6 +115,7 @@ public class Humans : MonoBehaviour
         
         distance = Vector3.Distance(target.position, transform.position);
         timeToFood += Time.deltaTime;
+        
         // -----States------
         switch(currentState)
         {
@@ -131,8 +144,18 @@ public class Humans : MonoBehaviour
 
     private void CatchingState()
     {
+        Debug.Log("in range ");
         facePlayer();
         foodGraber.ThrowFood();
+        squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        if(distance > 1.0f)
+        {
+            
+            currentState = HumanStates.PathFollowing;
+            
+        }
+
+        
     }
 
     private void ChaseState()
@@ -144,6 +167,9 @@ public class Humans : MonoBehaviour
             
             if (chaseTimer > 0f)
             {   
+                
+                Debug.DrawLine(transform.position, target.position);
+
                 chaseTimer -= Time.deltaTime;
                 if(distance < 1.0f)
                 {
@@ -248,11 +274,11 @@ public class Humans : MonoBehaviour
         
         float distance = Vector3.Distance(target.position, transform.position);
         Vector3 targetDir = target.position - transform.position;
-        float angle = 45f;
+    
         float angleToPlayer = (Vector3.Angle(targetDir, transform.forward));
         RaycastHit hit;
  
-        if ((angleToPlayer >= -angle && angleToPlayer <= angle) && (distance <= range))
+        if ((angleToPlayer >= -detectionAngle && angleToPlayer <= detectionAngle) && (distance <= range))
         {
             if(Physics.Linecast (transform.position, target.transform.position, out hit))
             {
