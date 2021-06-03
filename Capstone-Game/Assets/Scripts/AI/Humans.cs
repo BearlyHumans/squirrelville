@@ -32,7 +32,11 @@ public class Humans : MonoBehaviour
     List<WayPoints> pathPoints;
     [Tooltip("adds a home area that acts as boundary")]
     public HomePoint homePoint;
+
+
+    // --- burger---- /
     public GameObject burger;
+    GameObject burgerPreFab;
 
     NavMeshAgent navMesh;
     float distance;
@@ -69,7 +73,11 @@ public class Humans : MonoBehaviour
     float chaseTime = 10f;
     float chaseTimer;
 
-    
+    // used to check if player is currently caught
+    bool caught = false;
+    //used to check if player has been caught recently 
+    bool hasCaughtRecently = false;
+    //caught timer
     
 
     Transform target;
@@ -116,6 +124,7 @@ public class Humans : MonoBehaviour
         distance = Vector3.Distance(target.position, transform.position);
         timeToFood += Time.deltaTime;
         
+        
         // -----States------
         switch(currentState)
         {
@@ -144,15 +153,18 @@ public class Humans : MonoBehaviour
 
     private void CatchingState()
     {
-        Debug.Log("in range ");
         facePlayer();
-        foodGraber.ThrowFood();
+        foodGraber.ThrowFood();  
         squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-        if(distance > 1.0f)
+        if(caught)
+        {
+            Invoke("unFreezePlayer", 10.0f);  
+            caught = false;
+        }
+        else
         {
             
             currentState = HumanStates.PathFollowing;
-            
         }
 
         
@@ -173,6 +185,8 @@ public class Humans : MonoBehaviour
                 chaseTimer -= Time.deltaTime;
                 if(distance < 1.0f)
                 {
+                    hasCaughtRecently = true;
+                    caught = true;
                     currentState = HumanStates.Catch;
                 }
                 
@@ -284,7 +298,8 @@ public class Humans : MonoBehaviour
             {
                 if(hit.transform.tag == "Player")
                 {
-                    return true;
+                    if(!hasCaughtRecently)
+                        return true;
                 }
             }
         }
@@ -302,6 +317,15 @@ public class Humans : MonoBehaviour
         {
             return true;
         } 
+    }
+
+    void unFreezePlayer()
+    {
+        Debug.Log("test");
+        squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+        
+        hasCaughtRecently = false;
+      
     }
 
     private void SetDest()
