@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody))]
 public class SquirrelFoodGrabber : MonoBehaviour
@@ -38,6 +39,10 @@ public class SquirrelFoodGrabber : MonoBehaviour
     public float minThrowDelay = 0.2f;
     private float throwTime = 0.0f;
     private float throwDelay;
+
+    [Header("Events")]
+    public UnityEvent<GameObject> pickupEvent;
+    public UnityEvent<GameObject> throwEvent;
 
     private void Awake()
     {
@@ -80,6 +85,8 @@ public class SquirrelFoodGrabber : MonoBehaviour
         foodStack.Push(food);
         food.SetActive(false);
         pickupTime = Time.time + pickupDelay;
+
+        pickupEvent.Invoke(food);
     }
 
     [ContextMenu("Throw food")]
@@ -99,6 +106,8 @@ public class SquirrelFoodGrabber : MonoBehaviour
 
         throwTime = Time.time + throwDelay;
         throwDelay = Mathf.Max(throwDelay / throwDelayDivisor, minThrowDelay);
+
+        throwEvent.Invoke(food);
     }
 
     public bool CanEatFood()
