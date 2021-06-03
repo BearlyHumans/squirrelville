@@ -43,7 +43,12 @@ public class Humans : MonoBehaviour
     
     bool givenfood = false;
     float watchedFor = 0.0f;
-    float watchTimer = 10.0f;
+    float watchTimer = 5.0f;
+
+    float timeToFood = 0.0f;
+    [Tooltip("How long until humans give more food")]
+    [SerializeField]
+    public float foodTimer = 10.0f;
 
     //--------------Chase----------------//
     [Tooltip("Detection Radius")]
@@ -87,7 +92,7 @@ public class Humans : MonoBehaviour
     {
         
         float distance = Vector3.Distance(target.position, transform.position);
-    
+        timeToFood += Time.deltaTime;
         // -----States------
         switch(currentState)
         {
@@ -151,14 +156,23 @@ public class Humans : MonoBehaviour
         watchedFor += Time.deltaTime;
         facePlayer();
         navMesh.SetDestination(transform.position);
+        
         if (!givenfood)
         {
-           Instantiate(burger, new Vector3(transform.position.x, transform.position.y , transform.position.z), Quaternion.identity); 
+           Instantiate(burger, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
            givenfood = true;
+           timeToFood = 0.0f;
         }
-        if(watchedFor > watchTimer )
+
+        if(watchedFor > watchTimer)
         {
             currentState = HumanStates.PathFollowing;
+            watchedFor = 0.0f;
+        }
+
+        if(timeToFood > foodTimer)
+        {
+            givenfood = false;
         }
     }
 
