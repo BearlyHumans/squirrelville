@@ -73,11 +73,14 @@ namespace Player
             refs.fCam.UpdateCamRotFromImput();
 
             //Debug State Changes
-            if (Input.GetKeyDown(KeyCode.B))
-                EnterBallState();
-            if (Input.GetKeyDown(KeyCode.R))
-                EnterRunState();
-            if (Input.GetKeyDown(KeyCode.G))
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                if (vals.mState == MovementState.ball)
+                    EnterRunState();
+                else
+                    EnterBallState();
+            }
+            if (Input.GetKeyDown(KeyCode.LeftShift))
                 EnterGlideState();
 
             //State Machine
