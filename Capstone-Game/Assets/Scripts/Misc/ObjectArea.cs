@@ -6,7 +6,8 @@ using UnityEngine.Events;
 public class ObjectArea : MonoBehaviour
 {
     private Collider trigger;
-    private GameObject[] oldObjectsInArea;
+    private List<GameObject> objectsInArea = new List<GameObject>();
+    private GameObject[] oldObjectsInArea = new GameObject[0];
     public LayerMask layerMask;
 
     public UnityEvent<GameObject> enterEvent;
@@ -20,18 +21,20 @@ public class ObjectArea : MonoBehaviour
     private void Update()
     {
         // Detect when food is eaten from within the area
-        if (oldObjectsInArea != null)
+        foreach (GameObject obj in oldObjectsInArea)
         {
-            foreach (GameObject obj in oldObjectsInArea)
+            if (!obj.activeInHierarchy)
             {
-                if (!obj.activeInHierarchy && exitEvent != null)
+                objectsInArea.Remove(obj);
+
+                if (exitEvent != null)
                 {
                     exitEvent.Invoke(obj);
                 }
             }
         }
 
-        oldObjectsInArea = GetObjectsInArea();
+        oldObjectsInArea = objectsInArea.ToArray();
     }
 
     private void OnDrawGizmos()
@@ -42,51 +45,38 @@ public class ObjectArea : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (ObjectMatchesMask(other.gameObject) && enterEvent != null)
+        if (ObjectMatchesMask(other.gameObject))
         {
-            enterEvent.Invoke(other.gameObject);
+            objectsInArea.Add(other.gameObject);
+
+            if (enterEvent != null)
+            {
+                enterEvent.Invoke(other.gameObject);
+            }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (ObjectMatchesMask(other.gameObject) && exitEvent != null)
+        if (ObjectMatchesMask(other.gameObject))
         {
-            exitEvent.Invoke(other.gameObject);
+            objectsInArea.Remove(other.gameObject);
+
+            if (exitEvent != null)
+            {
+                exitEvent.Invoke(other.gameObject);
+            }
         }
     }
 
     public GameObject[] GetObjectsInArea()
     {
-
-        GameObject[] objects = FindObjectsOfType<GameObject>();
-        List<GameObject> objectsInArea = new List<GameObject>();
-
-        if (trigger != null)
-        {
-            foreach (GameObject obj in objects)
-            {
-                if (ObjectMatchesMask(obj))
-                {
-                    Collider objCollider = obj.GetComponent<Collider>();
-                    if (objCollider != null)
-                    {
-                        Bounds objBounds = objCollider.bounds;
-                        if (trigger.bounds.Intersects(objBounds))
-                        {
-                            objectsInArea.Add(obj);
-                        }
-                    }
-                }
-            }
-        }
-
         return objectsInArea.ToArray();
     }
 
     public int GetObjectCount()
     {
-        return GetObjectsInArea().Length;
+        return objectsInArea.Count;
     }
 
     private bool ObjectMatchesMask(GameObject obj)
