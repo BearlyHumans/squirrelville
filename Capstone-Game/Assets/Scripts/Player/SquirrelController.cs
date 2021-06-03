@@ -72,10 +72,13 @@ namespace Player
 
             refs.fCam.UpdateCamRotFromImput();
 
+            int foodCount = behaviourScripts.foodGrabber.GetFoodCount();
+            int foodCountBallForm = behaviourScripts.foodGrabber.foodCountBallForm;
+
             //Debug State Changes
-            if (Input.GetKeyDown(KeyCode.B))
+            if (Input.GetKeyDown(KeyCode.B) && foodCount >= foodCountBallForm)
                 EnterBallState();
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.R) || foodCount < foodCountBallForm)
                 EnterRunState();
             if (Input.GetKeyDown(KeyCode.G))
                 EnterGlideState();
