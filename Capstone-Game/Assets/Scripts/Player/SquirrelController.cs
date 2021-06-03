@@ -73,9 +73,9 @@ namespace Player
             refs.fCam.UpdateCamRotFromImput();
 
             //Debug State Changes
-            if (Input.GetKeyDown(KeyCode.B))
+            if (Input.GetKeyDown(KeyCode.B) && CanEnterBallState())
                 EnterBallState();
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.R) || !CanEnterBallState())
                 EnterRunState();
             if (Input.GetKeyDown(KeyCode.G))
                 EnterGlideState();
@@ -96,6 +96,13 @@ namespace Player
 
             refs.fCam.UpdateCamPos();
             refs.fCam.UpdateDolly();
+        }
+
+        private bool CanEnterBallState()
+        {
+            int foodCount = behaviourScripts.foodGrabber.GetFoodCount();
+            int foodCountBallForm = behaviourScripts.foodGrabber.foodCountBallForm;
+            return foodCount >= foodCountBallForm;
         }
 
         private void EnterBallState()

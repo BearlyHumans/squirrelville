@@ -25,6 +25,9 @@ public class SquirrelFoodGrabber : MonoBehaviour
     [Tooltip("The maximum number of food that can be in the player's inventory at once (-1 to disable)")]
     [Min(-1)]
     public int maxFoodInInventory = 10; // -1 to disable
+    [Tooltip("How much food does the squirrel need to swallow to be able to turn into a ball")]
+    [Min(0)]
+    public int foodCountBallForm = 0;
 
     [Header("Throwing up food")]
 
