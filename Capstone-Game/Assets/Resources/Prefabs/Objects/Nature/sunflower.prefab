@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5091270104932687566}
   - component: {fileID: 9093796134538435726}
   - component: {fileID: 4196582263639759538}
+  - component: {fileID: 1391338435907247364}
   m_Layer: 0
   m_Name: sunflower
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 918678621264148655}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -216.29167, y: -134.01645, z: 40.770355}
-  m_LocalScale: {x: 1.2195121, y: 1.2195123, z: 1.2195121}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -74,7 +75,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
+  m_SelectedEditorRenderState: 2
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -83,3 +84,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!205 &1391338435907247364
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918678621264148655}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: -0.027405024, y: 0.8560017, z: -0.014553428}
+  m_Size: 1.712758
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.019549394
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 4196582263639759538}
+  m_Enabled: 1
