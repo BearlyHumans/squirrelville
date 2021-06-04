@@ -112,11 +112,11 @@ Material:
     - _UnityShadowSharpness: 1.21
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.19215688, g: 0.67058825, b: 0.29803923, a: 1}
+    - _Color: {r: 0.8235295, g: 0.85098046, b: 0.4431373, a: 1}
     - _ColorDim: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorDimCurve: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
+    - _ColorDimCurve: {r: 0.19215685, g: 0.67058825, b: 0.2980392, a: 1}
     - _ColorDimExtra: {r: 0.18600926, g: 0.5, b: 0.1533019, a: 1}
-    - _ColorDimSteps: {r: 0.13389997, g: 0.4811321, b: 0.21074645, a: 1}
+    - _ColorDimSteps: {r: 0.4796102, g: 0.6509434, b: 0.36538804, a: 1}
     - _ColorGradient: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FlatRimColor: {r: 0.24554452, g: 0.8113207, b: 0.18752223, a: 1}
