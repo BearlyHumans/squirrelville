@@ -83,6 +83,15 @@ public class Humans : MonoBehaviour
     //used to check if player has been caught recently 
     bool hasCaughtRecently = false;
     //caught timer
+
+    [Tooltip("Time the Player is frozen")]
+    [SerializeField]
+    public float unFreezeTime = 5.0f;
+
+    [Tooltip("Time until can chase player again")]
+    [SerializeField]
+    public float deAggroTimer = 10.0f;
+
     
 
     Transform target;
@@ -175,7 +184,7 @@ public class Humans : MonoBehaviour
 
         if(!caught)
         {
-            Invoke("unFreezePlayer", 5.0f);  
+            Invoke("unFreezePlayer", unFreezeTime);  
             currentState = HumanStates.PathFollowing;
             
         }
@@ -299,7 +308,7 @@ public class Humans : MonoBehaviour
         if(hitColliders.Length == 0)
         {
             caught = false;
-            Invoke("canCatchPlayer", 10.0f);
+            Invoke("canCatchPlayer", deAggroTimer);
         }
         else
         {
