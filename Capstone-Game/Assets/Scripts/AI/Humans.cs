@@ -158,7 +158,7 @@ public class Humans : MonoBehaviour
 
     private void CatchingState()
     {
-        // start timer?
+        // To start timer for ability to catch again
         hasCaughtRecently = true;
 
         //currently caught
@@ -166,7 +166,11 @@ public class Humans : MonoBehaviour
 
         facePlayer();
         foodGraber.ThrowFood();  
+
+        //freeze sqiurriel - to change later
         squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        
+        // checks if player drops food to "pick up" delete - to change to pick and and throw out
         checkForFood();
 
         if(!caught)
@@ -194,8 +198,7 @@ public class Humans : MonoBehaviour
                 {
                     currentState = HumanStates.Catch;
                 }
-                
-                    
+                     
             }
             else
             {
@@ -291,20 +294,16 @@ public class Humans : MonoBehaviour
     void checkForFood()
     {
         float radius = 5.0f;
-        Debug.Log("checking");
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius, layerMask);
 
-        
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius, layerMask);
         if(hitColliders.Length == 0)
         {
-            Debug.Log("No food");
-            
             caught = false;
             Invoke("canCatchPlayer", 10.0f);
         }
         else
         {
-            Debug.Log("delete");
+           
             foreach (var hitCollider in hitColliders)
             {
                 Destroy(hitCollider);
