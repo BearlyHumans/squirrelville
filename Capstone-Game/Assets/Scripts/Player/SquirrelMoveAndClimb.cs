@@ -209,8 +209,9 @@ namespace Player
 
             //If the player wants to and is able to jump, apply a force and set the last jump time.
             bool tryingToJump = Time.time < vals.jumpPressed + settings.J.checkJumpTime;
+            bool offCooldown = Time.time > vals.lastJump + settings.J.jumpCooldown;
             bool groundedOrCoyotee = Grounded || Time.time < vals.lastGrounded + settings.J.coyoteeTime;
-            if (tryingToJump && groundedOrCoyotee)
+            if (tryingToJump && groundedOrCoyotee && offCooldown)
             {
                 vals.jumping = true;
                 vals.lastJump = Time.time;
@@ -305,7 +306,7 @@ namespace Player
             {
                 JumpToClimbWall(1f);
             }
-            else if (vals.dashing)
+            else if (settings.M.dashForAutoclimb && vals.dashing)
             {
                 JumpToClimbWall(0.5f);
             }
@@ -328,8 +329,8 @@ namespace Player
 
             if (FindClimbableWall(out mainHit, distMultiplier))
             {
-                if (Physics.Raycast(transform.position, mainHit.point - transform.position, Vector3.Distance(transform.position, mainHit.point) - 0.01f, settings.WC.rotateToLayers))
-                    return false; //Aborts if there is no line of sight between the player and the chosen point.
+                //if (Physics.Raycast(transform.position, mainHit.point - transform.position, Vector3.Distance(transform.position, mainHit.point) - 0.01f, settings.WC.rotateToLayers))
+                //    return false; //Aborts if there is no line of sight between the player and the chosen point.
                 //Rotate so feet are on new surface.
                 Vector3 dir = mainHit.normal;
                 CustomIntuitiveSnapRotation(-dir);
@@ -451,6 +452,8 @@ namespace Player
                 //public float dashSpeedMinMult = 3f;
                 [Tooltip("Speed of the dash over time.")]
                 public AnimationCurve dashSpeedMultiplierCurve = new AnimationCurve();
+                [Tooltip("True allows climbing checks every frame while dashing.")]
+                public bool dashForAutoclimb = false;
                 [Tooltip("Multiplier for the amount of acceleration applied while in the air.")]
                 public float airControlFactor = 0.5f;
                 [Tooltip("Rate at which speed naturally decays back to max speed (used in case of external forces).")]
