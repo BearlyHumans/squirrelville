@@ -393,7 +393,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5746829590072225206}
-  - component: {fileID: 4564010196243705858}
   m_Layer: 0
   m_Name: eucalyptus_tree_2
   m_TagString: Untagged
@@ -410,36 +409,12 @@ Transform:
   m_GameObject: {fileID: 4939049924508858124}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.25246897, y: 0.25246897, z: 0.25246897}
   m_Children:
   - {fileID: 6479779152066221204}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!205 &4564010196243705858
-LODGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4939049924508858124}
-  serializedVersion: 2
-  m_LocalReferencePoint: {x: 0.1060009, y: 1.8609207, z: -0.025440574}
-  m_Size: 5.7488494
-  m_FadeMode: 0
-  m_AnimateCrossFading: 0
-  m_LastLODIsBillboard: 0
-  m_LODs:
-  - screenRelativeHeight: 0.009738543
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 2637433057863782580}
-    - renderer: {fileID: 296033390178459102}
-    - renderer: {fileID: 1602916299355010530}
-    - renderer: {fileID: 6733259255132228675}
-    - renderer: {fileID: 6434163396317878701}
-    - renderer: {fileID: 1643872269845164767}
-  m_Enabled: 1
 --- !u!1 &6041307626609090111
 GameObject:
   m_ObjectHideFlags: 0
