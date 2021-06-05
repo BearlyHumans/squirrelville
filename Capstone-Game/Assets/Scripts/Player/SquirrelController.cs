@@ -77,11 +77,14 @@ namespace Player
             {
                 if (vals.mState == MovementState.ball)
                     EnterRunState();
-                else
+                else if (CanEnterBallState())
                     EnterBallState();
             }
             if (Input.GetKeyDown(KeyCode.LeftShift))
                 EnterGlideState();
+
+            if (!CanEnterBallState())
+                EnterRunState();
 
             //State Machine
             if (vals.mState == MovementState.moveAndClimb)
