@@ -1,0 +1,22 @@
+ _____             _               _       _ _ _      
+/  ___|           (_)             | |     (_) | |     
+\ `--.  __ _ _   _ _ _ __ _ __ ___| |_   ___| | | ___ 
+ `--. \/ _` | | | | | '__| '__/ _ \ \ \ / / | | |/ _ \
+/\__/ / (_| | |_| | | |  | | |  __/ |\ V /| | | |  __/
+\____/ \__, |\__,_|_|_|  |_|  \___|_| \_/ |_|_|_|\___|
+          | |                                         
+          |_|  
+
+Welcome to Squirrelville! The objective of the game is to sneak into the town,
+steal food for Koala King and return it from him! Once you're holding five
+pieces of food, you can turn into your true form...
+
+Good luck!
+
+Move player: WASD
+Move camera: Mouse
+Jump: Space (jump onto objects to climb)
+Sprint: Shift
+Switch forms: Q (Once holding 5 pieces of food)
+Eat food: Hold left-click (short delay between each food eaten)
+Spit out last food eaten: Hold right-click (increasing speed as button is held)
