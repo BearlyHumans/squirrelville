@@ -51,6 +51,16 @@ public class Humans : MonoBehaviour
     bool walkForward;
     float waitTimer;
 
+    public Animator anim;
+
+    private void UpdAnimator()
+    {
+        if (walking)
+            anim.SetInteger("HumanMove", 1);
+        else
+            anim.SetInteger("HumanMove", 0);
+    }
+
     [Tooltip("Angle in which the NPC can see player")]
     [SerializeField]
     public float detectionAngle = 70;
@@ -163,6 +173,7 @@ public class Humans : MonoBehaviour
                 break;
             }
         }
+        UpdAnimator();
     }
 
     private void CatchingState()
