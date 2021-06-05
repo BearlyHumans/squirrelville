@@ -5,7 +5,16 @@ ModelImporter:
   internalIDToNameTable:
   - first:
       74: 2796165784277714549
-    second: Squirrel Armature|Squirrel ArmatureAction
+    second: Idle
+  - first:
+      74: -5422793431713804659
+    second: Squirrel Armature|Action
+  - first:
+      74: 2796165784277714549
+    second: Idle
+  - first:
+      74: 2796165784277714549
+    second: Idle
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -35,7 +44,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Squirrel Armature|Squirrel ArmatureAction
+      name: Idle
       takeName: Squirrel Armature|Squirrel ArmatureAction
       internalID: 0
       firstFrame: 0
@@ -118,7 +127,7 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: Master
+    rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1

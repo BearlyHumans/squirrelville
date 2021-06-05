@@ -60,10 +60,10 @@ namespace Player
 
         private void UpdAnimator()
         {
-            if (vals.moving)
-                ParentRefs.animator.SetInteger("MoveState", 1);
-            else if (vals.jumping)
+            if (vals.jumping)
                 ParentRefs.animator.SetInteger("MoveState", 2);
+            else if (vals.moving)
+                ParentRefs.animator.SetInteger("MoveState", 1);
             else
                 ParentRefs.animator.SetInteger("MoveState", 0);
         }
