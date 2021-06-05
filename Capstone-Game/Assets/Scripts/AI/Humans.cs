@@ -16,6 +16,10 @@ public class Humans : MonoBehaviour
     
     private HumanStates currentState;
 
+    //---------Food Graber Script---------//
+    private SquirrelFoodGrabber foodGraber;
+    private GameObject foodController;
+
     //----------Path Following -----------//
     [Tooltip("Do you want to npc to pause on each point?")]
     [SerializeField]
@@ -28,13 +32,28 @@ public class Humans : MonoBehaviour
     List<WayPoints> pathPoints;
     [Tooltip("adds a home area that acts as boundary")]
     public HomePoint homePoint;
+
+
+    //---sphere cast ---//
+    private Vector3 origin;
+    private Vector3 sDirection;
+    public LayerMask layerMask;
+
+    // --- burger---- /
     public GameObject burger;
+    
+
     NavMeshAgent navMesh;
+    float distance;
     int currentPathPt;
     bool walking;
     bool waiting;
     bool walkForward;
     float waitTimer;
+
+    [Tooltip("Angle in which the NPC can see player")]
+    [SerializeField]
+    public float detectionAngle = 70;
 
     //--------------Friendly----------------//
     [Tooltip("Is the NPC friendly?")]
@@ -43,7 +62,12 @@ public class Humans : MonoBehaviour
     
     bool givenfood = false;
     float watchedFor = 0.0f;
-    float watchTimer = 10.0f;
+    float watchTimer = 5.0f;
+
+    float timeToFood = 0.0f;
+    [Tooltip("How long until humans give more food")]
+    [SerializeField]
+    public float foodTimer = 10.0f;
 
     //--------------Chase----------------//
     [Tooltip("Detection Radius")]
@@ -53,15 +77,40 @@ public class Humans : MonoBehaviour
     [SerializeField]
     float chaseTime = 10f;
     float chaseTimer;
+
+    // used to check if player is currently caught
+    bool caught = false;
+    //used to check if player has been caught recently 
+    bool hasCaughtRecently = false;
+    //caught timer
+
+    [Tooltip("Time the Player is frozen")]
+    [SerializeField]
+    public float unFreezeTime = 5.0f;
+
+    [Tooltip("Time until can chase player again")]
+    [SerializeField]
+    public float deAggroTimer = 10.0f;
+
+    
+
     Transform target;
+    GameObject squrrielTarget;
+
+    
 
     public void Start() 
     {
+        foodController = GameObject.FindWithTag("Player");
+        foodGraber = foodController.GetComponent<SquirrelFoodGrabber>();
+
         navMesh = this.GetComponent<NavMeshAgent>();
+
         chaseTimer = chaseTime;
         // singleton - ask jake about game controller.
 
         target = GameObject.FindWithTag("Player").transform;
+        squrrielTarget = GameObject.FindWithTag("Player");
 
         currentState = HumanStates.PathFollowing;
         if(navMesh == null)
@@ -86,8 +135,10 @@ public class Humans : MonoBehaviour
     public void Update() 
     {
         
-        float distance = Vector3.Distance(target.position, transform.position);
-    
+        distance = Vector3.Distance(target.position, transform.position);
+        timeToFood += Time.deltaTime;
+        
+        
         // -----States------
         switch(currentState)
         {
@@ -116,7 +167,27 @@ public class Humans : MonoBehaviour
 
     private void CatchingState()
     {
+        // To start timer for ability to catch again
+        hasCaughtRecently = true;
+
+        //currently caught
+        caught = true;
+
+        facePlayer();
+        foodGraber.ThrowFood();  
+
+        //freeze sqiurriel - to change later
+        squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         
+        // checks if player drops food to "pick up" delete - to change to pick and and throw out
+        checkForFood();
+
+        if(!caught)
+        {
+            Invoke("unFreezePlayer", unFreezeTime);  
+            currentState = HumanStates.PathFollowing;
+            
+        }
     }
 
     private void ChaseState()
@@ -125,10 +196,18 @@ public class Humans : MonoBehaviour
         {
             SeePlayer();
             navMesh.SetDestination(target.position);
+            
             if (chaseTimer > 0f)
             {   
+                
+                Debug.DrawLine(transform.position, target.position);
+
                 chaseTimer -= Time.deltaTime;
-                    
+                if(distance < 1.0f)
+                {
+                    currentState = HumanStates.Catch;
+                }
+                     
             }
             else
             {
@@ -151,14 +230,23 @@ public class Humans : MonoBehaviour
         watchedFor += Time.deltaTime;
         facePlayer();
         navMesh.SetDestination(transform.position);
+        
         if (!givenfood)
         {
-           Instantiate(burger, new Vector3(transform.position.x, transform.position.y , transform.position.z), Quaternion.identity); 
+           Instantiate(burger, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
            givenfood = true;
+           timeToFood = 0.0f;
         }
-        if(watchedFor > watchTimer )
+
+        if(watchedFor > watchTimer)
         {
             currentState = HumanStates.PathFollowing;
+            watchedFor = 0.0f;
+        }
+
+        if(timeToFood > foodTimer)
+        {
+            givenfood = false;
         }
     }
 
@@ -212,23 +300,45 @@ public class Humans : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
 
+    void checkForFood()
+    {
+        float radius = 5.0f;
+
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius, layerMask);
+        if(hitColliders.Length == 0)
+        {
+            caught = false;
+            Invoke("canCatchPlayer", deAggroTimer);
+        }
+        else
+        {
+           
+            foreach (var hitCollider in hitColliders)
+            {
+                Destroy(hitCollider);
+            } 
+        }
+    }
+
     bool SeePlayer()
     {
         
         float distance = Vector3.Distance(target.position, transform.position);
         Vector3 targetDir = target.position - transform.position;
-        float angle = 45f;
+    
         float angleToPlayer = (Vector3.Angle(targetDir, transform.forward));
         RaycastHit hit;
  
-        if ((angleToPlayer >= -angle && angleToPlayer <= angle) && (distance <= range))
+        if ((angleToPlayer >= -detectionAngle && angleToPlayer <= detectionAngle) && (distance <= range))
         {
             if(Physics.Linecast (transform.position, target.transform.position, out hit))
             {
                 if(hit.transform.tag == "Player")
                 {
-                    return true;
+                    if(!hasCaughtRecently)
+                        return true;
                 }
+                
             }
         }
         return false;
@@ -245,6 +355,16 @@ public class Humans : MonoBehaviour
         {
             return true;
         } 
+    }
+
+    void unFreezePlayer()
+    {
+        squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+    }
+
+    void canCatchPlayer()
+    {
+        hasCaughtRecently = false;
     }
 
     private void SetDest()

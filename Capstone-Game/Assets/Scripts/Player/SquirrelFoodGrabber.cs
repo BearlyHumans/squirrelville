@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody))]
 public class SquirrelFoodGrabber : MonoBehaviour
@@ -24,6 +25,9 @@ public class SquirrelFoodGrabber : MonoBehaviour
     [Tooltip("The maximum number of food that can be in the player's inventory at once (-1 to disable)")]
     [Min(-1)]
     public int maxFoodInInventory = 10; // -1 to disable
+    [Tooltip("How much food does the squirrel need to swallow to be able to turn into a ball")]
+    [Min(0)]
+    public int foodCountBallForm = 0;
 
     [Header("Throwing up food")]
 
@@ -38,6 +42,10 @@ public class SquirrelFoodGrabber : MonoBehaviour
     public float minThrowDelay = 0.2f;
     private float throwTime = 0.0f;
     private float throwDelay;
+
+    [Header("Events")]
+    public UnityEvent<GameObject> pickupEvent;
+    public UnityEvent<GameObject> throwEvent;
 
     private void Awake()
     {
@@ -80,6 +88,8 @@ public class SquirrelFoodGrabber : MonoBehaviour
         foodStack.Push(food);
         food.SetActive(false);
         pickupTime = Time.time + pickupDelay;
+
+        pickupEvent.Invoke(food);
     }
 
     [ContextMenu("Throw food")]
@@ -99,6 +109,8 @@ public class SquirrelFoodGrabber : MonoBehaviour
 
         throwTime = Time.time + throwDelay;
         throwDelay = Mathf.Max(throwDelay / throwDelayDivisor, minThrowDelay);
+
+        throwEvent.Invoke(food);
     }
 
     public bool CanEatFood()
