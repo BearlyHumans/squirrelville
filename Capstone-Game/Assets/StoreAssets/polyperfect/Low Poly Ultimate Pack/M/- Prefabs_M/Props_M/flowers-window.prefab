@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 33206942982420314}
   - component: {fileID: 23702967467191750}
   - component: {fileID: 65441225478349866}
+  - component: {fileID: 3867439808780353342}
   m_Layer: 0
   m_Name: flowers-window
   m_TagString: Untagged
@@ -93,7 +94,21 @@ BoxCollider:
   m_GameObject: {fileID: 1614220683297960}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.90837, y: 0.5051373, z: 0.34363747}
   m_Center: {x: -0.0007003695, y: 0.25256866, z: -0.0005601123}
+--- !u!64 &3867439808780353342
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1614220683297960}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 8134cfb388cb94d7cb28ef0e8564d578, type: 3}
