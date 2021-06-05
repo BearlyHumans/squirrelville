@@ -48,6 +48,7 @@ namespace Player
         /// <summary> Call all the update steps for movement, climing and jumping. </summary>
         public override void ManualUpdate()
         {
+            UpdInput();
             CheckGravity();
             UpdMove();
             UpdJump();
@@ -66,13 +67,10 @@ namespace Player
             else
                 ParentRefs.animator.SetInteger("MoveState", 0);
         }
-    
 
-        /// <summary> Perform all the movement functions of the player, including making all forces including friction and input relative to the players rotation. </summary>
-        private void UpdMove()
+        private void UpdInput()
         {
-            //--------------------------MOVEMENT PHYSICS + INPUTS--------------------------//
-            //INPUT
+            //Joystick or WASD motion:
             vals.desiredDirection = new Vector3();
             Vector3 camForward = Vector3.Cross(transform.forward, ParentRefs.fCam.transform.right);
             vals.desiredDirection += camForward * Input.GetAxis("Vertical");
@@ -80,6 +78,22 @@ namespace Player
 
             vals.desiredDirection.Normalize();
 
+            //Dash button:
+            if (Input.GetButton("Dash"))
+            {
+                if (vals.dashing == false)
+                    vals.startedDashing = Time.time;
+                vals.dashing = true;
+            }
+            else
+                vals.dashing = false;
+        }
+    
+
+        /// <summary> Perform all the movement functions of the player, including making all forces including friction and input relative to the players rotation. </summary>
+        private void UpdMove()
+        {
+            //--------------------------MOVEMENT PHYSICS + INPUTS--------------------------//
             if (Grounded)
             {
                 vals.lastGrounded = Time.time;
@@ -88,13 +102,21 @@ namespace Player
 
             //Factor any modifiers like sneaking or slow effects into the max speed;
             float alteredMaxSpeed = settings.M.maxSpeed;
+            float alteredAcceleration = settings.M.acceleration;
+
+            if (vals.dashing)
+            {
+                float value = settings.M.dashSpeedMultiplierCurve.Evaluate(Time.time - vals.startedDashing);
+                alteredMaxSpeed *= value;
+                alteredAcceleration *= value;
+            }
+
+            if (Grounded)
+                alteredAcceleration *= settings.M.airControlFactor;
 
             //Calculate the ideal velocity from the input and the acceleration settings.
             Vector3 newVelocity;
-            if (Grounded)
-                newVelocity = ParentRefs.RB.velocity + (vals.desiredDirection * settings.M.acceleration * Time.deltaTime);
-            else
-                newVelocity = ParentRefs.RB.velocity + (vals.desiredDirection * settings.M.acceleration * settings.M.airControlFactor * Time.deltaTime);
+            newVelocity = ParentRefs.RB.velocity + (vals.desiredDirection * alteredAcceleration * Time.deltaTime);
 
             //Transform current and ideal velocity to local space so non-vertical (lateral) speed can be calculated and limited.
             Vector3 TransformedOldVelocity = transform.InverseTransformVector(ParentRefs.RB.velocity);
@@ -187,8 +209,9 @@ namespace Player
 
             //If the player wants to and is able to jump, apply a force and set the last jump time.
             bool tryingToJump = Time.time < vals.jumpPressed + settings.J.checkJumpTime;
+            bool offCooldown = Time.time > vals.lastJump + settings.J.jumpCooldown;
             bool groundedOrCoyotee = Grounded || Time.time < vals.lastGrounded + settings.J.coyoteeTime;
-            if (tryingToJump && groundedOrCoyotee)
+            if (tryingToJump && groundedOrCoyotee && offCooldown)
             {
                 vals.jumping = true;
                 vals.lastJump = Time.time;
@@ -281,12 +304,16 @@ namespace Player
         {
             if (Input.GetButtonDown("Jump"))
             {
-                TeleportToClimbWall();
+                JumpToClimbWall(1f);
+            }
+            else if (settings.M.dashForAutoclimb && vals.dashing)
+            {
+                JumpToClimbWall(0.5f);
             }
             else
             {
                 RaycastHit hit;
-                if (FindClimbableWall(out hit))
+                if (FindClimbableWall(out hit, 0.5f))
                 {
                     refs.climbPointDisplay.position = hit.point;
                     refs.climbPointDisplay.gameObject.SetActive(true);
@@ -296,12 +323,14 @@ namespace Player
             }
         }
 
-        private bool TeleportToClimbWall()
+        private bool JumpToClimbWall(float distMultiplier)
         {
             RaycastHit mainHit;
 
-            if (FindClimbableWall(out mainHit))
+            if (FindClimbableWall(out mainHit, distMultiplier))
             {
+                //if (Physics.Raycast(transform.position, mainHit.point - transform.position, Vector3.Distance(transform.position, mainHit.point) - 0.01f, settings.WC.rotateToLayers))
+                //    return false; //Aborts if there is no line of sight between the player and the chosen point.
                 //Rotate so feet are on new surface.
                 Vector3 dir = mainHit.normal;
                 CustomIntuitiveSnapRotation(-dir);
@@ -318,12 +347,13 @@ namespace Player
             return false;
         }
 
-        private bool FindClimbableWall(out RaycastHit hit)
+        private bool FindClimbableWall(out RaycastHit hit, float distanceMultiplier)
         {
             RaycastHit mainHit;
 
             Vector3 sphereStart;
             Vector3 sphereDir;
+            float modifiedDist = settings.WC.sphereDetectDistance * distanceMultiplier;
             if (vals.desiredDirection != Vector3.zero)
             {
                 sphereStart = refs.startClimbCheckRay.position - (vals.desiredDirection * settings.WC.sphereDetectRadius);
@@ -335,7 +365,7 @@ namespace Player
                 sphereDir = ParentRefs.body.forward;
             }
 
-            bool found = Physics.SphereCast(sphereStart, settings.WC.sphereDetectRadius, sphereDir, out mainHit, 1, settings.WC.climableLayers.value);
+            bool found = Physics.SphereCast(sphereStart, settings.WC.sphereDetectRadius, sphereDir, out mainHit, modifiedDist, settings.WC.climableLayers.value);
 
             //Do a second, larger pass if no target was found with the small forwards check.
             if (!found)
@@ -352,7 +382,7 @@ namespace Player
                     sphereDir = ParentRefs.body.forward;
                 }
 
-                found = Physics.SphereCast(sphereStart, secondPassRadius, sphereDir, out mainHit, 1, settings.WC.climableLayers.value);
+                found = Physics.SphereCast(sphereStart, secondPassRadius, sphereDir, out mainHit, modifiedDist, settings.WC.climableLayers.value);
             }
 
             hit = mainHit;
@@ -378,6 +408,8 @@ namespace Player
             public float jumpPressed;
             public bool jumping;
             public bool moving;
+            public bool dashing;
+            public float startedDashing;
             public bool eliminateUpForce;
             public Vector3 lastRotationDir;
             public Vector3 desiredDirection;
@@ -414,6 +446,14 @@ namespace Player
                 public float acceleration = 20f;
                 [Tooltip("The horizontal speed at which no new acceleration is allowed by the player.")]
                 public float maxSpeed = 3f;
+                //[Tooltip("Multiplier for the max speed when starting a dash.")]
+                //public float dashSpeedMaxMult = 3f;
+                //[Tooltip("Multiplier for the max speed after dashing for a long time.")]
+                //public float dashSpeedMinMult = 3f;
+                [Tooltip("Speed of the dash over time.")]
+                public AnimationCurve dashSpeedMultiplierCurve = new AnimationCurve();
+                [Tooltip("True allows climbing checks every frame while dashing.")]
+                public bool dashForAutoclimb = false;
                 [Tooltip("Multiplier for the amount of acceleration applied while in the air.")]
                 public float airControlFactor = 0.5f;
                 [Tooltip("Rate at which speed naturally decays back to max speed (used in case of external forces).")]
