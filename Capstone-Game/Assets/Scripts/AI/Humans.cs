@@ -105,7 +105,7 @@ public class Humans : MonoBehaviour
     
 
     Transform target;
-    GameObject squrrielTarget;
+    Rigidbody squrrielBody;
 
     
 
@@ -120,7 +120,7 @@ public class Humans : MonoBehaviour
         // singleton - ask jake about game controller.
 
         target = GameObject.FindWithTag("Player").transform;
-        squrrielTarget = GameObject.FindWithTag("Player");
+        squrrielBody = GameObject.FindWithTag("Player").GetComponent<Rigidbody>();
 
         currentState = HumanStates.PathFollowing;
         if(navMesh == null)
@@ -178,6 +178,7 @@ public class Humans : MonoBehaviour
 
     private void CatchingState()
     {
+        Debug.Log("catching");
         // To start timer for ability to catch again
         hasCaughtRecently = true;
 
@@ -188,11 +189,15 @@ public class Humans : MonoBehaviour
         foodGraber.ThrowFood();  
 
         //freeze sqiurriel - to change later
-        squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-        
+        if(caught)
+        {
+            Debug.Log("caught");
+            squrrielBody.constraints = RigidbodyConstraints.FreezePosition;
+            
+        }
         // checks if player drops food to "pick up" delete - to change to pick and and throw out
+    
         checkForFood();
-
         if(!caught)
         {
             Invoke("unFreezePlayer", unFreezeTime);  
@@ -370,7 +375,7 @@ public class Humans : MonoBehaviour
 
     void unFreezePlayer()
     {
-        squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+        squrrielBody.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
     void canCatchPlayer()

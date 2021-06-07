@@ -119,7 +119,7 @@ namespace Player
             refs.runBody.SetActive(false);
             refs.ballBody.SetActive(true);
 
-            refs.RB.constraints = RigidbodyConstraints.None;
+            //refs.RB.constraints = RigidbodyConstraints.None;
             refs.RB.useGravity = true;
 
             refs.fCam.UseRelativeAngles = false;
@@ -133,7 +133,7 @@ namespace Player
             refs.runBody.SetActive(true);
             refs.ballBody.SetActive(false);
 
-            refs.RB.constraints = RigidbodyConstraints.FreezeRotation;
+            //refs.RB.constraints = RigidbodyConstraints.FreezeRotation;
 
             refs.fCam.UseRelativeAngles = true;
             refs.fCam.cameraTarget = refs.model.gameObject;
