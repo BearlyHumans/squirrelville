@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SquirrelControllerSettings;
 using Player;
 
 namespace Player
@@ -74,7 +73,9 @@ namespace Player
             vals.desiredDirection = new Vector3();
             Vector3 camForward = Vector3.Cross(transform.forward, ParentRefs.fCam.transform.right);
             vals.desiredDirection += camForward * Input.GetAxis("Vertical");
-            vals.desiredDirection += ParentRefs.fCam.transform.right * Input.GetAxis("Horizontal");
+            Vector3 camright = Vector3.Cross(camForward, transform.forward);
+            vals.desiredDirection += camright * Input.GetAxis("Horizontal");
+            //vals.desiredDirection += ParentRefs.fCam.transform.right * Input.GetAxis("Horizontal");
 
             vals.desiredDirection.Normalize();
 
@@ -118,13 +119,36 @@ namespace Player
             Vector3 newVelocity;
             newVelocity = ParentRefs.RB.velocity + (vals.desiredDirection * alteredAcceleration * Time.deltaTime);
 
-            //Transform current and ideal velocity to local space so non-vertical (lateral) speed can be calculated and limited.
-            Vector3 TransformedOldVelocity = transform.InverseTransformVector(ParentRefs.RB.velocity);
-            Vector3 TransformedNewVelocity = transform.InverseTransformVector(newVelocity);
+            Vector3 TransformedOldVelocity;
+            Vector3 TransformedNewVelocity;
+            Vector3 LateralVelocityOld;
+            Vector3 LateralVelocityNew;
+            Vector3 edgeSafeInput = vals.desiredDirection;
+            if (Input.GetKey(KeyCode.C))
+            {
+                edgeSafeInput = AvoidEdgesLinearInput(vals.desiredDirection, transform.forward) * alteredAcceleration * Time.deltaTime;
 
-            //Get lateral speed by cutting out local-z component (Must be z for LookRotation function to work. Would otherwise be y).
-            Vector3 LateralVelocityOld = new Vector3(TransformedOldVelocity.x, TransformedOldVelocity.y, 0);
-            Vector3 LateralVelocityNew = new Vector3(TransformedNewVelocity.x, TransformedNewVelocity.y, 0);
+                TransformedOldVelocity = transform.InverseTransformVector(ParentRefs.RB.velocity);
+                TransformedNewVelocity = transform.InverseTransformVector(ParentRefs.RB.velocity + edgeSafeInput);
+
+                LateralVelocityOld = new Vector3(TransformedOldVelocity.x, TransformedOldVelocity.y, 0);
+                LateralVelocityNew = new Vector3(TransformedNewVelocity.x, TransformedNewVelocity.y, 0);
+            }
+            else
+            {
+                //Transform current and ideal velocity to local space so non-vertical (lateral) speed can be calculated and limited.
+                TransformedOldVelocity = transform.InverseTransformVector(ParentRefs.RB.velocity);
+                TransformedNewVelocity = transform.InverseTransformVector(newVelocity);
+
+                //Get lateral speed by cutting out local-z component (Must be z for LookRotation function to work. Would otherwise be y).
+                LateralVelocityOld = new Vector3(TransformedOldVelocity.x, TransformedOldVelocity.y, 0);
+                LateralVelocityNew = new Vector3(TransformedNewVelocity.x, TransformedNewVelocity.y, 0);
+
+                LateralVelocityNew = AvoidEdgesLinear(LateralVelocityNew);
+            }
+
+
+            //LateralVelocityNew = AvoidEdges(LateralVelocityNew);
 
             //If the local lateral velocity of the player is above the max speed, do not allow any increases in speed due to input.
             if (LateralVelocityNew.magnitude > alteredMaxSpeed)
@@ -166,10 +190,7 @@ namespace Player
                     else
                         LateralVelocityNew = LateralVelocityNew.normalized * Mathf.Max(0, LateralVelocityNew.magnitude - (settings.M.airStoppingForce * Time.deltaTime));
                 }
-                vals.moving = false;
             }
-            else
-                vals.moving = true;
 
             //Delete the 'upwards' force (relative to player rotation), if requested by the climbing system.
             if (vals.eliminateUpForce)
@@ -178,18 +199,23 @@ namespace Player
                 TransformedNewVelocity.z = 0;
             }
 
-            //Apply a small force towards (relative) down when velocity is near 0, to make sure player sticks to walls. 
+            /*
+            //Apply a small force towards (relative) down when velocity is near 0, to make sure player sticks to walls.
             float z = TransformedNewVelocity.z;
             if (TransformedNewVelocity.z.Inside(-settings.WC.wallStickTriggerRange, settings.WC.wallStickTriggerRange))
                 TransformedNewVelocity.z += settings.WC.wallStickForce;
+            */
+
+            //Check if the current (lateral) velocity would take the player over an edge.
+            //LateralVelocityNew = AvoidEdges(LateralVelocityNew);
+            if (LateralVelocityNew.magnitude > settings.M.turningThreshold)
+                vals.moving = true;
+            else
+                vals.moving = false;
 
             //Rotate the character if the lateral velocity is above a threshold.
             if (LateralVelocityNew.magnitude > settings.M.maxSpeed * settings.M.turningThreshold)
-            {
-                //Quaternion bodyPreRotation = ParentRefs.model.rotation;
                 ParentRefs.body.rotation = Quaternion.LookRotation(transform.TransformVector(LateralVelocityNew), -transform.forward);
-                //ParentRefs.model.rotation = bodyPreRotation;
-            }
 
             //Add the vertical component back, convert it to world-space, and set the new velocity to it.
             LateralVelocityNew += new Vector3(0, 0, TransformedNewVelocity.z);
@@ -265,10 +291,19 @@ namespace Player
 
                 CustomIntuitiveSnapRotation(-dir);
 
-                if (Vector3.Angle(vals.lastRotationDir, dir) > settings.WC.wallStickDangerAngle)
+                //if the ground is within the wall-stick range, teleport to it, or if it's angle is too different eliminate the 'up force' to stop player flying.
+                float sqrDistToSurf = Vector3.SqrMagnitude(mainHit.point - transform.position);
+                if (sqrDistToSurf.Inside(Mathf.Pow(settings.WC.wallStickTriggerRange.x, 2), Mathf.Pow(settings.WC.wallStickTriggerRange.y, 2)))
+                {
+                    transform.position = mainHit.point;
+                    vals.eliminateUpForce = true;
+                }
+                else if (Vector3.Angle(vals.lastRotationDir, dir) > settings.WC.wallStickDangerAngle)
                 {
                     vals.eliminateUpForce = true;
                 }
+
+
                 vals.lastRotationDir = dir;
 
                 vals.lastOnSurface = Time.time;
@@ -387,6 +422,124 @@ namespace Player
 
             hit = mainHit;
             return found;
+        }
+
+        private bool CheckForEdge(Vector3 lateralVelocity)
+        {
+            Vector3 pos = refs.climbRotateCheckRay.position + lateralVelocity.normalized * 0.15f;
+            Debug.DrawLine(pos, pos + transform.forward * settings.WC.edgeStopDownDist);
+            return Physics.Raycast(pos, transform.forward, settings.WC.edgeStopDownDist, settings.WC.rotateToLayers);
+        }
+        
+        private Vector3 AvoidEdges(Vector3 lateralVelocity)
+        {
+            float[] angles = new float[5];
+            angles[0] = 0;
+            angles[1] = settings.WC.edgeSlideAngle / 2;
+            angles[2] = -settings.WC.edgeSlideAngle / 2;
+            angles[3] = settings.WC.edgeSlideAngle;
+            angles[4] = -settings.WC.edgeSlideAngle;
+
+            Vector3[] points = new Vector3[5];
+            points[0] = lateralVelocity.normalized;
+
+            points[1] = Quaternion.AngleAxis(angles[1], Vector3.forward) * points[0];
+            points[2] = Quaternion.AngleAxis(angles[2], Vector3.forward) * points[0];
+            points[3] = Quaternion.AngleAxis(angles[3], Vector3.forward) * points[0];
+            points[4] = Quaternion.AngleAxis(angles[4], Vector3.forward) * points[0];
+
+            Vector3 pos;
+            //THIS LOOP IS FOR ANGLE DEBUGGING ONLY. DELETE ASAP.
+            for (int i = 0; i < Mathf.Min(points.Length, angles.Length); ++i)
+            {
+                float mag = settings.WC.edgeStopLatRadius;// * (1 + (angles[i] * Mathf.Sign(angles[i]) / 45f));
+                pos = refs.climbRotateCheckRay.position + transform.TransformVector(points[i]) * mag;
+                Debug.DrawLine(pos, pos + transform.forward * settings.WC.edgeStopDownDist, Color.magenta);
+            }
+            for (int i = 0; i < Mathf.Min(points.Length, angles.Length); ++i) 
+            {
+                float mag = settings.WC.edgeStopLatRadius;// * (1 + (angles[i] * Mathf.Sign(angles[i]) / 45f));
+                pos = refs.climbRotateCheckRay.position + transform.TransformVector(points[i]) * mag;
+                //Debug.DrawLine(pos, pos + transform.forward * settings.WC.edgeStopDownDist, Color.magenta);
+                if (Physics.Raycast(pos, transform.forward, settings.WC.edgeStopDownDist, settings.WC.rotateToLayers))
+                    return points[i] * lateralVelocity.magnitude * (1 - (angles[i] / 360f));
+            }
+
+            return Vector3.zero;
+        }
+
+        private Vector3 AvoidEdgesLinear(Vector3 lateralVelocity)
+        {
+            Vector3[] points = new Vector3[5];
+            points[0] = lateralVelocity.normalized;
+
+            points[1] = points[0] + Vector3.Cross(points[0], Vector3.forward) * (settings.WC.edgeSlideAngle / 45);
+            points[2] = points[0] - Vector3.Cross(points[0], Vector3.forward) * (settings.WC.edgeSlideAngle / 45);
+            points[3] = points[0] + Vector3.Cross(points[0], Vector3.forward) * (settings.WC.edgeSlideAngle / 90);
+            points[4] = points[0] - Vector3.Cross(points[0], Vector3.forward) * (settings.WC.edgeSlideAngle / 90);
+
+            float[] multiplier = new float[5];
+            multiplier[0] = 1;
+            multiplier[1] = 0.6f;
+            multiplier[2] = 0.6f;
+            multiplier[3] = 0.8f;
+            multiplier[4] = 0.8f;
+
+            Vector3 pos;
+            Vector3 multPos;
+            //THIS LOOP IS FOR ANGLE DEBUGGING ONLY. DELETE ASAP.
+            for (int i = 0; i < points.Length; ++i)
+            {
+                float mag = settings.WC.edgeStopLatRadius;// * (1 + (angles[i] * Mathf.Sign(angles[i]) / 45f));
+                pos = refs.climbRotateCheckRay.position + transform.TransformVector(points[i]) * mag;
+                multPos = refs.climbRotateCheckRay.position + transform.TransformVector(points[i]) * multiplier[i];
+                Debug.DrawLine(pos, pos + transform.forward * settings.WC.edgeStopDownDist, Color.magenta);
+                Debug.DrawLine(multPos, multPos + transform.forward * settings.WC.edgeStopDownDist, Color.blue);
+            }
+            for (int i = 0; i < points.Length; ++i)
+            {
+                float mag = settings.WC.edgeStopLatRadius;// * (1 + (angles[i] * Mathf.Sign(angles[i]) / 45f));
+                pos = refs.climbRotateCheckRay.position + transform.TransformVector(points[i]) * mag;
+                //Debug.DrawLine(pos, pos + transform.forward * settings.WC.edgeStopDownDist, Color.magenta);
+                if (Physics.Raycast(pos, transform.forward, settings.WC.edgeStopDownDist, settings.WC.rotateToLayers))
+                    return points[i].normalized * lateralVelocity.magnitude * multiplier[i];
+            }
+
+            return Vector3.zero;
+        }
+
+        private Vector3 AvoidEdgesLinearInput(Vector3 lateralVelocity, Vector3 up)
+        {
+            //THIS WILL NEVER WORK BECAUSE:
+            //- The player never has full control of the squirrel, so cutting or changing the INPUT is not good enough to stop or turn at edges.
+
+            Debug.DrawLine(transform.position, transform.position + lateralVelocity, Color.red);
+
+            Vector3[] points = new Vector3[5];
+            points[0] = lateralVelocity.normalized;
+
+            points[1] = points[0] + Vector3.Cross(points[0], up) * (settings.WC.edgeSlideAngle / 45);
+            points[2] = points[0] - Vector3.Cross(points[0], up) * (settings.WC.edgeSlideAngle / 45);
+            points[3] = points[0] + Vector3.Cross(points[0], up) * (settings.WC.edgeSlideAngle / 90);
+            points[4] = points[0] - Vector3.Cross(points[0], up) * (settings.WC.edgeSlideAngle / 90);
+
+            Vector3 pos;
+            //THIS LOOP IS FOR ANGLE DEBUGGING ONLY. DELETE ASAP.
+            for (int i = 0; i < points.Length; ++i)
+            {
+                float mag = settings.WC.edgeStopLatRadius;
+                pos = refs.climbRotateCheckRay.position + points[i] * mag;
+                Debug.DrawLine(pos, pos + transform.forward * settings.WC.edgeStopDownDist, Color.magenta);
+            }
+            for (int i = 0; i < points.Length; ++i)
+            {
+                float mag = settings.WC.edgeStopLatRadius;
+                pos = refs.climbRotateCheckRay.position + points[i] * mag;
+                if (Physics.Raycast(pos, transform.forward, settings.WC.edgeStopDownDist, settings.WC.rotateToLayers))
+                    return points[i].normalized * lateralVelocity.magnitude;
+            }
+
+            return Vector3.zero;
         }
 
         //~~~~~~~~~~ COROUTINES ~~~~~~~~~~
@@ -510,14 +663,20 @@ namespace Player
                 public float secondPassMultiplier = 5f;
                 [Tooltip("Length of the sphere-cast that detects surfaces. Larger means the check will find objects further from the player.")]
                 public float sphereDetectDistance = 0.5f;
-                [Tooltip("Distance from the center of the character from which walls below will be detected.")]
+                [Tooltip("Distance from the center of the character from which surfaces below will be detected.")]
                 public float surfaceDetectRange = 0.15f;
+                [Tooltip("Distance from the center of the character in the direction of movement from which edges will be detected.")]
+                public float edgeStopLatRadius = 0.15f;
+                [Tooltip("Maximum distance from the check point to a surface to count as not an edge.")]
+                public float edgeStopDownDist = 0.15f;
+                [Tooltip("Angle from the movement direction from which secondary edge checks are done (also checks half way between and on both sides).")]
+                public float edgeSlideAngle = 30f;
                 [Tooltip("If the angle between the current rotation and the new rotation when climbing is above this value, remove the vertical velocity to help the player stich to the wall.")]
                 public float wallStickDangerAngle = 10f;
                 [Tooltip("Force applied when the character is near a wall to ensure they stick to it.")]
                 public float wallStickForce = 0.2f;
                 [Tooltip("Range of velocity (at normal to wall) within which sticking force is applied.")]
-                public float wallStickTriggerRange = 0.5f;
+                public Vector2 wallStickTriggerRange = new Vector2(0.05f, 0.1f);
                 [Tooltip("Time away from a surface before the character rotates to face the ground.")]
                 public float noSurfResetTime = 0.2f;
                 [Tooltip("How quickly the squirrel model rotates to face the correct direction.")]
@@ -527,10 +686,4 @@ namespace Player
             }
         }
     }
-}
-
-//Put in seperate namespace since no other code should need to use this.
-//Also seperated to sub-classes for ease of use in editor and autocomplete.
-namespace SquirrelControllerSettings
-{
 }
