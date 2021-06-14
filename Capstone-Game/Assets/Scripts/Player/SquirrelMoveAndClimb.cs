@@ -42,17 +42,16 @@ namespace Player
             vals.lastRotationDir = Vector3.down;
         }
 
-        //~~~~~~~~~~ FUNCTIONS ~~~~~~~~~~
+        //~~~~~~~~~~ MAIN UPDATE FUNCTIONS ~~~~~~~~~~
 
         /// <summary> Call all the update steps for movement, climing and jumping. </summary>
         public override void ManualUpdate()
         {
             UpdInput();
-            CheckGravity();
             UpdMove();
             UpdJump();
             JumpOnWall();
-            FindAndRotateToWall();
+            FindAndRotateToSurface();
             RotateModel();
             UpdAnimator();
         }
@@ -89,17 +88,13 @@ namespace Player
             else
                 vals.dashing = false;
         }
-    
-
-        /// <summary> Perform all the movement functions of the player, including making all forces including friction and input relative to the players rotation. </summary>
+        
+        /// <summary> Perform all the movement functions of the player, including applying forces such as friction and input relative to the players rotation. </summary>
         private void UpdMove()
         {
-            //--------------------------MOVEMENT PHYSICS + INPUTS--------------------------//
-            if (Grounded)
-            {
-                vals.lastGrounded = Time.time;
-                vals.jumping = false;
-            }
+            //--------------------------MOVEMENT PHYSICS--------------------------//
+
+            //-----PHASE ONE: GET AND ADJUST INPUT-----//
 
             //Factor any modifiers like sneaking or slow effects into the max speed;
             float alteredMaxSpeed = settings.M.maxSpeed;
@@ -119,36 +114,19 @@ namespace Player
             Vector3 newVelocity;
             newVelocity = ParentRefs.RB.velocity + (vals.desiredDirection * alteredAcceleration * Time.deltaTime);
 
-            Vector3 TransformedOldVelocity;
-            Vector3 TransformedNewVelocity;
-            Vector3 LateralVelocityOld;
-            Vector3 LateralVelocityNew;
-            Vector3 edgeSafeInput = vals.desiredDirection;
-            if (Input.GetKey(KeyCode.C))
-            {
-                edgeSafeInput = AvoidEdgesLinearInput(vals.desiredDirection, transform.forward) * alteredAcceleration * Time.deltaTime;
+            //-----PHASE TWO: SEPERATE VELOCITY TO VERTICAL AND LATERAL-----//
 
-                TransformedOldVelocity = transform.InverseTransformVector(ParentRefs.RB.velocity);
-                TransformedNewVelocity = transform.InverseTransformVector(ParentRefs.RB.velocity + edgeSafeInput);
+            //Transform current and ideal velocity to local space so non-vertical (lateral) speed can be calculated and limited.
+            Vector3 TransformedOldVelocity = transform.InverseTransformVector(ParentRefs.RB.velocity);
+            Vector3 TransformedNewVelocity = transform.InverseTransformVector(newVelocity);
 
-                LateralVelocityOld = new Vector3(TransformedOldVelocity.x, TransformedOldVelocity.y, 0);
-                LateralVelocityNew = new Vector3(TransformedNewVelocity.x, TransformedNewVelocity.y, 0);
-            }
-            else
-            {
-                //Transform current and ideal velocity to local space so non-vertical (lateral) speed can be calculated and limited.
-                TransformedOldVelocity = transform.InverseTransformVector(ParentRefs.RB.velocity);
-                TransformedNewVelocity = transform.InverseTransformVector(newVelocity);
+            //Get lateral speed by cutting out local-z component (Must be z for LookRotation function to work. Would otherwise be y).
+            Vector3 LateralVelocityOld = new Vector3(TransformedOldVelocity.x, TransformedOldVelocity.y, 0);
+            Vector3 LateralVelocityNew = new Vector3(TransformedNewVelocity.x, TransformedNewVelocity.y, 0);
+            
+            //-----PHASE THREE: AVOID EDGES AND SLOW TO MAX SPEED-----//
 
-                //Get lateral speed by cutting out local-z component (Must be z for LookRotation function to work. Would otherwise be y).
-                LateralVelocityOld = new Vector3(TransformedOldVelocity.x, TransformedOldVelocity.y, 0);
-                LateralVelocityNew = new Vector3(TransformedNewVelocity.x, TransformedNewVelocity.y, 0);
-
-                LateralVelocityNew = AvoidEdgesLinear(LateralVelocityNew);
-            }
-
-
-            //LateralVelocityNew = AvoidEdges(LateralVelocityNew);
+            LateralVelocityNew = AvoidEdgesLinear(LateralVelocityNew);
 
             //If the local lateral velocity of the player is above the max speed, do not allow any increases in speed due to input.
             if (LateralVelocityNew.magnitude > alteredMaxSpeed)
@@ -176,6 +154,8 @@ namespace Player
                 }
             }
 
+            //-----PHASE FOUR: STOPPING AND FRICTION-----//
+
             //If the player is not trying to move and not jumping, apply stopping force.
             if (vals.desiredDirection.magnitude < 0.01f && !vals.jumping)
             {
@@ -191,6 +171,8 @@ namespace Player
                         LateralVelocityNew = LateralVelocityNew.normalized * Mathf.Max(0, LateralVelocityNew.magnitude - (settings.M.airStoppingForce * Time.deltaTime));
                 }
             }
+            
+            //-----PHASE FIVE: CHECK OR EDIT RELATIVE AND LATERAL VELOCITY-----//
 
             //Delete the 'upwards' force (relative to player rotation), if requested by the climbing system.
             if (vals.eliminateUpForce)
@@ -199,30 +181,21 @@ namespace Player
                 TransformedNewVelocity.z = 0;
             }
 
-            /*
-            //Apply a small force towards (relative) down when velocity is near 0, to make sure player sticks to walls.
-            float z = TransformedNewVelocity.z;
-            if (TransformedNewVelocity.z.Inside(-settings.WC.wallStickTriggerRange, settings.WC.wallStickTriggerRange))
-                TransformedNewVelocity.z += settings.WC.wallStickForce;
-            */
-
-            //Check if the current (lateral) velocity would take the player over an edge.
-            //LateralVelocityNew = AvoidEdges(LateralVelocityNew);
-            if (LateralVelocityNew.magnitude > settings.M.turningThreshold)
+            //Rotate the character if the lateral velocity is above a threshold, and trigger movement animations.
+            if (LateralVelocityNew.magnitude > settings.M.maxSpeed * settings.M.turningThreshold)
+            {
                 vals.moving = true;
+                ParentRefs.body.rotation = Quaternion.LookRotation(transform.TransformVector(LateralVelocityNew), -transform.forward);
+            }
             else
                 vals.moving = false;
 
-            //Rotate the character if the lateral velocity is above a threshold.
-            if (LateralVelocityNew.magnitude > settings.M.maxSpeed * settings.M.turningThreshold)
-                ParentRefs.body.rotation = Quaternion.LookRotation(transform.TransformVector(LateralVelocityNew), -transform.forward);
+            //-----PHASE SIX: CONVERT TO WORLD AND APPLY-----//
 
-            //Add the vertical component back, convert it to world-space, and set the new velocity to it.
+            //Add the vertical component back, convert the new value back to world-space, and set the rigid bodys velocity to it.
             LateralVelocityNew += new Vector3(0, 0, TransformedNewVelocity.z);
-            newVelocity = transform.TransformVector(LateralVelocityNew);
 
-            Vector3 finalVelocityChange = newVelocity - ParentRefs.RB.velocity;
-            ParentRefs.RB.velocity += finalVelocityChange;
+            ParentRefs.RB.velocity = transform.TransformVector(LateralVelocityNew);
         }
 
         /// <summary> Check for jump input, and do the appropriate jump for the situation (needs work). </summary>
@@ -236,7 +209,7 @@ namespace Player
             //If the player wants to and is able to jump, apply a force and set the last jump time.
             bool tryingToJump = Time.time < vals.jumpPressed + settings.J.checkJumpTime;
             bool offCooldown = Time.time > vals.lastJump + settings.J.jumpCooldown;
-            bool groundedOrCoyotee = Grounded || Time.time < vals.lastGrounded + settings.J.coyoteeTime;
+            bool groundedOrCoyotee = Grounded || Time.time < vals.lastOnSurface + settings.J.coyoteeTime;
             if (tryingToJump && groundedOrCoyotee && offCooldown)
             {
                 vals.jumping = true;
@@ -247,73 +220,76 @@ namespace Player
                 if (forwardJump)
                 {
                     //Do a 'forward' jump relative to the character.
-                    //Debug.Log("Forwards Jump");
                     ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * settings.J.forwardJumpVerticalFraction;
                     ParentRefs.RB.velocity += ParentRefs.body.forward * settings.J.forwardJumpForce;
                 }
                 else if (Vector3.Angle(transform.forward, Vector3.down) > settings.J.onWallAngle)
                 { //If player is rotated to face the ground.
                   //Do a wall jump (biased towards up instead of out).
-                    //Debug.Log("Wall Jump");
                     ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * (1 - settings.J.standingWallJumpVerticalRatio);
                     ParentRefs.RB.velocity += Vector3.up * settings.J.jumpForce * settings.J.standingWallJumpVerticalRatio;
                 }
                 else
                 {
                     //Do a normal jump.
-                    //Debug.Log("Normal Jump");
                     ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce;
                 }
 
             }
         }
 
-        /// <summary> Turn gravity off when the player is touching something so climbing works. </summary>
-        private void CheckGravity()
+        /// <summary> Rotate the player so their feet are aligned with the surface beneath them, based on a downwards raycast. </summary>
+        private void FindAndRotateToSurface()
         {
-            if (Grounded)
-                ParentRefs.RB.useGravity = false;
-            else
-                ParentRefs.RB.useGravity = true;
-        }
-
-        /// <summary> Rotate the player so their feet are aligned with the surface beneath them, based on a downwards raycast (need to add better checks for 90deg angles). </summary>
-        private void FindAndRotateToWall()
-        {
+            if (Time.time < vals.lastJump + settings.J.jumpCooldown)
+                return;
             //Raycasts:
             RaycastHit mainHit;
             bool Main = Physics.Raycast(refs.climbRotateCheckRay.position, -refs.climbRotateCheckRay.up, out mainHit, settings.WC.surfaceDetectRange, settings.WC.rotateToLayers);
 
             Vector3 dir = Vector3.down;
+
+            ParentRefs.RB.useGravity = true;
+
             if (Main)
             {
+                ParentRefs.RB.useGravity = false;
+
                 dir = mainHit.normal;
 
                 CustomIntuitiveSnapRotation(-dir);
 
-                //if the ground is within the wall-stick range, teleport to it, or if it's angle is too different eliminate the 'up force' to stop player flying.
+                vals.jumping = false;
+
+                //if the ground is within the wall-stick range, teleport to it, or if its angle is too different eliminate the 'up force' to stop player flying.
                 float sqrDistToSurf = Vector3.SqrMagnitude(mainHit.point - transform.position);
-                if (sqrDistToSurf.Inside(Mathf.Pow(settings.WC.wallStickTriggerRange.x, 2), Mathf.Pow(settings.WC.wallStickTriggerRange.y, 2)))
+                float minStickDist = Mathf.Pow(settings.WC.wallStickTriggerRange.x, 2);
+                float maxStickDist = Mathf.Pow(settings.WC.wallStickTriggerRange.y, 2);
+                if (sqrDistToSurf < maxStickDist)
                 {
-                    transform.position = mainHit.point;
-                    vals.eliminateUpForce = true;
+                    //The player counts as on the surface if they are less than the max sticking distance from a surface. 
+                    vals.lastOnSurface = Time.time;
+                    if (sqrDistToSurf > minStickDist)
+                    {
+                        transform.position = mainHit.point;
+                        vals.eliminateUpForce = true;
+                    }
                 }
                 else if (Vector3.Angle(vals.lastRotationDir, dir) > settings.WC.wallStickDangerAngle)
                 {
                     vals.eliminateUpForce = true;
                 }
 
-
+                //Used to check the difference in angle on the next frame.
                 vals.lastRotationDir = dir;
-
-                vals.lastOnSurface = Time.time;
             }
             else if (Time.time > vals.lastOnSurface + settings.WC.noSurfResetTime)
             {
                 CustomIntuitiveSnapRotation(Vector3.down);
-                vals.lastOnSurface = Time.time;
             }
         }
+
+        //~~~~~~~~~~ HELPER/SUB-FUNCTIONS ~~~~~~~~~~
 
         private void RotateModel()
         {
@@ -424,122 +400,44 @@ namespace Player
             return found;
         }
 
-        private bool CheckForEdge(Vector3 lateralVelocity)
-        {
-            Vector3 pos = refs.climbRotateCheckRay.position + lateralVelocity.normalized * 0.15f;
-            Debug.DrawLine(pos, pos + transform.forward * settings.WC.edgeStopDownDist);
-            return Physics.Raycast(pos, transform.forward, settings.WC.edgeStopDownDist, settings.WC.rotateToLayers);
-        }
-        
-        private Vector3 AvoidEdges(Vector3 lateralVelocity)
-        {
-            float[] angles = new float[5];
-            angles[0] = 0;
-            angles[1] = settings.WC.edgeSlideAngle / 2;
-            angles[2] = -settings.WC.edgeSlideAngle / 2;
-            angles[3] = settings.WC.edgeSlideAngle;
-            angles[4] = -settings.WC.edgeSlideAngle;
-
-            Vector3[] points = new Vector3[5];
-            points[0] = lateralVelocity.normalized;
-
-            points[1] = Quaternion.AngleAxis(angles[1], Vector3.forward) * points[0];
-            points[2] = Quaternion.AngleAxis(angles[2], Vector3.forward) * points[0];
-            points[3] = Quaternion.AngleAxis(angles[3], Vector3.forward) * points[0];
-            points[4] = Quaternion.AngleAxis(angles[4], Vector3.forward) * points[0];
-
-            Vector3 pos;
-            //THIS LOOP IS FOR ANGLE DEBUGGING ONLY. DELETE ASAP.
-            for (int i = 0; i < Mathf.Min(points.Length, angles.Length); ++i)
-            {
-                float mag = settings.WC.edgeStopLatRadius;// * (1 + (angles[i] * Mathf.Sign(angles[i]) / 45f));
-                pos = refs.climbRotateCheckRay.position + transform.TransformVector(points[i]) * mag;
-                Debug.DrawLine(pos, pos + transform.forward * settings.WC.edgeStopDownDist, Color.magenta);
-            }
-            for (int i = 0; i < Mathf.Min(points.Length, angles.Length); ++i) 
-            {
-                float mag = settings.WC.edgeStopLatRadius;// * (1 + (angles[i] * Mathf.Sign(angles[i]) / 45f));
-                pos = refs.climbRotateCheckRay.position + transform.TransformVector(points[i]) * mag;
-                //Debug.DrawLine(pos, pos + transform.forward * settings.WC.edgeStopDownDist, Color.magenta);
-                if (Physics.Raycast(pos, transform.forward, settings.WC.edgeStopDownDist, settings.WC.rotateToLayers))
-                    return points[i] * lateralVelocity.magnitude * (1 - (angles[i] / 360f));
-            }
-
-            return Vector3.zero;
-        }
-
         private Vector3 AvoidEdgesLinear(Vector3 lateralVelocity)
         {
             Vector3[] points = new Vector3[5];
             points[0] = lateralVelocity.normalized;
+            vals.edgeRayStart = points[0];
 
-            points[1] = points[0] + Vector3.Cross(points[0], Vector3.forward) * (settings.WC.edgeSlideAngle / 45);
-            points[2] = points[0] - Vector3.Cross(points[0], Vector3.forward) * (settings.WC.edgeSlideAngle / 45);
-            points[3] = points[0] + Vector3.Cross(points[0], Vector3.forward) * (settings.WC.edgeSlideAngle / 90);
-            points[4] = points[0] - Vector3.Cross(points[0], Vector3.forward) * (settings.WC.edgeSlideAngle / 90);
+            points[1] = points[0] + Vector3.Cross(points[0], Vector3.forward) * (settings.WC.edgeSlideCheckDist / 2);
+            points[2] = points[0] - Vector3.Cross(points[0], Vector3.forward) * (settings.WC.edgeSlideCheckDist / 2);
+            points[3] = points[0] + Vector3.Cross(points[0], Vector3.forward) * settings.WC.edgeSlideCheckDist;
+            points[4] = points[0] - Vector3.Cross(points[0], Vector3.forward) * settings.WC.edgeSlideCheckDist;
 
             float[] multiplier = new float[5];
             multiplier[0] = 1;
-            multiplier[1] = 0.6f;
-            multiplier[2] = 0.6f;
-            multiplier[3] = 0.8f;
-            multiplier[4] = 0.8f;
+            multiplier[1] = 1 / points[1].magnitude;
+            multiplier[2] = multiplier[1];
+            multiplier[3] = 1 / points[3].magnitude;
+            multiplier[4] = multiplier[3];
 
             Vector3 pos;
-            Vector3 multPos;
-            //THIS LOOP IS FOR ANGLE DEBUGGING ONLY. DELETE ASAP.
+
             for (int i = 0; i < points.Length; ++i)
             {
-                float mag = settings.WC.edgeStopLatRadius;// * (1 + (angles[i] * Mathf.Sign(angles[i]) / 45f));
+                float mag = settings.WC.edgeStopLatRadius;
                 pos = refs.climbRotateCheckRay.position + transform.TransformVector(points[i]) * mag;
-                multPos = refs.climbRotateCheckRay.position + transform.TransformVector(points[i]) * multiplier[i];
-                Debug.DrawLine(pos, pos + transform.forward * settings.WC.edgeStopDownDist, Color.magenta);
-                Debug.DrawLine(multPos, multPos + transform.forward * settings.WC.edgeStopDownDist, Color.blue);
-            }
-            for (int i = 0; i < points.Length; ++i)
-            {
-                float mag = settings.WC.edgeStopLatRadius;// * (1 + (angles[i] * Mathf.Sign(angles[i]) / 45f));
-                pos = refs.climbRotateCheckRay.position + transform.TransformVector(points[i]) * mag;
-                //Debug.DrawLine(pos, pos + transform.forward * settings.WC.edgeStopDownDist, Color.magenta);
                 if (Physics.Raycast(pos, transform.forward, settings.WC.edgeStopDownDist, settings.WC.rotateToLayers))
+                {
+                    vals.stoppedAtEdge = false;
                     return points[i].normalized * lateralVelocity.magnitude * multiplier[i];
+                }
             }
 
+            vals.stoppedAtEdge = true;
             return Vector3.zero;
         }
 
-        private Vector3 AvoidEdgesLinearInput(Vector3 lateralVelocity, Vector3 up)
+        private void FindAndJumpAroundCorner()
         {
-            //THIS WILL NEVER WORK BECAUSE:
-            //- The player never has full control of the squirrel, so cutting or changing the INPUT is not good enough to stop or turn at edges.
-
-            Debug.DrawLine(transform.position, transform.position + lateralVelocity, Color.red);
-
-            Vector3[] points = new Vector3[5];
-            points[0] = lateralVelocity.normalized;
-
-            points[1] = points[0] + Vector3.Cross(points[0], up) * (settings.WC.edgeSlideAngle / 45);
-            points[2] = points[0] - Vector3.Cross(points[0], up) * (settings.WC.edgeSlideAngle / 45);
-            points[3] = points[0] + Vector3.Cross(points[0], up) * (settings.WC.edgeSlideAngle / 90);
-            points[4] = points[0] - Vector3.Cross(points[0], up) * (settings.WC.edgeSlideAngle / 90);
-
-            Vector3 pos;
-            //THIS LOOP IS FOR ANGLE DEBUGGING ONLY. DELETE ASAP.
-            for (int i = 0; i < points.Length; ++i)
-            {
-                float mag = settings.WC.edgeStopLatRadius;
-                pos = refs.climbRotateCheckRay.position + points[i] * mag;
-                Debug.DrawLine(pos, pos + transform.forward * settings.WC.edgeStopDownDist, Color.magenta);
-            }
-            for (int i = 0; i < points.Length; ++i)
-            {
-                float mag = settings.WC.edgeStopLatRadius;
-                pos = refs.climbRotateCheckRay.position + points[i] * mag;
-                if (Physics.Raycast(pos, transform.forward, settings.WC.edgeStopDownDist, settings.WC.rotateToLayers))
-                    return points[i].normalized * lateralVelocity.magnitude;
-            }
-
-            return Vector3.zero;
+            //Use vals.edgeRayStart to find a surface below an edge, and teleport to it if one is found.
         }
 
         //~~~~~~~~~~ COROUTINES ~~~~~~~~~~
@@ -555,17 +453,49 @@ namespace Player
 
         private struct SCRunStoredValues
         {
-            public float lastJump;
-            public float lastGrounded;
-            public float lastOnSurface; //Consider merging these two.
-            public float jumpPressed;
-            public bool jumping;
-            public bool moving;
-            public bool dashing;
-            public float startedDashing;
-            public bool eliminateUpForce;
-            public Vector3 lastRotationDir;
+            //INPUT RELATED:
+            /// <summary> A player-relative vector representing the movement inputs.
+            /// Used to transfer the input to the movement update code so input can remain in a single function. </summary>
             public Vector3 desiredDirection;
+            /// <summary> The time.time value of the last time the player pressed the jump button.
+            /// Used to check for valid jump conditions over multiple frames to help prevent failures. </summary>
+            public float jumpPressed;
+            /// <summary> True when the player is holding the dash key.
+            /// Used to check if a speed modifier should be evaluated from the dash animation curve. </summary>
+            public bool dashing;
+            /// <summary> The time.time value of the last time the player pressed the dash key down. 
+            /// Used to evaluate a speed multiplier from the 'dashSpeedMultiplierCurve'. </summary>
+            public float startedDashing;
+
+            //ANIMATION RELATED:
+            /// <summary> Value is true when the character is locked in a jumping state at the start of the jump.
+            /// Used to play jump animations, and as a secondary check</summary>
+            public bool jumping;
+            /// <summary> True when the characters lateral velocity (i.e not up/down relative to rotation) is greater than 'M.turningThreshold'.
+            /// Used to play running animations, and to change between jump modes. </summary>
+            public bool moving;
+
+            //MESSAGES AND MULTIPLE-UPDATE VALUES:
+            /// <summary> The time.time value of the last time the player started a jump.
+            /// Used for jump cooldown and to prevent movement forces cancelling the jump.  </summary>
+            public float lastJump;
+            /// <summary> The time.time value of the last time the player was close enough to a surface to climb on it.
+            /// Used to check if jumps are allowed, and if 'air-control' modifiers should be used. </summary>
+            public float lastOnSurface;
+            /// <summary> True if the player detected an edge (no surface in front of the player with a relative angle less than 90deg).
+            /// Used to request a </summary>
+            public bool stoppedAtEdge;
+            /// <summary> True if the player detected an edge (no surface less than 90deg in front of the player.
+            /// Used to request a </summary>
+            public Vector3 edgeRayStart;
+            /// <summary> Message bool telling the UpdMovement function to remove up/down (z axis) forces on that frame.
+            /// Used because this action needs to be done at a different point to when the action is requested (FindAndRotateToSurface). </summary>
+            public bool eliminateUpForce;
+            /// <summary> The players down direction in the last frame.
+            /// Used to check if the angle change is too great, and the up-force needs to be eliminated. </summary>
+            public Vector3 lastRotationDir;
+            /// <summary> [NOT IN USE] The desired rotation of the characters body or model.
+            /// Previously used to create more smooth animation when quickly changing direction (may use again in future). </summary>
             public Quaternion targetBodyRot;
         }
 
@@ -636,7 +566,7 @@ namespace Player
                 [Tooltip("forwardJumpVerticalFraction: Fraction of the normal jump force which is also applied in a forward jump.")]
                 [Range(0, 1)]
                 public float forwardJumpVerticalFraction = 0.5f;
-                [Tooltip("Time after a jump before the player can jump again. Stops superjumps from pressing twice while trigger is still activated.")]
+                [Tooltip("Time after a jump before the player can jump again. Stops superjumps from pressing twice while trigger is still activated. ALSO USED to stop player from teleporting to the ground.")]
                 public float jumpCooldown = 0.2f;
                 [Tooltip("Time in which jumps will still be triggered if conditions are met after the key is pressed.")]
                 public float checkJumpTime = 0.2f;
@@ -670,7 +600,8 @@ namespace Player
                 [Tooltip("Maximum distance from the check point to a surface to count as not an edge.")]
                 public float edgeStopDownDist = 0.15f;
                 [Tooltip("Angle from the movement direction from which secondary edge checks are done (also checks half way between and on both sides).")]
-                public float edgeSlideAngle = 30f;
+                [Range(0.01f, 1f)]
+                public float edgeSlideCheckDist = 0.1f;
                 [Tooltip("If the angle between the current rotation and the new rotation when climbing is above this value, remove the vertical velocity to help the player stich to the wall.")]
                 public float wallStickDangerAngle = 10f;
                 [Tooltip("Force applied when the character is near a wall to ensure they stick to it.")]
