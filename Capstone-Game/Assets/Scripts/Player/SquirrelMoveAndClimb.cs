@@ -29,7 +29,7 @@ namespace Player
 
         private bool Grounded
         {
-            get { return triggers.feet.triggered && PARENT.TouchingSomething; }
+            get { return triggers.feet.triggered && Time.time < vals.lastOnSurface + settings.J.coyoteeTime; }
         }
 
         //~~~~~~~~~~ EVENTS ~~~~~~~~~~
@@ -49,8 +49,8 @@ namespace Player
         {
             UpdInput();
             UpdMove();
-            UpdJump();
-            JumpOnWall();
+            //UpdJump();
+            DoJumpChecks();
             FindAndRotateToSurface();
             RotateModel();
             UpdAnimator();
@@ -74,7 +74,6 @@ namespace Player
             vals.desiredDirection += camForward * Input.GetAxis("Vertical");
             Vector3 camright = Vector3.Cross(camForward, transform.forward);
             vals.desiredDirection += camright * Input.GetAxis("Horizontal");
-            //vals.desiredDirection += ParentRefs.fCam.transform.right * Input.GetAxis("Horizontal");
 
             vals.desiredDirection.Normalize();
 
@@ -87,6 +86,11 @@ namespace Player
             }
             else
                 vals.dashing = false;
+
+            //Request a jump if the player presses the button.
+            //This helps make jumping more consistent if conditions are false on intermittent frames.
+            if (Input.GetButtonDown("Jump"))
+                vals.jumpPressed = Time.time;
         }
         
         /// <summary> Perform all the movement functions of the player, including applying forces such as friction and input relative to the players rotation. </summary>
@@ -123,10 +127,17 @@ namespace Player
             //Get lateral speed by cutting out local-z component (Must be z for LookRotation function to work. Would otherwise be y).
             Vector3 LateralVelocityOld = new Vector3(TransformedOldVelocity.x, TransformedOldVelocity.y, 0);
             Vector3 LateralVelocityNew = new Vector3(TransformedNewVelocity.x, TransformedNewVelocity.y, 0);
-            
+
             //-----PHASE THREE: AVOID EDGES AND SLOW TO MAX SPEED-----//
 
-            LateralVelocityNew = AvoidEdgesLinear(LateralVelocityNew);
+            if (Grounded)
+            {
+                Vector3 preEdgeCodeLatVel = LateralVelocityNew;
+                LateralVelocityNew = AvoidEdgesLinear(preEdgeCodeLatVel);
+                //if (Input.GetButton("Jump"))// && vals.stoppedAtEdge)
+                    //CheckForSpecialJumps();
+                    //FindAndJumpAroundCorner(preEdgeCodeLatVel);
+            }
 
             //If the local lateral velocity of the player is above the max speed, do not allow any increases in speed due to input.
             if (LateralVelocityNew.magnitude > alteredMaxSpeed)
@@ -201,11 +212,6 @@ namespace Player
         /// <summary> Check for jump input, and do the appropriate jump for the situation (needs work). </summary>
         private void UpdJump()
         {
-            //Request a jump if the player presses the button.
-            //This helps make jumping more consistent if conditions are false on intermittent frames.
-            if (Input.GetButtonDown("Jump"))
-                vals.jumpPressed = Time.time;
-
             //If the player wants to and is able to jump, apply a force and set the last jump time.
             bool tryingToJump = Time.time < vals.jumpPressed + settings.J.checkJumpTime;
             bool offCooldown = Time.time > vals.lastJump + settings.J.jumpCooldown;
@@ -291,12 +297,15 @@ namespace Player
 
         //~~~~~~~~~~ HELPER/SUB-FUNCTIONS ~~~~~~~~~~
 
+        /// <summary> Rotate the players model each frame so it aligns with the body (used to smooth jumping animations). </summary>
         private void RotateModel()
         {
             ParentRefs.model.rotation = Quaternion.RotateTowards(ParentRefs.model.rotation, ParentRefs.body.rotation, settings.WC.rotateDegreesPerSecond * Time.deltaTime);
             ParentRefs.model.localPosition = Vector3.MoveTowards(ParentRefs.model.localPosition, Vector3.zero, settings.WC.moveUnitsPerSecond * Time.deltaTime);
         }
 
+        /// <summary> Rotate the player so its feet are pointed in the given direction, while maintaining facing as well as possible.
+        /// Returns the model to the original rotation so it can be rotated smoothly. </summary>
         private void CustomIntuitiveSnapRotation(Vector3 direction)
         {
             Quaternion bodyPreRotation = ParentRefs.model.rotation;
@@ -311,11 +320,14 @@ namespace Player
             ParentRefs.model.rotation = bodyPreRotation;
         }
 
-        private void JumpOnWall()
+        /// <summary> Call JumpToClimbWall when jump is pressed, or settings are correct for dash climbing.
+        /// Also place the climb-point debug object. </summary>
+        private void DoJumpChecks()
         {
             if (Input.GetButtonDown("Jump"))
             {
-                JumpToClimbWall(1f);
+                if (!JumpToClimbWall(1f))
+                    CheckForSpecialJumps();
             }
             else if (settings.M.dashForAutoclimb && vals.dashing)
             {
@@ -323,6 +335,7 @@ namespace Player
             }
             else
             {
+                /*
                 RaycastHit hit;
                 if (FindClimbableWall(out hit, 0.5f))
                 {
@@ -331,9 +344,12 @@ namespace Player
                 }
                 else
                     refs.climbPointDisplay.gameObject.SetActive(false);
+                */
             }
         }
 
+        /// <summary> Use 'FindClimbableWall' to get a surface, and then jump to it while translating the squirrels model smoothly.
+        /// Raycasting to check if the point is in LOS can be enabled here. </summary>
         private bool JumpToClimbWall(float distMultiplier)
         {
             RaycastHit mainHit;
@@ -358,6 +374,8 @@ namespace Player
             return false;
         }
 
+        /// <summary> Sphere-cast in the input direction to find any nearby surfaces that the squirrel can climb on.
+        /// Does two passes to make it more likely a wall will be found, while maintaining tight control. </summary>
         private bool FindClimbableWall(out RaycastHit hit, float distanceMultiplier)
         {
             RaycastHit mainHit;
@@ -399,7 +417,9 @@ namespace Player
             hit = mainHit;
             return found;
         }
-
+        
+        /// <summary> Check if there is a sharp edge in front of the player, and return a new movement vector to either stop, slide along an angled edge or move forward normally.
+        /// (Uses 5 raycasts in a line in front of the direction of movement to check for surfaces). </summary>
         private Vector3 AvoidEdgesLinear(Vector3 lateralVelocity)
         {
             Vector3[] points = new Vector3[5];
@@ -435,9 +455,76 @@ namespace Player
             return Vector3.zero;
         }
 
-        private void FindAndJumpAroundCorner()
+        /// <summary> Find surfaces which are below and at a 90deg angle to the player (currently not working). </summary>
+        private void FindAndJumpAroundCorner(Vector3 moveDirection)
         {
-            //Use vals.edgeRayStart to find a surface below an edge, and teleport to it if one is found.
+            debugString = vals.edgeRayStart.ToString();
+
+            Vector3 pos = vals.edgeRayStart + transform.position;
+            Debug.DrawLine(pos, pos + transform.forward * (settings.WC.edgeStopDownDist + settings.squirrelCenterToNoseDist), Color.red);
+            //Make sure there is no surface below the edge which the squirrel would be inside if they jumped around the corner.
+            if (!Physics.Raycast(pos, transform.forward, settings.WC.edgeStopDownDist + settings.squirrelCenterToNoseDist, settings.WC.rotateToLayers))
+            {
+                Vector3 lineStart = pos + transform.forward * settings.WC.edgeStopDownDist;
+                Debug.DrawLine(lineStart, lineStart + -moveDirection * 0.3f, Color.green);
+                RaycastHit hit;
+                if (Physics.Raycast(lineStart, -moveDirection, out hit, 0.3f, settings.WC.rotateToLayers))
+                {
+                    Vector3 dir = hit.normal;
+                    CustomIntuitiveSnapRotation(-dir);
+                    //Teleport to the point, while maintaining the models position so it moves smoothly.
+                    Vector3 oldPos = ParentRefs.model.position;
+                    transform.position = hit.point;
+                    ParentRefs.model.position = oldPos;
+                    //Set relevant variables.
+                    vals.lastOnSurface = Time.time;
+                    //Set velocity to zero to mitigate weird physics.
+                    ParentRefs.RB.velocity = Vector3.zero;
+                }
+            }
+        }
+
+        /// <summary> Check for scenarios where there is a gap in front of the player, and either a distant surface to stand on
+        /// OR a surface at an angle below the player. </summary>
+        private bool CheckForSpecialJumps()
+        {
+            Vector3 moveDirection = ParentRefs.model.transform.forward;
+            if (vals.desiredDirection != Vector3.zero)
+                moveDirection = vals.desiredDirection;
+            Vector3 firstCheckPoint = moveDirection.normalized;
+            float size = settings.squirrelCenterToNoseDist / 2f;
+            Vector3 firstCast = transform.position + (ParentRefs.model.transform.up * size * settings.J.SJCheckHeight) + moveDirection * size * 3f;
+            RaycastHit hit;
+
+            for (int i = 0; i < settings.J.SJCheckCount; ++i)
+            {
+                //Sphere check with half the radius of the player, downwards relative to the player, 4 times in front of the player at tight intervals.
+                //If a target is found so a jump animation?
+                Vector3 origin = firstCast + moveDirection * size * settings.J.SJCheckInterval * i;
+                Debug.DrawRay(origin, -ParentRefs.model.transform.up * 0.5f, Color.yellow);
+                if (Physics.SphereCast(origin, size, -ParentRefs.model.transform.up, out hit, size * 2f))
+                {
+                    refs.climbPointDisplay.gameObject.SetActive(true);
+                    refs.climbPointDisplay.position = hit.point;
+                    debugString = hit.transform.name;
+
+                    transform.position = hit.point;
+                    return true;
+                }
+            }
+
+            //Raycast back towards the player from the end point of the first cast down.
+            Vector3 cornerCheckOrigin = firstCast - ParentRefs.model.transform.up * ((size * settings.J.SJCheckInterval) + (size * settings.J.SJCheckHeight));
+            Debug.DrawRay(cornerCheckOrigin, -moveDirection, Color.blue);
+            if (Physics.Raycast(cornerCheckOrigin, -moveDirection, out hit, size * 2f))
+            {
+                Debug.Log("Trying to Corner Jump");
+                transform.position = hit.point;
+
+                CustomIntuitiveSnapRotation(-hit.normal);
+                return true;
+            }
+            return false;
         }
 
         //~~~~~~~~~~ COROUTINES ~~~~~~~~~~
@@ -483,10 +570,10 @@ namespace Player
             /// Used to check if jumps are allowed, and if 'air-control' modifiers should be used. </summary>
             public float lastOnSurface;
             /// <summary> True if the player detected an edge (no surface in front of the player with a relative angle less than 90deg).
-            /// Used to request a </summary>
+            /// Used to allow a corner jump if an appropriate button (dash or jump) is also pressed </summary>
             public bool stoppedAtEdge;
-            /// <summary> True if the player detected an edge (no surface less than 90deg in front of the player.
-            /// Used to request a </summary>
+            /// <summary> The start position of the main edge detect ray.
+            /// Used as the starting point to detect corners for more efficiency and flexibility. </summary>
             public Vector3 edgeRayStart;
             /// <summary> Message bool telling the UpdMovement function to remove up/down (z axis) forces on that frame.
             /// Used because this action needs to be done at a different point to when the action is requested (FindAndRotateToSurface). </summary>
@@ -513,6 +600,10 @@ namespace Player
         [System.Serializable]
         public class SCRunModeSettings
         {
+            [Header("Generic Settings")]
+            public float squirrelCenterToNoseDist = 0.16f;
+
+            [Header("Settings Categories")]
             public SCMoveSettings movement = new SCMoveSettings();
             public SCJumpSettings jump = new SCJumpSettings();
             public SCWallClimbSettings wallClimbing = new SCWallClimbSettings();
@@ -577,6 +668,11 @@ namespace Player
                 [Tooltip("standingWallJumpVerticalRatio: Amount of the jump force which is applied upwards instead of outwards when a player jumps off a wall.")]
                 [Range(0, 1)]
                 public float standingWallJumpVerticalRatio = 0.5f;
+                [Header("Special Jump Settings")]
+                public float SJCheckHeight = 2f;
+                public float SJCheckInterval = 1f;
+                public int SJCheckCount = 4;
+
             }
 
             [System.Serializable]
