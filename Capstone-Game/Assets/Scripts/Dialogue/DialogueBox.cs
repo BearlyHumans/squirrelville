@@ -16,7 +16,6 @@ public class DialogueBox : MonoBehaviour
     public bool isDialogueOpen = false;
 
     private Dialogue dialogue;
-
     private int index = -1;
     private bool isTyping = false;
     private Coroutine typingCoroutine;
