@@ -5,10 +5,19 @@ using TMPro;
 
 public class Dialogue : MonoBehaviour
 {
+    [Tooltip("Reference to the dialogue box text element")]
     public TMP_Text text;
+
+    [Tooltip("The delay in seconds between typing each letter")]
     public float typingSpeed;
-    [TextArea] public string[] sentences;
+
+    [Tooltip("A list of sentences to display as part of the dialogue")]
+    [TextArea]
+    public string[] sentences;
+
+    [Tooltip("Event evoked when the dialogue is done")]
     public UnityEvent dialogueDone;
+
     private int index = -1;
     private bool isTyping = false;
     private Coroutine typingCoroutine;
