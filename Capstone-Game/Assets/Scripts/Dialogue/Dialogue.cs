@@ -30,6 +30,8 @@ public class Dialogue : MonoBehaviour
 
     private void Update()
     {
+        if (PauseMenu.paused) return;
+
         if (Input.GetKeyDown(KeyCode.Return))
         {
             if (isTyping)
