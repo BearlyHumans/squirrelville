@@ -2260,10 +2260,6 @@ PrefabInstance:
       propertyPath: dialogueBox
       value: 
       objectReference: {fileID: 863083197}
-    - target: {fileID: 5146472764639337045, guid: c1702d763353abb47949987bc6e72495, type: 3}
-      propertyPath: interactionRadius
-      value: 0.7
-      objectReference: {fileID: 0}
     - target: {fileID: 5807213735033683758, guid: c1702d763353abb47949987bc6e72495, type: 3}
       propertyPath: m_Avatar
       value: 

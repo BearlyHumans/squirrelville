@@ -11,8 +11,11 @@ public class NPCInteractionManager : MonoBehaviour
     [Tooltip("How far away NPCs can be interacted from")]
     public float interactionRadius = 1.0f;
 
-    [Tooltip("Event evoked when an interaction with an NPC has started")]
-    public UnityEvent interactionBegin;
+    [Tooltip("Event evoked when an interaction with an NPC starts")]
+    public UnityEvent interactionStart;
+
+    [Tooltip("Event evoked when an interaction with an NPC finishes")]
+    public UnityEvent interactionFinish;
 
     [Tooltip("Whether the squirrel is currently interacting with an NPC")]
     [HideInInspector]
@@ -35,7 +38,7 @@ public class NPCInteractionManager : MonoBehaviour
             if (npc != null)
             {
                 isInteracting = true;
-                interactionBegin?.Invoke();
+                interactionStart?.Invoke();
                 if (npc.TryGetComponent<Dialogue>(out Dialogue dialogue))
                 {
                     dialogueBox.SetDialogue(dialogue);
@@ -43,9 +46,10 @@ public class NPCInteractionManager : MonoBehaviour
             }
         }
 
-        if (!dialogueBox.isDialogueOpen)
+        if (!dialogueBox.isDialogueOpen && isInteracting)
         {
             isInteracting = false;
+            interactionFinish?.Invoke();
         }
     }
 

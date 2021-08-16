@@ -3239,9 +3239,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72904a3db55978e428985db3ee3e9e76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue: {fileID: 0}
-  interactionRadius: 1
-  interactionBegin:
+  dialogueBox: {fileID: 0}
+  interactionRadius: 0.7
+  interactionStart:
+    m_PersistentCalls:
+      m_Calls: []
+  interactionFinish:
     m_PersistentCalls:
       m_Calls: []
   isInteracting: 0
