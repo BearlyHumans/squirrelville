@@ -355,6 +355,9 @@ MonoBehaviour:
     AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
     AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+  dialogueNext:
+    m_PersistentCalls:
+      m_Calls: []
   dialogueFinish:
     m_PersistentCalls:
       m_Calls: []
@@ -1643,6 +1646,9 @@ MonoBehaviour:
   - My braindead son right here forgot his lunch at home. He won't shut up about
     it.
   - Would you be able to get him 10 burgers while I sit back and watch?
+  dialogueNext:
+    m_PersistentCalls:
+      m_Calls: []
   dialogueFinish:
     m_PersistentCalls:
       m_Calls: []

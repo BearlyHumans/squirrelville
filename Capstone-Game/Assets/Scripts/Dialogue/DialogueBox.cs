@@ -84,6 +84,10 @@ public class DialogueBox : MonoBehaviour
 
             if (index == 0)
                 dialogue.dialogueStart?.Invoke();
+            else
+            {
+                dialogue.dialogueNext?.Invoke();
+            }
 
             typingCoroutine = StartCoroutine(Type());
         }
