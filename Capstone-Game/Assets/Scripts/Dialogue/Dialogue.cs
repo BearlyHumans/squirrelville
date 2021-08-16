@@ -18,6 +18,10 @@ public class Dialogue : MonoBehaviour
     [Tooltip("Event evoked when the dialogue is done")]
     public UnityEvent dialogueDone;
 
+    [Tooltip("Whether the dialogue box is currently visible")]
+    [HideInInspector]
+    public bool isDialogueOpen = false;
+
     private int index = -1;
     private bool isTyping = false;
     private Coroutine typingCoroutine;
@@ -50,6 +54,7 @@ public class Dialogue : MonoBehaviour
     private IEnumerator Type()
     {
         isTyping = true;
+        isDialogueOpen = true;
 
         foreach (char letter in sentences[index].ToCharArray())
         {
@@ -63,6 +68,7 @@ public class Dialogue : MonoBehaviour
     public void NextSentence()
     {
         text.text = "";
+        isDialogueOpen = false;
 
         if (index < sentences.Length - 1)
         {
