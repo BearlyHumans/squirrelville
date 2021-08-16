@@ -346,15 +346,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04273a48ccd3fc44983e66b6acdba9a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueStart:
-    m_PersistentCalls:
-      m_Calls: []
   sentences:
   - 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
     AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
     AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+  dialogueStart:
+    m_PersistentCalls:
+      m_Calls: []
   dialogueNext:
     m_PersistentCalls:
       m_Calls: []
@@ -1638,14 +1638,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04273a48ccd3fc44983e66b6acdba9a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueStart:
-    m_PersistentCalls:
-      m_Calls: []
   sentences:
   - What a fine day it is! The sun is shining and burgers are plentiful.
   - My braindead son right here forgot his lunch at home. He won't shut up about
     it.
   - Would you be able to get him 10 burgers while I sit back and watch?
+  dialogueStart:
+    m_PersistentCalls:
+      m_Calls: []
   dialogueNext:
     m_PersistentCalls:
       m_Calls: []
