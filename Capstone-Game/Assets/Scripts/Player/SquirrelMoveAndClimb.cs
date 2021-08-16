@@ -20,7 +20,7 @@ namespace Player
         public string debugString = "null";
 
         private SCRunStoredValues vals = new SCRunStoredValues();
-        
+
         //~~~~~~~~~~ PROPERTIES ~~~~~~~~~~
 
         private SquirrelController.SCReferences ParentRefs
@@ -88,7 +88,7 @@ namespace Player
             else
                 vals.dashing = false;
         }
-    
+
 
         /// <summary> Perform all the movement functions of the player, including making all forces including friction and input relative to the players rotation. </summary>
         private void UpdMove()
@@ -228,7 +228,7 @@ namespace Player
                 else if (Vector3.Angle(transform.forward, Vector3.down) > settings.J.onWallAngle)
                 { //If player is rotated to face the ground.
                   //Do a wall jump (biased towards up instead of out).
-                    //Debug.Log("Wall Jump");
+                  //Debug.Log("Wall Jump");
                     ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * (1 - settings.J.standingWallJumpVerticalRatio);
                     ParentRefs.RB.velocity += Vector3.up * settings.J.jumpForce * settings.J.standingWallJumpVerticalRatio;
                 }
@@ -296,7 +296,7 @@ namespace Player
             Quaternion newRot = new Quaternion();
             newRot.eulerAngles = new Vector3(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, transform.localRotation.eulerAngles.z + 90);
             transform.localRotation = newRot;
-            
+
             ParentRefs.model.rotation = bodyPreRotation;
         }
 
