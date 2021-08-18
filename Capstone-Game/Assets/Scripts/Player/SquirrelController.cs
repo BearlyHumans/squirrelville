@@ -153,12 +153,12 @@ namespace Player
 
         public void FreezeMovement()
         {
-
+            vals.frozen = true;
         }
 
         public void UnfreezeMovement()
         {
-
+            vals.frozen = false;
         }
 
         //~~ DATA STRUCTURES ~~
