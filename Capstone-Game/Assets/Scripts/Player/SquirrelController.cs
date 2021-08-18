@@ -72,6 +72,9 @@ namespace Player
 
             refs.fCam.UpdateCamRotFromImput();
 
+            if (vals.frozen)
+                return;
+
             //Debug State Changes
             if (Input.GetKeyDown(KeyCode.Q))
             {
@@ -146,6 +149,18 @@ namespace Player
 
         }
 
+        //~~ Public Functions ~~  
+
+        public void FreezeMovement()
+        {
+
+        }
+
+        public void UnfreezeMovement()
+        {
+
+        }
+
         //~~ DATA STRUCTURES ~~
 
         [System.Serializable]
@@ -181,6 +196,7 @@ namespace Player
             public float lastOnSurface;
             public bool touchingSomething;
             public bool moving;
+            public bool frozen;
             public MovementState mState;
         }
 
