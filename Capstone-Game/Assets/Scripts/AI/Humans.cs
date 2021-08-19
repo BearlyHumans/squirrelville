@@ -75,13 +75,9 @@ public class Humans : MonoBehaviour
     public float detectionAngle = 70;
 
     //--------------Friendly----------------//
-    [Tooltip("Is the NPC friendly?")]
+    [Tooltip("Select the behavior for the NPC")]
     [SerializeField]
-    public bool isFriendly;
-
-    
-    [SerializeField]
-    public NpcModes npcCurrMode;
+    public NpcModes npcCurrentMode;
     
     bool givenfood = false;
     float watchedFor = 0.0f;
@@ -281,11 +277,11 @@ public class Humans : MonoBehaviour
         
         if(canSee)
         {
-            if(npcCurrMode == NpcModes.Friendly)
+            if(npcCurrentMode == NpcModes.Friendly)
             {
                 currentState = HumanStates.Friendly;
             }
-            else if(npcCurrMode == NpcModes.Aggressive)
+            else if(npcCurrentMode == NpcModes.Aggressive)
             {
                 currentState = HumanStates.Chase;
             }
