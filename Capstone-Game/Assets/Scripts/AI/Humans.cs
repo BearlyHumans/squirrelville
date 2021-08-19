@@ -11,10 +11,19 @@ public enum HumanStates
     Catch,
     Friendly,
 }
+
+public enum NpcModes
+{
+    Friendly,
+    Aggressive,
+    Passive,
+}
+
 public class Humans : MonoBehaviour
 {
     
     private HumanStates currentState;
+    private NpcModes npcMode;
 
     //---------Food Graber Script---------//
     private SquirrelFoodGrabber foodGraber;
@@ -66,9 +75,9 @@ public class Humans : MonoBehaviour
     public float detectionAngle = 70;
 
     //--------------Friendly----------------//
-    [Tooltip("Is the NPC friendly?")]
+    [Tooltip("Select the behavior for the NPC")]
     [SerializeField]
-    public bool isFriendly;
+    public NpcModes npcCurrentMode;
     
     bool givenfood = false;
     float watchedFor = 0.0f;
@@ -111,13 +120,14 @@ public class Humans : MonoBehaviour
 
     public void Start() 
     {
+        
         foodController = GameObject.FindWithTag("Player");
         foodGraber = foodController.GetComponent<SquirrelFoodGrabber>();
 
         navMesh = this.GetComponent<NavMeshAgent>();
 
         chaseTimer = chaseTime;
-        // singleton - ask jake about game controller.
+        
 
         target = GameObject.FindWithTag("Player").transform;
         squrrielTarget = GameObject.FindWithTag("Player");
@@ -267,13 +277,17 @@ public class Humans : MonoBehaviour
         
         if(canSee)
         {
-            if(isFriendly)
+            if(npcCurrentMode == NpcModes.Friendly)
             {
                 currentState = HumanStates.Friendly;
             }
-            else
+            else if(npcCurrentMode == NpcModes.Aggressive)
             {
                 currentState = HumanStates.Chase;
+            }
+            else
+            {
+                currentState = HumanStates.PathFollowing;
             }
         }
         if(walking && navMesh.remainingDistance <= 1.0f)
