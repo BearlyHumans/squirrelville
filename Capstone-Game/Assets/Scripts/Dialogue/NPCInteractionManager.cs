@@ -35,26 +35,31 @@ public class NPCInteractionManager : MonoBehaviour
     {
         if (PauseMenu.paused) return;
 
-        if (Input.GetKey(KeyCode.E) && CanInteract())
+        if (CanInteract())
         {
-            GameObject npc = GetNearestNPC();
-            if (npc != null)
+            if (isInteracting)
             {
-                isInteracting = true;
-                squirrelController.FreezeMovement();
-                interactionStart?.Invoke();
-                if (npc.TryGetComponent<Dialogue>(out Dialogue dialogue))
+                isInteracting = false;
+                squirrelController.UnfreezeMovement();
+                interactionFinish?.Invoke();
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.E))
                 {
-                    dialogueBox.SetDialogue(dialogue);
+                    GameObject npc = GetNearestNPC();
+                    if (npc != null)
+                    {
+                        isInteracting = true;
+                        squirrelController.FreezeMovement();
+                        interactionStart?.Invoke();
+                        if (npc.TryGetComponent<Dialogue>(out Dialogue dialogue))
+                        {
+                            dialogueBox.SetDialogue(dialogue);
+                        }
+                    }
                 }
             }
-        }
-
-        if (!dialogueBox.isDialogueOpen && isInteracting)
-        {
-            isInteracting = false;
-            squirrelController.UnfreezeMovement();
-            interactionFinish?.Invoke();
         }
     }
 

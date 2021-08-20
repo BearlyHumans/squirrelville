@@ -25,9 +25,9 @@ public class DialogueBox : MonoBehaviour
     private int index = -1;
     private bool isTyping = false;
     private Coroutine typingCoroutine;
-    private bool doneSpeaking = true;
 
     private CanvasGroup canvasGroup;
+    private bool wasDialogueOpen = false;
 
     private void Start()
     {
@@ -37,37 +37,41 @@ public class DialogueBox : MonoBehaviour
 
     private void Update()
     {
-        if (PauseMenu.paused || dialogue == null) return;
+        if (PauseMenu.paused) return;
 
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (dialogue != null && wasDialogueOpen)
         {
-            if (isTyping)
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                if (canSkipTyping)
+                if (isTyping)
                 {
-                    StopCoroutine(typingCoroutine);
-                    isTyping = false;
-                    text.text = dialogue.sentences[index];
+                    if (canSkipTyping)
+                    {
+                        StopCoroutine(typingCoroutine);
+                        isTyping = false;
+                        text.text = dialogue.sentences[index];
+                    }
+                }
+                else
+                {
+                    NextSentence();
                 }
             }
-            else
-            {
-                NextSentence();
-            }
         }
+
+        wasDialogueOpen = isDialogueOpen;
     }
 
     public void SetDialogue(Dialogue dialogue)
     {
         this.dialogue = dialogue;
-        title.text = dialogue.speakerName;
+        title.text = dialogue.name;
 
         if (typingCoroutine != null)
             StopCoroutine(typingCoroutine);
 
         index = -1;
         isTyping = false;
-        doneSpeaking = false;
         canvasGroup.alpha = 1;
 
         NextSentence();
@@ -103,11 +107,11 @@ public class DialogueBox : MonoBehaviour
             isDialogueOpen = true;
             typingCoroutine = StartCoroutine(Type());
         }
-        else if (!doneSpeaking)
+        else
         {
-            doneSpeaking = true;
             canvasGroup.alpha = 0;
             dialogue.dialogueFinish?.Invoke();
+            dialogue = null;
         }
     }
 }

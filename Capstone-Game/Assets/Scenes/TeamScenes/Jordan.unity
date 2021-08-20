@@ -251,7 +251,7 @@ GameObject:
   - component: {fileID: 153672263}
   - component: {fileID: 153672267}
   m_Layer: 13
-  m_Name: NPC
+  m_Name: Bobby
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -327,12 +327,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 153672262}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.5, y: 0.2, z: 3}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_Father: {fileID: 1519116060}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &153672267
 MonoBehaviour:
@@ -346,11 +346,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04273a48ccd3fc44983e66b6acdba9a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speakerName: Hank
   sentences:
   - 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-
-    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
     AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
   dialogueStart:
@@ -1621,7 +1618,7 @@ GameObject:
   - component: {fileID: 1136383629}
   - component: {fileID: 1136383628}
   m_Layer: 13
-  m_Name: NPC (1)
+  m_Name: Hank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1639,7 +1636,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04273a48ccd3fc44983e66b6acdba9a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speakerName: Bobby
   sentences:
   - What a fine day it is! The sun is shining and burgers are plentiful.
   - My braindead son right here forgot his lunch at home. He won't shut up about
@@ -1724,12 +1720,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1136383627}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.5, y: 0.5, z: 3}
   m_LocalScale: {x: 0.4, y: 0.5, z: 0.4}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_Father: {fileID: 1519116060}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1224661572
 PrefabInstance:
@@ -1860,6 +1856,38 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4856839097378503467, guid: fe3c3a5300d07ed439780fc32840bef9, type: 3}
   m_PrefabInstance: {fileID: 692620309}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1519116059
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1519116060}
+  m_Layer: 0
+  m_Name: NPCs
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1519116060
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1519116059}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1136383632}
+  - {fileID: 153672266}
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1549881493 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4856839097378503467, guid: fe3c3a5300d07ed439780fc32840bef9, type: 3}
@@ -2620,6 +2648,10 @@ PrefabInstance:
     - target: {fileID: 1128778952822745503, guid: 0435ce9217d18b648a96da4dea4dd1f5, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862625194389111470, guid: 0435ce9217d18b648a96da4dea4dd1f5, type: 3}
+      propertyPath: canSkipTyping
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7862625194389111470, guid: 0435ce9217d18b648a96da4dea4dd1f5, type: 3}
       propertyPath: sentences.Array.size
