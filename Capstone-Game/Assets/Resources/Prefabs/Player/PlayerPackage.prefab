@@ -3018,6 +3018,7 @@ GameObject:
   - component: {fileID: 1512199470005858195}
   - component: {fileID: 1512199470005858193}
   - component: {fileID: 1512199470005858194}
+  - component: {fileID: 5146472764639337045}
   m_Layer: 6
   m_Name: SquirrelHolder
   m_TagString: Untagged
@@ -3108,6 +3109,13 @@ MonoBehaviour:
     movement:
       acceleration: 20
       maxSpeed: 3
+      dashSpeedMultiplierCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      dashForAutoclimb: 0
       airControlFactor: 0.5
       frictionForce: 50
       stoppingForce: 50
@@ -3219,6 +3227,27 @@ MonoBehaviour:
   throwEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5146472764639337045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1512199470005858200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72904a3db55978e428985db3ee3e9e76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueBox: {fileID: 0}
+  interactionRadius: 0.7
+  interactionStart:
+    m_PersistentCalls:
+      m_Calls: []
+  interactionFinish:
+    m_PersistentCalls:
+      m_Calls: []
+  isInteracting: 0
 --- !u!1 &1512199470117624333
 GameObject:
   m_ObjectHideFlags: 0
