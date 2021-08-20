@@ -14,6 +14,9 @@ public class DialogueBox : MonoBehaviour
     [Tooltip("The delay in seconds between typing each letter")]
     public float typingSpeed;
 
+    [Tooltip("Can the player skip the typing animation")]
+    public bool canSkipTyping;
+
     [Tooltip("Whether the dialogue box is currently visible")]
     [HideInInspector]
     public bool isDialogueOpen = false;
@@ -40,9 +43,12 @@ public class DialogueBox : MonoBehaviour
         {
             if (isTyping)
             {
-                StopCoroutine(typingCoroutine);
-                isTyping = false;
-                text.text = dialogue.sentences[index];
+                if (canSkipTyping)
+                {
+                    StopCoroutine(typingCoroutine);
+                    isTyping = false;
+                    text.text = dialogue.sentences[index];
+                }
             }
             else
             {
