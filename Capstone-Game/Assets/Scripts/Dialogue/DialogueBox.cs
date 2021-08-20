@@ -1,12 +1,12 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 using TMPro;
 
+[RequireComponent(typeof(CanvasGroup))]
 public class DialogueBox : MonoBehaviour
 {
-    [Tooltip("Reference to the dialogue box name text element")]
-    public TMP_Text name;
+    [Tooltip("Reference to the dialogue box title text element")]
+    public TMP_Text title;
 
     [Tooltip("Reference to the dialogue box content text element")]
     public TMP_Text text;
@@ -23,6 +23,14 @@ public class DialogueBox : MonoBehaviour
     private bool isTyping = false;
     private Coroutine typingCoroutine;
     private bool doneSpeaking = true;
+
+    private CanvasGroup canvasGroup;
+
+    private void Start()
+    {
+        canvasGroup = GetComponent<CanvasGroup>();
+        canvasGroup.alpha = 0;
+    }
 
     private void Update()
     {
@@ -46,7 +54,7 @@ public class DialogueBox : MonoBehaviour
     public void SetDialogue(Dialogue dialogue)
     {
         this.dialogue = dialogue;
-        name.text = dialogue.name;
+        title.text = dialogue.speakerName;
 
         if (typingCoroutine != null)
             StopCoroutine(typingCoroutine);
@@ -54,6 +62,7 @@ public class DialogueBox : MonoBehaviour
         index = -1;
         isTyping = false;
         doneSpeaking = false;
+        canvasGroup.alpha = 1;
 
         NextSentence();
     }
@@ -61,7 +70,6 @@ public class DialogueBox : MonoBehaviour
     private IEnumerator Type()
     {
         isTyping = true;
-        isDialogueOpen = true;
 
         foreach (char letter in dialogue.sentences[index].ToCharArray())
         {
@@ -84,15 +92,15 @@ public class DialogueBox : MonoBehaviour
             if (index == 0)
                 dialogue.dialogueStart?.Invoke();
             else
-            {
                 dialogue.dialogueNext?.Invoke();
-            }
 
+            isDialogueOpen = true;
             typingCoroutine = StartCoroutine(Type());
         }
         else if (!doneSpeaking)
         {
             doneSpeaking = true;
+            canvasGroup.alpha = 0;
             dialogue.dialogueFinish?.Invoke();
         }
     }
