@@ -3,6 +3,9 @@ using UnityEngine.Events;
 
 public class Dialogue : MonoBehaviour
 {
+    [Tooltip("The name of the speaker")]
+    public string name;
+
     [Tooltip("A list of sentences to display as part of the dialogue")]
     [TextArea]
     public string[] sentences;

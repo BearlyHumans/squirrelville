@@ -5,7 +5,10 @@ using TMPro;
 
 public class DialogueBox : MonoBehaviour
 {
-    [Tooltip("Reference to the dialogue box text element")]
+    [Tooltip("Reference to the dialogue box name text element")]
+    public TMP_Text name;
+
+    [Tooltip("Reference to the dialogue box content text element")]
     public TMP_Text text;
 
     [Tooltip("The delay in seconds between typing each letter")]
@@ -20,11 +23,6 @@ public class DialogueBox : MonoBehaviour
     private bool isTyping = false;
     private Coroutine typingCoroutine;
     private bool doneSpeaking = true;
-
-    private void Start()
-    {
-        text.text = "";
-    }
 
     private void Update()
     {
@@ -48,6 +46,7 @@ public class DialogueBox : MonoBehaviour
     public void SetDialogue(Dialogue dialogue)
     {
         this.dialogue = dialogue;
+        name.text = dialogue.name;
 
         if (typingCoroutine != null)
             StopCoroutine(typingCoroutine);
