@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Player.SquirrelController))]
 public class NPCInteractionManager : MonoBehaviour
 {
     [Tooltip("Reference to the dialogue box element")]
@@ -22,10 +23,12 @@ public class NPCInteractionManager : MonoBehaviour
     public bool isInteracting = false;
 
     private Rigidbody squirrelrb;
+    private Player.SquirrelController squirrelController;
 
     void Awake()
     {
         squirrelrb = GetComponent<Rigidbody>();
+        squirrelController = GetComponent<Player.SquirrelController>();
     }
 
     void Update()
@@ -38,6 +41,7 @@ public class NPCInteractionManager : MonoBehaviour
             if (npc != null)
             {
                 isInteracting = true;
+                squirrelController.FreezeMovement();
                 interactionStart?.Invoke();
                 if (npc.TryGetComponent<Dialogue>(out Dialogue dialogue))
                 {
@@ -49,6 +53,7 @@ public class NPCInteractionManager : MonoBehaviour
         if (!dialogueBox.isDialogueOpen && isInteracting)
         {
             isInteracting = false;
+            squirrelController.UnfreezeMovement();
             interactionFinish?.Invoke();
         }
     }
