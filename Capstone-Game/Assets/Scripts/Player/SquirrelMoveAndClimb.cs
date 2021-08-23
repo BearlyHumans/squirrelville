@@ -56,6 +56,43 @@ namespace Player
             UpdAnimator();
         }
 
+        /// <summary> Call when an action requires Stamina. Returns true if there is enough stamina for the action (based on stamina settings), and then deducts the specified ammount. </summary>
+        private bool UseStamina(float value)
+        {
+            bool succeeded = false;
+
+            if (vals.stamina > 0)
+            {
+                if (settings.S.allowNegativeStamina || vals.stamina >= value)
+                {
+                    succeeded = true;
+                    vals.stamina -= value;
+                    vals.usingStamina = true;
+                }
+            }
+
+            if (settings.S.failsDelayStaminaRegen)
+                vals.usingStamina = true;
+
+            return succeeded;
+        }
+
+        /// <summary> Regenerate Stamina based on settings, and update Stamina graphic. </summary>
+        private void UpdStamina()
+        {
+            if (vals.usingStamina)
+            {
+                vals.lastStaminaUse = Time.time;
+            }
+            else if (Time.time > vals.lastStaminaUse + settings.S.staminaRegenDelay)
+            {
+                vals.stamina += Mathf.Min(settings.S.maxStamina - vals.stamina, settings.S.staminaRegenPerSecond);
+
+                if (refs.staminaBar != null)
+                    refs.staminaBar.fillAmount = vals.stamina / settings.S.maxStamina;
+            }
+        }
+
         private void UpdAnimator()
         {
             if (vals.jumping)
@@ -563,6 +600,14 @@ namespace Player
             public bool moving;
 
             //MESSAGES AND MULTIPLE-UPDATE VALUES:
+            /// <summary> Current Stamina of the player. </summary>
+            public float stamina;
+            /// <summary> Whether the player is using Stamina or not. Prevents recharging when true. </summary>
+            public bool usingStamina;
+            /// <summary> Time of the last stamina use. Allows calculation of regen delay. </summary>
+            public float lastStaminaUse;
+            /// <summary> True if the player stopped using Stamina recently, and the value is below the regen-use threshold. Prevents Stamina use. </summary>
+            public bool belowStaminaRegenThreshold;
             /// <summary> The time.time value of the last time the player started a jump.
             /// Used for jump cooldown and to prevent movement forces cancelling the jump.  </summary>
             public float lastJump;
@@ -595,22 +640,51 @@ namespace Player
             public Transform acuteCheckRay;
             public Transform startClimbCheckRay;
             public Transform climbRotateCheckRay;
+            public UnityEngine.UI.Image staminaBar;
         }
 
         [System.Serializable]
         public class SCRunModeSettings
         {
             [Header("Generic Settings")]
+            /// <summary> Used to calculate distances relative to the squirrels size. </summary>
             public float squirrelCenterToNoseDist = 0.16f;
 
             [Header("Settings Categories")]
+            /// <summary> Contains variables which are exposed in the inspector, and are used as values for Stamina behaviours. </summary>
+            public SCStaminaSettings stamina = new SCStaminaSettings();
+            /// <summary> Contains variables which are exposed in the inspector, and are used as values for normal Movement behaviours. </summary>
             public SCMoveSettings movement = new SCMoveSettings();
+            /// <summary> Contains variables which are exposed in the inspector, and are used as values for Jumping behaviours. </summary>
             public SCJumpSettings jump = new SCJumpSettings();
+            /// <summary> Contains variables which are exposed in the inspector, and are used as values for Wall Climbing behaviours. </summary>
             public SCWallClimbSettings wallClimbing = new SCWallClimbSettings();
 
+            /// <summary> Shorthand for Stamina settings class. </summary>
+            public SCStaminaSettings S { get { return stamina; } }
+            /// <summary> Shorthand for Movement settings class. </summary>
             public SCMoveSettings M { get { return movement; } }
+            /// <summary> Shorthand for Jump settings class. </summary>
             public SCJumpSettings J { get { return jump; } }
+            /// <summary> Shorthand for Wall Climbing settings class. </summary>
             public SCWallClimbSettings WC { get { return wallClimbing; } }
+
+            [System.Serializable]
+            public class SCStaminaSettings
+            {
+                [Tooltip("The maximum stamina value. Fairly arbitrary as charge rate etc can all be changed.")]
+                public float maxStamina = 10f;
+                [Tooltip("The ammount of stamina needed before stamina-using actions can be performed after reaching zero. Necessary to prevent stuttering.")]
+                public float minStaminaToStartUse = 10f;
+                [Tooltip("The ammount of stamina that regenerates each second.")]
+                public float staminaRegenPerSecond = 1f;
+                [Tooltip("The delay between stopping stamina-using actions (or running out) and the stamina recharging.")]
+                public float staminaRegenDelay = 1f;
+                [Tooltip("Control if a stamina check will fail when the value WOULD go below 0, or AFTER it does go below 0 (relevant for large consumptions like jumps).")]
+                public bool allowNegativeStamina = false;
+                [Tooltip("Control if trying to use stamina (e.g. holding dash button) prevents it regenerating.")]
+                public bool failsDelayStaminaRegen = false;
+            }
 
             [System.Serializable]
             public class SCMoveSettings

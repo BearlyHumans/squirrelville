@@ -54,8 +54,6 @@ namespace Player
                 behaviourScripts.moveAndClimb = GetComponent<SquirrelMoveAndClimb>();
             if (behaviourScripts.ball == null)
                 behaviourScripts.ball = GetComponent<SquirrelBall>();
-            if (behaviourScripts.glide == null)
-                behaviourScripts.glide = GetComponent<SquirrelGlide>();
             if (behaviourScripts.foodGrabber == null)
                 behaviourScripts.foodGrabber = GetComponent<SquirrelFoodGrabber>();
 
@@ -79,8 +77,6 @@ namespace Player
                 else if (CanEnterBallState())
                     EnterBallState();
             }
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-                EnterGlideState();
 
             if (!CanEnterBallState())
                 EnterRunState();
@@ -93,10 +89,6 @@ namespace Player
             else if (vals.mState == MovementState.ball)
             {
                 behaviourScripts.ball.ManualUpdate();
-            }
-            else if (vals.mState == MovementState.glide)
-            {
-                behaviourScripts.glide.ManualUpdate();
             }
 
             refs.fCam.UpdateCamPos();
@@ -140,11 +132,6 @@ namespace Player
             vals.mState = MovementState.moveAndClimb;
         }
 
-        private void EnterGlideState()
-        {
-
-        }
-
         //~~ DATA STRUCTURES ~~
 
         [System.Serializable]
@@ -165,7 +152,6 @@ namespace Player
         public class SCChildren
         {
             public SquirrelMoveAndClimb moveAndClimb;
-            public SquirrelGlide glide;
             public SquirrelBall ball;
             public SquirrelFoodGrabber foodGrabber;
         }
@@ -180,6 +166,8 @@ namespace Player
             public float lastOnSurface;
             public bool touchingSomething;
             public bool moving;
+            public float stamina;
+            public bool usingStamina;
             public MovementState mState;
         }
 
