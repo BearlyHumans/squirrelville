@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Player.SquirrelController))]
 public class NPCInteractionManager : MonoBehaviour
 {
     [Tooltip("Reference to the dialogue box element")]
@@ -22,34 +23,43 @@ public class NPCInteractionManager : MonoBehaviour
     public bool isInteracting = false;
 
     private Rigidbody squirrelrb;
+    private Player.SquirrelController squirrelController;
 
     void Awake()
     {
         squirrelrb = GetComponent<Rigidbody>();
+        squirrelController = GetComponent<Player.SquirrelController>();
     }
 
     void Update()
     {
         if (PauseMenu.paused) return;
 
-        if (Input.GetKey(KeyCode.E) && CanInteract())
+        if (CanInteract())
         {
-            GameObject npc = GetNearestNPC();
-            if (npc != null)
+            if (isInteracting)
             {
-                isInteracting = true;
-                interactionStart?.Invoke();
-                if (npc.TryGetComponent<Dialogue>(out Dialogue dialogue))
+                isInteracting = false;
+                squirrelController.UnfreezeMovement();
+                interactionFinish?.Invoke();
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.E))
                 {
-                    dialogueBox.SetDialogue(dialogue);
+                    GameObject npc = GetNearestNPC();
+                    if (npc != null)
+                    {
+                        isInteracting = true;
+                        squirrelController.FreezeMovement();
+                        interactionStart?.Invoke();
+                        if (npc.TryGetComponent<Dialogue>(out Dialogue dialogue))
+                        {
+                            dialogueBox.SetDialogue(dialogue);
+                        }
+                    }
                 }
             }
-        }
-
-        if (!dialogueBox.isDialogueOpen && isInteracting)
-        {
-            isInteracting = false;
-            interactionFinish?.Invoke();
         }
     }
 
