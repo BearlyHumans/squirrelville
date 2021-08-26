@@ -37,9 +37,10 @@ namespace Player
         void Awake()
         {
             if (PARENT == null)
-                GetComponentInParent<SquirrelController>();
+                PARENT = GetComponentInParent<SquirrelController>();
 
             vals.lastRotationDir = Vector3.down;
+            vals.stamina = settings.S.maxStamina;
         }
 
         //~~~~~~~~~~ MAIN UPDATE FUNCTIONS ~~~~~~~~~~
@@ -48,8 +49,8 @@ namespace Player
         public override void ManualUpdate()
         {
             UpdInput();
+            UpdStamina();
             UpdMove();
-            //UpdJump();
             DoJumpChecks();
             FindAndRotateToSurface();
             RotateModel();
@@ -61,20 +62,39 @@ namespace Player
         {
             bool succeeded = false;
 
-            if (vals.stamina > 0)
-            {
-                if (settings.S.allowNegativeStamina || vals.stamina >= value)
-                {
-                    succeeded = true;
-                    vals.stamina -= value;
-                    vals.usingStamina = true;
-                }
-            }
+            //Warn about negative stamina uses (a seperate function should be used to regen quicker).
+            if (value < 0)
+                Debug.LogError("Reducing stamina by negative value. Is this correct?");
 
-            if (settings.S.failsDelayStaminaRegen)
+            // Check if the stamina is above 0, and is not locked by regeneration.
+            if (vals.belowStaminaRegenThreshold == false && vals.stamina > 0)
+            {
+                // Return true, use up the specified stamina, and signal that stamina was used this update.
+                succeeded = true;
+                vals.stamina -= value;
                 vals.usingStamina = true;
 
+                // Refund the negative stamina if negative stamina has been disabled.
+                if (!settings.S.allowNegativeStamina && vals.stamina < 0)
+                    vals.stamina = 0;
+            }
+
+            // Lock stamina use until it exceeds the threshold when it reaches 0.
+            if (vals.stamina <= 0)
+                vals.belowStaminaRegenThreshold = true;
+
+            // Signal that stamina was used regardless of success if the setting is enabled.
+            if (settings.S.failsDelayStaminaRegen)
+                vals.usingStamina = true;
+            
             return succeeded;
+        }
+
+        private bool StaminaAvailable()
+        {
+            if (vals.stamina > 0 && vals.belowStaminaRegenThreshold == false)
+                return true;
+            return false;
         }
 
         /// <summary> Regenerate Stamina based on settings, and update Stamina graphic. </summary>
@@ -86,11 +106,23 @@ namespace Player
             }
             else if (Time.time > vals.lastStaminaUse + settings.S.staminaRegenDelay)
             {
-                vals.stamina += Mathf.Min(settings.S.maxStamina - vals.stamina, settings.S.staminaRegenPerSecond);
+                vals.stamina += settings.S.staminaRegenPerSecond * Time.deltaTime;
 
-                if (refs.staminaBar != null)
-                    refs.staminaBar.fillAmount = vals.stamina / settings.S.maxStamina;
+                if (vals.stamina >= settings.S.maxStamina)
+                {
+                    vals.belowStaminaRegenThreshold = false;
+                    vals.stamina = settings.S.maxStamina;
+                }
+                else if (vals.stamina >= settings.S.minStaminaToStartUse)
+                {
+                    vals.belowStaminaRegenThreshold = false;
+                }
             }
+
+            if (refs.staminaBar != null)
+                refs.staminaBar.fillAmount = vals.stamina / settings.S.maxStamina;
+
+            vals.usingStamina = false;
         }
 
         private void UpdAnimator()
@@ -115,14 +147,15 @@ namespace Player
             vals.desiredDirection.Normalize();
 
             //Dash button:
-            if (Input.GetButton("Dash"))
+            vals.dashing = false;
+            if (Input.GetButton("Dash") && UseStamina(2 * Time.deltaTime))
             {
                 if (vals.dashing == false)
                     vals.startedDashing = Time.time;
                 vals.dashing = true;
             }
-            else
-                vals.dashing = false;
+            else if (vals.desiredDirection != Vector3.zero)
+                UseStamina(0);
 
             //Request a jump if the player presses the button.
             //This helps make jumping more consistent if conditions are false on intermittent frames.
@@ -282,30 +315,62 @@ namespace Player
         }
 
         /// <summary> Rotate the player so their feet are aligned with the surface beneath them, based on a downwards raycast. </summary>
-        private void FindAndRotateToSurface()
+        private void FindAndRotateToSurface() // AKA Climb
         {
             if (Time.time < vals.lastJump + settings.J.jumpCooldown)
                 return;
             //Raycasts:
-            RaycastHit mainHit;
-            bool Main = Physics.Raycast(refs.climbRotateCheckRay.position, -refs.climbRotateCheckRay.up, out mainHit, settings.WC.surfaceDetectRange, settings.WC.rotateToLayers);
+            RaycastHit hitSurface;
+            bool FoundSurface = Physics.Raycast(refs.climbRotateCheckRay.position, -refs.climbRotateCheckRay.up, out hitSurface, settings.WC.surfaceDetectRange, settings.WC.rotateToLayers);
 
             Vector3 dir = Vector3.down;
 
             ParentRefs.RB.useGravity = true;
 
-            if (Main)
+            if (FoundSurface)
             {
-                ParentRefs.RB.useGravity = false;
+                dir = hitSurface.normal;
+                
+                //No stamina use if no tag.
 
-                dir = mainHit.normal;
+                if (hitSurface.transform.CompareTag("CanClimb"))
+                {
+                    //Small stamina drain above threshold angle.
+                    //Climbing fails when no stamina is available.
+                    if (Vector3.Angle(-dir, Vector3.down) > settings.S.climbMinAngle)
+                    {
+                        if (!UseStamina(1f * Time.deltaTime))
+                            return;
+                    }
+                }
+                else if (hitSurface.transform.CompareTag("HardClimb"))
+                {
+                    //Large stamina drain above threshold angle, scaling with steepness.
+                    //Climbing fails when no stamina is available.
+                    float angle = Vector3.Angle(-dir, Vector3.down);
+                    if (angle > settings.S.climbMinAngle)
+                    {
+                        if (!UseStamina(2f * Time.deltaTime)) //(1f + (angle - settings.S.climbMinAngle) / 45) * Time.deltaTime))
+                        {
+                            return;
+                        }
+                    }
+                }
+                else if (hitSurface.transform.CompareTag("NoClimb"))
+                {
+                    //Climbing instantly fails.
+
+                    return;
+                }
+
+                ParentRefs.RB.useGravity = false;
 
                 CustomIntuitiveSnapRotation(-dir);
 
                 vals.jumping = false;
 
                 //if the ground is within the wall-stick range, teleport to it, or if its angle is too different eliminate the 'up force' to stop player flying.
-                float sqrDistToSurf = Vector3.SqrMagnitude(mainHit.point - transform.position);
+                float sqrDistToSurf = Vector3.SqrMagnitude(hitSurface.point - transform.position);
                 float minStickDist = Mathf.Pow(settings.WC.wallStickTriggerRange.x, 2);
                 float maxStickDist = Mathf.Pow(settings.WC.wallStickTriggerRange.y, 2);
                 if (sqrDistToSurf < maxStickDist)
@@ -314,7 +379,7 @@ namespace Player
                     vals.lastOnSurface = Time.time;
                     if (sqrDistToSurf > minStickDist)
                     {
-                        transform.position = mainHit.point;
+                        transform.position = hitSurface.point;
                         vals.eliminateUpForce = true;
                     }
                 }
@@ -681,9 +746,18 @@ namespace Player
                 [Tooltip("The delay between stopping stamina-using actions (or running out) and the stamina recharging.")]
                 public float staminaRegenDelay = 1f;
                 [Tooltip("Control if a stamina check will fail when the value WOULD go below 0, or AFTER it does go below 0 (relevant for large consumptions like jumps).")]
-                public bool allowNegativeStamina = false;
+                public bool allowNegativeStamina = true;
                 [Tooltip("Control if trying to use stamina (e.g. holding dash button) prevents it regenerating.")]
                 public bool failsDelayStaminaRegen = false;
+
+                [Tooltip("Ammount of stamina used per second when dashing.")]
+                public float dashStamPerSec = 1f;
+                [Tooltip("Ammount of stamina used per second when moving but not dashing.")]
+                public float walkStamPerSec = 1f;
+                [Tooltip("Ammount of stamina used per second when on a sufficiently steep surface.")]
+                public float climbStamPerSec = 1f;
+                [Tooltip("The angle of a surface for moving on it to be defined as climbing.")]
+                public float climbMinAngle = 1f;
             }
 
             [System.Serializable]
@@ -710,10 +784,10 @@ namespace Player
                 public float stoppingForce = 50f;
                 [Tooltip("Rate at which speed falls to zero when not moving and in the air.")]
                 public float airStoppingForce = 2;
-                [Tooltip("haltAtFractionOfMaxSpeed: Fraction of the max speed at which a grounded player will fully stop.")]
+                [Tooltip("Fraction of the max speed at which a grounded player will fully stop.")]
                 [Range(0, 1)]
                 public float haltAtFractionOfMaxSpeed = 0.9f;
-                [Tooltip("Fraction of speed which the character model will rotate at.")]
+                [Tooltip("Fraction of max speed needed for the character model to rotate.")]
                 [Range(0, 1)]
                 public float turningThreshold = 0.2f;
             }
@@ -742,6 +816,7 @@ namespace Player
                 [Tooltip("standingWallJumpVerticalRatio: Amount of the jump force which is applied upwards instead of outwards when a player jumps off a wall.")]
                 [Range(0, 1)]
                 public float standingWallJumpVerticalRatio = 0.5f;
+
                 [Header("Special Jump Settings")]
                 public float SJCheckHeight = 2f;
                 public float SJCheckInterval = 1f;
