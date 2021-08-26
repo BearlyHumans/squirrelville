@@ -66,7 +66,7 @@ MonoBehaviour:
       m_Strength: 70
       m_RotationRangeMin: {x: 0, y: 0, z: 0}
       m_RotationRangeMax: {x: 0, y: 360, z: 0}
-      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
+      m_ScaleRangeMin: {x: 1, y: 0.85915494, z: 1}
       m_ScaleRangeMax: {x: 1, y: 1, z: 1}
       m_UniformScale: {x: 1, y: 1}
       m_UniformBool: 0
@@ -74,7 +74,7 @@ MonoBehaviour:
       m_YRotationBool: 1
       m_ZRotationBool: 0
       m_XScaleBool: 0
-      m_YScaleBool: 0
+      m_YScaleBool: 1
       m_ZScaleBool: 0
     name: tree
   - gameObject: {fileID: 3698917680147567752, guid: 995c7f8eac9aef24297f64811c5df5c8, type: 3}
