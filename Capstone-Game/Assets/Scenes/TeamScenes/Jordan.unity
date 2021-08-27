@@ -2100,10 +2100,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 90
       objectReference: {fileID: 0}
-    - target: {fileID: 1512199470005858194, guid: c1702d763353abb47949987bc6e72495, type: 3}
-      propertyPath: highlightMaterial
-      value: 
-      objectReference: {fileID: 2100000, guid: 73bed7dbf5548254bb64a23da6fda468, type: 2}
     - target: {fileID: 1512199470005858195, guid: c1702d763353abb47949987bc6e72495, type: 3}
       propertyPath: settings.jump.jumpForce
       value: 5
