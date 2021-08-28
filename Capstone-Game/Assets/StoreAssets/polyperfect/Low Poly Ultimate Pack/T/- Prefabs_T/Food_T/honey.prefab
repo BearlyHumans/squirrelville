@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 33563325685142622}
   - component: {fileID: 23507118688312256}
   - component: {fileID: 65298103957513498}
+  - component: {fileID: -7156995031575392279}
+  - component: {fileID: -8479825770214411523}
   m_Layer: 0
   m_Name: honey
   m_TagString: Untagged
@@ -95,3 +97,31 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.13900287, y: 0.19979928, z: 0.13900287}
   m_Center: {x: 0, y: 0.09989964, z: 0}
+--- !u!114 &-7156995031575392279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711018844971226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cef92ec7cbee8d45bbe047b2e2eac89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &-8479825770214411523
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711018844971226}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 1

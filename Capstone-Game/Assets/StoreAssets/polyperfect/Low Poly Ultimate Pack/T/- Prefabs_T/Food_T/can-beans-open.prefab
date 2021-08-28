@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 33510259999386522}
   - component: {fileID: 23249485414775980}
   - component: {fileID: 65485048322953426}
+  - component: {fileID: 911546180098095741}
+  - component: {fileID: 3703013376707160855}
   m_Layer: 0
   m_Name: can-beans-open
   m_TagString: Untagged
@@ -95,3 +97,31 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.1977075, y: 0.32430086, z: 0.24523628}
   m_Center: {x: 0.019342072, y: 0.16242953, z: -0.0419798}
+--- !u!114 &911546180098095741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1247596622774006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cef92ec7cbee8d45bbe047b2e2eac89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &3703013376707160855
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1247596622774006}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 1
