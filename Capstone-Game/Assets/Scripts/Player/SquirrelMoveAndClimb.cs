@@ -5,6 +5,7 @@ using Player;
 
 namespace Player
 {
+    [SelectionBase]
     [RequireComponent(typeof(SquirrelController))]
     public class SquirrelMoveAndClimb : SquirrelBehaviour
     {
@@ -57,7 +58,7 @@ namespace Player
             UpdAnimator();
         }
 
-        /// <summary> Call when an action requires Stamina. Returns true if there is enough stamina for the action (based on stamina settings), and then deducts the specified ammount. </summary>
+        /// <summary> Call when an action requires Stamina. Returns true if there is enough stamina for the action (based on stamina settings), and then deducts the specified amount. </summary>
         private bool UseStamina(float value)
         {
             bool succeeded = false;
@@ -65,6 +66,9 @@ namespace Player
             //Warn about negative stamina uses (a seperate function should be used to regen quicker).
             if (value < 0)
                 Debug.LogError("Reducing stamina by negative value. Is this correct?");
+
+            if (value <= 0 && !settings.S.zeroStopsRegen)
+                return true;
 
             // Check if the stamina is above 0, and is not locked by regeneration.
             if (vals.belowStaminaRegenThreshold == false && vals.stamina > 0)
@@ -84,7 +88,7 @@ namespace Player
                 vals.belowStaminaRegenThreshold = true;
 
             // Signal that stamina was used regardless of success if the setting is enabled.
-            if (settings.S.failsDelayStaminaRegen)
+            if (settings.S.failStopsRegen)
                 vals.usingStamina = true;
             
             return succeeded;
@@ -148,14 +152,14 @@ namespace Player
 
             //Dash button:
             vals.dashing = false;
-            if (Input.GetButton("Dash") && UseStamina(2 * Time.deltaTime))
+            if (Input.GetButton("Dash") && UseStamina(settings.S.dashStamPerSec * Time.deltaTime))
             {
                 if (vals.dashing == false)
                     vals.startedDashing = Time.time;
                 vals.dashing = true;
             }
             else if (vals.desiredDirection != Vector3.zero)
-                UseStamina(0);
+                UseStamina(settings.S.walkStamPerSec * Time.deltaTime);
 
             //Request a jump if the player presses the button.
             //This helps make jumping more consistent if conditions are false on intermittent frames.
@@ -280,7 +284,7 @@ namespace Player
         }
 
         /// <summary> Check for jump input, and do the appropriate jump for the situation (needs work). </summary>
-        private void UpdJump()
+        private void Jump()
         {
             //If the player wants to and is able to jump, apply a force and set the last jump time.
             bool tryingToJump = Time.time < vals.jumpPressed + settings.J.checkJumpTime;
@@ -331,36 +335,45 @@ namespace Player
             {
                 dir = hitSurface.normal;
                 
-                //No stamina use if no tag.
-
-                if (hitSurface.transform.CompareTag("CanClimb"))
+                if (hitSurface.transform.CompareTag(settings.S.easyClimbTag))
                 {
-                    //Small stamina drain above threshold angle.
-                    //Climbing fails when no stamina is available.
-                    if (Vector3.Angle(-dir, Vector3.down) > settings.S.climbMinAngle)
-                    {
-                        if (!UseStamina(1f * Time.deltaTime))
-                            return;
-                    }
+                    //No stamina use if EZ climb tag.
                 }
-                else if (hitSurface.transform.CompareTag("HardClimb"))
+                else
                 {
-                    //Large stamina drain above threshold angle, scaling with steepness.
-                    //Climbing fails when no stamina is available.
+                    //If the angle is greater than the max angle, cause the player to fall.
                     float angle = Vector3.Angle(-dir, Vector3.down);
-                    if (angle > settings.S.climbMinAngle)
+                    if (angle > settings.S.climbMaxAngle)
+                        return; //Skip the code that disables gravity and sticks the player to the wall.
+
+
+                    if (hitSurface.transform.CompareTag(settings.S.hardClimbTag))
                     {
-                        if (!UseStamina(2f * Time.deltaTime)) //(1f + (angle - settings.S.climbMinAngle) / 45) * Time.deltaTime))
+                        //Large stamina drain above threshold angle, scaling with steepness.
+                        //Climbing fails when no stamina is available.
+                        if (angle > settings.S.climbMinAngle)
                         {
-                            return;
+                            if (!UseStamina(settings.S.climbStamPerSec * Time.deltaTime * 2f)) //* (1f + (angle / 90f) * Time.deltaTime))
+                                return;
                         }
                     }
-                }
-                else if (hitSurface.transform.CompareTag("NoClimb"))
-                {
-                    //Climbing instantly fails.
-
-                    return;
+                    else if (hitSurface.transform.CompareTag(settings.S.noClimbTag))
+                    {
+                        //Climbing instantly fails.
+                        UseStamina(vals.stamina + 0.1f);
+                        return; //Skip the code that disables gravity and sticks the player to the wall.
+                    }
+                    else
+                    {
+                        //Default surface type.
+                        //Small stamina drain above threshold angle.
+                        //Climbing fails when no stamina is available.
+                        if (angle > settings.S.climbMinAngle)
+                        {
+                            if (!UseStamina(settings.S.climbStamPerSec * Time.deltaTime))
+                                return; //Skip the code that disables gravity and sticks the player to the wall.
+                        }
+                    }
                 }
 
                 ParentRefs.RB.useGravity = false;
@@ -371,13 +384,13 @@ namespace Player
 
                 //if the ground is within the wall-stick range, teleport to it, or if its angle is too different eliminate the 'up force' to stop player flying.
                 float sqrDistToSurf = Vector3.SqrMagnitude(hitSurface.point - transform.position);
-                float minStickDist = Mathf.Pow(settings.WC.wallStickTriggerRange.x, 2);
-                float maxStickDist = Mathf.Pow(settings.WC.wallStickTriggerRange.y, 2);
-                if (sqrDistToSurf < maxStickDist)
+                float sqrMinStickDist = Mathf.Pow(settings.WC.wallStickTriggerRange.x, 2);
+                float sqrMaxStickDist = Mathf.Pow(settings.WC.wallStickTriggerRange.y, 2);
+                if (sqrDistToSurf < sqrMaxStickDist)
                 {
                     //The player counts as on the surface if they are less than the max sticking distance from a surface. 
                     vals.lastOnSurface = Time.time;
-                    if (sqrDistToSurf > minStickDist)
+                    if (sqrDistToSurf > sqrMinStickDist)
                     {
                         transform.position = hitSurface.point;
                         vals.eliminateUpForce = true;
@@ -426,27 +439,59 @@ namespace Player
         /// Also place the climb-point debug object. </summary>
         private void DoJumpChecks()
         {
-            if (Input.GetButtonDown("Jump"))
-            {
-                if (!JumpToClimbWall(1f))
-                    CheckForSpecialJumps();
-            }
-            else if (settings.M.dashForAutoclimb && vals.dashing)
-            {
-                JumpToClimbWall(0.5f);
+            if (vals.dashing)
+            {   //DASH MODE
+
+                if (Input.GetButtonDown("Jump"))
+                {
+                    print("Jump Pressed");
+                    //Try to jump onto a wall, otherwise do a normal jump.
+                    if (JumpToClimbWall(1f))
+                        return;
+
+                    print("Normal Jump");
+                    //Do normal Jump HERE
+                    Jump();
+                    return;
+                }
+
+                if (settings.M.dashForAutoclimb)
+                {
+                    if (JumpToClimbWall(0.5f))
+                        return;
+
+                    if (vals.stoppedAtEdge && JumpAroundCorners())
+                    {
+                        //Temporarily disable automatic corner jump HERE
+                        return;
+                    }
+                }
             }
             else
-            {
-                /*
-                RaycastHit hit;
-                if (FindClimbableWall(out hit, 0.5f))
+            {   //CAREFUL MODE
+
+                if (Input.GetButtonDown("Jump"))
                 {
-                    refs.climbPointDisplay.position = hit.point;
-                    refs.climbPointDisplay.gameObject.SetActive(true);
+                    print("Jump Pressed");
+                    if (vals.stoppedAtEdge)
+                    {
+                        print("Stopped at Edge");
+                        if (JumpAroundCorners())
+                        {
+                            //Temporarily disable automatic corner jump HERE
+                            return;
+                        }
+                    }
+                    
+                    //Try to jump onto a wall, otherwise do a normal jump.
+                    if (JumpToClimbWall(1f))
+                        return;
+
+                    print("Normal Jump");
+                    //Do normal Jump HERE
+                    Jump();
+                    return;
                 }
-                else
-                    refs.climbPointDisplay.gameObject.SetActive(false);
-                */
             }
         }
 
@@ -458,17 +503,23 @@ namespace Player
 
             if (FindClimbableWall(out mainHit, distMultiplier))
             {
-                //if (Physics.Raycast(transform.position, mainHit.point - transform.position, Vector3.Distance(transform.position, mainHit.point) - 0.01f, settings.WC.rotateToLayers))
-                //    return false; //Aborts if there is no line of sight between the player and the chosen point.
-                //Rotate so feet are on new surface.
-                Vector3 dir = mainHit.normal;
-                CustomIntuitiveSnapRotation(-dir);
+                print("Found Wall");
+
+                //Fail the teleport if there is not line-of-sight between the player and the new point.
+                RaycastHit validityCheck;
+                Vector3 checkDir = mainHit.point - refs.climbRotateCheckRay.position;
+                float checkDist = Vector3.Distance(mainHit.point, refs.climbRotateCheckRay.position) - refs.mainCollider.radius * 0.5f;
+                if (Physics.SphereCast(refs.climbRotateCheckRay.position, refs.mainCollider.radius * 0.1f, checkDir, out validityCheck, checkDist, settings.WC.rotateToLayers))
+                {
+                    print("Teleport failed by hitting: " + validityCheck.transform.name);
+                    return false;
+                }
+
                 //Teleport to the point, while maintaining the models position so it moves smoothly.
                 Vector3 oldPos = ParentRefs.model.position;
-                transform.position = mainHit.point;
+                TeleportToSurface(mainHit);
                 ParentRefs.model.position = oldPos;
-                //Set relevant variables.
-                vals.lastOnSurface = Time.time;
+
                 //Set velocity to zero to mitigate weird physics.
                 ParentRefs.RB.velocity = Vector3.zero;
                 return true;
@@ -541,18 +592,20 @@ namespace Player
             multiplier[4] = multiplier[3];
 
             Vector3 pos;
-
+            RaycastHit hit;
             for (int i = 0; i < points.Length; ++i)
             {
                 float mag = settings.WC.edgeStopLatRadius;
                 pos = refs.climbRotateCheckRay.position + transform.TransformVector(points[i]) * mag;
-                if (Physics.Raycast(pos, transform.forward, settings.WC.edgeStopDownDist, settings.WC.rotateToLayers))
+                if (Physics.Raycast(pos, transform.forward, out hit, settings.WC.edgeStopDownDist, settings.WC.rotateToLayers))
                 {
-                    vals.stoppedAtEdge = false;
-                    return points[i].normalized * lateralVelocity.magnitude * multiplier[i];
+                    if (Vector3.Angle(hit.normal, -transform.forward) < settings.J.EdgeDetectAngle)
+                    {
+                        vals.stoppedAtEdge = false;
+                        return points[i].normalized * lateralVelocity.magnitude * multiplier[i];
+                    }
                 }
             }
-
             vals.stoppedAtEdge = true;
             return Vector3.zero;
         }
@@ -572,32 +625,57 @@ namespace Player
                 RaycastHit hit;
                 if (Physics.Raycast(lineStart, -moveDirection, out hit, 0.3f, settings.WC.rotateToLayers))
                 {
-                    Vector3 dir = hit.normal;
-                    CustomIntuitiveSnapRotation(-dir);
                     //Teleport to the point, while maintaining the models position so it moves smoothly.
                     Vector3 oldPos = ParentRefs.model.position;
-                    transform.position = hit.point;
+                    TeleportToSurface(hit);
                     ParentRefs.model.position = oldPos;
-                    //Set relevant variables.
-                    vals.lastOnSurface = Time.time;
                     //Set velocity to zero to mitigate weird physics.
                     ParentRefs.RB.velocity = Vector3.zero;
                 }
             }
         }
 
-        /// <summary> Check for scenarios where there is a gap in front of the player, and either a distant surface to stand on
-        /// OR a surface at an angle below the player. </summary>
-        private bool CheckForSpecialJumps()
+        /// <summary> Check for scenarios where there is a gap in front of the player, and  a surface at an angle below the player. </summary>
+        private bool JumpAroundCorners()
         {
+            //If the player is not trying to move, make the checks relative to the model rotation, otherwise make them relative to the desired direction.
             Vector3 moveDirection = ParentRefs.model.transform.forward;
             if (vals.desiredDirection != Vector3.zero)
                 moveDirection = vals.desiredDirection;
+
+            //Calculate the starting point for the checks, based on the moveDirection, the players orientation, and the settings.
             Vector3 firstCheckPoint = moveDirection.normalized;
             float size = settings.squirrelCenterToNoseDist / 2f;
-            Vector3 firstCast = transform.position + (ParentRefs.model.transform.up * size * settings.J.SJCheckHeight) + moveDirection * size * 3f;
+            Vector3 firstCast = transform.position + (ParentRefs.model.transform.up * size * settings.J.SJCheckHeight) + moveDirection * size * 2f;
             RaycastHit hit;
 
+            //Check if there is a normal surface for the player to climb to, in which case the corner-jump should not trigger.
+            if (Physics.Raycast(transform.position, firstCast - transform.position, out hit, Vector3.Distance(firstCast, transform.position), settings.WC.rotateToLayers))
+            {
+                return false;
+            }
+
+            //Check if there is a normal surface for the player to climb to, in which case the corner-jump should not trigger.
+            if (Physics.Raycast(firstCast, -ParentRefs.model.transform.up, out hit, (size * settings.J.CornerJumpDepth) + (size * settings.J.SJCheckHeight), settings.WC.rotateToLayers))
+            {
+                refs.climbPointDisplay.position = hit.point;
+                print("Failed Empty Check, hit: " + hit.transform.name);
+                if (Vector3.Angle(hit.point, -transform.forward) > settings.J.EdgeDetectAngle)
+                    return TeleportToSurface(hit);
+                return false;
+            }
+
+            //Raycast back towards the player from the end point of the first cast down.
+            Vector3 cornerCheckOrigin = firstCast - ParentRefs.model.transform.up * ((size * settings.J.CornerJumpDepth) + (size * settings.J.SJCheckHeight));
+            if (Physics.Raycast(cornerCheckOrigin, -moveDirection, out hit, size * 2f, settings.WC.rotateToLayers))
+            {
+                print("Found corner");
+                return TeleportToSurface(hit);
+            }
+
+            print("Couldn't find corner");
+            /*
+            //Teleport-jump code:
             for (int i = 0; i < settings.J.SJCheckCount; ++i)
             {
                 //Sphere check with half the radius of the player, downwards relative to the player, 4 times in front of the player at tight intervals.
@@ -614,19 +692,25 @@ namespace Player
                     return true;
                 }
             }
+            */
 
-            //Raycast back towards the player from the end point of the first cast down.
-            Vector3 cornerCheckOrigin = firstCast - ParentRefs.model.transform.up * ((size * settings.J.SJCheckInterval) + (size * settings.J.SJCheckHeight));
-            Debug.DrawRay(cornerCheckOrigin, -moveDirection, Color.blue);
-            if (Physics.Raycast(cornerCheckOrigin, -moveDirection, out hit, size * 2f))
-            {
-                Debug.Log("Trying to Corner Jump");
-                transform.position = hit.point;
-
-                CustomIntuitiveSnapRotation(-hit.normal);
-                return true;
-            }
             return false;
+        }
+
+        private bool TeleportToSurface(RaycastHit hit)
+        {
+            print("Teleporting");
+            transform.position = hit.point;
+
+            CustomIntuitiveSnapRotation(-hit.normal);
+            vals.eliminateUpForce = true;
+            return true;
+        }
+
+        void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(refs.climbRotateCheckRay.position, settings.WC.sphereDetectRadius);
         }
 
         //~~~~~~~~~~ COROUTINES ~~~~~~~~~~
@@ -705,6 +789,7 @@ namespace Player
             public Transform acuteCheckRay;
             public Transform startClimbCheckRay;
             public Transform climbRotateCheckRay;
+            public SphereCollider mainCollider;
             public UnityEngine.UI.Image staminaBar;
         }
 
@@ -739,25 +824,37 @@ namespace Player
             {
                 [Tooltip("The maximum stamina value. Fairly arbitrary as charge rate etc can all be changed.")]
                 public float maxStamina = 10f;
-                [Tooltip("The ammount of stamina needed before stamina-using actions can be performed after reaching zero. Necessary to prevent stuttering.")]
+                [Tooltip("The amount of stamina needed before stamina-using actions can be performed after reaching zero. Necessary to prevent stuttering.")]
                 public float minStaminaToStartUse = 10f;
-                [Tooltip("The ammount of stamina that regenerates each second.")]
+                [Tooltip("The amount of stamina that regenerates each second.")]
                 public float staminaRegenPerSecond = 1f;
                 [Tooltip("The delay between stopping stamina-using actions (or running out) and the stamina recharging.")]
                 public float staminaRegenDelay = 1f;
                 [Tooltip("Control if a stamina check will fail when the value WOULD go below 0, or AFTER it does go below 0 (relevant for large consumptions like jumps).")]
                 public bool allowNegativeStamina = true;
-                [Tooltip("Control if trying to use stamina (e.g. holding dash button) prevents it regenerating.")]
-                public bool failsDelayStaminaRegen = false;
+                [Tooltip("Control if actions which use zero stamina prevent it from regenerating.")]
+                public bool zeroStopsRegen = false;
+                [Tooltip("Control if trying to use stamina (e.g. holding dash button) prevents it regenerating even if the action fails.")]
+                public bool failStopsRegen = false;
 
-                [Tooltip("Ammount of stamina used per second when dashing.")]
+                [Space]
+                [Tooltip("Amount of stamina used per second when dashing.")]
                 public float dashStamPerSec = 1f;
-                [Tooltip("Ammount of stamina used per second when moving but not dashing.")]
-                public float walkStamPerSec = 1f;
-                [Tooltip("Ammount of stamina used per second when on a sufficiently steep surface.")]
+                [Tooltip("Amount of stamina used per second when moving but not dashing.")]
+                public float walkStamPerSec = 0f;
+                [Tooltip("Amount of stamina used per jump.")]
+                public float jumpStamPerUse = 1f;
+                [Tooltip("Amount of stamina used per second when on a sufficiently steep surface.")]
                 public float climbStamPerSec = 1f;
                 [Tooltip("The angle of a surface for moving on it to be defined as climbing.")]
                 public float climbMinAngle = 1f;
+                [Tooltip("The angle of a surface where the player will immediately fall off (except EZ Climb).")]
+                public float climbMaxAngle = 1f;
+
+                [Space]
+                public string easyClimbTag = "EZClimb";
+                public string hardClimbTag = "HardClimb";
+                public string noClimbTag = "NoClimb";
             }
 
             [System.Serializable]
@@ -818,8 +915,21 @@ namespace Player
                 public float standingWallJumpVerticalRatio = 0.5f;
 
                 [Header("Special Jump Settings")]
+                [Tooltip("Starting Height for edge-detection, corner detection and teleport-jumps, as a MULTIPLIER OF THE PLAYERS SIZE.")]
                 public float SJCheckHeight = 2f;
+                [Tooltip("Distance the edge detect will check below the player (in ADDITION to the starting height).")]
+                public float EdgeDetectDepth = 2f;
+                [Tooltip("The difference in angle between the current surface and the new surface which will still count as an edge.")]
+                public float EdgeDetectAngle = 70f;
+                [Tooltip("Distance the below the player that corner jump checks will occur (in ADDITION to the starting height)." +
+                    "Effectively controls the minimum width of corners that can be jumped onto (e.g. top of fence).")]
+                public float CornerJumpDepth = 2f;
+
+                [HideInInspector]
+                [Tooltip("Distance between teleport-jump checks.")]
                 public float SJCheckInterval = 1f;
+                [HideInInspector]
+                [Tooltip("Number of teleport-jump checks.")]
                 public int SJCheckCount = 4;
 
             }
