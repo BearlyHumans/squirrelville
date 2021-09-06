@@ -132,6 +132,17 @@ namespace Player
             vals.mState = MovementState.moveAndClimb;
         }
 
+        public void FreezeMovement()
+        {
+            vals.frozen = true;
+            refs.RB.velocity = Vector3.zero;
+        }
+
+        public void UnFreezeMovement()
+        {
+            vals.frozen = false;
+        }
+
         //~~ DATA STRUCTURES ~~
 
         [System.Serializable]
@@ -166,6 +177,7 @@ namespace Player
             public float lastOnSurface;
             public bool touchingSomething;
             public bool moving;
+            public bool frozen;
             public float stamina;
             public bool usingStamina;
             public MovementState mState;
