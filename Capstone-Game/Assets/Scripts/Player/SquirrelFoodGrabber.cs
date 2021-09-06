@@ -28,6 +28,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
     [Tooltip("How much food does the squirrel need to swallow to be able to turn into a ball")]
     [Min(0)]
     public int foodCountBallForm = 0;
+    public Material highlightMaterial;
 
     [Header("Throwing up food")]
 
@@ -47,6 +48,8 @@ public class SquirrelFoodGrabber : MonoBehaviour
     public UnityEvent<GameObject> pickupEvent;
     public UnityEvent<GameObject> throwEvent;
 
+    private GameObject nearestFood = null;
+
     private void Awake()
     {
         squirrelrb = GetComponent<Rigidbody>();
@@ -56,13 +59,47 @@ public class SquirrelFoodGrabber : MonoBehaviour
     {
         if (PauseMenu.paused) return;
 
-        if (Input.GetKey(KeyCode.Mouse0) && CanEatFood())
+        GameObject prevNearestFood = nearestFood;
+        nearestFood = GetNearestFood();
+
+        if (prevNearestFood != nearestFood)
         {
-            GameObject food = GetNearestFood();
-            if (food != null)
+            // Remove highlight material from previous nearest food
+            if (prevNearestFood != null)
             {
-                PickupFood(food);
+                MeshRenderer prevFoodMeshRenderer = prevNearestFood.GetComponent<MeshRenderer>();
+                Material[] materials = prevFoodMeshRenderer.materials;
+                materials[1] = null;
+                prevFoodMeshRenderer.materials = materials;
             }
+
+            // Add highlight material to nearest food
+            if (nearestFood != null)
+            {
+                MeshRenderer foodMeshRenderer = nearestFood.GetComponent<MeshRenderer>();
+                Material[] materials = foodMeshRenderer.materials;
+
+                // Make room for the highlight material
+                if (materials.Length == 1)
+                {
+                    materials = new Material[2]
+                    {
+                        materials[0],
+                        highlightMaterial
+                    };
+                }
+                else
+                {
+                    materials[1] = highlightMaterial;
+                }
+
+                foodMeshRenderer.materials = materials;
+            }
+        }
+
+        if (nearestFood != null && Input.GetKey(KeyCode.Mouse0) && CanEatFood())
+        {
+            PickupFood(nearestFood);
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse1))

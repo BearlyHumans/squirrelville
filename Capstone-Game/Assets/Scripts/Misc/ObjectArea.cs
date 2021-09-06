@@ -37,12 +37,6 @@ public class ObjectArea : MonoBehaviour
         oldObjectsInArea = objectsInArea.ToArray();
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = new Color(1, 0, 0, 0.5f);
-        Gizmos.DrawCube(transform.position, transform.lossyScale);
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (ObjectMatchesMask(other.gameObject))

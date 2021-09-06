@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-//------------States------------------//
+//The different states each NPC can 
 public enum HumanStates
 {
     PathFollowing,
@@ -11,10 +11,23 @@ public enum HumanStates
     Catch,
     Friendly,
 }
+
+//Modes the Npcs can be set to
+// Friendly = give player food on sight
+// Aggressive = Will chase player on sight
+// Passive = doesnt notice the player
+public enum NpcModes
+{
+    Friendly,
+    Aggressive,
+    Passive,
+}
+
 public class Humans : MonoBehaviour
 {
     
     private HumanStates currentState;
+    private NpcModes npcMode;
 
     //---------Food Graber Script---------//
     private SquirrelFoodGrabber foodGraber;
@@ -66,9 +79,9 @@ public class Humans : MonoBehaviour
     public float detectionAngle = 70;
 
     //--------------Friendly----------------//
-    [Tooltip("Is the NPC friendly?")]
+    [Tooltip("Select the behavior for the NPC")]
     [SerializeField]
-    public bool isFriendly;
+    public NpcModes npcCurrentMode;
     
     bool givenfood = false;
     float watchedFor = 0.0f;
@@ -107,17 +120,17 @@ public class Humans : MonoBehaviour
     Transform target;
     GameObject squrrielTarget;
 
-    
-
+    /// set the nav mesh agent for humans to walk on as well as set target (player) to chase.
     public void Start() 
     {
+        
         foodController = GameObject.FindWithTag("Player");
         foodGraber = foodController.GetComponent<SquirrelFoodGrabber>();
 
         navMesh = this.GetComponent<NavMeshAgent>();
 
         chaseTimer = chaseTime;
-        // singleton - ask jake about game controller.
+        
 
         target = GameObject.FindWithTag("Player").transform;
         squrrielTarget = GameObject.FindWithTag("Player");
@@ -142,6 +155,7 @@ public class Humans : MonoBehaviour
         }
     }
 
+    /// handles the main swaping of states for each person. Runs specific behaviour while in a certain state.
     public void Update() 
     {
         
@@ -176,6 +190,7 @@ public class Humans : MonoBehaviour
         UpdAnimator();
     }
 
+    /// functionaility for catching behaviour 
     private void CatchingState()
     {
         // To start timer for ability to catch again
@@ -200,20 +215,25 @@ public class Humans : MonoBehaviour
             
         }
     }
-
+    ///functionaility for chasing behaviour. Added checks to see if the npc leaves their boundry area or chases for 'x' ammount of time 
     private void ChaseState()
     {  
+        /// runs a check to see if the human is still within boundary
         if(checkBoundry() == true)
         {
+            // runs a check to test if human can see the player 
             SeePlayer();
+            // if can see player then target and move towards player
             navMesh.SetDestination(target.position);
             
+            // if within boundary then chase while timer is above -
             if (chaseTimer > 0f)
             {   
                 
                 Debug.DrawLine(transform.position, target.position);
 
                 chaseTimer -= Time.deltaTime;
+                // checks to see if human is within range to "catch" player
                 if(distance < 1.0f)
                 {
                     currentState = HumanStates.Catch;
@@ -228,6 +248,7 @@ public class Humans : MonoBehaviour
                 currentState = HumanStates.PathFollowing;
             }
         }
+        /// if the human leaves the set area they will return to following their path
         else
         {
             SetDest();
@@ -236,6 +257,7 @@ public class Humans : MonoBehaviour
                 
     }
 
+    /// starts a timer to watch player food and offers 1 piece of food. ALso has internal timer to stop human from giving player too much food
     private void FriendlyState()
     {
         watchedFor += Time.deltaTime;
@@ -260,20 +282,24 @@ public class Humans : MonoBehaviour
             givenfood = false;
         }
     }
-
+    ///runs checks to find player, while cant see playing iterate through list of path points and walk between them
     private void PathFollowingState()
     {
         bool canSee = SeePlayer();
         
         if(canSee)
         {
-            if(isFriendly)
+            if(npcCurrentMode == NpcModes.Friendly)
             {
                 currentState = HumanStates.Friendly;
             }
-            else
+            else if(npcCurrentMode == NpcModes.Aggressive)
             {
                 currentState = HumanStates.Chase;
+            }
+            else
+            {
+                currentState = HumanStates.PathFollowing;
             }
         }
         if(walking && navMesh.remainingDistance <= 1.0f)
@@ -303,14 +329,15 @@ public class Humans : MonoBehaviour
         }
         
     }
-
+    /// turns to face player
     public void facePlayer()
     {
+
         Vector3 direction = (target.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
-
+    /// checks to see if any food is within its range after catching the player
     void checkForFood()
     {
         float radius = 5.0f;
@@ -330,13 +357,14 @@ public class Humans : MonoBehaviour
             } 
         }
     }
-
+    /// runs a ray cast to check if the player is within a LOS.  
     bool SeePlayer()
     {
         
         float distance = Vector3.Distance(target.position, transform.position);
         Vector3 targetDir = target.position - transform.position;
-    
+
+        // view angle
         float angleToPlayer = (Vector3.Angle(targetDir, transform.forward));
         RaycastHit hit;
  
@@ -354,7 +382,7 @@ public class Humans : MonoBehaviour
         }
         return false;
     } 
-
+    /// checks if the humans locations is outside of a set boundary
     bool checkBoundry()
     {
         float dist = Vector3.Distance(homePoint.transform.position, transform.position);
@@ -367,17 +395,17 @@ public class Humans : MonoBehaviour
             return true;
         } 
     }
-
+    /// unfreezes player when run
     void unFreezePlayer()
     {
         squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
     }
-
+    ///Start 
     void canCatchPlayer()
     {
         hasCaughtRecently = false;
     }
-
+    /// used within path following to move human to current path point
     private void SetDest()
     {
         if (pathPoints != null)
@@ -388,11 +416,13 @@ public class Humans : MonoBehaviour
             walking = true;
         }
     }
-
+    /// Used within path following to set a new path point to walk to 
     private void ChangePathPt()
     {
+        // if turn around chance is true. 
         if (UnityEngine.Random.Range(0f, 1f) <= turnAroundChance)
         {
+            // selects the path point they just came from
             walkForward = !walkForward;
         }
         if (walkForward)
@@ -411,6 +441,7 @@ public class Humans : MonoBehaviour
         }
     }
 
+    // Visualize area of points
     void OnDrawGizmosSelected() 
     {
         Gizmos.color = Color.blue;
