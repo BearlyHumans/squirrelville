@@ -56,7 +56,7 @@ MonoBehaviour:
   title: {fileID: 2310303564192017303}
   text: {fileID: 1128778952822745500}
   image: {fileID: 1213530802821664349}
-  typingSpeed: 0.02
+  typingSpeed: 50
   canSkipTyping: 0
   isDialogueOpen: 0
 --- !u!114 &2378879737497825377

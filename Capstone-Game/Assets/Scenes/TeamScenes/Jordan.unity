@@ -868,7 +868,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entries:
-  - text: I'm a koala!
+  - text: I am a koala! Ready... steady... GO! Listing things like apple, banana,
+      and carrot have a shorter pause.
     sprite: {fileID: 21300000, guid: c31dcd4e483e68d4dba2aad7039afdbd, type: 3}
   - text: I'm a proud koala!
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
@@ -1295,7 +1296,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4640440330810829272, guid: c1702d763353abb47949987bc6e72495, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.05
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4640440330810829272, guid: c1702d763353abb47949987bc6e72495, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1303,7 +1304,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4640440330810829272, guid: c1702d763353abb47949987bc6e72495, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4640440330810829272, guid: c1702d763353abb47949987bc6e72495, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1564,6 +1565,10 @@ PrefabInstance:
     - target: {fileID: 1128778952822745503, guid: 0435ce9217d18b648a96da4dea4dd1f5, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862625194389111470, guid: 0435ce9217d18b648a96da4dea4dd1f5, type: 3}
+      propertyPath: typingSpeed
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 7862625194389111470, guid: 0435ce9217d18b648a96da4dea4dd1f5, type: 3}
       propertyPath: canSkipTyping
