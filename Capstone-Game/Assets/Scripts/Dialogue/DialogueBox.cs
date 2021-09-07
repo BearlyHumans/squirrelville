@@ -16,6 +16,9 @@ public class DialogueBox : MonoBehaviour
     [Tooltip("Reference to image element above the dialogue box")]
     public Image image;
 
+    [Tooltip("The text element that is displayed when a dialogue entry is finished displaying")]
+    public TMP_Text nextText;
+
     [Tooltip("The delay in seconds between typing each letter")]
     public float typingSpeed;
 
@@ -60,6 +63,7 @@ public class DialogueBox : MonoBehaviour
                         StopCoroutine(typingCoroutine);
                         isTyping = false;
                         text.text = dialogue.entries[index].text;
+                        nextText.enabled = true;
                     }
                 }
                 else
@@ -120,6 +124,7 @@ public class DialogueBox : MonoBehaviour
         }
 
         text.text = textToType;
+        nextText.enabled = true;
         isTyping = false;
     }
 
@@ -127,6 +132,7 @@ public class DialogueBox : MonoBehaviour
     {
         text.text = "";
         image.enabled = false;
+        nextText.enabled = false;
         isDialogueOpen = false;
 
         if (index < dialogue.entries.Length - 1)

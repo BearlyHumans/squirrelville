@@ -1567,10 +1567,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7862625194389111470, guid: 0435ce9217d18b648a96da4dea4dd1f5, type: 3}
-      propertyPath: typingSpeed
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 7862625194389111470, guid: 0435ce9217d18b648a96da4dea4dd1f5, type: 3}
       propertyPath: canSkipTyping
       value: 1
       objectReference: {fileID: 0}
