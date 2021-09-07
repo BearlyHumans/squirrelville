@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 [RequireComponent(typeof(CanvasGroup))]
@@ -10,6 +11,9 @@ public class DialogueBox : MonoBehaviour
 
     [Tooltip("Reference to the dialogue box content text element")]
     public TMP_Text text;
+
+    [Tooltip("Reference to image element above the dialogue box")]
+    public Image image;
 
     [Tooltip("The delay in seconds between typing each letter")]
     public float typingSpeed;
@@ -49,7 +53,7 @@ public class DialogueBox : MonoBehaviour
                     {
                         StopCoroutine(typingCoroutine);
                         isTyping = false;
-                        text.text = dialogue.sentences[index];
+                        text.text = dialogue.entries[index].text;
                     }
                 }
                 else
@@ -81,7 +85,7 @@ public class DialogueBox : MonoBehaviour
     {
         isTyping = true;
 
-        foreach (char letter in dialogue.sentences[index].ToCharArray())
+        foreach (char letter in dialogue.entries[index].text.ToCharArray())
         {
             text.text += letter;
             yield return new WaitForSeconds(typingSpeed);
@@ -93,9 +97,10 @@ public class DialogueBox : MonoBehaviour
     public void NextSentence()
     {
         text.text = "";
+        image.enabled = false;
         isDialogueOpen = false;
 
-        if (index < dialogue.sentences.Length - 1)
+        if (index < dialogue.entries.Length - 1)
         {
             index++;
 
@@ -106,6 +111,13 @@ public class DialogueBox : MonoBehaviour
 
             isDialogueOpen = true;
             typingCoroutine = StartCoroutine(Type());
+
+            Sprite sprite = dialogue.entries[index].sprite;
+            if (sprite != null)
+            {
+                image.enabled = true;
+                image.sprite = sprite;
+            }
         }
         else
         {

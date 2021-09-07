@@ -341,10 +341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04273a48ccd3fc44983e66b6acdba9a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sentences:
-  - 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-
-    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+  entries: []
   dialogueStart:
     m_PersistentCalls:
       m_Calls: []
@@ -870,11 +867,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04273a48ccd3fc44983e66b6acdba9a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sentences:
-  - What a fine day it is! The sun is shining and burgers are plentiful.
-  - My braindead son right here forgot his lunch at home. He won't shut up about
-    it.
-  - Would you be able to get him 10 burgers while I sit back and watch?
+  entries:
+  - text: I'm a koala!
+    sprite: {fileID: 21300000, guid: c31dcd4e483e68d4dba2aad7039afdbd, type: 3}
+  - text: I'm a proud koala!
+    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
+  - text: I'm a thoughtful koala!
+    sprite: {fileID: 21300000, guid: f2b47b7936547f34689640c321e86f82, type: 3}
+  - text: I'm a sad koala!
+    sprite: {fileID: 21300000, guid: 48f9b57e80877e3499e629c7bcc247d0, type: 3}
+  - text: I'm an embarrassed koala!
+    sprite: {fileID: 21300000, guid: b8042a022772c244ca2c5433cbea3e51, type: 3}
+  - text: I'm a confused koala!
+    sprite: {fileID: 21300000, guid: 300dadbdf3fc5254d911a403452005c5, type: 3}
+  - text: I'm a determined koala!
+    sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}
   dialogueStart:
     m_PersistentCalls:
       m_Calls: []
