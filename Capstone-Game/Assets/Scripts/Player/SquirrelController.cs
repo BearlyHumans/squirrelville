@@ -138,7 +138,7 @@ namespace Player
             refs.RB.velocity = Vector3.zero;
         }
 
-        public void UnFreezeMovement()
+        public void UnfreezeMovement()
         {
             vals.frozen = false;
         }
