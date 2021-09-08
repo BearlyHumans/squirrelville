@@ -815,7 +815,19 @@ MonoBehaviour:
       m_Calls: []
   dialogueFinish:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1385748200}
+        m_TargetAssemblyTypeName: ObjectiveSign, Assembly-CSharp
+        m_MethodName: SetObjective
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Save the world from impending doom! Good luck!
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!136 &1136383629
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -893,6 +905,17 @@ Transform:
   m_Father: {fileID: 1519116060}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1385748200 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9087041781069924337, guid: 8eed4f077e4a56340b3a89dbf3b23b24, type: 3}
+  m_PrefabInstance: {fileID: 1415550505038016835}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d229d4125408c54ca0223d0cf64bceb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1401098818
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1824,6 +1847,18 @@ PrefabInstance:
     - target: {fileID: 3612154450971212448, guid: 8eed4f077e4a56340b3a89dbf3b23b24, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4638204711723927453, guid: 8eed4f077e4a56340b3a89dbf3b23b24, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5169514702891271144, guid: 8eed4f077e4a56340b3a89dbf3b23b24, type: 3}
+      propertyPath: m_text
+      value: Objective goes here
+      objectReference: {fileID: 0}
+    - target: {fileID: 5169514702891271144, guid: 8eed4f077e4a56340b3a89dbf3b23b24, type: 3}
+      propertyPath: m_fontSize
+      value: 52.35
       objectReference: {fileID: 0}
     - target: {fileID: 7696521640170430724, guid: 8eed4f077e4a56340b3a89dbf3b23b24, type: 3}
       propertyPath: acornPrefab

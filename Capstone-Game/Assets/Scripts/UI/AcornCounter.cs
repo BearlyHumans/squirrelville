@@ -5,6 +5,9 @@ public class AcornCounter : MonoBehaviour
 {
     public SquirrelFoodGrabber squirrelFoodGrabber;
     public AcornCounterAcorn acornPrefab;
+    [Tooltip("How far apart horizontally the acorns will be positioned from each other\n(restart game for this to take effect)")]
+    [Min(0)]
+    public float acornSpacing = 80.0f;
 
     private List<AcornCounterAcorn> acorns = new List<AcornCounterAcorn>();
 
@@ -18,7 +21,7 @@ public class AcornCounter : MonoBehaviour
     {
         for (int i = 0; i < squirrelFoodGrabber.maxFoodInInventory; i++)
         {
-            AcornCounterAcorn acorn = GameObject.Instantiate<AcornCounterAcorn>(acornPrefab, new Vector3(i * 80, 0, 0), Quaternion.identity);
+            AcornCounterAcorn acorn = GameObject.Instantiate<AcornCounterAcorn>(acornPrefab, new Vector3(i * acornSpacing, 0, 0), Quaternion.identity);
             acorn.transform.SetParent(gameObject.transform, false);
             acorns.Add(acorn);
         }
