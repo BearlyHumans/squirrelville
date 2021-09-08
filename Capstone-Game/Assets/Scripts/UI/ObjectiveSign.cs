@@ -2,26 +2,47 @@ using UnityEngine;
 using System.Collections;
 using TMPro;
 
-[RequireComponent(typeof(Animation))]
+[RequireComponent(typeof(Animator))]
 public class ObjectiveSign : MonoBehaviour
 {
     public TMP_Text text;
-    private bool visible = false;
+    public float visibleSeconds = 5.0f;
     private Coroutine coroutine;
-    private Animation anim;
+    private Animator animator;
+    private bool hasObjective = false;
 
     private void Start()
     {
-        anim = GetComponent<Animation>();
+        animator = GetComponent<Animator>();
+        animator.SetBool("visible", false);
         gameObject.SetActive(false);
+    }
 
-        text.text = "";
-        visible = false;
+    private void Update()
+    {
+        if (hasObjective)
+        {
+            if (PauseMenu.paused)
+            {
+                if (coroutine != null)
+                {
+                    StopCoroutine(coroutine);
+                    coroutine = null;
+                }
+                animator.SetBool("visible", true);
+            }
+            else if (coroutine == null)
+            {
+                animator.SetBool("visible", false);
+            }
+        }
     }
 
     public void SetObjective(string objective)
     {
         gameObject.SetActive(true);
+
+        hasObjective = true;
         text.text = objective;
 
         if (coroutine != null)
@@ -29,10 +50,28 @@ public class ObjectiveSign : MonoBehaviour
         coroutine = StartCoroutine(ShowBriefly());
     }
 
+    public void RemoveObjective()
+    {
+        if (coroutine != null)
+            StopCoroutine(coroutine);
+        animator.SetBool("visible", false);
+        hasObjective = false;
+    }
+
     private IEnumerator ShowBriefly()
     {
-        anim.Play("Enter");
-        yield return new WaitForSeconds(5);
-        anim.Play("Exit");
+        animator.SetBool("visible", true);
+        yield return new WaitForSeconds(visibleSeconds);
+        animator.SetBool("visible", false);
+    }
+
+    public bool IsVisible()
+    {
+        return animator.GetBool("visible");
+    }
+
+    public bool HasObjective()
+    {
+        return hasObjective;
     }
 }
