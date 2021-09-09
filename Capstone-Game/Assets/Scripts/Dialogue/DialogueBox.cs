@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 [RequireComponent(typeof(CanvasGroup))]
@@ -10,6 +12,12 @@ public class DialogueBox : MonoBehaviour
 
     [Tooltip("Reference to the dialogue box content text element")]
     public TMP_Text text;
+
+    [Tooltip("Reference to image element above the dialogue box")]
+    public Image image;
+
+    [Tooltip("The text element that is displayed when a dialogue entry is finished displaying")]
+    public TMP_Text nextText;
 
     [Tooltip("The delay in seconds between typing each letter")]
     public float typingSpeed;
@@ -28,6 +36,11 @@ public class DialogueBox : MonoBehaviour
 
     private CanvasGroup canvasGroup;
     private bool wasDialogueOpen = false;
+    private Dictionary<HashSet<char>, float> punctuations = new Dictionary<HashSet<char>, float>()
+    {
+        {new HashSet<char>() {'.', '!', '?'}, 0.6f},
+        {new HashSet<char>() {',', ';', ':'}, 0.3f},
+    };
 
     private void Start()
     {
@@ -49,7 +62,8 @@ public class DialogueBox : MonoBehaviour
                     {
                         StopCoroutine(typingCoroutine);
                         isTyping = false;
-                        text.text = dialogue.sentences[index];
+                        text.text = dialogue.entries[index].text;
+                        nextText.enabled = true;
                     }
                 }
                 else
@@ -80,22 +94,48 @@ public class DialogueBox : MonoBehaviour
     private IEnumerator Type()
     {
         isTyping = true;
+        text.text = "";
 
-        foreach (char letter in dialogue.sentences[index].ToCharArray())
+        float t = 0;
+        int charIndex = 0;
+        string textToType = dialogue.entries[index].text;
+
+        while (charIndex < textToType.Length)
         {
-            text.text += letter;
-            yield return new WaitForSeconds(typingSpeed);
+            int lastCharIndex = charIndex;
+
+            t += Time.deltaTime * typingSpeed;
+
+            charIndex = Mathf.FloorToInt(t);
+            charIndex = Mathf.Clamp(charIndex, 0, textToType.Length);
+
+            for (int i = lastCharIndex; i < charIndex; i++)
+            {
+                text.text = textToType.Substring(0, i + 1);
+
+                bool isLast = i >= textToType.Length - 1;
+                if (i < textToType.Length - 1 && IsPunctuation(textToType[i], out float waitTime) && !IsPunctuation(textToType[i + 1], out _))
+                {
+                    yield return new WaitForSeconds(waitTime);
+                }
+            }
+
+            yield return null;
         }
 
+        text.text = textToType;
+        nextText.enabled = true;
         isTyping = false;
     }
 
     public void NextSentence()
     {
         text.text = "";
+        image.enabled = false;
+        nextText.enabled = false;
         isDialogueOpen = false;
 
-        if (index < dialogue.sentences.Length - 1)
+        if (index < dialogue.entries.Length - 1)
         {
             index++;
 
@@ -106,6 +146,13 @@ public class DialogueBox : MonoBehaviour
 
             isDialogueOpen = true;
             typingCoroutine = StartCoroutine(Type());
+
+            Sprite sprite = dialogue.entries[index].sprite;
+            if (sprite != null)
+            {
+                image.enabled = true;
+                image.sprite = sprite;
+            }
         }
         else
         {
@@ -113,5 +160,20 @@ public class DialogueBox : MonoBehaviour
             dialogue.dialogueFinish?.Invoke();
             dialogue = null;
         }
+    }
+
+    private bool IsPunctuation(char character, out float waitTime)
+    {
+        foreach (KeyValuePair<HashSet<char>, float> punctuationCategory in punctuations)
+        {
+            if (punctuationCategory.Key.Contains(character))
+            {
+                waitTime = punctuationCategory.Value;
+                return true;
+            }
+        }
+
+        waitTime = default;
+        return false;
     }
 }
