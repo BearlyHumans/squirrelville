@@ -111,6 +111,8 @@ namespace Player
             //Disable normal collider
             //Enable ball collider
             //Change model
+            refs.animator.CrossFade("Idle", 0f);
+            refs.animator.Update(1f);
             refs.runBody.SetActive(false);
             refs.ballBody.SetActive(true);
             refs.ballBody.transform.rotation = refs.runBody.transform.rotation;
