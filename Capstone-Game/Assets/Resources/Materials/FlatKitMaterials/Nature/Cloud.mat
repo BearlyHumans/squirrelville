@@ -7,7 +7,11 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD:Capstone-Game/Assets/Resources/Materials/FlatKitMaterials/Nature/Cloud.mat
   m_Name: Cloud
+=======
+  m_Name: WoodHouse
+>>>>>>> Island-Refinement:Capstone-Game/Assets/Resources/Materials/FlatKitMaterials/Residential/WoodHouse.mat
   m_Shader: {fileID: 4800000, guid: bee44b4a58655ee4cbff107302a3e131, type: 3}
   m_ShaderKeywords: _CELPRIMARYMODE_SINGLE _TEXTUREBLENDINGMODE_MULTIPLY _UNITYSHADOWMODE_NONE
   m_LightmapFlags: 4
@@ -117,8 +121,13 @@ Material:
     - _VertexColorsEnabled: 0
     - _ZWrite: 1
     m_Colors:
+<<<<<<< HEAD:Capstone-Game/Assets/Resources/Materials/FlatKitMaterials/Nature/Cloud.mat
     - _Color: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 1}
     - _ColorDim: {r: 0.38679248, g: 0.38679248, b: 0.38679248, a: 1}
+=======
+    - _Color: {r: 0.5137255, g: 0.3529412, b: 0.24313727, a: 1}
+    - _ColorDim: {r: 0.18867922, g: 0.13103583, b: 0.09166963, a: 1}
+>>>>>>> Island-Refinement:Capstone-Game/Assets/Resources/Materials/FlatKitMaterials/Residential/WoodHouse.mat
     - _ColorDimCurve: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
     - _ColorDimExtra: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
     - _ColorDimSteps: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
