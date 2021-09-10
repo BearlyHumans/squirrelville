@@ -113,6 +113,7 @@ namespace Player
             //Change model
             refs.runBody.SetActive(false);
             refs.ballBody.SetActive(true);
+            refs.ballBody.transform.rotation = refs.runBody.transform.rotation;
 
             refs.RB.constraints = RigidbodyConstraints.None;
             refs.RB.useGravity = true;
@@ -155,6 +156,7 @@ namespace Player
             public Rigidbody RB;
             public Transform body;
             public Transform ballModel;
+            public Transform ballCollider;
             public Transform model;
             public Camera camera;
             public CameraGimbal fCam;

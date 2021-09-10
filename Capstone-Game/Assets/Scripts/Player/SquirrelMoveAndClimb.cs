@@ -307,19 +307,15 @@ namespace Player
 
                 CustomIntuitiveSnapRotation(-dir);
 
+                //The player counts as on the surface if the raycast hit something.
                 vals.jumping = false;
+                vals.lastOnSurface = Time.time;
 
                 //if the ground is within the wall-stick range, teleport to it, or if its angle is too different eliminate the 'up force' to stop player flying.
-                float sqrDistToSurf = Vector3.SqrMagnitude(hitSurface.point - transform.position);
-                float sqrMaxStickDist = Mathf.Pow(settings.WC.wallStickTriggerDist, 2);
-                if (sqrDistToSurf < sqrMaxStickDist)
-                {
-                    //The player counts as on the surface if they are less than the max sticking distance from a surface. 
-                    vals.lastOnSurface = Time.time;
-                    transform.position = hitSurface.point;
-                    vals.eliminateUpForce = true;
-                }
-                else if (Vector3.Angle(vals.lastRotationDir, dir) > settings.WC.wallStickDangerAngle)
+                Vector3 oldPos = ParentRefs.model.position;
+                transform.position = hitSurface.point;
+                ParentRefs.model.position = oldPos;
+                if (Vector3.Angle(vals.lastRotationDir, dir) > settings.WC.wallStickDangerAngle)
                 {
                     vals.eliminateUpForce = true;
                 }
@@ -877,7 +873,7 @@ namespace Player
                 [Tooltip("Force applied when the character is near a wall to ensure they stick to it.")]
                 public float wallStickForce = 0.2f;
                 [Tooltip("Range of velocity (at normal to wall) within which sticking force is applied.")]
-                public float wallStickTriggerDist =  0.1f;
+                public float teleportDist =  0.1f;
                 [Tooltip("Time away from a surface before the character rotates to face the ground.")]
                 public float noSurfResetTime = 0.2f;
                 [Tooltip("How quickly the squirrel model rotates to face the correct direction.")]
