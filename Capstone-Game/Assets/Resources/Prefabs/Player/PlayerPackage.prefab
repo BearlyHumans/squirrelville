@@ -47,7 +47,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919567509}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -121,7 +121,7 @@ SphereCollider:
   m_GameObject: {fileID: 1734878118}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 2.03252
   m_Center: {x: 0, y: 0, z: 0}
@@ -1797,7 +1797,7 @@ SphereCollider:
   m_GameObject: {fileID: 1512199468572587548}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.01
   m_Center: {x: 0, y: 0, z: 0}
@@ -2110,7 +2110,7 @@ SphereCollider:
   m_GameObject: {fileID: 1512199468699589554}
   m_Material: {fileID: 13400000, guid: 0d00b14aa2a846446b100e6240c9a41b, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -2272,14 +2272,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1512199468937619681}
-  m_LocalRotation: {x: 0.042243905, y: 0.7058438, z: -0.042243905, w: 0.7058438}
+  m_LocalRotation: {x: 0.059741903, y: 0, z: 0, w: 0.9982139}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1512199469109834495}
   m_Father: {fileID: 4640440330810829272}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 6.85, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 6.85, y: 0, z: 0}
 --- !u!114 &1512199468937619680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2352,7 +2352,7 @@ Transform:
   - {fileID: 6953175282461400085}
   m_Father: {fileID: 1512199470005858207}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 90}
 --- !u!1 &1512199469039274280
 GameObject:
   m_ObjectHideFlags: 0
@@ -2478,7 +2478,7 @@ SphereCollider:
   m_GameObject: {fileID: 1512199469109834491}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.2
   m_Center: {x: 0, y: 0, z: 0}
@@ -3002,7 +3002,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1512199470005858200}
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3043,10 +3043,11 @@ MonoBehaviour:
     RB: {fileID: 1512199470005858205}
     body: {fileID: 1512199468520515628}
     ballModel: {fileID: 1734878119}
+    ballCollider: {fileID: 1734878119}
     model: {fileID: 1512199468782888032}
-    camera: {fileID: 0}
+    camera: {fileID: 1512199469109834488}
     fCam: {fileID: 1512199468937619680}
-    stamina: {fileID: 0}
+    stamina: {fileID: 6236453426082644907}
     animator: {fileID: 1420553865083361496}
     runBody: {fileID: 1512199468520515629}
     ballBody: {fileID: 1512199468974199804}
@@ -3113,17 +3114,17 @@ MonoBehaviour:
         - serializedVersion: 3
           time: 0.40697324
           value: 3
-          inSlope: 0.9640519
-          outSlope: 0.9640519
+          inSlope: -0.46927297
+          outSlope: -0.46927297
           tangentMode: 34
           weightedMode: 0
           inWeight: 0.33333334
           outWeight: 0.33333334
         - serializedVersion: 3
           time: 1
-          value: 2.7
-          inSlope: -0.5058793
-          outSlope: -0.5058793
+          value: 1
+          inSlope: -3.372529
+          outSlope: -3.372529
           tangentMode: 34
           weightedMode: 0
           inWeight: 0.33333334
@@ -3157,7 +3158,7 @@ MonoBehaviour:
     wallClimbing:
       climableLayers:
         serializedVersion: 2
-        m_Bits: 129
+        m_Bits: 385
       rotateToLayers:
         serializedVersion: 2
         m_Bits: 951
@@ -3170,7 +3171,7 @@ MonoBehaviour:
       edgeSlideCheckDist: 0.1
       wallStickDangerAngle: 10
       wallStickForce: 0.2
-      teleportDist: 0.1
+      teleportDist: 0.01
       noSurfResetTime: 0.3
       rotateDegreesPerSecond: 720
       moveUnitsPerSecond: 5
@@ -3193,22 +3194,22 @@ MonoBehaviour:
   settings:
     movement:
       acceleration: 3
+      boostMultiplier: 2
+      boostStaminaUse: 10
       maxSpeed: 8
       airControlFactor: 0.5
     jump:
       jumpForce: 5
       jumpCooldown: 0.2
-      checkJumpTime: 1
+      checkJumpTime: 0.2
       coyoteeTime: 0.2
+      staminaUsed: 30
       JumpableLayers:
         serializedVersion: 2
-        m_Bits: 0
-      JumpTriggerRadius: 0.3
-      JumpTriggerOffset: 0.1
-      JumpTriggerRelativeTo: 0
-      JumpTriggerGizmo: 0
-  triggers:
-    feet: {fileID: 0}
+        m_Bits: 16311
+      JumpTriggerRadius: 0.11
+      JumpTriggerOffset: 0.03
+      JumpTriggerGizmo: 1
 --- !u!114 &1512199470005858193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3238,7 +3239,7 @@ MonoBehaviour:
   pickupDelay: 0.5
   pickupRadius: 0.4
   maxFoodInInventory: 10
-  foodCountBallForm: 5
+  foodCountBallForm: 0
   highlightMaterial: {fileID: 2100000, guid: 73bed7dbf5548254bb64a23da6fda468, type: 2}
   throwVelocity: 1
   initialThrowDelay: 0.6
@@ -3283,7 +3284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f20b75e7bca48bd43a518d51e517cd83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  staminaBar: {fileID: 0}
+  staminaBar: {fileID: 7500992045671800574}
   maxStamina: 100
   minStaminaToStartUse: 10
   staminaRegenPerSecond: 10
@@ -3751,7 +3752,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5215332138258062919}
-  m_Material: {fileID: 13400000, guid: 0d00b14aa2a846446b100e6240c9a41b, type: 2}
+  m_Material: {fileID: 13400000, guid: 0b7c83d923f306749910936d40b2373a, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2

@@ -40,13 +40,8 @@ namespace Player
         {
             if (PARENT.TouchingSomething)
             {
-                bool feetTouching = false;
-                if (settings.J.JumpTriggerRelativeTo == SCBallModeSettings.SCJumpSettings.DownOrVel.down || ParentRefs.RB.velocity == Vector3.zero)
-                    feetTouching = Physics.CheckSphere(ParentRefs.ballCollider.position + Vector3.down * settings.J.JumpTriggerOffset,
-                        settings.J.JumpTriggerRadius, settings.J.JumpableLayers);
-                else
-                    feetTouching = Physics.CheckSphere(ParentRefs.ballCollider.position + ParentRefs.RB.velocity.normalized * settings.J.JumpTriggerOffset,
-                        settings.J.JumpTriggerRadius, settings.J.JumpableLayers);
+                bool feetTouching = Physics.CheckSphere(ParentRefs.ballCollider.position + (Vector3.down + ParentRefs.RB.velocity.normalized) * settings.J.JumpTriggerOffset,
+                    settings.J.JumpTriggerRadius, settings.J.JumpableLayers);
 
                 if (feetTouching)
                     vals.lastGrounded = Time.time;
@@ -114,11 +109,8 @@ namespace Player
 
                 if (ParentRefs.RB.velocity.y > settings.J.jumpForce * 2f)
                     return;
-
-                if (settings.J.JumpTriggerRelativeTo == SCBallModeSettings.SCJumpSettings.DownOrVel.down)
-                    ParentRefs.RB.velocity += Vector3.up * settings.J.jumpForce;
-                else
-                    ParentRefs.RB.velocity = -ParentRefs.RB.velocity.normalized * settings.J.jumpForce;
+                
+                ParentRefs.RB.velocity += Vector3.up * settings.J.jumpForce;
             }
         }
 
@@ -127,10 +119,12 @@ namespace Player
             if (settings.J.JumpTriggerGizmo)
             {
                 Gizmos.color = Color.blue;
+                /* Shhh - might add this later.
                 if (settings.J.JumpTriggerRelativeTo == SCBallModeSettings.SCJumpSettings.DownOrVel.down || ParentRefs.RB.velocity == Vector3.zero)
                     Gizmos.DrawWireSphere(ParentRefs.ballCollider.position + Vector3.down * settings.J.JumpTriggerOffset, settings.J.JumpTriggerRadius);
                 else
-                    Gizmos.DrawWireSphere(ParentRefs.ballCollider.position + ParentRefs.RB.velocity.normalized * settings.J.JumpTriggerOffset, settings.J.JumpTriggerRadius);
+                */
+                Gizmos.DrawWireSphere(ParentRefs.ballCollider.position + ParentRefs.RB.velocity.normalized * settings.J.JumpTriggerOffset, settings.J.JumpTriggerRadius);
             }
         }
 
@@ -197,7 +191,7 @@ namespace Player
                 public float JumpTriggerRadius = 0.3f;
                 public float JumpTriggerOffset = 0.1f;
                 public enum DownOrVel { down, velocity }
-                public DownOrVel JumpTriggerRelativeTo = DownOrVel.down;
+                private DownOrVel JumpTriggerRelativeTo = DownOrVel.down; //Don't mind this just trying something
                 public bool JumpTriggerGizmo = false;
             }
         }
