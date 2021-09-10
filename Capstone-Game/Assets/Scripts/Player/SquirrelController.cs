@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Player
 {
+    [RequireComponent(typeof(Stamina))]
     [RequireComponent(typeof(Rigidbody))]
     public class SquirrelController : MonoBehaviour
     {
@@ -56,6 +57,9 @@ namespace Player
                 behaviourScripts.ball = GetComponent<SquirrelBall>();
             if (behaviourScripts.foodGrabber == null)
                 behaviourScripts.foodGrabber = GetComponent<SquirrelFoodGrabber>();
+
+            if (refs.stamina == null)
+                refs.stamina = GetComponent<Stamina>();
 
             EnterRunState();
         }
@@ -154,6 +158,7 @@ namespace Player
             public Transform model;
             public Camera camera;
             public CameraGimbal fCam;
+            public Stamina stamina;
             public Animator animator;
             public GameObject runBody;
             public GameObject ballBody;
