@@ -73,7 +73,12 @@ namespace Player
 
             Vector3 addedVelocity;
             if (Grounded)
-                addedVelocity = (desiredDirection * settings.M.acceleration * Time.deltaTime);
+            {
+                if (Input.GetButton("Dash") && ParentRefs.stamina.UseStamina(settings.M.boostStaminaUse * Time.deltaTime))
+                    addedVelocity = (desiredDirection * settings.M.acceleration * settings.M.boostMultiplier * Time.deltaTime);
+                else
+                    addedVelocity = (desiredDirection * settings.M.acceleration * Time.deltaTime);
+            }
             else
                 addedVelocity = (desiredDirection * settings.M.acceleration * settings.M.airControlFactor * Time.deltaTime);
 
@@ -101,11 +106,14 @@ namespace Player
             bool tryingToJump = Time.time < vals.jumpPressed + settings.J.checkJumpTime;
             bool groundedOrCoyotee = Time.time < vals.lastGrounded + settings.J.coyoteeTime;
             bool jumpOffCooldown = Time.time > vals.lastJump + settings.J.jumpCooldown;
-            if (tryingToJump && groundedOrCoyotee && jumpOffCooldown)
+            if (tryingToJump && groundedOrCoyotee && jumpOffCooldown && ParentRefs.stamina.UseStamina(settings.J.staminaUsed))
             {
                 vals.jumping = true;
                 vals.lastJump = Time.time;
                 vals.jumpPressed = -5;
+
+                if (ParentRefs.RB.velocity.y > settings.J.jumpForce * 2f)
+                    return;
 
                 if (settings.J.JumpTriggerRelativeTo == SCBallModeSettings.SCJumpSettings.DownOrVel.down)
                     ParentRefs.RB.velocity += Vector3.up * settings.J.jumpForce;
@@ -159,6 +167,10 @@ namespace Player
                 [Header("Movement Settings")]
                 [Tooltip("Force applied when player holds movement input. Controlls how quickly max speed is reached and how much forces can be countered.")]
                 public float acceleration = 20f;
+                [Tooltip("Multiplier when holding dash/boost key (shift).")]
+                public float boostMultiplier = 2f;
+                [Tooltip("Boost stamina use per second.")]
+                public float boostStaminaUse = 10f;
                 [Tooltip("The horizontal speed at which no new acceleration is allowed by the player.")]
                 public float maxSpeed = 3f;
                 [Tooltip("Multiplier for the amount of acceleration applied while in the air.")]
@@ -177,6 +189,8 @@ namespace Player
                 public float checkJumpTime = 0.2f;
                 [Tooltip("Time in which jump will still be allowed after the player leaves the ground. Should always be less than jumpCooldown.")]
                 public float coyoteeTime = 0.2f;
+                [Tooltip("Amount of stamina used by a jump.")]
+                public float staminaUsed = 5f;
 
                 [Space]
                 public LayerMask JumpableLayers = new LayerMask();

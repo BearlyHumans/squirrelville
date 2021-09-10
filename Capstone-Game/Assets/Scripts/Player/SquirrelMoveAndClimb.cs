@@ -363,12 +363,10 @@ namespace Player
 
                 if (Input.GetButtonDown("Jump"))
                 {
-                    print("Jump Pressed");
                     //Try to jump onto a wall, otherwise do a normal jump.
                     if (JumpToClimbWall(1f))
                         return;
-
-                    print("Normal Jump");
+                    
                     //Do normal Jump HERE
                     Jump();
                     return;
@@ -391,10 +389,8 @@ namespace Player
 
                 if (Input.GetButtonDown("Jump"))
                 {
-                    print("Jump Pressed");
                     if (vals.stoppedAtEdge)
                     {
-                        print("Stopped at Edge");
                         if (JumpAroundCorners())
                         {
                             //Temporarily disable automatic corner jump HERE
@@ -405,8 +401,7 @@ namespace Player
                     //Try to jump onto a wall, otherwise do a normal jump.
                     if (JumpToClimbWall(1f))
                         return;
-
-                    print("Normal Jump");
+                    
                     //Do normal Jump HERE
                     Jump();
                     return;
@@ -422,15 +417,12 @@ namespace Player
 
             if (FindClimbableWall(out mainHit, distMultiplier))
             {
-                print("Found Wall");
-
                 //Fail the teleport if there is not line-of-sight between the player and the new point.
                 RaycastHit validityCheck;
                 Vector3 checkDir = mainHit.point - refs.climbRotateCheckRay.position;
                 float checkDist = Vector3.Distance(mainHit.point, refs.climbRotateCheckRay.position) - refs.mainCollider.radius * 0.5f;
                 if (Physics.SphereCast(refs.climbRotateCheckRay.position, refs.mainCollider.radius * 0.1f, checkDir, out validityCheck, checkDist, settings.WC.rotateToLayers))
                 {
-                    print("Teleport failed by hitting: " + validityCheck.transform.name);
                     return false;
                 }
 
@@ -578,7 +570,6 @@ namespace Player
             if (Physics.Raycast(firstCast, -ParentRefs.model.transform.up, out hit, (size * settings.J.CornerJumpDepth) + (size * settings.J.SJCheckHeight), settings.WC.rotateToLayers))
             {
                 refs.climbPointDisplay.position = hit.point;
-                print("Failed Empty Check, hit: " + hit.transform.name);
                 if (Vector3.Angle(hit.point, -transform.forward) > settings.J.EdgeDetectAngle)
                     return TeleportToSurface(hit);
                 return false;
@@ -588,11 +579,9 @@ namespace Player
             Vector3 cornerCheckOrigin = firstCast - ParentRefs.model.transform.up * ((size * settings.J.CornerJumpDepth) + (size * settings.J.SJCheckHeight));
             if (Physics.Raycast(cornerCheckOrigin, -moveDirection, out hit, size * 2f, settings.WC.rotateToLayers))
             {
-                print("Found corner");
                 return TeleportToSurface(hit);
             }
-
-            print("Couldn't find corner");
+            
             /*
             //Teleport-jump code:
             for (int i = 0; i < settings.J.SJCheckCount; ++i)
@@ -618,7 +607,6 @@ namespace Player
 
         private bool TeleportToSurface(RaycastHit hit)
         {
-            print("Teleporting");
             transform.position = hit.point;
 
             CustomIntuitiveSnapRotation(-hit.normal);
