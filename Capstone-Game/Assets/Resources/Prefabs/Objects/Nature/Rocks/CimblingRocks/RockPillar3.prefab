@@ -11,6 +11,10 @@ GameObject:
   - component: {fileID: 2027148150122218769}
   - component: {fileID: 3138510955280796340}
   - component: {fileID: 894752172556680830}
+  - component: {fileID: 1160916245604656671}
+  - component: {fileID: 1160916245604656670}
+  - component: {fileID: 1160916245604656669}
+  - component: {fileID: 1160916245604656668}
   m_Layer: 0
   m_Name: RockPillar3
   m_TagString: Untagged
@@ -25,13 +29,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687213976100822955}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: -0.7069834, y: 0, z: 0, w: 0.7072302}
   m_LocalPosition: {x: 88.59908, y: 82.3763, z: 39.198}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 208.0833, y: 208.08328, z: 610.17474}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 0}
 --- !u!33 &3138510955280796340
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -81,3 +85,58 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &1160916245604656671
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687213976100822955}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.0020848482
+  m_Height: 0.006998374
+  m_Direction: 2
+  m_Center: {x: 0.00006332974, y: -2.0568561e-10, z: -0.00016472234}
+--- !u!136 &1160916245604656670
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687213976100822955}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.0033792965
+  m_Height: 0.0042578075
+  m_Direction: 2
+  m_Center: {x: 0.00021087185, y: 0.000002106244, z: 0.0055545717}
+--- !u!136 &1160916245604656669
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687213976100822955}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.0019498446
+  m_Height: 0.0023639468
+  m_Direction: 2
+  m_Center: {x: 0.00042568138, y: -0.00017742476, z: 0.008981133}
+--- !u!65 &1160916245604656668
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687213976100822955}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.0049938727, y: 0.0037432269, z: 0.001513199}
+  m_Center: {x: -0.0018333567, y: -0.00028894842, z: 0.010352993}
