@@ -71,6 +71,9 @@ namespace Player
             if (PauseMenu.paused)
                 return;
 
+            if (vals.frozen)
+                return;
+
             refs.fCam.UpdateCamRotFromImput();
 
             //Debug State Changes
