@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Player
 {
+    [RequireComponent(typeof(Stamina))]
     [RequireComponent(typeof(Rigidbody))]
     public class SquirrelController : MonoBehaviour
     {
@@ -57,6 +58,9 @@ namespace Player
             if (behaviourScripts.foodGrabber == null)
                 behaviourScripts.foodGrabber = GetComponent<SquirrelFoodGrabber>();
 
+            if (refs.stamina == null)
+                refs.stamina = GetComponent<Stamina>();
+
             EnterRunState();
         }
 
@@ -65,6 +69,9 @@ namespace Player
         void Update()
         {
             if (PauseMenu.paused)
+                return;
+
+            if (vals.frozen)
                 return;
 
             refs.fCam.UpdateCamRotFromImput();
@@ -107,8 +114,11 @@ namespace Player
             //Disable normal collider
             //Enable ball collider
             //Change model
+            refs.animator.CrossFade("Idle", 0f);
+            refs.animator.Update(1f);
             refs.runBody.SetActive(false);
             refs.ballBody.SetActive(true);
+            refs.ballBody.transform.rotation = refs.runBody.transform.rotation;
 
             refs.RB.constraints = RigidbodyConstraints.None;
             refs.RB.useGravity = true;
@@ -151,9 +161,11 @@ namespace Player
             public Rigidbody RB;
             public Transform body;
             public Transform ballModel;
+            public Transform ballCollider;
             public Transform model;
             public Camera camera;
             public CameraGimbal fCam;
+            public Stamina stamina;
             public Animator animator;
             public GameObject runBody;
             public GameObject ballBody;

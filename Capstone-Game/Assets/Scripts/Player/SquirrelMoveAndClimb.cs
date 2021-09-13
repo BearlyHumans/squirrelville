@@ -41,7 +41,6 @@ namespace Player
                 PARENT = GetComponentInParent<SquirrelController>();
 
             vals.lastRotationDir = Vector3.down;
-            vals.stamina = settings.S.maxStamina;
         }
 
         //~~~~~~~~~~ MAIN UPDATE FUNCTIONS ~~~~~~~~~~
@@ -50,83 +49,11 @@ namespace Player
         public override void ManualUpdate()
         {
             UpdInput();
-            UpdStamina();
             UpdMove();
             DoJumpChecks();
             FindAndRotateToSurface();
             RotateModel();
             UpdAnimator();
-        }
-
-        /// <summary> Call when an action requires Stamina. Returns true if there is enough stamina for the action (based on stamina settings), and then deducts the specified amount. </summary>
-        private bool UseStamina(float value)
-        {
-            bool succeeded = false;
-
-            //Warn about negative stamina uses (a seperate function should be used to regen quicker).
-            if (value < 0)
-                Debug.LogError("Reducing stamina by negative value. Is this correct?");
-
-            if (value <= 0 && !settings.S.zeroStopsRegen)
-                return true;
-
-            // Check if the stamina is above 0, and is not locked by regeneration.
-            if (vals.belowStaminaRegenThreshold == false && vals.stamina > 0)
-            {
-                // Return true, use up the specified stamina, and signal that stamina was used this update.
-                succeeded = true;
-                vals.stamina -= value;
-                vals.usingStamina = true;
-
-                // Refund the negative stamina if negative stamina has been disabled.
-                if (!settings.S.allowNegativeStamina && vals.stamina < 0)
-                    vals.stamina = 0;
-            }
-
-            // Lock stamina use until it exceeds the threshold when it reaches 0.
-            if (vals.stamina <= 0)
-                vals.belowStaminaRegenThreshold = true;
-
-            // Signal that stamina was used regardless of success if the setting is enabled.
-            if (settings.S.failStopsRegen)
-                vals.usingStamina = true;
-            
-            return succeeded;
-        }
-
-        private bool StaminaAvailable()
-        {
-            if (vals.stamina > 0 && vals.belowStaminaRegenThreshold == false)
-                return true;
-            return false;
-        }
-
-        /// <summary> Regenerate Stamina based on settings, and update Stamina graphic. </summary>
-        private void UpdStamina()
-        {
-            if (vals.usingStamina)
-            {
-                vals.lastStaminaUse = Time.time;
-            }
-            else if (Time.time > vals.lastStaminaUse + settings.S.staminaRegenDelay)
-            {
-                vals.stamina += settings.S.staminaRegenPerSecond * Time.deltaTime;
-
-                if (vals.stamina >= settings.S.maxStamina)
-                {
-                    vals.belowStaminaRegenThreshold = false;
-                    vals.stamina = settings.S.maxStamina;
-                }
-                else if (vals.stamina >= settings.S.minStaminaToStartUse)
-                {
-                    vals.belowStaminaRegenThreshold = false;
-                }
-            }
-
-            if (refs.staminaBar != null)
-                refs.staminaBar.fillAmount = vals.stamina / settings.S.maxStamina;
-
-            vals.usingStamina = false;
         }
 
         private void UpdAnimator()
@@ -152,14 +79,14 @@ namespace Player
 
             //Dash button:
             vals.dashing = false;
-            if (Input.GetButton("Dash") && UseStamina(settings.S.dashStamPerSec * Time.deltaTime))
+            if (Input.GetButton("Dash") && ParentRefs.stamina.UseStamina(settings.S.dashStamPerSec * Time.deltaTime))
             {
                 if (vals.dashing == false)
                     vals.startedDashing = Time.time;
                 vals.dashing = true;
             }
             else if (vals.desiredDirection != Vector3.zero)
-                UseStamina(settings.S.walkStamPerSec * Time.deltaTime);
+                ParentRefs.stamina.UseStamina(settings.S.walkStamPerSec * Time.deltaTime);
 
             //Request a jump if the player presses the button.
             //This helps make jumping more consistent if conditions are false on intermittent frames.
@@ -341,10 +268,10 @@ namespace Player
                 }
                 else
                 {
-                    //If the angle is greater than the max angle, cause the player to fall.
+                    //If the angle is greater than the max angle, start using stamina.
                     float angle = Vector3.Angle(-dir, Vector3.down);
                     if (angle > settings.S.climbMaxAngle)
-                        return; //Skip the code that disables gravity and sticks the player to the wall.
+                        ParentRefs.stamina.UseStamina(settings.S.climbStamPerSec * Time.deltaTime * 2f);
 
 
                     if (hitSurface.transform.CompareTag(settings.S.hardClimbTag))
@@ -353,14 +280,14 @@ namespace Player
                         //Climbing fails when no stamina is available.
                         if (angle > settings.S.climbMinAngle)
                         {
-                            if (!UseStamina(settings.S.climbStamPerSec * Time.deltaTime * 2f)) //* (1f + (angle / 90f) * Time.deltaTime))
+                            if (!ParentRefs.stamina.UseStamina(settings.S.climbStamPerSec * Time.deltaTime * 2f)) //* (1f + (angle / 90f) * Time.deltaTime))
                                 return;
                         }
                     }
                     else if (hitSurface.transform.CompareTag(settings.S.noClimbTag))
                     {
                         //Climbing instantly fails.
-                        UseStamina(vals.stamina + 0.1f);
+                        ParentRefs.stamina.UseAllStamina();
                         return; //Skip the code that disables gravity and sticks the player to the wall.
                     }
                     else
@@ -370,7 +297,7 @@ namespace Player
                         //Climbing fails when no stamina is available.
                         if (angle > settings.S.climbMinAngle)
                         {
-                            if (!UseStamina(settings.S.climbStamPerSec * Time.deltaTime))
+                            if (!ParentRefs.stamina.UseStamina(settings.S.climbStamPerSec * Time.deltaTime))
                                 return; //Skip the code that disables gravity and sticks the player to the wall.
                         }
                     }
@@ -380,23 +307,15 @@ namespace Player
 
                 CustomIntuitiveSnapRotation(-dir);
 
+                //The player counts as on the surface if the raycast hit something.
                 vals.jumping = false;
+                vals.lastOnSurface = Time.time;
 
                 //if the ground is within the wall-stick range, teleport to it, or if its angle is too different eliminate the 'up force' to stop player flying.
-                float sqrDistToSurf = Vector3.SqrMagnitude(hitSurface.point - transform.position);
-                float sqrMinStickDist = Mathf.Pow(settings.WC.wallStickTriggerRange.x, 2);
-                float sqrMaxStickDist = Mathf.Pow(settings.WC.wallStickTriggerRange.y, 2);
-                if (sqrDistToSurf < sqrMaxStickDist)
-                {
-                    //The player counts as on the surface if they are less than the max sticking distance from a surface. 
-                    vals.lastOnSurface = Time.time;
-                    if (sqrDistToSurf > sqrMinStickDist)
-                    {
-                        transform.position = hitSurface.point;
-                        vals.eliminateUpForce = true;
-                    }
-                }
-                else if (Vector3.Angle(vals.lastRotationDir, dir) > settings.WC.wallStickDangerAngle)
+                Vector3 oldPos = ParentRefs.model.position;
+                transform.position = hitSurface.point;
+                ParentRefs.model.position = oldPos;
+                if (Vector3.Angle(vals.lastRotationDir, dir) > settings.WC.wallStickDangerAngle)
                 {
                     vals.eliminateUpForce = true;
                 }
@@ -444,12 +363,10 @@ namespace Player
 
                 if (Input.GetButtonDown("Jump"))
                 {
-                    print("Jump Pressed");
                     //Try to jump onto a wall, otherwise do a normal jump.
                     if (JumpToClimbWall(1f))
                         return;
-
-                    print("Normal Jump");
+                    
                     //Do normal Jump HERE
                     Jump();
                     return;
@@ -472,10 +389,8 @@ namespace Player
 
                 if (Input.GetButtonDown("Jump"))
                 {
-                    print("Jump Pressed");
                     if (vals.stoppedAtEdge)
                     {
-                        print("Stopped at Edge");
                         if (JumpAroundCorners())
                         {
                             //Temporarily disable automatic corner jump HERE
@@ -486,8 +401,7 @@ namespace Player
                     //Try to jump onto a wall, otherwise do a normal jump.
                     if (JumpToClimbWall(1f))
                         return;
-
-                    print("Normal Jump");
+                    
                     //Do normal Jump HERE
                     Jump();
                     return;
@@ -503,15 +417,12 @@ namespace Player
 
             if (FindClimbableWall(out mainHit, distMultiplier))
             {
-                print("Found Wall");
-
                 //Fail the teleport if there is not line-of-sight between the player and the new point.
                 RaycastHit validityCheck;
                 Vector3 checkDir = mainHit.point - refs.climbRotateCheckRay.position;
                 float checkDist = Vector3.Distance(mainHit.point, refs.climbRotateCheckRay.position) - refs.mainCollider.radius * 0.5f;
                 if (Physics.SphereCast(refs.climbRotateCheckRay.position, refs.mainCollider.radius * 0.1f, checkDir, out validityCheck, checkDist, settings.WC.rotateToLayers))
                 {
-                    print("Teleport failed by hitting: " + validityCheck.transform.name);
                     return false;
                 }
 
@@ -659,7 +570,6 @@ namespace Player
             if (Physics.Raycast(firstCast, -ParentRefs.model.transform.up, out hit, (size * settings.J.CornerJumpDepth) + (size * settings.J.SJCheckHeight), settings.WC.rotateToLayers))
             {
                 refs.climbPointDisplay.position = hit.point;
-                print("Failed Empty Check, hit: " + hit.transform.name);
                 if (Vector3.Angle(hit.point, -transform.forward) > settings.J.EdgeDetectAngle)
                     return TeleportToSurface(hit);
                 return false;
@@ -669,11 +579,9 @@ namespace Player
             Vector3 cornerCheckOrigin = firstCast - ParentRefs.model.transform.up * ((size * settings.J.CornerJumpDepth) + (size * settings.J.SJCheckHeight));
             if (Physics.Raycast(cornerCheckOrigin, -moveDirection, out hit, size * 2f, settings.WC.rotateToLayers))
             {
-                print("Found corner");
                 return TeleportToSurface(hit);
             }
-
-            print("Couldn't find corner");
+            
             /*
             //Teleport-jump code:
             for (int i = 0; i < settings.J.SJCheckCount; ++i)
@@ -699,7 +607,6 @@ namespace Player
 
         private bool TeleportToSurface(RaycastHit hit)
         {
-            print("Teleporting");
             transform.position = hit.point;
 
             CustomIntuitiveSnapRotation(-hit.normal);
@@ -749,14 +656,6 @@ namespace Player
             public bool moving;
 
             //MESSAGES AND MULTIPLE-UPDATE VALUES:
-            /// <summary> Current Stamina of the player. </summary>
-            public float stamina;
-            /// <summary> Whether the player is using Stamina or not. Prevents recharging when true. </summary>
-            public bool usingStamina;
-            /// <summary> Time of the last stamina use. Allows calculation of regen delay. </summary>
-            public float lastStaminaUse;
-            /// <summary> True if the player stopped using Stamina recently, and the value is below the regen-use threshold. Prevents Stamina use. </summary>
-            public bool belowStaminaRegenThreshold;
             /// <summary> The time.time value of the last time the player started a jump.
             /// Used for jump cooldown and to prevent movement forces cancelling the jump.  </summary>
             public float lastJump;
@@ -962,7 +861,7 @@ namespace Player
                 [Tooltip("Force applied when the character is near a wall to ensure they stick to it.")]
                 public float wallStickForce = 0.2f;
                 [Tooltip("Range of velocity (at normal to wall) within which sticking force is applied.")]
-                public Vector2 wallStickTriggerRange = new Vector2(0.05f, 0.1f);
+                public float teleportDist =  0.1f;
                 [Tooltip("Time away from a surface before the character rotates to face the ground.")]
                 public float noSurfResetTime = 0.2f;
                 [Tooltip("How quickly the squirrel model rotates to face the correct direction.")]

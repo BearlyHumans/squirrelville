@@ -13,8 +13,7 @@ namespace Player
         public SquirrelController PARENT;
         
         public SCBallModeSettings settings = new SCBallModeSettings();
-        public SCTriggers triggers = new SCTriggers();
-
+        
         private SCBallStoredValues vals = new SCBallStoredValues();
 
         //~~~~~~~~~~ PROPERTIES ~~~~~~~~~~
@@ -26,14 +25,27 @@ namespace Player
 
         private bool Grounded
         {
-            get { return PARENT.TouchingSomething; }
+            get { return PARENT.TouchingSomething && vals.lastGrounded == Time.time; }
         }
 
         //~~~~~~~~~~ EVENTS ~~~~~~~~~~
         public override void ManualUpdate()
         {
+            CheckGrounded();
             UpdMove();
             UpdJump();
+        }
+
+        private void CheckGrounded()
+        {
+            if (PARENT.TouchingSomething)
+            {
+                bool feetTouching = Physics.CheckSphere(ParentRefs.ballCollider.position + (Vector3.down + ParentRefs.RB.velocity.normalized) * settings.J.JumpTriggerOffset,
+                    settings.J.JumpTriggerRadius, settings.J.JumpableLayers);
+
+                if (feetTouching)
+                    vals.lastGrounded = Time.time;
+            }
         }
 
         private void UpdMove()
@@ -56,7 +68,12 @@ namespace Player
 
             Vector3 addedVelocity;
             if (Grounded)
-                addedVelocity = (desiredDirection * settings.M.acceleration * Time.deltaTime);
+            {
+                if (Input.GetButton("Dash") && ParentRefs.stamina.UseStamina(settings.M.boostStaminaUse * Time.deltaTime))
+                    addedVelocity = (desiredDirection * settings.M.acceleration * settings.M.boostMultiplier * Time.deltaTime);
+                else
+                    addedVelocity = (desiredDirection * settings.M.acceleration * Time.deltaTime);
+            }
             else
                 addedVelocity = (desiredDirection * settings.M.acceleration * settings.M.airControlFactor * Time.deltaTime);
 
@@ -82,18 +99,35 @@ namespace Player
 
             //If the player wants to and is able to jump, apply a force and set the last jump time.
             bool tryingToJump = Time.time < vals.jumpPressed + settings.J.checkJumpTime;
-            bool groundedOrCoyotee = Grounded;
+            bool groundedOrCoyotee = Time.time < vals.lastGrounded + settings.J.coyoteeTime;
             bool jumpOffCooldown = Time.time > vals.lastJump + settings.J.jumpCooldown;
-            if (tryingToJump && groundedOrCoyotee && jumpOffCooldown)
+            if (tryingToJump && groundedOrCoyotee && jumpOffCooldown && ParentRefs.stamina.UseStamina(settings.J.staminaUsed))
             {
                 vals.jumping = true;
                 vals.lastJump = Time.time;
                 vals.jumpPressed = -5;
 
+                if (ParentRefs.RB.velocity.y > settings.J.jumpForce * 2f)
+                    return;
+                
                 ParentRefs.RB.velocity += Vector3.up * settings.J.jumpForce;
             }
         }
-        
+
+        void OnDrawGizmosSelected()
+        {
+            if (settings.J.JumpTriggerGizmo)
+            {
+                Gizmos.color = Color.blue;
+                /* Shhh - might add this later.
+                if (settings.J.JumpTriggerRelativeTo == SCBallModeSettings.SCJumpSettings.DownOrVel.down || ParentRefs.RB.velocity == Vector3.zero)
+                    Gizmos.DrawWireSphere(ParentRefs.ballCollider.position + Vector3.down * settings.J.JumpTriggerOffset, settings.J.JumpTriggerRadius);
+                else
+                */
+                Gizmos.DrawWireSphere(ParentRefs.ballCollider.position + ParentRefs.RB.velocity.normalized * settings.J.JumpTriggerOffset, settings.J.JumpTriggerRadius);
+            }
+        }
+
         //~~~~~~~~~~ DATA STRUCTURES ~~~~~~~~~~
 
         [System.Serializable]
@@ -109,7 +143,6 @@ namespace Player
             public float lastGrounded;
             public float jumpPressed;
             public bool jumping;
-            public float lastOnSurface;
             public bool moving;
         }
 
@@ -128,22 +161,14 @@ namespace Player
                 [Header("Movement Settings")]
                 [Tooltip("Force applied when player holds movement input. Controlls how quickly max speed is reached and how much forces can be countered.")]
                 public float acceleration = 20f;
+                [Tooltip("Multiplier when holding dash/boost key (shift).")]
+                public float boostMultiplier = 2f;
+                [Tooltip("Boost stamina use per second.")]
+                public float boostStaminaUse = 10f;
                 [Tooltip("The horizontal speed at which no new acceleration is allowed by the player.")]
                 public float maxSpeed = 3f;
                 [Tooltip("Multiplier for the amount of acceleration applied while in the air.")]
                 public float airControlFactor = 0.5f;
-                [Tooltip("Rate at which speed naturally decays back to max speed (used in case of external forces).")]
-                public float frictionForce = 50f;
-                [Tooltip("Rate at which speed falls to zero when not moving.")]
-                public float stoppingForce = 50f;
-                [Tooltip("Rate at which speed falls to zero when not moving and in the air.")]
-                public float airStoppingForce = 2;
-                [Tooltip("haltAtFractionOfMaxSpeed: Fraction of the max speed at which a grounded player will fully stop.")]
-                [Range(0, 1)]
-                public float haltAtFractionOfMaxSpeed = 0.9f;
-                [Tooltip("Fraction of speed which the character model will rotate at.")]
-                [Range(0, 1)]
-                public float turningThreshold = 0.2f;
             }
 
             [System.Serializable]
@@ -152,24 +177,22 @@ namespace Player
                 [Header("Jump Settings")]
                 [Tooltip("Force applied upwards (or outwards) when the player jumps.")]
                 public float jumpForce = 3f;
-                [Tooltip("Toggles if a burst of force is applied when jumping and moving.")]
-                public bool allowForwardJumps = true;
-                [Tooltip("Force applied in the direction of motion when the player jumps.")]
-                public float forwardJumpForce = 5f;
-                [Tooltip("forwardJumpVerticalFraction: Fraction of the normal jump force which is also applied in a forward jump.")]
-                [Range(0, 1)]
-                public float forwardJumpVerticalFraction = 0.5f;
                 [Tooltip("Time after a jump before the player can jump again. Stops superjumps from pressing twice while trigger is still activated.")]
                 public float jumpCooldown = 0.2f;
                 [Tooltip("Time in which jumps will still be triggered if conditions are met after the key is pressed.")]
                 public float checkJumpTime = 0.2f;
                 [Tooltip("Time in which jump will still be allowed after the player leaves the ground. Should always be less than jumpCooldown.")]
                 public float coyoteeTime = 0.2f;
-                [Tooltip("Angle at which the player will be considered to be on a wall instead of on the ground (e.g. for special jumps).")]
-                public float onWallAngle = 10f;
-                [Tooltip("standingWallJumpVerticalRatio: Amount of the jump force which is applied upwards instead of outwards when a player jumps off a wall.")]
-                [Range(0, 1)]
-                public float standingWallJumpVerticalRatio = 0.5f;
+                [Tooltip("Amount of stamina used by a jump.")]
+                public float staminaUsed = 5f;
+
+                [Space]
+                public LayerMask JumpableLayers = new LayerMask();
+                public float JumpTriggerRadius = 0.3f;
+                public float JumpTriggerOffset = 0.1f;
+                public enum DownOrVel { down, velocity }
+                private DownOrVel JumpTriggerRelativeTo = DownOrVel.down; //Don't mind this just trying something
+                public bool JumpTriggerGizmo = false;
             }
         }
 
