@@ -46,15 +46,16 @@ public class Humans : MonoBehaviour
     [Tooltip("adds a home area that acts as boundary")]
     public HomePoint homePoint;
 
+    [Tooltip("bin")]
+    public Bin bin;
 
     //---sphere cast ---//
     private Vector3 origin;
     private Vector3 sDirection;
     public LayerMask layerMask;
 
-    // --- burger---- /
-    public GameObject burger;
-    
+    // --- good object for friendly humans to give---- /
+    public GameObject foodToGive;
 
     NavMeshAgent navMesh;
     float distance;
@@ -210,6 +211,8 @@ public class Humans : MonoBehaviour
 
         if(!caught)
         {
+            print("play animations");
+
             Invoke("unFreezePlayer", unFreezeTime);  
             currentState = HumanStates.PathFollowing;
             
@@ -266,7 +269,7 @@ public class Humans : MonoBehaviour
         
         if (!givenfood)
         {
-           Instantiate(burger, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
+           Instantiate(foodToGive, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
            givenfood = true;
            timeToFood = 0.0f;
         }
