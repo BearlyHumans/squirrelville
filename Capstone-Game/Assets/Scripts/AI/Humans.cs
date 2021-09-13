@@ -196,27 +196,22 @@ public class Humans : MonoBehaviour
     {
         // To start timer for ability to catch again
         hasCaughtRecently = true;
-
         //currently caught
         caught = true;
 
         facePlayer();
-        foodGraber.ThrowFood();  
+        foodtest();
 
         //freeze sqiurriel - to change later
         squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-        
+        Invoke("unFreezePlayer", unFreezeTime);
         // checks if player drops food to "pick up" delete - to change to pick and and throw out
         checkForFood();
-
-        if(!caught)
-        {
-            print("play animations");
-
-            Invoke("unFreezePlayer", unFreezeTime);  
-            currentState = HumanStates.PathFollowing;
-            
-        }
+        
+    }
+    private void foodtest()
+    {
+        foodGraber.ThrowFood(); 
     }
     ///functionaility for chasing behaviour. Added checks to see if the npc leaves their boundry area or chases for 'x' ammount of time 
     private void ChaseState()
@@ -238,7 +233,7 @@ public class Humans : MonoBehaviour
                 chaseTimer -= Time.deltaTime;
                 // checks to see if human is within range to "catch" player
                 if(distance < 1.0f)
-                {
+                { 
                     currentState = HumanStates.Catch;
                 }
                      
@@ -332,6 +327,13 @@ public class Humans : MonoBehaviour
         }
         
     }
+
+    public void throwFoodOut()
+    {
+        navMesh.SetDestination(bin.transform.position);
+
+        currentState = HumanStates.PathFollowing;
+    }
     /// turns to face player
     public void facePlayer()
     {
@@ -350,6 +352,7 @@ public class Humans : MonoBehaviour
         {
             caught = false;
             Invoke("canCatchPlayer", deAggroTimer);
+            
         }
         else
         {
