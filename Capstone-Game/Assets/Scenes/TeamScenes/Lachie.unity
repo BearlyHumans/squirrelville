@@ -296,6 +296,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0870beee427039345bd93b084cf75e79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &128597573 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1527093627521530, guid: 9fc6027299151c9458ffd62c2b09bd51, type: 3}
+  m_PrefabInstance: {fileID: 933098230}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &303719576
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -376,11 +381,12 @@ MonoBehaviour:
   - {fileID: 1867593436}
   - {fileID: 328347659}
   homePoint: {fileID: 1376802267}
-  bin: {fileID: 0}
+  bin: {fileID: 1048125144}
   layerMask:
     serializedVersion: 2
     m_Bits: 1024
-  foodToGive: {fileID: 0}
+  foodToGive: {fileID: 128597573}
+  takeFoodAmmount: 0
   anim: {fileID: 0}
   detectionAngle: 70
   npcCurrentMode: 0
@@ -774,6 +780,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   foodToGive: {fileID: 0}
+  takeFoodAmmount: 1
   anim: {fileID: 0}
   detectionAngle: 70
   npcCurrentMode: 1
@@ -1584,19 +1591,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 31d5e280b2be14476a54ba94d25f9163, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -43.443848
+      value: -43.387875
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 31d5e280b2be14476a54ba94d25f9163, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.34000015
+      value: -0.3400001
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 31d5e280b2be14476a54ba94d25f9163, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 13.444564
+      value: 13.387716
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 31d5e280b2be14476a54ba94d25f9163, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.70190287
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 31d5e280b2be14476a54ba94d25f9163, type: 3}
       propertyPath: m_LocalRotation.x
@@ -1604,7 +1611,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 31d5e280b2be14476a54ba94d25f9163, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.71227276
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 31d5e280b2be14476a54ba94d25f9163, type: 3}
       propertyPath: m_LocalRotation.z
@@ -1616,7 +1623,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 31d5e280b2be14476a54ba94d25f9163, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90.84
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 31d5e280b2be14476a54ba94d25f9163, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
