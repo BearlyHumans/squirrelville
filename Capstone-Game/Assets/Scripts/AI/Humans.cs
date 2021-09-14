@@ -213,12 +213,13 @@ public class Humans : MonoBehaviour
     }
     private void takeFood(int takeFoodAmmount)
     {
-        int i = 0;
+        int i = 0; 
         while(i < takeFoodAmmount)
         {
             foodGraber.ThrowFood(); 
             i++;
         }
+        hasCaughtRecently = true;
     }
     ///functionaility for chasing behaviour. Added checks to see if the npc leaves their boundry area or chases for 'x' ammount of time 
     private void ChaseState()
@@ -339,19 +340,38 @@ public class Humans : MonoBehaviour
         float radius = 5.0f;
 
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius, layerMask);
+
         if(hitColliders.Length == 0)
         {
             currentState = HumanStates.PathFollowing;
+            print("No Food!");
         }
         else
         {
+            int randomNumber = UnityEngine.Random.Range(0, 2);
         
             foreach (var hitCollider in hitColliders)
             {
-                // walks to bin
-                navMesh.SetDestination(hitCollider.transform.position);
+                print("found food");
+                if(randomNumber == 0)
+                {
+                    print("throwing out food");
+                    throwFoodOut();
+                }
+                else
+                {
+                    
+                    hasCaughtRecently = true;
+                    print("eaten food");
+                    currentState = HumanStates.PathFollowing;
+                }
             } 
         }
+    }
+
+    public void eatVoid()
+    {
+        
     }
 
     public void throwFoodOut()
