@@ -192,12 +192,11 @@ public class Humans : MonoBehaviour
         if(hasCaughtRecently)
         {
             print("caught player");
+            // takes x ammount of food from the player when caught
+            takeFood(takeFoodAmmount);
             squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             Invoke("unFreezePlayer", unFreezeTime);
         }
-        // takes x ammount of food from the player when caught
-        takeFood(takeFoodAmmount);
-        
 
         // TODO: play squirrel dizzy animation *here*
         
@@ -329,7 +328,9 @@ public class Humans : MonoBehaviour
         }
         
     }
-    void checkForFood()
+
+    // checks for any food taken from player and attempts to pick it all up
+    private void checkForFood()
     {
         float radius = 5.0f;
 
@@ -363,15 +364,30 @@ public class Humans : MonoBehaviour
             
         }
 
+        // todo: get spots for animations to work
+        // further fixes for walking to fruit
+        // walk to closest bin
         else
         {
-            currentState = HumanStates.PathFollowing;
-            print("No more Food!");
+            var number = Random.Range(0,2);
+            
+            if(number == 0)
+            {
+                
+                navMesh.SetDestination(bin.transform.position);
+                print("throw food out");
+
+            }
+            else
+            {
+                print("eat food");
+            }
+            
             
         }
     }
     
-   
+    // when caught forces the player to spit up an ammont of food
     private void takeFood(int takeFoodAmmount)
     {
         int i = 0; 
