@@ -97,6 +97,12 @@ namespace Player
             {
                 behaviourScripts.ball.ManualUpdate();
             }
+        }
+
+        private void FixedUpdate()
+        {
+            if (PauseMenu.paused || vals.frozen)
+                return;
 
             refs.fCam.UpdateCamPos();
             refs.fCam.UpdateDolly();
