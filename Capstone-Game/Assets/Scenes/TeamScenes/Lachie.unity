@@ -312,6 +312,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: boy-sport (friendly)
       objectReference: {fileID: 0}
+    - target: {fileID: 1261843781901016, guid: 6515975e1087a43a49a85f8ace7230ab, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4756664877149370, guid: 6515975e1087a43a49a85f8ace7230ab, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -648,13 +652,32 @@ MonoBehaviour:
     m_Bits: 1024
   foodToGive: {fileID: 0}
   takeFoodAmmount: 4
-  anim: {fileID: 0}
+  anim: {fileID: 664543263}
   detectionAngle: 70
   npcCurrentMode: 1
   foodTimer: 10
   range: 2
   chaseTime: 10
   unFreezeTime: 2
+--- !u!95 &664543263
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 664543259}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 99ca07b1fdce3ab4d998f2dad4abc421, type: 3}
+  m_Controller: {fileID: 9100000, guid: 957ce8f6a4b52914288b576f70b16876, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!4 &686155420 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4020120928952466, guid: d8dad9d2d761e460bb0a3f03ef8fccb8, type: 3}
@@ -1395,6 +1418,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93f6e91de87f9d44fae5e77a33b7abff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  radius: 1
 --- !u!1001 &1055967159
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1881,6 +1905,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93f6e91de87f9d44fae5e77a33b7abff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  radius: 1
 --- !u!1 &1376303218
 GameObject:
   m_ObjectHideFlags: 0
@@ -2310,7 +2335,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4756664877149370, guid: 6515975e1087a43a49a85f8ace7230ab, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -42.61
+      value: -44.79
       objectReference: {fileID: 0}
     - target: {fileID: 4756664877149370, guid: 6515975e1087a43a49a85f8ace7230ab, type: 3}
       propertyPath: m_LocalPosition.y

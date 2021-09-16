@@ -70,7 +70,9 @@ public class Humans : MonoBehaviour
     private void UpdAnimator()
     {
         if (walking)
+        {
             anim.SetInteger("HumanMove", 1);
+        }
         else
             anim.SetInteger("HumanMove", 0);
     }
@@ -102,6 +104,9 @@ public class Humans : MonoBehaviour
     float chaseTime = 10f;
     float chaseTimer;
 
+
+    // -----catching variables ------//
+    int catchChoice;
     bool stillFood = false;
     bool hasFood = false;
 
@@ -201,15 +206,14 @@ public class Humans : MonoBehaviour
 
             squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             Invoke("unFreezePlayer", unFreezeTime);
+            catchChoice = Random.Range(0,2);
         }
 
         if(!stillFood)
         {
             if(hasFood)
             {
-                var number = Random.Range(0,2);
-                
-                if(number == 0)
+                if(catchChoice == 0)
                 {
                     Bin bin = homePoint.closestBin(transform.position);
 
@@ -217,12 +221,10 @@ public class Humans : MonoBehaviour
                     if(bin.radius <= Vector3.Distance(bin.transform.position, transform.position))
                     {
                         navMesh.SetDestination(bin.transform.position);
-                        
                     }
                     else
                     {
                         // play bin animation here
-                        print("at bin");
                         navMesh.velocity = Vector3.zero;
                         Invoke("returnToPath", 10);
                     }
@@ -474,7 +476,6 @@ public class Humans : MonoBehaviour
     /// unfreezes player when run
     void unFreezePlayer()
     {
-        print("can move again");
         hasCaughtRecently = false;
         squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
     }
