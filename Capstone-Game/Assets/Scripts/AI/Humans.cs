@@ -46,9 +46,6 @@ public class Humans : MonoBehaviour
     [Tooltip("adds a home area that acts as boundary")]
     public HomePoint homePoint;
 
-    [Tooltip("bin")]
-    public Bin bin;
-
     //---sphere cast ---//
     private Vector3 origin;
     private Vector3 sDirection;
@@ -121,6 +118,7 @@ public class Humans : MonoBehaviour
         
         foodController = GameObject.FindWithTag("Player");
         foodGraber = foodController.GetComponent<SquirrelFoodGrabber>();
+
 
         navMesh = this.GetComponent<NavMeshAgent>();
 
@@ -369,19 +367,20 @@ public class Humans : MonoBehaviour
         // walk to closest bin
         else
         {
-            var number = Random.Range(0,2);
+            //var number = Random.Range(0,2);
             
-            if(number == 0)
-            {
-                
-                navMesh.SetDestination(bin.transform.position);
-                print("throw food out");
+            //if(number == 0)
+            //{
+            
+            Bin bin = homePoint.closestBin(transform.position);
+            navMesh.SetDestination(bin.transform.position);
+           
 
-            }
-            else
-            {
-                print("eat food");
-            }
+            //}
+            //else
+            //{
+                //print("eat food");
+            //}
             
             
         }
@@ -400,9 +399,9 @@ public class Humans : MonoBehaviour
 
     public void throwFoodOut()
     {
-        navMesh.SetDestination(bin.transform.position);
+        //navMesh.SetDestination(bin.transform.position);
 
-        currentState = HumanStates.PathFollowing;
+        //currentState = HumanStates.PathFollowing;
     }
     /// turns to face player
     public void facePlayer()

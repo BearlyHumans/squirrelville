@@ -381,7 +381,6 @@ MonoBehaviour:
   - {fileID: 1867593436}
   - {fileID: 328347659}
   homePoint: {fileID: 1376802267}
-  bin: {fileID: 1048125144}
   layerMask:
     serializedVersion: 2
     m_Bits: 1024
@@ -644,7 +643,6 @@ MonoBehaviour:
   - {fileID: 689859638}
   - {fileID: 1013683880}
   homePoint: {fileID: 628919248}
-  bin: {fileID: 1048125144}
   layerMask:
     serializedVersion: 2
     m_Bits: 1024
@@ -1340,7 +1338,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 31d5e280b2be14476a54ba94d25f9163, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -26.16
+      value: -36.06
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 31d5e280b2be14476a54ba94d25f9163, type: 3}
       propertyPath: m_LocalPosition.y
