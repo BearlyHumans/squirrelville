@@ -367,20 +367,17 @@ public class Humans : MonoBehaviour
         // walk to closest bin
         else
         {
-            //var number = Random.Range(0,2);
+            var number = Random.Range(0,2);
             
-            //if(number == 0)
-            //{
-            
-            Bin bin = homePoint.closestBin(transform.position);
-            navMesh.SetDestination(bin.transform.position);
-           
-
-            //}
-            //else
-            //{
-                //print("eat food");
-            //}
+            if(number == 0)
+            {
+                Bin bin = homePoint.closestBin(transform.position);
+                navMesh.SetDestination(bin.transform.position);
+            }
+            else
+            {
+                print("eat food");
+            }
             
             
         }
@@ -397,12 +394,6 @@ public class Humans : MonoBehaviour
         }
     }
 
-    public void throwFoodOut()
-    {
-        //navMesh.SetDestination(bin.transform.position);
-
-        //currentState = HumanStates.PathFollowing;
-    }
     /// turns to face player
     public void facePlayer()
     {
