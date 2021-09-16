@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class Bin : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    public float radius = 1.0f;
+    
+    public virtual void OnDrawGizmos() 
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, radius); 
     }
 }

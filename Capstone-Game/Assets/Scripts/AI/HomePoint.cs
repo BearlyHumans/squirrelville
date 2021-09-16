@@ -19,7 +19,6 @@ public class HomePoint : MonoBehaviour
         foreach (Bin bin in bins)
         {
             float distToBin = Vector3.Distance(bin.transform.position, humanPos);
-            print(distToBin);
             if (distToBin < bestDistance)
             {
                 bestDistance = distToBin;

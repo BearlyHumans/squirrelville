@@ -102,6 +102,9 @@ public class Humans : MonoBehaviour
     float chaseTime = 10f;
     float chaseTimer;
 
+    bool stillFood = false;
+    bool hasFood = false;
+
     //used to check if player has been caught recently 
     bool hasCaughtRecently = false;
 
@@ -189,18 +192,56 @@ public class Humans : MonoBehaviour
         
         if(hasCaughtRecently)
         {
-            print("caught player");
             // takes x ammount of food from the player when caught
             takeFood(takeFoodAmmount);
+
+            stillFood = checkForFood();
+
+            // TODO: play squirrel dizzy animation *here*
+
             squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             Invoke("unFreezePlayer", unFreezeTime);
         }
 
-        // TODO: play squirrel dizzy animation *here*
-        
-        // checks for any food taken from squirrel
-        checkForFood();
-        
+        if(!stillFood)
+        {
+            if(hasFood)
+            {
+                var number = Random.Range(0,2);
+                
+                if(number == 0)
+                {
+                    Bin bin = homePoint.closestBin(transform.position);
+
+
+                    if(bin.radius <= Vector3.Distance(bin.transform.position, transform.position))
+                    {
+                        navMesh.SetDestination(bin.transform.position);
+                        
+                    }
+                    else
+                    {
+                        // play bin animation here
+                        print("at bin");
+                        navMesh.velocity = Vector3.zero;
+                        Invoke("returnToPath", 10);
+                    }
+                }
+                else
+                {
+                    // play eating animation
+                    Invoke("returnToPath", 10);
+                }
+            }
+            else
+            {
+                currentState = HumanStates.PathFollowing;
+            }
+        }
+        else
+        {
+            stillFood = checkForFood();
+        }
     }
 
     ///functionaility for chasing behaviour. Added checks to see if the npc leaves their boundry area or chases for 'x' ammount of time 
@@ -328,7 +369,7 @@ public class Humans : MonoBehaviour
     }
 
     // checks for any food taken from player and attempts to pick it all up
-    private void checkForFood()
+    private bool checkForFood()
     {
         float radius = 5.0f;
 
@@ -339,11 +380,10 @@ public class Humans : MonoBehaviour
             float bestDistance = 9999.0f;
             Collider bestCollider = null;
 
-
             foreach (Collider hitCollider in hitColliders)
             {
+                
                 float distToFood = Vector3.Distance(hitCollider.transform.position, transform.position);
-                   
                 
                 if (distToFood < bestDistance)
                 {
@@ -358,29 +398,11 @@ public class Humans : MonoBehaviour
             {
                 Destroy(bestCollider, 3);
                 navMesh.velocity = Vector3.zero;
-            }
-            
+            } 
+            hasFood = true;
+            return true;
         }
-
-        // todo: get spots for animations to work
-        // further fixes for walking to fruit
-        // walk to closest bin
-        else
-        {
-            var number = Random.Range(0,2);
-            
-            if(number == 0)
-            {
-                Bin bin = homePoint.closestBin(transform.position);
-                navMesh.SetDestination(bin.transform.position);
-            }
-            else
-            {
-                print("eat food");
-            }
-            
-            
-        }
+        return false;
     }
     
     // when caught forces the player to spit up an ammont of food
@@ -392,6 +414,13 @@ public class Humans : MonoBehaviour
             foodGraber.ThrowFood(); 
             i++;
         }
+    }
+
+    void returnToPath()
+    {
+        hasCaughtRecently = false;
+        hasFood = false;
+        currentState = HumanStates.PathFollowing;
     }
 
     /// turns to face player
@@ -421,7 +450,7 @@ public class Humans : MonoBehaviour
             {
                 if(hit.transform.tag == "Player")
                 {
-                    //if(!hasCaughtRecently)
+                    
                     return true;
                 }
                 
