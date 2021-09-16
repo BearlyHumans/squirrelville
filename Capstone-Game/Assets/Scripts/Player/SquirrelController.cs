@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SquirrelControllerSettings;
 
 namespace Player
 {
+    [RequireComponent(typeof(Stamina))]
     [RequireComponent(typeof(Rigidbody))]
     public class SquirrelController : MonoBehaviour
     {
@@ -58,10 +58,11 @@ namespace Player
                 behaviourScripts.moveAndClimb = GetComponent<SquirrelMoveAndClimb>();
             if (behaviourScripts.ball == null)
                 behaviourScripts.ball = GetComponent<SquirrelBall>();
-            if (behaviourScripts.glide == null)
-                behaviourScripts.glide = GetComponent<SquirrelGlide>();
             if (behaviourScripts.foodGrabber == null)
                 behaviourScripts.foodGrabber = GetComponent<SquirrelFoodGrabber>();
+
+            if (refs.stamina == null)
+                refs.stamina = GetComponent<Stamina>();
 
             EnterRunState();
         }
@@ -73,12 +74,12 @@ namespace Player
             if (PauseMenu.paused)
                 return;
 
-            refs.fCam.UpdateCamRotFromImput();
-
             if (vals.frozen)
                 return;
-
+			
             CallAnimationEvents(AnimationTrigger.frameStart);
+			
+            refs.fCam.UpdateCamRotFromInput();
 
             //Debug State Changes
             if (Input.GetKeyDown(KeyCode.Q))
@@ -88,8 +89,6 @@ namespace Player
                 else if (CanEnterBallState())
                     EnterBallState();
             }
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-                EnterGlideState();
 
             if (!CanEnterBallState())
                 EnterRunState();
@@ -102,10 +101,6 @@ namespace Player
             else if (vals.mState == MovementState.ball)
             {
                 behaviourScripts.ball.ManualUpdate();
-            }
-            else if (vals.mState == MovementState.glide)
-            {
-                behaviourScripts.glide.ManualUpdate();
             }
 
             refs.fCam.UpdateCamPos();
@@ -124,8 +119,11 @@ namespace Player
             //Disable normal collider
             //Enable ball collider
             //Change model
+            refs.animator.CrossFade("Idle", 0f);
+            refs.animator.Update(1f);
             refs.runBody.SetActive(false);
             refs.ballBody.SetActive(true);
+            refs.ballBody.transform.rotation = refs.runBody.transform.rotation;
 
             refs.RB.constraints = RigidbodyConstraints.None;
             refs.RB.useGravity = true;
@@ -149,16 +147,10 @@ namespace Player
             vals.mState = MovementState.moveAndClimb;
         }
 
-        private void EnterGlideState()
-        {
-
-        }
-
-        //~~ Public Functions ~~  
-
         public void FreezeMovement()
         {
             vals.frozen = true;
+            refs.RB.velocity = Vector3.zero;
         }
 
         public void UnfreezeMovement()
@@ -193,9 +185,11 @@ namespace Player
             public Rigidbody RB;
             public Transform body;
             public Transform ballModel;
+            public Transform ballCollider;
             public Transform model;
             public Camera camera;
             public CameraGimbal fCam;
+            public Stamina stamina;
             public Animator animator;
             public GameObject runBody;
             public GameObject ballBody;
@@ -205,7 +199,6 @@ namespace Player
         public class SCChildren
         {
             public SquirrelMoveAndClimb moveAndClimb;
-            public SquirrelGlide glide;
             public SquirrelBall ball;
             public SquirrelFoodGrabber foodGrabber;
         }
@@ -221,6 +214,8 @@ namespace Player
             public bool touchingSomething;
             public bool moving;
             public bool frozen;
+            public float stamina;
+            public bool usingStamina;
             public MovementState mState;
         }
 

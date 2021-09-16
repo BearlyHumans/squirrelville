@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - CameraSolid
+  - CanClimb
+  - HardClimb
+  - NoClimb
+  - EZClimb
   layers:
   - Default
   - TransparentFX
