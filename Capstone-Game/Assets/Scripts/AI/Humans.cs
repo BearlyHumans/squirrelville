@@ -226,7 +226,7 @@ public class Humans : MonoBehaviour
                         aniChoice = "Drop";
                         navMesh.velocity = Vector3.zero;
                         Invoke("canCatchAgain", 5);
-                        Invoke("returnToPath", 2);
+                        Invoke("returnToPath", 1.8f);
                     }
                 }
                 // option 2 - eat the food
@@ -234,7 +234,7 @@ public class Humans : MonoBehaviour
                 {
                     aniChoice = "Eating";
                     Invoke("canCatchAgain", 5);
-                    Invoke("returnToPath", 2);
+                    Invoke("returnToPath", 3);
                 }
             }
             else
@@ -401,11 +401,11 @@ public class Humans : MonoBehaviour
             
             navMesh.SetDestination(bestCollider.transform.position);
 
-            if(bestDistance < 1.0f)
+            if(bestDistance < 1f)
             {
                 navMesh.velocity = Vector3.zero;
                 
-                aniChoice = "Pick Up";
+                Invoke("pickUp", 0.8f);
             
                 Destroy(bestCollider, 3);
                 
@@ -425,6 +425,11 @@ public class Humans : MonoBehaviour
             foodGraber.ThrowFood(); 
             i++;
         }
+    }
+
+    void pickUp()
+    {
+        aniChoice = "Pick Up";
     }
 
     void returnToPath()

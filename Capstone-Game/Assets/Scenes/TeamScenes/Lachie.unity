@@ -2054,7 +2054,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   foodToGive: {fileID: 0}
-  takeFoodAmmount: 3
+  takeFoodAmmount: 7
   anim: {fileID: 1466110663}
   detectionAngle: 70
   npcCurrentMode: 1
