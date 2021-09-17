@@ -2019,7 +2019,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1466110658}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.29139572
+  m_Radius: 0.3
   m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
@@ -2055,7 +2055,7 @@ MonoBehaviour:
     m_Bits: 1024
   foodToGive: {fileID: 0}
   takeFoodAmmount: 3
-  anim: {fileID: 0}
+  anim: {fileID: 1466110663}
   detectionAngle: 70
   npcCurrentMode: 1
   foodTimer: 10
@@ -2076,6 +2076,11 @@ CapsuleCollider:
   m_Height: 1.8554463
   m_Direction: 1
   m_Center: {x: 0, y: 0.92494833, z: -0.038733833}
+--- !u!95 &1466110663 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3971142043582338042, guid: 1050a02090fecec438c789f29108388c, type: 3}
+  m_PrefabInstance: {fileID: 1836985558}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1482613610
 PrefabInstance:
   m_ObjectHideFlags: 0

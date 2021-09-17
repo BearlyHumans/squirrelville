@@ -159,13 +159,14 @@ public class Humans : MonoBehaviour
             case HumanStates.PathFollowing:
             {
                 PathFollowingState();
-                //anim.Play("Walk");
+
+                anim.Play("Walk");
                 break;
             }
             case HumanStates.Chase:
             {
                 ChaseState();
-                //anim.Play("Running");
+                anim.Play("Running");
                 break;
             }
             case HumanStates.Friendly:
@@ -185,25 +186,30 @@ public class Humans : MonoBehaviour
 
     /// functionaility for catching behaviour 
     private void CatchingState()
-    {   
+    {  
+        string choice = "Stun"
+        anim.Play(choice);
         if(!hasCaughtRecently)
         {
+
+            hasCaughtRecently = true;  
             // takes x ammount of food from the player when caught
             takeFood(takeFoodAmmount);
 
-            hasCaughtRecently = true;  
             stillFood = checkForFood();
 
             squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             Invoke("unFreezePlayer", unFreezeTime);
-            Invoke("canCatchAgain", 10);
             catchChoice = Random.Range(0,2);
         }
 
+        // checks to see if there is still food to pick up and if not then chose what to do with it
         if(!stillFood)
         {
+            // if food was picked up
             if(hasFood)
             {
+                // option 1 = go to bin
                 if(catchChoice == 0)
                 {
                     Bin bin = homePoint.closestBin(transform.position);
@@ -213,24 +219,26 @@ public class Humans : MonoBehaviour
                     {
                         navMesh.SetDestination(bin.transform.position);
                     }
+                    // put food in bin
                     else
                     {
-                        print("going to nbin");
-                        //anim.Play("Drop");
                         navMesh.velocity = Vector3.zero;
-                        Invoke("returnToPath", 10);
+                        Invoke("canCatchAgain", 5);
+                        Invoke("returnToPath", 3);
                     }
                 }
+                // option 2 - eat the food
                 else
                 {
-                    print("eating");
-                    //anim.Play("Eating");
-                    Invoke("returnToPath", 10);
+                    Invoke("canCatchAgain", 5);
+                    Invoke("returnToPath", 3);
                 }
             }
             else
             {
-                currentState = HumanStates.PathFollowing;
+                
+                Invoke("canCatchAgain", 5);
+                Invoke("returnToPath", 2);
             }
         }
         else
@@ -368,9 +376,11 @@ public class Humans : MonoBehaviour
         float radius = 5.0f;
 
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius, layerMask);
-        print("checking for food");
+        
+        
         if(hitColliders.Length != 0)
         {
+            
             float bestDistance = 9999.0f;
             Collider bestCollider = null;
 
@@ -388,10 +398,15 @@ public class Humans : MonoBehaviour
             
             navMesh.SetDestination(bestCollider.transform.position);
 
-            if(bestDistance < 0.5f)
+            if(bestDistance < 1.0f)
             {
-                Destroy(bestCollider, 3);
                 navMesh.velocity = Vector3.zero;
+                
+                anim.Play("Pick Up");
+                resetAnimation();
+
+                Destroy(bestCollider, 3);
+                
             } 
             hasFood = true;
             return true;
@@ -412,8 +427,8 @@ public class Humans : MonoBehaviour
 
     void returnToPath()
     {
-        hasCaughtRecently = false;
         hasFood = false;
+    
         currentState = HumanStates.PathFollowing;
     }
 
@@ -468,13 +483,13 @@ public class Humans : MonoBehaviour
     /// unfreezes player when run
     void unFreezePlayer()
     {
-        print("can move again");
+        
         squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
     }
 
     void canCatchAgain()
     {
-        print("can catch again");
+        
         hasCaughtRecently = false;
     }
      
@@ -512,6 +527,12 @@ public class Humans : MonoBehaviour
                 
             }
         }
+    }
+
+    void resetAnimation()
+    {
+        anim.enabled = false;
+        anim.enabled = true;
     }
 
     // Visualize area of points
