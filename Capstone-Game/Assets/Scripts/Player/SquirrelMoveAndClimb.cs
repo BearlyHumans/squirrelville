@@ -62,8 +62,6 @@ namespace Player
                 PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.moving);
             else if (vals.jumping == false)
                 PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.notMoving);
-
-            
         }
 
         private void UpdInput()
@@ -306,6 +304,11 @@ namespace Player
                 }
 
                 ParentRefs.RB.useGravity = false;
+                if (vals.falling)
+                {
+                    PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.landJump);
+                }
+                vals.falling = false;
 
                 CustomIntuitiveSnapRotation(-dir);
 
@@ -328,6 +331,8 @@ namespace Player
             else if (Time.time > vals.lastOnSurface + settings.WC.noSurfResetTime)
             {
                 CustomIntuitiveSnapRotation(Vector3.down);
+                PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.falling);
+                vals.falling = true;
             }
         }
 
@@ -656,6 +661,9 @@ namespace Player
             /// <summary> True when the characters lateral velocity (i.e not up/down relative to rotation) is greater than 'M.turningThreshold'.
             /// Used to play running animations, and to change between jump modes. </summary>
             public bool moving;
+            /// <summary> True when the characters lateral velocity (i.e not up/down relative to rotation) is greater than 'M.turningThreshold'.
+            /// Used to play running animations, and to change between jump modes. </summary>
+            public bool falling;
 
             //MESSAGES AND MULTIPLE-UPDATE VALUES:
             /// <summary> The time.time value of the last time the player started a jump.
