@@ -99,6 +99,7 @@ public class Humans : MonoBehaviour
     int catchChoice;
     bool stillFood = false;
     bool hasFood = false;
+    string aniChoice = "Stun";
 
     //used to check if player has been caught recently 
     bool hasCaughtRecently = false;
@@ -187,8 +188,7 @@ public class Humans : MonoBehaviour
     /// functionaility for catching behaviour 
     private void CatchingState()
     {  
-        string choice = "Stun"
-        anim.Play(choice);
+        anim.Play(aniChoice);
         if(!hasCaughtRecently)
         {
 
@@ -217,21 +217,24 @@ public class Humans : MonoBehaviour
 
                     if(bin.radius <= Vector3.Distance(bin.transform.position, transform.position))
                     {
+                        aniChoice = "Walk";
                         navMesh.SetDestination(bin.transform.position);
                     }
                     // put food in bin
                     else
                     {
+                        aniChoice = "Drop";
                         navMesh.velocity = Vector3.zero;
                         Invoke("canCatchAgain", 5);
-                        Invoke("returnToPath", 3);
+                        Invoke("returnToPath", 2);
                     }
                 }
                 // option 2 - eat the food
                 else
                 {
+                    aniChoice = "Eating";
                     Invoke("canCatchAgain", 5);
-                    Invoke("returnToPath", 3);
+                    Invoke("returnToPath", 2);
                 }
             }
             else
@@ -402,9 +405,8 @@ public class Humans : MonoBehaviour
             {
                 navMesh.velocity = Vector3.zero;
                 
-                anim.Play("Pick Up");
-                resetAnimation();
-
+                aniChoice = "Pick Up";
+            
                 Destroy(bestCollider, 3);
                 
             } 
