@@ -67,16 +67,6 @@ public class Humans : MonoBehaviour
 
     public Animator anim;
 
-    private void UpdAnimator()
-    {
-        if (walking)
-        {
-            anim.SetInteger("HumanMove", 1);
-        }
-        else
-            anim.SetInteger("HumanMove", 0);
-    }
-
     [Tooltip("Angle in which the NPC can see player")]
     [SerializeField]
     public float detectionAngle = 70;
@@ -131,7 +121,6 @@ public class Humans : MonoBehaviour
         navMesh = this.GetComponent<NavMeshAgent>();
 
         chaseTimer = chaseTime;
-        
 
         target = GameObject.FindWithTag("Player").transform;
         squrrielTarget = GameObject.FindWithTag("Player");
@@ -170,11 +159,13 @@ public class Humans : MonoBehaviour
             case HumanStates.PathFollowing:
             {
                 PathFollowingState();
+                //anim.Play("Walk");
                 break;
             }
             case HumanStates.Chase:
             {
                 ChaseState();
+                //anim.Play("Running");
                 break;
             }
             case HumanStates.Friendly:
@@ -185,27 +176,27 @@ public class Humans : MonoBehaviour
             case HumanStates.Catch:
             {
                 CatchingState();
+                
                 break;
             }
         }
-        UpdAnimator();
+        //UpdAnimator();
     }
 
     /// functionaility for catching behaviour 
     private void CatchingState()
-    {
-        
-        if(hasCaughtRecently)
+    {   
+        if(!hasCaughtRecently)
         {
             // takes x ammount of food from the player when caught
             takeFood(takeFoodAmmount);
 
+            hasCaughtRecently = true;  
             stillFood = checkForFood();
-
-            // TODO: play squirrel dizzy animation *here*
 
             squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             Invoke("unFreezePlayer", unFreezeTime);
+            Invoke("canCatchAgain", 10);
             catchChoice = Random.Range(0,2);
         }
 
@@ -224,14 +215,16 @@ public class Humans : MonoBehaviour
                     }
                     else
                     {
-                        // play bin animation here
+                        print("going to nbin");
+                        //anim.Play("Drop");
                         navMesh.velocity = Vector3.zero;
                         Invoke("returnToPath", 10);
                     }
                 }
                 else
                 {
-                    // play eating animation
+                    print("eating");
+                    //anim.Play("Eating");
                     Invoke("returnToPath", 10);
                 }
             }
@@ -267,7 +260,6 @@ public class Humans : MonoBehaviour
                 // checks to see if human is within range to "catch" player
                 if (distance < 1.0f)
                 {
-                    hasCaughtRecently = true;  
                     currentState = HumanStates.Catch;
                 }
                      
@@ -349,7 +341,7 @@ public class Humans : MonoBehaviour
             if(walkingPause)
             {
                 waiting = true;
-                waitTimer = 0f;
+                waitTimer = 2f;
             }
             else
             {
@@ -376,7 +368,7 @@ public class Humans : MonoBehaviour
         float radius = 5.0f;
 
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius, layerMask);
-
+        print("checking for food");
         if(hitColliders.Length != 0)
         {
             float bestDistance = 9999.0f;
@@ -476,8 +468,14 @@ public class Humans : MonoBehaviour
     /// unfreezes player when run
     void unFreezePlayer()
     {
-        hasCaughtRecently = false;
+        print("can move again");
         squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+    }
+
+    void canCatchAgain()
+    {
+        print("can catch again");
+        hasCaughtRecently = false;
     }
      
     /// used within path following to move human to current path point
