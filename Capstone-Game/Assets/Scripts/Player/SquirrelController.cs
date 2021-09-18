@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SquirrelControllerSettings;
 
 namespace Player
 {
+    [RequireComponent(typeof(Stamina))]
     [RequireComponent(typeof(Rigidbody))]
     public class SquirrelController : MonoBehaviour
     {
@@ -13,10 +13,12 @@ namespace Player
         public SCReferences refs = new SCReferences();
         public SCChildren behaviourScripts = new SCChildren();
 
-        private SCStoredValues vals = new SCStoredValues();
+        public bool debugMessages = false;
 
-        /// <summary> Time and inputs are not simulated when this is true. </summary>
-        private bool debugPause = false;
+        [SerializeField]
+        private List<ParameterChangeEvent> animationEvents = new List<ParameterChangeEvent>();
+
+        private SCStoredValues vals = new SCStoredValues();
 
         //~~~~~~~~~~ PROPERTIES ~~~~~~~~~~
 
@@ -29,16 +31,9 @@ namespace Player
 
         void Awake()
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
             refs.RB.useGravity = false;
 
             Initialize();
-        }
-
-        void Start()
-        {
-            GetOrMakePause();
         }
 
         void OnCollisionStay(Collision collision)
@@ -65,46 +60,40 @@ namespace Player
                 behaviourScripts.moveAndClimb = GetComponent<SquirrelMoveAndClimb>();
             if (behaviourScripts.ball == null)
                 behaviourScripts.ball = GetComponent<SquirrelBall>();
-            if (behaviourScripts.glide == null)
-                behaviourScripts.glide = GetComponent<SquirrelGlide>();
             if (behaviourScripts.foodGrabber == null)
                 behaviourScripts.foodGrabber = GetComponent<SquirrelFoodGrabber>();
 
-            EnterRunState();
-        }
+            if (refs.stamina == null)
+                refs.stamina = GetComponent<Stamina>();
 
-        /// <summary> Makes sure the controller has a reference to the singleton pause-menu object, possibly by creating a new one.
-        /// Call in Start() and NOT Awake() for best results. </summary>
-        private void GetOrMakePause()
-        {
-            if (PauseMenu.singleton == null)
-            {
-                Canvas pre = Resources.Load<Canvas>("Prefabs/PauseCanvas(Dummy)");
-                refs.pauseMenu = Instantiate(pre);
-            }
-            else
-            {
-                refs.pauseMenu = PauseMenu.singleton;
-            }
-            Pause();
+            EnterRunState();
         }
 
         /// <summary> Runs all updates for the squirrel character. This is done by calling ManualUpdate() in child scripts based on a statemachine.
         /// Also calls update in camera, and skips ALL calls if the game is paused. </summary>
         void Update()
         {
-            if (CheckPause())
+            if (PauseMenu.paused)
                 return;
 
-            refs.fCam.UpdateCamRotFromImput();
+            if (vals.frozen)
+                return;
+			
+            CallAnimationEvents(AnimationTrigger.frameStart);
+			
+            refs.fCam.UpdateCamRotFromInput();
 
             //Debug State Changes
-            if (Input.GetKeyDown(KeyCode.B))
-                EnterBallState();
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                if (vals.mState == MovementState.ball)
+                    EnterRunState();
+                else if (CanEnterBallState())
+                    EnterBallState();
+            }
+
+            if (!CanEnterBallState())
                 EnterRunState();
-            if (Input.GetKeyDown(KeyCode.G))
-                EnterGlideState();
 
             //State Machine
             if (vals.mState == MovementState.moveAndClimb)
@@ -115,48 +104,22 @@ namespace Player
             {
                 behaviourScripts.ball.ManualUpdate();
             }
-            else if (vals.mState == MovementState.glide)
-            {
-                behaviourScripts.glide.ManualUpdate();
-            }
+        }
+
+        private void FixedUpdate()
+        {
+            if (PauseMenu.paused || vals.frozen)
+                return;
 
             refs.fCam.UpdateCamPos();
             refs.fCam.UpdateDolly();
         }
 
-        /// <summary> Checks if escape has been pressed (change to include controller buttons etc later),
-        /// then swaps between paused/not if pressed, and returns true if the game is paused so that update functions can be skipped. </summary>
-        private bool CheckPause()
+        private bool CanEnterBallState()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                if (debugPause)
-                    UnPause();
-                else
-                    Pause();
-            }
-
-            return debugPause;
-        }
-
-        /// <summary> Changes settings and (should) run animations required for pausing the game. </summary>
-        private void Pause()
-        {
-            debugPause = true;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            Time.timeScale = 0;
-            refs.pauseMenu.enabled = true;
-        }
-
-        /// <summary> Changes settings and (should) run animations required for UNpausing the game. </summary>
-        private void UnPause()
-        {
-            debugPause = false;
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            Time.timeScale = 1;
-            refs.pauseMenu.enabled = false;
+            int foodCount = behaviourScripts.foodGrabber.GetFoodCount();
+            int foodCountBallForm = behaviourScripts.foodGrabber.foodCountBallForm;
+            return foodCount >= foodCountBallForm;
         }
 
         private void EnterBallState()
@@ -164,14 +127,17 @@ namespace Player
             //Disable normal collider
             //Enable ball collider
             //Change model
+            refs.animator.CrossFade("Idle", 0f);
+            refs.animator.Update(1f);
             refs.runBody.SetActive(false);
             refs.ballBody.SetActive(true);
+            refs.ballBody.transform.rotation = refs.runBody.transform.rotation;
 
             refs.RB.constraints = RigidbodyConstraints.None;
             refs.RB.useGravity = true;
 
             refs.fCam.UseRelativeAngles = false;
-            refs.fCam.cameraTarget = gameObject;
+            refs.fCam.cameraTarget = refs.ballModel.gameObject;
 
             vals.mState = MovementState.ball;
         }
@@ -189,22 +155,53 @@ namespace Player
             vals.mState = MovementState.moveAndClimb;
         }
 
-        private void EnterGlideState()
+        public void FreezeMovement()
         {
-
+            vals.frozen = true;
+            refs.RB.velocity = Vector3.zero;
         }
 
-        //~~~~~~~~~~ DATA STRUCTURES ~~~~~~~~~~
+        public void UnfreezeMovement()
+        {
+            vals.frozen = false;
+        }
+
+        public void CallAnimationEvents(AnimationTrigger trigger)
+        {
+            if (debugMessages)
+                print("Triggered Event: " + trigger.ToString());
+
+            foreach (ParameterChangeEvent PCE in animationEvents)
+            {
+                if (PCE.trigger == trigger)
+                    ChangeParameter(PCE);
+            }
+        }
+
+        private void ChangeParameter(ParameterChangeEvent PCE)
+        {
+            if (PCE.parameterChange.type == ExposedAnimationParameter.ParamTypes.Bool)
+                refs.animator.SetBool(PCE.parameterChange.paramName, (PCE.parameterChange.setToValue > 0) ? true : false);
+            else if (PCE.parameterChange.type == ExposedAnimationParameter.ParamTypes.Int)
+                refs.animator.SetInteger(PCE.parameterChange.paramName, (int)PCE.parameterChange.setToValue);
+            else if (PCE.parameterChange.type == ExposedAnimationParameter.ParamTypes.Float)
+                refs.animator.SetFloat(PCE.parameterChange.paramName, PCE.parameterChange.setToValue);
+        }
+
+        //~~ DATA STRUCTURES ~~
 
         [System.Serializable]
         public class SCReferences
         {
             public Rigidbody RB;
             public Transform body;
+            public Transform ballModel;
+            public Transform ballCollider;
             public Transform model;
             public Camera camera;
             public CameraGimbal fCam;
-            public Canvas pauseMenu;
+            public Stamina stamina;
+            public Animator animator;
             public GameObject runBody;
             public GameObject ballBody;
         }
@@ -213,7 +210,6 @@ namespace Player
         public class SCChildren
         {
             public SquirrelMoveAndClimb moveAndClimb;
-            public SquirrelGlide glide;
             public SquirrelBall ball;
             public SquirrelFoodGrabber foodGrabber;
         }
@@ -228,6 +224,9 @@ namespace Player
             public float lastOnSurface;
             public bool touchingSomething;
             public bool moving;
+            public bool frozen;
+            public float stamina;
+            public bool usingStamina;
             public MovementState mState;
         }
 
@@ -236,6 +235,58 @@ namespace Player
             moveAndClimb,
             ball,
             glide
+        }
+
+        [System.Serializable]
+        private class ParameterChangeEvent
+        {
+            [Tooltip("These events are called from the code when the trigger happens." +
+                "Events endiing in 'ing' are called every frame that the trigger is true, and the others are called only on the first frame." +
+                "Multiple Events can be made for each trigger and they will all be called.")]
+            public AnimationTrigger trigger;
+            public ExposedAnimationParameter parameterChange;
+        }
+
+        public enum AnimationTrigger
+        {
+            frameStart, //Done
+            moving,
+            notMoving,
+            hop,
+            becomeIdle,
+            randomIdle1,
+            randomIdle2,
+            chargingJump,
+            jump,
+            landJump,
+            dashing,
+            sneaking,
+            slipping,
+            climbing,
+            falling,
+            rolling,
+            barking,
+            eating,
+            collision,
+            humanAttack
+        }
+
+        [System.Serializable]
+        private class ExposedAnimationParameter
+        {
+            [Tooltip("Set this to the type of the parameter you want to change.")]
+            public ParamTypes type;
+            [Tooltip("Set this to the name of the parameter you want to change when the trigger occurs.")]
+            public string paramName;
+            [Tooltip("Use 0/1 for false/true.")]
+            public float setToValue;
+
+            public enum ParamTypes
+            {
+                Float,
+                Int,
+                Bool
+            }
         }
     }
 }

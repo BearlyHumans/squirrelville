@@ -5,47 +5,67 @@ using UnityEngine;
 public class CameraGimbal : MonoBehaviour
 {
     [Header("References:")]
+    [Header("Usefull Settings:")]
     public GameObject cameraTarget;
     public Camera dollyCamera;
     public Transform belowPoint;
+
+    [Header("Control Settings:")]
+    [Tooltip("Uses 'zoom when at low angle' system when true, or 'button-toggle zoom' when false.")]
+    public bool angleRelativeZoom = false;
+    [Tooltip("The new maximum distance when the zoom toggle is pressed - larger to zoom out (e.g. 2), smaller to zoom in (e.g. 0.3).")]
+    public float buttonZoomMultiplier = 0.3f;
+    public bool invertY = false;
+    [Tooltip("Multiplier for input.")]
+    public float inputSensitivity = 150.0f;
+
+    [Header("Obstacle Avoidance Settings:")]
+    [Tooltip("Should contain layers of objects which have small and fiddly hitboxes, or which the player often goes around or under (e.g. chairs, trees, people).")]
+    public LayerMask zoomToAvoidLayers;
+    [Tooltip("Should contain layers of objects which are large, unmoving and well defined (e.g. the ground, rocks, houses).")]
+    public LayerMask noClippingEverLayers;
+    [Tooltip("Size of the virtual collision sphere around the camera - i.e. how close the camera can get to obstacles (shown with solid blue gizmo).")]
+    public float collisionSphereRadius = 0.1f;
+
+    [Header("Other Settings:")]
+    [Tooltip("Roughly the time it takes the camera to catch up to the players position/velocity. Higher means more smoothing.")]
+    [SerializeField, Range(0.0f, 1.0f)]
+    public float translationSmoothing = 0.1f;
 
     private Transform CamObj
     {
         get { return dollyCamera.transform; }
     }
 
-    [Header("Gimbal Settings:")]
-    public float CameraMoveSpeed = 120.0f;
-    public float upperWorldClampAngle = 70.0f;
-    public float lowerWorldClampAngle = -89.0f;
-    public float upperRelativeClampAngle = 150.0f;
-    public float lowerRelativeClampAngle = 0.0f;
-    public float relativeZoomAngle = 30.0f;
-    public float inputSensitivity = 150.0f;
-    public bool invertY = false;
+    public CameraProSettings programmerSettings = new CameraProSettings();
 
-    [Header("Dolly Settings:")]
-    [SerializeField, Range(0.0f, 10.0f)]
-    public float minDistance = 1.0f;
-    [SerializeField, Range(0.0f, 10.0f)]
-    public float maxDistance = 4.0f;
-    public LayerMask sphereLayers;
-    public float collisionPadding = 0.9f;
-    public float smallSphereRadius = 1f;
-    public float largeSphereRadius = 2f;
+    [System.Serializable]
+    public class CameraProSettings
+    {
+        [Header("~~~ PROGRAMMER SETTINGS ~~~")]
+        [SerializeField, Range(0.0f, 30.0f)]
+        public float smooth = 10.0f;
+
+        [Header("Gimbal Settings:")]
+        public float upperWorldClampAngle = 70.0f;
+        public float lowerWorldClampAngle = -89.0f;
+        public float upperRelativeClampAngle = 150.0f;
+        public float lowerRelativeClampAngle = 0.0f;
+        public float relativeZoomAngle = 30.0f;
+
+        [Header("Dolly Settings:")]
+        [SerializeField, Range(0.0f, 10.0f)]
+        public float minDistance = 0.4f;
+        [SerializeField, Range(0.0f, 10.0f)]
+        public float maxDistance = 2f;
+        public float collisionPadding = 0.9f;
+        public float largeSphereMultiplier = 2f;
+    }
     
-    [Header("Shared Settings:")]
-    public LayerMask rayLayers;
-    [SerializeField, Range(0.0f, 30.0f)]
-    public float smooth = 10.0f;
-
-    [Header("Public For Debug:")]
-    public Vector3 dollyDirAdjusted;
-    public float dollyDistance;
-    public float finalInputX;
-    public float finalInputY;
-
-    public string DEBUGString = "Null";
+    private Vector3 dollyDirAdjusted;
+    private float dollyDistance;
+    private float finalInputX;
+    private float finalInputY;
 
     public bool UseRelativeAngles
     {
@@ -63,6 +83,7 @@ public class CameraGimbal : MonoBehaviour
     private Vector3 dollyDir;
     private Vector3 desiredCameraPos;
 
+    private Vector3 velocity = Vector3.zero;
 
     void Awake()
     {
@@ -75,7 +96,7 @@ public class CameraGimbal : MonoBehaviour
     }
 
     /// <summary> Change the rotation of the camera parent based on inputs. </summary>
-    public void UpdateCamRotFromImput()
+    public void UpdateCamRotFromInput()
     {
         //Get input and invert or transform it.
         float inputX = Input.GetAxis("Mouse X");
@@ -85,8 +106,13 @@ public class CameraGimbal : MonoBehaviour
         finalInputX = inputX;
         finalInputY = inputY;
 
+        Vector3 oldPos = dollyCamera.transform.position;
 
-        rotY += finalInputX * inputSensitivity * Time.deltaTime;
+        //Y (Left Right)
+        float deltaY = finalInputX * inputSensitivity * Time.deltaTime;
+        rotY += deltaY;
+
+        //X (Up Down)
         if (finalInputY > 0 || PlayerCanSeeBelowPoint())
             rotX += finalInputY * inputSensitivity * Time.deltaTime;
 
@@ -95,54 +121,125 @@ public class CameraGimbal : MonoBehaviour
         else
             playerAngle = 0;
         float oldRelativeAngle = rotX + playerAngle;
-        float newRelativeAngle = Mathf.Clamp(oldRelativeAngle, lowerRelativeClampAngle, upperRelativeClampAngle);
-        float delta = newRelativeAngle - oldRelativeAngle;
-        rotX += delta;
-        rotX = Mathf.Clamp(rotX, lowerWorldClampAngle, upperWorldClampAngle);
+        float newRelativeAngle = Mathf.Clamp(oldRelativeAngle, programmerSettings.lowerRelativeClampAngle, programmerSettings.upperRelativeClampAngle);
+        float deltaX = newRelativeAngle - oldRelativeAngle;
+        deltaX = Mathf.Clamp(rotX + deltaX, programmerSettings.lowerWorldClampAngle, programmerSettings.upperWorldClampAngle) - rotX;
+        rotX += deltaX;
 
         Quaternion localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
         transform.rotation = localRotation;
+
+        if (Vector3.Distance(dollyCamera.transform.position, oldPos) > collisionSphereRadius)
+        {
+            if (Physics.Linecast(oldPos, dollyCamera.transform.position, noClippingEverLayers))
+            {
+                rotY -= deltaY;
+                rotX -= deltaX;
+
+                localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
+                transform.rotation = localRotation;
+            }
+        }
+
+        RotateToUnblockedPoint(deltaY);
     }
 
     /// <summary> Move the camera gameobject towards the target at the move speed. </summary>
     public void UpdateCamPos()
     {
         // Move towards target
-        transform.position = Vector3.MoveTowards(transform.position, cameraTarget.transform.position, CameraMoveSpeed * Time.deltaTime);
+        transform.position = Vector3.SmoothDamp(transform.position + new Vector3(0, 0.05f, 0), cameraTarget.transform.position, ref velocity, translationSmoothing);
+    }
+
+    public float UpdateDollyToggleZoom()
+    {
+        if (Input.GetMouseButton(2))
+        {
+            return programmerSettings.maxDistance * buttonZoomMultiplier;
+        }
+
+        return programmerSettings.maxDistance;
+    }
+
+    public float UpdateDollyAngleZoom()
+    {
+        //Cause the camera to zoom in if it is below the zoom angle.
+        float zoomedMax = programmerSettings.maxDistance;
+        if ((rotX + playerAngle) < programmerSettings.relativeZoomAngle)
+        {
+            float range = programmerSettings.maxDistance - programmerSettings.minDistance;
+            float fraction = 1 - (((rotX + playerAngle) - programmerSettings.relativeZoomAngle) / (programmerSettings.lowerRelativeClampAngle - programmerSettings.relativeZoomAngle));
+            zoomedMax = programmerSettings.minDistance + range * fraction;
+        }
+
+        desiredCameraPos = transform.TransformPoint(dollyDir * zoomedMax);
+
+        return zoomedMax;
     }
 
     /// <summary> Adjust the distance between the camera and the rotation parent based on the angle and nearby obstacles. </summary>
     public void UpdateDolly()
     {
-        //Cause the camera to zoom in if it is below the zoom angle.
-        float zoomedMax = maxDistance;
-        if ((rotX + playerAngle) < relativeZoomAngle)
+        float zoomedMax;
+        if (angleRelativeZoom)
         {
-            float range = maxDistance - minDistance;
-            float fraction = 1 - (((rotX + playerAngle) - relativeZoomAngle) / (lowerRelativeClampAngle - relativeZoomAngle));
-            zoomedMax = minDistance + range * fraction;
+            zoomedMax = UpdateDollyAngleZoom();
         }
-            
-        desiredCameraPos = transform.TransformPoint(dollyDir * zoomedMax);
+        else
+        {
+            zoomedMax = UpdateDollyToggleZoom();
+        }
 
         //Move the camera closer if certain bad conditions are found:
         RaycastHit hit;
-        if (Physics.Linecast(transform.position, desiredCameraPos, out hit, rayLayers.value))
+        if (Physics.Linecast(transform.position, desiredCameraPos, out hit, zoomToAvoidLayers.value))
         { //If line of sight is blocked by the specified layer(s), move in quickly (10x smooth speed).
-            dollyDistance = Mathf.Clamp((hit.distance - collisionPadding), minDistance, zoomedMax);
+            dollyDistance = Mathf.Clamp((hit.distance - programmerSettings.collisionPadding), programmerSettings.minDistance, zoomedMax);
             if (hit.collider.CompareTag("CameraSolid"))
-                CamObj.localPosition = Vector3.Lerp(CamObj.localPosition, dollyDir * dollyDistance, Time.deltaTime * smooth * 10);
+                CamObj.localPosition = Vector3.Lerp(CamObj.localPosition, dollyDir * dollyDistance, Time.deltaTime * programmerSettings.smooth * 10);
         }
-        else if (Physics.CheckSphere(CamObj.position, smallSphereRadius, sphereLayers.value))
+        else if (Physics.CheckSphere(CamObj.position, collisionSphereRadius, zoomToAvoidLayers.value))
         { //If the camera is VERY near or inside an object in specified layer(s), move in at a smooth speed.
-            dollyDistance = Mathf.Clamp(dollyDistance - Time.deltaTime * smooth, minDistance, zoomedMax);
-            CamObj.localPosition = Vector3.Lerp(CamObj.localPosition, dollyDir * dollyDistance, Time.deltaTime * smooth);
+            dollyDistance = Mathf.Clamp(dollyDistance - Time.deltaTime * programmerSettings.smooth, programmerSettings.minDistance, zoomedMax);
+            CamObj.localPosition = Vector3.Lerp(CamObj.localPosition, dollyDir * dollyDistance, Time.deltaTime * programmerSettings.smooth);
         }
-        else if (!Physics.CheckSphere(CamObj.position, largeSphereRadius, sphereLayers.value))
+        else if (!Physics.CheckSphere(CamObj.position, collisionSphereRadius * programmerSettings.largeSphereMultiplier, zoomToAvoidLayers.value))
         { //If the camera is NOT near any specified objects, move out again at the smooth speed.
             //(MUST be defined by a larger sphere than the previous check to prevent flickering)
             dollyDistance = zoomedMax;
-            CamObj.localPosition = Vector3.Lerp(CamObj.localPosition, dollyDir * dollyDistance, Time.deltaTime * smooth);
+            CamObj.localPosition = Vector3.Lerp(CamObj.localPosition, dollyDir * dollyDistance, Time.deltaTime * programmerSettings.smooth);
+        }
+    }
+
+    private void RotateToUnblockedPoint(float degPerMove)
+    {
+        //bool foundOpenSpace = false;
+        float interval = Mathf.Abs(degPerMove/2f);
+        interval = Mathf.Max(interval, 0.5f);
+        int i = 0;
+        for (float offset = 0; offset < 90 && i < 20; offset += interval)
+        {
+            //Positive angle;
+            Quaternion localRotation = Quaternion.Euler(rotX, rotY + offset, 0.0f);
+            transform.rotation = localRotation;
+            if (!Physics.CheckSphere(CamObj.position, collisionSphereRadius, noClippingEverLayers.value))
+            {
+                //foundOpenSpace = true;
+                rotY = rotY + offset;
+                break;
+            }
+
+            //Positive angle;
+            localRotation = Quaternion.Euler(rotX, rotY - offset, 0.0f);
+            transform.rotation = localRotation;
+            if (!Physics.CheckSphere(CamObj.position, collisionSphereRadius, noClippingEverLayers.value))
+            {
+                //foundOpenSpace = true;
+                rotY = rotY - offset;
+                break;
+            }
+
+            i += 1;
         }
     }
 
@@ -150,9 +247,17 @@ public class CameraGimbal : MonoBehaviour
     private bool PlayerCanSeeBelowPoint()
     {
         RaycastHit hit;
-        if (Physics.Linecast(transform.position, belowPoint.position, out hit, rayLayers.value))
+        if (Physics.Linecast(transform.position, belowPoint.position, out hit, noClippingEverLayers.value))
             return false;
 
         return true;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(dollyCamera.transform.position, collisionSphereRadius);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(dollyCamera.transform.position, collisionSphereRadius * programmerSettings.largeSphereMultiplier);
     }
 }

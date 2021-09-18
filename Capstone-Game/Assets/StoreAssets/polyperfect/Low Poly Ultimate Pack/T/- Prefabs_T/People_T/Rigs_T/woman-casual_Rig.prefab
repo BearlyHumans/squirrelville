@@ -625,6 +625,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3971142043590130720}
   - component: {fileID: 3971142043582338042}
+  - component: {fileID: 6338550033064691608}
+  - component: {fileID: 6212156879433011840}
+  - component: {fileID: 8819617860285956974}
   m_Layer: 0
   m_Name: woman-casual_Rig
   m_TagString: Untagged
@@ -658,7 +661,7 @@ Animator:
   m_GameObject: {fileID: 3971142043589763138}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 6e553491cb7c7fe46af3676000d1d22e, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 957ce8f6a4b52914288b576f70b16876, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -667,6 +670,72 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!136 &6338550033064691608
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3971142043589763138}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.29139572
+  m_Height: 1.8554463
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.92494833, z: -0.038733833}
+--- !u!195 &6212156879433011840
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3971142043589763138}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.3
+  m_Speed: 2
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 1
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &8819617860285956974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3971142043589763138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31d72aa5e57329240b19538fbe187f95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkingPause: 0
+  turnAroundChance: 0.2
+  pathPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  homePoint: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  foodToGive: {fileID: 0}
+  takeFoodAmmount: 7
+  anim: {fileID: 3971142043582338042}
+  detectionAngle: 70
+  npcCurrentMode: 1
+  foodTimer: 10
+  range: 8
+  chaseTime: 30
+  unFreezeTime: 2
 --- !u!1 &3971142043589763144
 GameObject:
   m_ObjectHideFlags: 0

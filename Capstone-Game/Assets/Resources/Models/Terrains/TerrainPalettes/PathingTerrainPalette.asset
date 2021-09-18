@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c509dbaa7b6f416409e3195321a2187e, type: 3}
+  m_Name: PathingTerrainPalette
+  m_EditorClassIdentifier: 
+  PaletteLayers:
+  - {fileID: 8574412962073106934, guid: d1ff193bd73e45a4285477c0e4fad13d, type: 2}
+  - {fileID: 8574412962073106934, guid: d32ac80c6d2d53c469c8a72c5429b64c, type: 2}
+  - {fileID: 8574412962073106934, guid: 8e0984da6e530b6499a6533d350bebda, type: 2}
+  - {fileID: 8574412962073106934, guid: 38968defb82dc9d45ae8eacb55af2325, type: 2}
+  - {fileID: 8574412962073106934, guid: 81fc175955394a04ebf2a2d5e3aeae7d, type: 2}
+  - {fileID: 8574412962073106934, guid: 7c229e0a21d144d4caebdfe97148a08b, type: 2}

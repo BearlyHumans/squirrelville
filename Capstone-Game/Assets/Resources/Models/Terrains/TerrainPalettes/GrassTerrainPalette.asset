@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c509dbaa7b6f416409e3195321a2187e, type: 3}
+  m_Name: GrassTerrainPalette
+  m_EditorClassIdentifier: 
+  PaletteLayers:
+  - {fileID: 8574412962073106934, guid: 1616647b5bed370448aaf8be4c7b7c97, type: 2}
+  - {fileID: 8574412962073106934, guid: 1af68440e316ca84b9f64779e23b26d1, type: 2}
+  - {fileID: 8574412962073106934, guid: a3a054738330e5049ac7639fda8e02d3, type: 2}
+  - {fileID: 8574412962073106934, guid: ee53c40d041bb9e4986e6f5517fe40da, type: 2}

@@ -14,6 +14,11 @@ public class MainMenu : MonoBehaviour
         anim.Play("MainToOptionsMenu");
     }
 
+    public void Controls()
+    {
+        anim.Play("MainToControlsMenu");
+    }
+
     public void Credits()
     {
         anim.Play("MainToCreditsMenu");
@@ -21,7 +26,10 @@ public class MainMenu : MonoBehaviour
 
     public void Quit()
     {
-        Debug.Log("Quit");
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
         Application.Quit();
+#endif
     }
 }

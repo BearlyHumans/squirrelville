@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 4000010887168380}
   - component: {fileID: 33000011585001518}
   - component: {fileID: 23000014127066462}
+  - component: {fileID: 8016428618928204060}
+  - component: {fileID: 9055578396394267391}
   m_Layer: 0
   m_Name: mushroom-boletus
   m_TagString: Untagged
@@ -27,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1000013385108184}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -81,3 +83,36 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &8016428618928204060
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000013385108184}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: e5a13c4a2c4ce4bfdb3906128d177742, type: 3}
+--- !u!205 &9055578396394267391
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000013385108184}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0.047819167, y: 0.23559079, z: -0.01890409}
+  m_Size: 0.7686183
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.011993637
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 23000014127066462}
+  m_Enabled: 1

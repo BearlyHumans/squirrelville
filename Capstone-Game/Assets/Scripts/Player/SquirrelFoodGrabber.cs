@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody))]
 public class SquirrelFoodGrabber : MonoBehaviour
@@ -21,6 +22,13 @@ public class SquirrelFoodGrabber : MonoBehaviour
     [Tooltip("How far away food can be picked up from")]
     public float pickupRadius = 1.0f;
     private float pickupTime = 0.0f;
+    [Tooltip("The maximum number of food that can be in the player's inventory at once (-1 to disable)")]
+    [Min(-1)]
+    public int maxFoodInInventory = 10; // -1 to disable
+    [Tooltip("How much food does the squirrel need to swallow to be able to turn into a ball")]
+    [Min(0)]
+    public int foodCountBallForm = 0;
+    public Material highlightMaterial;
 
     [Header("Throwing up food")]
 
@@ -36,6 +44,12 @@ public class SquirrelFoodGrabber : MonoBehaviour
     private float throwTime = 0.0f;
     private float throwDelay;
 
+    [Header("Events")]
+    public UnityEvent<GameObject> pickupEvent;
+    public UnityEvent<GameObject> throwEvent;
+
+    private GameObject nearestFood = null;
+
     private void Awake()
     {
         squirrelrb = GetComponent<Rigidbody>();
@@ -43,13 +57,49 @@ public class SquirrelFoodGrabber : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.Mouse0))
+        if (PauseMenu.paused) return;
+
+        GameObject prevNearestFood = nearestFood;
+        nearestFood = GetNearestFood();
+
+        if (prevNearestFood != nearestFood)
         {
-            GameObject food = GetNearestFood();
-            if (food != null)
+            // Remove highlight material from previous nearest food
+            if (prevNearestFood != null)
             {
-                PickupFood(food);
+                MeshRenderer prevFoodMeshRenderer = prevNearestFood.GetComponent<MeshRenderer>();
+                Material[] materials = prevFoodMeshRenderer.materials;
+                materials[1] = null;
+                prevFoodMeshRenderer.materials = materials;
             }
+
+            // Add highlight material to nearest food
+            if (nearestFood != null)
+            {
+                MeshRenderer foodMeshRenderer = nearestFood.GetComponent<MeshRenderer>();
+                Material[] materials = foodMeshRenderer.materials;
+
+                // Make room for the highlight material
+                if (materials.Length == 1)
+                {
+                    materials = new Material[2]
+                    {
+                        materials[0],
+                        highlightMaterial
+                    };
+                }
+                else
+                {
+                    materials[1] = highlightMaterial;
+                }
+
+                foodMeshRenderer.materials = materials;
+            }
+        }
+
+        if (nearestFood != null && Input.GetKey(KeyCode.Mouse0) && CanEatFood())
+        {
+            PickupFood(nearestFood);
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
@@ -75,7 +125,8 @@ public class SquirrelFoodGrabber : MonoBehaviour
         foodStack.Push(food);
         food.SetActive(false);
         pickupTime = Time.time + pickupDelay;
-        Debug.Log($"Picked up {food.name}");
+
+        pickupEvent.Invoke(food);
     }
 
     [ContextMenu("Throw food")]
@@ -96,10 +147,15 @@ public class SquirrelFoodGrabber : MonoBehaviour
         throwTime = Time.time + throwDelay;
         throwDelay = Mathf.Max(throwDelay / throwDelayDivisor, minThrowDelay);
 
-        Debug.Log($"Threw up {food.name}");
+        throwEvent.Invoke(food);
     }
 
-    int GetFoodCount()
+    public bool CanEatFood()
+    {
+        return maxFoodInInventory < 0 || GetFoodCount() < maxFoodInInventory;
+    }
+
+    public int GetFoodCount()
     {
         return foodStack.Count;
     }
