@@ -67,16 +67,6 @@ public class Humans : MonoBehaviour
 
     public Animator anim;
 
-    private void UpdAnimator()
-    {
-        if (walking)
-        {
-            anim.SetInteger("HumanMove", 1);
-        }
-        else
-            anim.SetInteger("HumanMove", 0);
-    }
-
     [Tooltip("Angle in which the NPC can see player")]
     [SerializeField]
     public float detectionAngle = 70;
@@ -109,6 +99,7 @@ public class Humans : MonoBehaviour
     int catchChoice;
     bool stillFood = false;
     bool hasFood = false;
+    string aniChoice = "Stun";
 
     //used to check if player has been caught recently 
     bool hasCaughtRecently = false;
@@ -131,7 +122,6 @@ public class Humans : MonoBehaviour
         navMesh = this.GetComponent<NavMeshAgent>();
 
         chaseTimer = chaseTime;
-        
 
         target = GameObject.FindWithTag("Player").transform;
         squrrielTarget = GameObject.FindWithTag("Player");
@@ -170,11 +160,14 @@ public class Humans : MonoBehaviour
             case HumanStates.PathFollowing:
             {
                 PathFollowingState();
+
+                anim.Play("Walk");
                 break;
             }
             case HumanStates.Chase:
             {
                 ChaseState();
+                anim.Play("Running");
                 break;
             }
             case HumanStates.Friendly:
@@ -185,34 +178,38 @@ public class Humans : MonoBehaviour
             case HumanStates.Catch:
             {
                 CatchingState();
+                
                 break;
             }
         }
-        UpdAnimator();
+        //UpdAnimator();
     }
 
     /// functionaility for catching behaviour 
     private void CatchingState()
-    {
-        
-        if(hasCaughtRecently)
+    {  
+        anim.Play(aniChoice);
+        if(!hasCaughtRecently)
         {
+
+            hasCaughtRecently = true;  
             // takes x ammount of food from the player when caught
             takeFood(takeFoodAmmount);
 
             stillFood = checkForFood();
-
-            // TODO: play squirrel dizzy animation *here*
 
             squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             Invoke("unFreezePlayer", unFreezeTime);
             catchChoice = Random.Range(0,2);
         }
 
+        // checks to see if there is still food to pick up and if not then chose what to do with it
         if(!stillFood)
         {
+            // if food was picked up
             if(hasFood)
             {
+                // option 1 = go to bin
                 if(catchChoice == 0)
                 {
                     Bin bin = homePoint.closestBin(transform.position);
@@ -220,24 +217,31 @@ public class Humans : MonoBehaviour
 
                     if(bin.radius <= Vector3.Distance(bin.transform.position, transform.position))
                     {
+                        aniChoice = "Walk";
                         navMesh.SetDestination(bin.transform.position);
                     }
+                    // put food in bin
                     else
                     {
-                        // play bin animation here
+                        aniChoice = "Drop";
                         navMesh.velocity = Vector3.zero;
-                        Invoke("returnToPath", 10);
+                        Invoke("canCatchAgain", 5);
+                        Invoke("returnToPath", 1.8f);
                     }
                 }
+                // option 2 - eat the food
                 else
                 {
-                    // play eating animation
-                    Invoke("returnToPath", 10);
+                    aniChoice = "Eating";
+                    Invoke("canCatchAgain", 5);
+                    Invoke("returnToPath", 3);
                 }
             }
             else
             {
-                currentState = HumanStates.PathFollowing;
+                
+                Invoke("canCatchAgain", 5);
+                Invoke("returnToPath", 1.5f);
             }
         }
         else
@@ -267,7 +271,6 @@ public class Humans : MonoBehaviour
                 // checks to see if human is within range to "catch" player
                 if (distance < 1.0f)
                 {
-                    hasCaughtRecently = true;  
                     currentState = HumanStates.Catch;
                 }
                      
@@ -349,7 +352,7 @@ public class Humans : MonoBehaviour
             if(walkingPause)
             {
                 waiting = true;
-                waitTimer = 0f;
+                waitTimer = 2f;
             }
             else
             {
@@ -376,9 +379,11 @@ public class Humans : MonoBehaviour
         float radius = 5.0f;
 
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius, layerMask);
-
+        
+        
         if(hitColliders.Length != 0)
         {
+            
             float bestDistance = 9999.0f;
             Collider bestCollider = null;
 
@@ -396,10 +401,14 @@ public class Humans : MonoBehaviour
             
             navMesh.SetDestination(bestCollider.transform.position);
 
-            if(bestDistance < 0.5f)
+            if(bestDistance < 1f)
             {
-                Destroy(bestCollider, 3);
                 navMesh.velocity = Vector3.zero;
+                
+                Invoke("pickUp", 0.8f);
+            
+                Destroy(bestCollider, 3);
+                
             } 
             hasFood = true;
             return true;
@@ -418,10 +427,15 @@ public class Humans : MonoBehaviour
         }
     }
 
+    void pickUp()
+    {
+        aniChoice = "Pick Up";
+    }
+
     void returnToPath()
     {
-        hasCaughtRecently = false;
         hasFood = false;
+    
         currentState = HumanStates.PathFollowing;
     }
 
@@ -476,8 +490,14 @@ public class Humans : MonoBehaviour
     /// unfreezes player when run
     void unFreezePlayer()
     {
-        hasCaughtRecently = false;
+        
         squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+    }
+
+    void canCatchAgain()
+    {
+        
+        hasCaughtRecently = false;
     }
      
     /// used within path following to move human to current path point
@@ -514,6 +534,12 @@ public class Humans : MonoBehaviour
                 
             }
         }
+    }
+
+    void resetAnimation()
+    {
+        anim.enabled = false;
+        anim.enabled = true;
     }
 
     // Visualize area of points

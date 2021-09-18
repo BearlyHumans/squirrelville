@@ -96,7 +96,7 @@ public class CameraGimbal : MonoBehaviour
     }
 
     /// <summary> Change the rotation of the camera parent based on inputs. </summary>
-    public void UpdateCamRotFromImput()
+    public void UpdateCamRotFromInput()
     {
         //Get input and invert or transform it.
         float inputX = Input.GetAxis("Mouse X");
