@@ -241,7 +241,7 @@ public class Humans : MonoBehaviour
             {
                 
                 Invoke("canCatchAgain", 5);
-                Invoke("returnToPath", 2);
+                Invoke("returnToPath", 1.5f);
             }
         }
         else
