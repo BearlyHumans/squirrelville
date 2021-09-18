@@ -13,6 +13,8 @@ namespace Player
         public SCReferences refs = new SCReferences();
         public SCChildren behaviourScripts = new SCChildren();
 
+        public bool debugMessages = false;
+
         [SerializeField]
         private List<ParameterChangeEvent> animationEvents = new List<ParameterChangeEvent>();
 
@@ -166,6 +168,9 @@ namespace Player
 
         public void CallAnimationEvents(AnimationTrigger trigger)
         {
+            if (debugMessages)
+                print("Triggered Event: " + trigger.ToString());
+
             foreach (ParameterChangeEvent PCE in animationEvents)
             {
                 if (PCE.trigger == trigger)

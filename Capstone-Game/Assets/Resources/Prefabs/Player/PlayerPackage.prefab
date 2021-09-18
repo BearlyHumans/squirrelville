@@ -3039,6 +3039,33 @@ MonoBehaviour:
     moveAndClimb: {fileID: 1512199470005858204}
     ball: {fileID: 1512199470005858195}
     foodGrabber: {fileID: 1512199470005858194}
+  debugMessages: 1
+  animationEvents:
+  - trigger: 1
+    parameterChange:
+      type: 1
+      paramName: MoveState
+      setToValue: 1
+  - trigger: 2
+    parameterChange:
+      type: 1
+      paramName: MoveState
+      setToValue: 0
+  - trigger: 8
+    parameterChange:
+      type: 1
+      paramName: JumpState
+      setToValue: 1
+  - trigger: 14
+    parameterChange:
+      type: 1
+      paramName: JumpState
+      setToValue: 2
+  - trigger: 9
+    parameterChange:
+      type: 1
+      paramName: JumpState
+      setToValue: 0
 --- !u!114 &1512199470005858204
 MonoBehaviour:
   m_ObjectHideFlags: 0
