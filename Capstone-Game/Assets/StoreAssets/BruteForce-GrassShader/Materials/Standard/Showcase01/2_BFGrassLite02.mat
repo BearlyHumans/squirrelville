@@ -91,12 +91,12 @@ Material:
     - _GrassThinness: 0.98
     - _GrassThinnessIntersection: 1.24
     - _Metallic: 0
-    - _MinimumNumberStacks: 2
+    - _MinimumNumberStacks: 5.4
     - _Mode: 0
     - _NoisePower: 1.5
     - _NumberOfStacks: 17
     - _OcclusionStrength: 1
-    - _OffsetValue: 0.8
+    - _OffsetValue: 0.7
     - _Parallax: 0.02
     - _ProceduralDistance: 5.5
     - _ProceduralStrength: 1.5
@@ -128,3 +128,4 @@ Material:
     - _ProjectedShadowColor: {r: 0.078431375, g: 0.24705882, b: 0.05490196, a: 1}
     - _RimColor: {r: 0.11296551, g: 0.156, b: 0.04841379, a: 1}
     - _SelfShadowColor: {r: 0.35504535, g: 0.4433962, b: 0.23215556, a: 1}
+  m_BuildTextureStacks: []
