@@ -310,16 +310,12 @@ namespace Player
                 }
                 vals.falling = false;
 
-                CustomIntuitiveSnapRotation(-dir);
-
                 //The player counts as on the surface if the raycast hit something.
                 vals.jumping = false;
                 vals.lastOnSurface = Time.time;
 
-                //if the ground is within the wall-stick range, teleport to it, or if its angle is too different eliminate the 'up force' to stop player flying.
-                Vector3 oldPos = ParentRefs.model.position;
-                transform.position = hitSurface.point;
-                ParentRefs.model.position = oldPos;
+                //if the ground is within the wall-stick range, teleport to it, and if its angle is too different eliminate the 'up force' to stop player flying.
+                TeleportToSurface(hitSurface);
                 if (Vector3.Angle(vals.lastRotationDir, dir) > settings.WC.wallStickDangerAngle)
                 {
                     vals.eliminateUpForce = true;
@@ -381,8 +377,11 @@ namespace Player
 
                 if (settings.M.dashForAutoclimb)
                 {
-                    if (JumpToClimbWall(0.5f))
-                        return;
+                    if (Time.time > vals.lastJumpToWall + settings.WC.autoclimbCooldown)
+                    {
+                        if (JumpToClimbWall(0.5f, settings.WC.angleToFailAutoclimb))
+                            return;
+                    }
 
                     if (vals.stoppedAtEdge && JumpAroundCorners())
                     {
@@ -416,9 +415,14 @@ namespace Player
             }
         }
 
+        private bool JumpToClimbWall(float distMultiplier)
+        {
+            return JumpToClimbWall(distMultiplier, 0);
+        }
+
         /// <summary> Use 'FindClimbableWall' to get a surface, and then jump to it while translating the squirrels model smoothly.
         /// Raycasting to check if the point is in LOS can be enabled here. </summary>
-        private bool JumpToClimbWall(float distMultiplier)
+        private bool JumpToClimbWall(float distMultiplier, float relativeAngleToCancel)
         {
             RaycastHit mainHit;
 
@@ -433,10 +437,20 @@ namespace Player
                     return false;
                 }
 
+                if (relativeAngleToCancel > 0)
+                {
+                    if (Vector3.Angle(mainHit.normal, -transform.forward) < relativeAngleToCancel)
+                    {
+                        return false;
+                    }
+                }
+
                 //Teleport to the point, while maintaining the models position so it moves smoothly.
-                Vector3 oldPos = ParentRefs.model.position;
+                Quaternion oldRot = ParentRefs.model.rotation;
                 TeleportToSurface(mainHit);
-                ParentRefs.model.position = oldPos;
+                ParentRefs.model.localRotation = oldRot;
+                vals.lastJumpToWall = Time.time;
+                vals.eliminateUpForce = true;
 
                 //Set velocity to zero to mitigate weird physics.
                 ParentRefs.RB.velocity = Vector3.zero;
@@ -466,6 +480,8 @@ namespace Player
             }
 
             bool found = Physics.SphereCast(sphereStart, settings.WC.sphereDetectRadius, sphereDir, out mainHit, modifiedDist, settings.WC.climableLayers.value);
+            Debug.DrawLine(sphereStart, sphereStart + sphereDir * (modifiedDist + settings.WC.sphereDetectRadius));
+            Debug.DrawLine((sphereStart - transform.forward * settings.WC.sphereDetectRadius), (sphereStart - transform.forward * settings.WC.sphereDetectRadius) + sphereDir * (modifiedDist + settings.WC.sphereDetectRadius));
 
             //Do a second, larger pass if no target was found with the small forwards check.
             if (!found)
@@ -528,34 +544,13 @@ namespace Player
             return Vector3.zero;
         }
 
-        /// <summary> Find surfaces which are below and at a 90deg angle to the player (currently not working). </summary>
-        private void FindAndJumpAroundCorner(Vector3 moveDirection)
-        {
-            debugString = vals.edgeRayStart.ToString();
-
-            Vector3 pos = vals.edgeRayStart + transform.position;
-            Debug.DrawLine(pos, pos + transform.forward * (settings.WC.edgeStopDownDist + settings.squirrelCenterToNoseDist), Color.red);
-            //Make sure there is no surface below the edge which the squirrel would be inside if they jumped around the corner.
-            if (!Physics.Raycast(pos, transform.forward, settings.WC.edgeStopDownDist + settings.squirrelCenterToNoseDist, settings.WC.rotateToLayers))
-            {
-                Vector3 lineStart = pos + transform.forward * settings.WC.edgeStopDownDist;
-                Debug.DrawLine(lineStart, lineStart + -moveDirection * 0.3f, Color.green);
-                RaycastHit hit;
-                if (Physics.Raycast(lineStart, -moveDirection, out hit, 0.3f, settings.WC.rotateToLayers))
-                {
-                    //Teleport to the point, while maintaining the models position so it moves smoothly.
-                    Vector3 oldPos = ParentRefs.model.position;
-                    TeleportToSurface(hit);
-                    ParentRefs.model.position = oldPos;
-                    //Set velocity to zero to mitigate weird physics.
-                    ParentRefs.RB.velocity = Vector3.zero;
-                }
-            }
-        }
-
         /// <summary> Check for scenarios where there is a gap in front of the player, and  a surface at an angle below the player. </summary>
         private bool JumpAroundCorners()
         {
+            //Cancel if on cooldown.
+            if (Time.time < vals.lastCornerVault + settings.WC.cornerVaultCooldown)
+                return false;
+
             //If the player is not trying to move, make the checks relative to the model rotation, otherwise make them relative to the desired direction.
             Vector3 moveDirection = ParentRefs.model.transform.forward;
             if (vals.desiredDirection != Vector3.zero)
@@ -574,11 +569,19 @@ namespace Player
             }
 
             //Check if there is a normal surface for the player to climb to, in which case the corner-jump should not trigger.
+            //If the surface found has a steep angle compared to the player (> EdgeDetectAngle) jump to it anyway. (For just over 90deg angles)
             if (Physics.Raycast(firstCast, -ParentRefs.model.transform.up, out hit, (size * settings.J.CornerJumpDepth) + (size * settings.J.SJCheckHeight), settings.WC.rotateToLayers))
             {
                 refs.climbPointDisplay.position = hit.point;
                 if (Vector3.Angle(hit.point, -transform.forward) > settings.J.EdgeDetectAngle)
-                    return TeleportToSurface(hit);
+                {
+                    Quaternion oldRot = ParentRefs.model.rotation;
+                    TeleportToSurface(hit);
+                    ParentRefs.model.localRotation = oldRot;
+                    vals.lastCornerVault = Time.time;
+                    vals.eliminateUpForce = true;
+                    return true;
+                }
                 return false;
             }
 
@@ -586,39 +589,31 @@ namespace Player
             Vector3 cornerCheckOrigin = firstCast - ParentRefs.model.transform.up * ((size * settings.J.CornerJumpDepth) + (size * settings.J.SJCheckHeight));
             if (Physics.Raycast(cornerCheckOrigin, -moveDirection, out hit, size * 2f, settings.WC.rotateToLayers))
             {
-                return TeleportToSurface(hit);
+                Quaternion oldRot = ParentRefs.model.rotation;
+                TeleportToSurface(hit);
+                ParentRefs.model.localRotation = oldRot;
+                vals.lastCornerVault = Time.time;
+                vals.eliminateUpForce = true;
+                return true;
             }
-            
-            /*
-            //Teleport-jump code:
-            for (int i = 0; i < settings.J.SJCheckCount; ++i)
-            {
-                //Sphere check with half the radius of the player, downwards relative to the player, 4 times in front of the player at tight intervals.
-                //If a target is found so a jump animation?
-                Vector3 origin = firstCast + moveDirection * size * settings.J.SJCheckInterval * i;
-                Debug.DrawRay(origin, -ParentRefs.model.transform.up * 0.5f, Color.yellow);
-                if (Physics.SphereCast(origin, size, -ParentRefs.model.transform.up, out hit, size * 2f))
-                {
-                    refs.climbPointDisplay.gameObject.SetActive(true);
-                    refs.climbPointDisplay.position = hit.point;
-                    debugString = hit.transform.name;
-
-                    transform.position = hit.point;
-                    return true;
-                }
-            }
-            */
 
             return false;
         }
 
-        private bool TeleportToSurface(RaycastHit hit)
+        private void TeleportToSurface(RaycastHit hit)
         {
-            transform.position = hit.point;
+            if (Time.time < vals.lastTeleported + settings.WC.teleportCooldown)
+                return;
 
+            vals.lastTeleported = Time.time;
+            vals.lastTeleportDistance = hit.distance; //This is approximately right and a lot cheaper.
+
+            Vector3 oldPos = ParentRefs.model.position;
+
+            transform.position = hit.point;
             CustomIntuitiveSnapRotation(-hit.normal);
-            vals.eliminateUpForce = true;
-            return true;
+
+            ParentRefs.model.position = oldPos;
         }
 
         void OnDrawGizmosSelected()
@@ -672,6 +667,18 @@ namespace Player
             /// <summary> The time.time value of the last time the player was close enough to a surface to climb on it.
             /// Used to check if jumps are allowed, and if 'air-control' modifiers should be used. </summary>
             public float lastOnSurface;
+            /// <summary> The time.time value of the last time the player teleported BECAUSE OF JumpToClimbWall.
+            /// Used to prevent too rapid teleports specifically when autoclimbing. </summary>
+            public float lastJumpToWall;
+            /// <summary> The time.time value of the last time the player teleported (for any reason including rotate-to-surface).
+            /// Used to prevent too rapid teleports. </summary>
+            public float lastTeleported;
+            /// <summary> The distance of the last teleport.
+            /// Used to stun/slow the player relative to the distance moved, and adjust the cooldown time. </summary>
+            public float lastTeleportDistance;
+            /// <summary> The time.time value of the last time the player teleported around a (roughly) 90deg angle.
+            /// Used to prevent too rapid vaulting. </summary>
+            public float lastCornerVault;
             /// <summary> True if the player detected an edge (no surface in front of the player with a relative angle less than 90deg).
             /// Used to allow a corner jump if an appropriate button (dash or jump) is also pressed </summary>
             public bool stoppedAtEdge;
@@ -851,6 +858,7 @@ namespace Player
                 public LayerMask climableLayers = new LayerMask();
                 [Tooltip("The layers of objects the player is allowed to climb on.")]
                 public LayerMask rotateToLayers = new LayerMask();
+                public float angleToFailAutoclimb = 30;
                 [Tooltip("Size of the sphere-cast that will detect surfaces to climb on. Larger means more forgiving controls, but also more likely to get objects behind the player.")]
                 public float sphereDetectRadius = 0.3f;
                 [Tooltip("Multiplier to the sphere-cast radius for the second climable check pass.")]
@@ -878,6 +886,13 @@ namespace Player
                 public float rotateDegreesPerSecond = 360;
                 [Tooltip("How quickly the squirrel model moves back to alignment when the physics object is teleported.")]
                 public float moveUnitsPerSecond = 5f;
+
+                [Tooltip("Cooldown autoclimb teleport. Can help reduce buginess and improve performance.")]
+                public float autoclimbCooldown = 0.33f;
+                [Tooltip("Cooldown corner vaulting. Should be roughly human reaction-time so players can control which side of branche/fence etc they want.")]
+                public float cornerVaultCooldown = 0.33f;
+                [Tooltip("Cooldown for ANY teleport. Should be VERY small (e.g. < 0.05s).")]
+                public float teleportCooldown = 0.01f;
             }
         }
     }
