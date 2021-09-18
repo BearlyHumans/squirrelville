@@ -3250,7 +3250,7 @@ MonoBehaviour:
   pickupDelay: 0.5
   pickupRadius: 0.4
   maxFoodInInventory: 10
-  foodCountBallForm: 0
+  foodCountBallForm: 5
   highlightMaterial: {fileID: 2100000, guid: 73bed7dbf5548254bb64a23da6fda468, type: 2}
   throwVelocity: 1
   initialThrowDelay: 0.6
