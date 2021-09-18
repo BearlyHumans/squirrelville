@@ -434,7 +434,6 @@ namespace Player
 
                 if (relativeAngleToCancel > 0)
                 {
-                    print("Relative Angle: " + Vector3.Angle(mainHit.normal, -transform.forward));
                     if (Vector3.Angle(mainHit.normal, -transform.forward) < relativeAngleToCancel)
                     {
                         return false;
