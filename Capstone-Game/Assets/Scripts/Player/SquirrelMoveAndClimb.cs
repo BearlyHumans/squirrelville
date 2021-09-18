@@ -58,12 +58,12 @@ namespace Player
 
         private void UpdAnimator()
         {
-            if (vals.jumping)
-                ParentRefs.animator.SetInteger("MoveState", 2);
-            else if (vals.moving)
-                ParentRefs.animator.SetInteger("MoveState", 1);
-            else
-                ParentRefs.animator.SetInteger("MoveState", 0);
+            if (vals.moving)
+                PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.moving);
+            else if (vals.jumping == false)
+                PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.notMoving);
+
+            
         }
 
         private void UpdInput()
@@ -222,6 +222,8 @@ namespace Player
                 vals.jumping = true;
                 vals.lastJump = Time.time;
                 vals.jumpPressed = -5;
+
+                PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.jump);
 
                 bool forwardJump = vals.moving && settings.J.allowForwardJumps;
                 if (forwardJump)

@@ -13,6 +13,9 @@ namespace Player
         public SCReferences refs = new SCReferences();
         public SCChildren behaviourScripts = new SCChildren();
 
+        [SerializeField]
+        private List<ParameterChangeEvent> animationEvents = new List<ParameterChangeEvent>();
+
         private SCStoredValues vals = new SCStoredValues();
 
         //~~~~~~~~~~ PROPERTIES ~~~~~~~~~~
@@ -73,8 +76,10 @@ namespace Player
 
             if (vals.frozen)
                 return;
-
-            refs.fCam.UpdateCamRotFromImput();
+			
+            CallAnimationEvents(AnimationTrigger.frameStart);
+			
+            refs.fCam.UpdateCamRotFromInput();
 
             //Debug State Changes
             if (Input.GetKeyDown(KeyCode.Q))
@@ -159,6 +164,25 @@ namespace Player
             vals.frozen = false;
         }
 
+        public void CallAnimationEvents(AnimationTrigger trigger)
+        {
+            foreach (ParameterChangeEvent PCE in animationEvents)
+            {
+                if (PCE.trigger == trigger)
+                    ChangeParameter(PCE);
+            }
+        }
+
+        private void ChangeParameter(ParameterChangeEvent PCE)
+        {
+            if (PCE.parameterChange.type == ExposedAnimationParameter.ParamTypes.Bool)
+                refs.animator.SetBool(PCE.parameterChange.paramName, (PCE.parameterChange.setToValue > 0) ? true : false);
+            else if (PCE.parameterChange.type == ExposedAnimationParameter.ParamTypes.Int)
+                refs.animator.SetInteger(PCE.parameterChange.paramName, (int)PCE.parameterChange.setToValue);
+            else if (PCE.parameterChange.type == ExposedAnimationParameter.ParamTypes.Float)
+                refs.animator.SetFloat(PCE.parameterChange.paramName, PCE.parameterChange.setToValue);
+        }
+
         //~~ DATA STRUCTURES ~~
 
         [System.Serializable]
@@ -206,6 +230,58 @@ namespace Player
             moveAndClimb,
             ball,
             glide
+        }
+
+        [System.Serializable]
+        private class ParameterChangeEvent
+        {
+            [Tooltip("These events are called from the code when the trigger happens." +
+                "Events endiing in 'ing' are called every frame that the trigger is true, and the others are called only on the first frame." +
+                "Multiple Events can be made for each trigger and they will all be called.")]
+            public AnimationTrigger trigger;
+            public ExposedAnimationParameter parameterChange;
+        }
+
+        public enum AnimationTrigger
+        {
+            frameStart, //Done
+            moving,
+            notMoving,
+            hop,
+            becomeIdle,
+            randomIdle1,
+            randomIdle2,
+            chargingJump,
+            jump,
+            landJump,
+            dashing,
+            sneaking,
+            slipping,
+            climbing,
+            falling,
+            rolling,
+            barking,
+            eating,
+            collision,
+            humanAttack
+        }
+
+        [System.Serializable]
+        private class ExposedAnimationParameter
+        {
+            [Tooltip("Set this to the type of the parameter you want to change.")]
+            public ParamTypes type;
+            [Tooltip("Set this to the name of the parameter you want to change when the trigger occurs.")]
+            public string paramName;
+            [Tooltip("Use 0/1 for false/true.")]
+            public float setToValue;
+
+            public enum ParamTypes
+            {
+                Float,
+                Int,
+                Bool
+            }
         }
     }
 }
