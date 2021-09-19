@@ -1,0 +1,157 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4351709731288637397
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4351709731288637393}
+  - component: {fileID: 4351709731288637398}
+  - component: {fileID: 4351709731288637399}
+  - component: {fileID: 4351709731288637396}
+  - component: {fileID: 4351709731288637392}
+  m_Layer: 13
+  m_Name: Koala
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4351709731288637393
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4351709731288637397}
+  m_LocalRotation: {x: -0, y: 0.99192053, z: -0, w: 0.12686093}
+  m_LocalPosition: {x: 95.54636, y: 20.43, z: 120.46335}
+  m_LocalScale: {x: 0.596895, y: 0.596895, z: 0.596895}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 165.424, z: 0}
+--- !u!33 &4351709731288637398
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4351709731288637397}
+  m_Mesh: {fileID: -2849004893269759183, guid: 162883a6f1dcb8640ad4dc98d01d11a7, type: 3}
+--- !u!23 &4351709731288637399
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4351709731288637397}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: df4d757cc32364647b806d8e6e39e55b, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &4351709731288637396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4351709731288637397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04273a48ccd3fc44983e66b6acdba9a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entries:
+  - text: G'day little dude! I've never seen anything like you around here before
+    sprite: {fileID: 21300000, guid: c31dcd4e483e68d4dba2aad7039afdbd, type: 3}
+  - text: What brings you to our famous acorn island?
+    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
+  - text: You alright? You look lost mate!
+    sprite: {fileID: 21300000, guid: 300dadbdf3fc5254d911a403452005c5, type: 3}
+  - text: Well... I am more than happy to show you around!
+    sprite: {fileID: 21300000, guid: 300dadbdf3fc5254d911a403452005c5, type: 3}
+  - text: "Problem is I don't have the energy to move this giant boulder that's blocking
+      our way\u2026 my dad has wanted me to get that..."
+    sprite: {fileID: 21300000, guid: 48f9b57e80877e3499e629c7bcc247d0, type: 3}
+  - text: ...Giant Acorn...
+    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
+  - text: "...from the top of the mountain for a few\u2026 days, months, years?"
+    sprite: {fileID: 21300000, guid: b8042a022772c244ca2c5433cbea3e51, type: 3}
+  - text: "Sometimes it\u2019s hard to tell. Hahaha!"
+    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
+  - text: Our cousins back home told us not to eat acorns, but after living on this
+      island we just can't get enough of the things!
+    sprite: {fileID: 21300000, guid: c31dcd4e483e68d4dba2aad7039afdbd, type: 3}
+  - text: "Wait\u2026 you want the big one too?"
+    sprite: {fileID: 21300000, guid: 300dadbdf3fc5254d911a403452005c5, type: 3}
+  - text: ...
+    sprite: {fileID: 21300000, guid: f2b47b7936547f34689640c321e86f82, type: 3}
+  - text: Little guy!!! We can work together on this!!
+    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
+  - text: "Yes!! Let\u2019s do it! My family will be so chuffed!"
+    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
+  - text: "I\u2019ve seen some acorns around the place here, but I\u2019m a little
+      tired"
+    sprite: {fileID: 21300000, guid: c31dcd4e483e68d4dba2aad7039afdbd, type: 3}
+  - text: You wouldn't happen to have any acorns already would you?
+    sprite: {fileID: 21300000, guid: b8042a022772c244ca2c5433cbea3e51, type: 3}
+  - text: If you bring me 5 acorns, I just might have enough energy to move that
+      boulder!
+    sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}
+  dialogueStart:
+    m_PersistentCalls:
+      m_Calls: []
+  dialogueNext:
+    m_PersistentCalls:
+      m_Calls: []
+  dialogueFinish:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!136 &4351709731288637392
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4351709731288637397}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1.2806975
+  m_Height: 5.477281
+  m_Direction: 1
+  m_Center: {x: 0.1045343, y: 2.3154392, z: -0.15192106}
