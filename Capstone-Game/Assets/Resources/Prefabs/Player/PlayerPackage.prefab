@@ -3039,7 +3039,7 @@ MonoBehaviour:
     moveAndClimb: {fileID: 1512199470005858204}
     ball: {fileID: 1512199470005858195}
     foodGrabber: {fileID: 1512199470005858194}
-  debugMessages: 1
+  debugMessages: 0
   animationEvents:
   - trigger: 1
     parameterChange:
