@@ -7,10 +7,10 @@ public class AudioTrigger : MonoBehaviour
     public List<AdvancedAudioClip> audioClips;
     private List<GameObject> gameObjects = new List<GameObject>();
 
+    private static List<AudioTrigger> audioTriggers = new List<AudioTrigger>();
+
     private void AddAudioSources()
     {
-        if (gameObjects.Count > 0) return;
-
         foreach (AdvancedAudioClip audioClip in audioClips)
         {
             GameObject gameObject = new GameObject();
@@ -26,10 +26,8 @@ public class AudioTrigger : MonoBehaviour
         }
     }
 
-    private void RemoveAudioSources()
+    public void RemoveAudioSources()
     {
-        if (gameObjects.Count == 0) return;
-
         foreach (GameObject gameObject in gameObjects)
         {
             GameObject.Destroy(gameObject);
@@ -40,17 +38,29 @@ public class AudioTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (IsPlayer(other))
+        if (IsPlayer(other) && audioTriggers.IndexOf(this) == -1)
         {
+            if (audioTriggers.Count > 0)
+            {
+                audioTriggers[audioTriggers.Count - 1].RemoveAudioSources();
+            }
+
             AddAudioSources();
+            audioTriggers.Add(this);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (IsPlayer(other))
+        if (IsPlayer(other) && audioTriggers.IndexOf(this) > -1)
         {
+            if (audioTriggers.Count > 1 && audioTriggers[audioTriggers.Count - 1] == this)
+            {
+                audioTriggers[audioTriggers.Count - 2].AddAudioSources();
+            }
+
             RemoveAudioSources();
+            audioTriggers.Remove(this);
         }
     }
 
