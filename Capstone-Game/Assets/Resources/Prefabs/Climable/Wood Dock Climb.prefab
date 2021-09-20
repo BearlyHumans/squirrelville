@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!65 &8056736875730235084
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5235036082828035428}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.4910198, y: 0.10624719, z: 5.3758545}
+  m_Center: {x: 0.0010332465, y: 1.8365008, z: -0.04502535}
+--- !u!64 &8875984281201317364
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5235036082828035428}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300002, guid: c7b802f7f0e52124ca25b2eec54690a3, type: 3}
+--- !u!1001 &5235036082828002244
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 100000, guid: c7b802f7f0e52124ca25b2eec54690a3, type: 3}
+      propertyPath: m_Name
+      value: Wood Dock Climb
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: c7b802f7f0e52124ca25b2eec54690a3, type: 3}
+      propertyPath: m_TagString
+      value: CanClimb
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: c7b802f7f0e52124ca25b2eec54690a3, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: c7b802f7f0e52124ca25b2eec54690a3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: c7b802f7f0e52124ca25b2eec54690a3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: c7b802f7f0e52124ca25b2eec54690a3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: c7b802f7f0e52124ca25b2eec54690a3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: c7b802f7f0e52124ca25b2eec54690a3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: c7b802f7f0e52124ca25b2eec54690a3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: c7b802f7f0e52124ca25b2eec54690a3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: c7b802f7f0e52124ca25b2eec54690a3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: c7b802f7f0e52124ca25b2eec54690a3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: c7b802f7f0e52124ca25b2eec54690a3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c7b802f7f0e52124ca25b2eec54690a3, type: 3}
+--- !u!1 &5235036082828035428 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: c7b802f7f0e52124ca25b2eec54690a3, type: 3}
+  m_PrefabInstance: {fileID: 5235036082828002244}
+  m_PrefabAsset: {fileID: 0}
