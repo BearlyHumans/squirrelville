@@ -89,7 +89,6 @@ public class MusicTrigger : MonoBehaviour
         {
             audioSource.volume += (volume / fadeTime) * Time.deltaTime;
             audioSource.volume = Mathf.Min(audioSource.volume, volume);
-            print(audioSource.volume);
             yield return 0;
         }
     }
@@ -102,7 +101,6 @@ public class MusicTrigger : MonoBehaviour
         {
             audioSource.volume -= (volume / fadeTime) * Time.deltaTime;
             audioSource.volume = Mathf.Min(audioSource.volume, volume);
-            print(audioSource.volume);
             yield return 0;
         }
 

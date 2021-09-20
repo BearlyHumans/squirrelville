@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 7044460942277477642}
   - component: {fileID: 7644664059575268973}
   - component: {fileID: 5111612515830399149}
-  - component: {fileID: 2539479117871752537}
+  - component: {fileID: 7421814300443638957}
   m_Layer: 2
-  m_Name: MusicTrigger
+  m_Name: AmbienceTrigger
   m_TagString: NoClimb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d0054e2826ae0cc4e8abb517bd8d7ac5, type: 2}
+  - {fileID: 2100000, guid: 7d937c04fbb734546b29eb971936bb5c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -96,7 +96,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2539479117871752537
+--- !u!114 &7421814300443638957
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -105,10 +105,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8676674149244881902}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04b9b3f8cb897c345847c43903e7b73e, type: 3}
+  m_Script: {fileID: 11500000, guid: 94ee7113c1b6c1742aa74e6211ac3c46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  group: {fileID: -7675471604306510293, guid: 34ca02f6309a2f549b4732abe7199d62, type: 2}
-  clip: {fileID: 0}
-  volume: 1
+  group: {fileID: -3983698746238741912, guid: 34ca02f6309a2f549b4732abe7199d62, type: 2}
+  ambience:
+  - clip: {fileID: 0}
+    volume: 0
+    audioSource: {fileID: 0}
   fadeTime: 1
