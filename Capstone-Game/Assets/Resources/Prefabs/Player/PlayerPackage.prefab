@@ -119,9 +119,9 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1734878118}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: dda2683f82cdf8f47b62e77a3cb38490, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Radius: 2.03252
   m_Center: {x: 0, y: 0, z: 0}
@@ -849,54 +849,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61574e354ba34a141ae2cc1228f5eda3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UseCollision: 0
+  UseCollision: 1
   CollisionSpace: 1
   CollisionMode: 0
-  CheapCollision: 0
-  DynamicWorldCollidersInclusion: 0
-  InclusionRadius: 1
-  IgnoreMeshColliders: 1
-  IncludedColliders: []
+  CheapCollision: 1
+  DynamicWorldCollidersInclusion: 1
+  InclusionRadius: 2
+  IgnoreMeshColliders: 0
+  IncludedColliders:
+  - {fileID: 1734878120}
   IncludedColliders2D: []
   CollidersType: 0
   CollideWithOtherTails: 0
   CollideWithDisabledColliders: 1
   CollisionSlippery: 1
-  ReflectCollision: 0
+  ReflectCollision: 1
   CollidersScaleCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
+      time: -0.707222
+      value: -0.13250732
+      inSlope: 0.34374392
+      outSlope: 0.34374392
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.33690557
     - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
+      time: 0.80684876
+      value: 0.9688617
+      inSlope: 0.32695696
+      outSlope: 0.32695696
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.21390456
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  CollidersScaleMul: 6.5
-  CollisionsAutoCurve: 0.5
+  CollidersScaleMul: 0.68
+  CollisionsAutoCurve: 0
   IgnoredColliders: []
   IgnoredColliders2D: []
-  CollidersSameLayer: 1
+  CollidersSameLayer: 0
   CollidersAddRigidbody: 1
   RigidbodyMass: 1
   CollidersLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   UseSlitheryCurve: 0
   SlitheryCurve:
     serializedVersion: 2
@@ -1072,7 +1073,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  UseIK: 0
+  UseIK: 1
   IK:
     IKWeight: 0
     IKTargetPosition: {x: 0, y: 0, z: 0}
@@ -1092,7 +1093,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     Use2D: 0
-  IKTarget: {fileID: 0}
+  IKTarget: {fileID: 4622316365119460958}
   IKAutoWeights: 1
   IKBaseReactionWeight: 0.65
   IKReactionWeightCurve:
@@ -1320,8 +1321,8 @@ MonoBehaviour:
   DistanceWithoutY: 0
   DistanceMeasurePoint: {x: 0, y: 0, z: 0}
   FadeDuration: 0.75
-  Deflection: 0
-  DeflectionStartAngle: 10
+  Deflection: 1
+  DeflectionStartAngle: 1
   DeflectionSmooth: 0
   DeflectionFalloff:
     serializedVersion: 2
@@ -1347,9 +1348,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  DeflectOnlyCollisions: 1
-  _Editor_Category: 0
-  _Editor_FeaturesCategory: 0
+  DeflectOnlyCollisions: 0
+  _Editor_Category: 2
+  _Editor_FeaturesCategory: 2
   DrawGizmos: 1
   StartBone: {fileID: 6141464077910977501}
   EndBone: {fileID: 0}
@@ -1366,21 +1367,21 @@ MonoBehaviour:
   AnimatePhysics: 0
   InterpolateRate: 0
   Prewarm: 0
-  Slithery: 1
-  Curling: 0.5
+  Slithery: 1.2
+  Curling: 1
   Springiness: 0
-  MaxStretching: 0.375
-  AngleLimit: 181
+  MaxStretching: 0
+  AngleLimit: 90.05021
   AngleLimitAxis: {x: 0, y: 0, z: 0}
   LimitAxisRange: {x: 0, y: 0}
-  LimitSmoothing: 0.5
-  MotionInfluence: 1
+  LimitSmoothing: 1
+  MotionInfluence: 0.104036815
   IncludeParent: 1
   UnifyBendiness: 0
-  ReactionSpeed: 0.9
+  ReactionSpeed: 1
   Sustain: 0
   RotationRelevancy: 1
-  SmoothingStyle: 1
+  SmoothingStyle: 0
   DeltaType: 4
   UpdateAsLast: 1
   DetectZeroKeyframes: 1
@@ -3039,7 +3040,7 @@ MonoBehaviour:
     moveAndClimb: {fileID: 1512199470005858204}
     ball: {fileID: 1512199470005858195}
     foodGrabber: {fileID: 1512199470005858194}
-  debugMessages: 1
+  debugMessages: 0
   animationEvents:
   - trigger: 1
     parameterChange:
@@ -3151,9 +3152,9 @@ MonoBehaviour:
       haltAtFractionOfMaxSpeed: 0.9
       turningThreshold: 0.2
     jump:
-      jumpForce: 4
+      jumpForce: 1.5
       allowForwardJumps: 1
-      forwardJumpForce: 6
+      forwardJumpForce: 3
       forwardJumpVerticalFraction: 1
       jumpCooldown: 0.2
       checkJumpTime: 0.2
@@ -3208,17 +3209,17 @@ MonoBehaviour:
   PARENT: {fileID: 1512199470005858206}
   settings:
     movement:
-      acceleration: 5
-      boostMultiplier: 2
-      boostStaminaUse: 10
-      maxSpeed: 8
+      acceleration: 8
+      boostMultiplier: 20
+      boostStaminaUse: 500
+      maxSpeed: 1.5
       airControlFactor: 0.5
     jump:
-      jumpForce: 5
+      jumpForce: 3
       jumpCooldown: 0.2
       checkJumpTime: 0.2
       coyoteeTime: 0.2
-      staminaUsed: 30
+      staminaUsed: 20
       JumpableLayers:
         serializedVersion: 2
         m_Bits: 16311
@@ -3254,7 +3255,7 @@ MonoBehaviour:
   pickupDelay: 0.5
   pickupRadius: 0.4
   maxFoodInInventory: 10
-  foodCountBallForm: 5
+  foodCountBallForm: 0
   highlightMaterial: {fileID: 2100000, guid: 73bed7dbf5548254bb64a23da6fda468, type: 2}
   throwVelocity: 1
   initialThrowDelay: 0.6
@@ -3302,7 +3303,7 @@ MonoBehaviour:
   staminaBar: {fileID: 7500992045671800574}
   maxStamina: 100
   minStaminaToStartUse: 10
-  staminaRegenPerSecond: 10
+  staminaRegenPerSecond: 30
   staminaRegenDelay: 1
   allowNegativeStamina: 0
   zeroStopsRegen: 0
@@ -3769,7 +3770,7 @@ SphereCollider:
   m_GameObject: {fileID: 5215332138258062919}
   m_Material: {fileID: 13400000, guid: 0b7c83d923f306749910936d40b2373a, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 2.1
   m_Center: {x: 2.08, y: 0.06, z: 0}
