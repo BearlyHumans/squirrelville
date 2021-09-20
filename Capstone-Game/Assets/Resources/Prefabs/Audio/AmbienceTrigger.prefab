@@ -109,8 +109,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   group: {fileID: -3983698746238741912, guid: 34ca02f6309a2f549b4732abe7199d62, type: 2}
+  fadeInTime: 5
+  fadeOutTime: 5
   ambience:
   - clip: {fileID: 0}
     volume: 0
     audioSource: {fileID: 0}
-  fadeTime: 1

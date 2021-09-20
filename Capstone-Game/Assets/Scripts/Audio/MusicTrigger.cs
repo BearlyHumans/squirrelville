@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Events;
 
 public class MusicTrigger : MonoBehaviour
 {
@@ -15,49 +16,53 @@ public class MusicTrigger : MonoBehaviour
     [Range(0, 1)]
     public float volume = 1.0f;
 
-    [Tooltip("How many seconds for the music to fade in and out when entering and exiting the trigger")]
+    [Tooltip("How many seconds for the music to fade in when entering the trigger")]
     [Min(0)]
-    public float fadeTime;
+    public float fadeInTime;
+
+    [Tooltip("How many seconds for the music to fade out when exiting the trigger")]
+    [Min(0)]
+    public float fadeOutTime;
+
+    [Header("Events")]
+    public UnityEvent musicBegin;
+    public UnityEvent musicEnd;
 
     private AudioSource audioSource;
-    private Coroutine fadeCoroutine;
 
+    private static List<Coroutine> fadeCoroutines = new List<Coroutine>();
     private static List<MusicTrigger> musicTriggers = new List<MusicTrigger>();
+    private static MusicTrigger activeMusicTrigger;
 
-    private void AddAudioSource()
+    private void Start()
     {
-        GameObject obj = new GameObject();
-
-        audioSource = obj.AddComponent<AudioSource>();
+        audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.outputAudioMixerGroup = group;
         audioSource.clip = clip;
-        audioSource.name = clip.name;
+        audioSource.volume = 0.0f;
         audioSource.loop = true;
-
-        fadeCoroutine = StartCoroutine(FadeIn());
-    }
-
-    public void RemoveAudioSource()
-    {
-        if (fadeCoroutine != null)
-        {
-            StopCoroutine(fadeCoroutine);
-        }
-
-        StartCoroutine(FadeOut());
+        audioSource.Play();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (IsPlayer(other) && musicTriggers.IndexOf(this) == -1)
         {
-            if (musicTriggers.Count > 0)
+            musicTriggers.Add(this);
+
+            foreach (Coroutine coroutine in fadeCoroutines)
             {
-                musicTriggers[musicTriggers.Count - 1].RemoveAudioSource();
+                StopCoroutine(coroutine);
             }
 
-            AddAudioSource();
-            musicTriggers.Add(this);
+            if (musicTriggers.Count > 1)
+            {
+                fadeCoroutines.Add(StartCoroutine(activeMusicTrigger.FadeTo(this)));
+            }
+            else
+            {
+                fadeCoroutines.Add(StartCoroutine(FadeIn()));
+            }
         }
     }
 
@@ -65,13 +70,26 @@ public class MusicTrigger : MonoBehaviour
     {
         if (IsPlayer(other) && musicTriggers.IndexOf(this) > -1)
         {
-            if (musicTriggers.Count > 1 && musicTriggers[musicTriggers.Count - 1] == this)
-            {
-                musicTriggers[musicTriggers.Count - 2].AddAudioSource();
-            }
+            bool lastTrigger = musicTriggers[musicTriggers.Count - 1] == this;
 
-            RemoveAudioSource();
             musicTriggers.Remove(this);
+
+            if (lastTrigger)
+            {
+                foreach (Coroutine coroutine in fadeCoroutines)
+                {
+                    StopCoroutine(coroutine);
+                }
+
+                if (musicTriggers.Count > 0)
+                {
+                    fadeCoroutines.Add(StartCoroutine(activeMusicTrigger.FadeTo(musicTriggers[musicTriggers.Count - 1])));
+                }
+                else
+                {
+                    fadeCoroutines.Add(StartCoroutine(activeMusicTrigger.FadeOut()));
+                }
+            }
         }
     }
 
@@ -82,12 +100,12 @@ public class MusicTrigger : MonoBehaviour
 
     private IEnumerator FadeIn()
     {
-        audioSource.volume = 0.0f;
-        audioSource.Play();
+        activeMusicTrigger = this;
+        musicBegin.Invoke();
 
         while (audioSource.volume < volume)
         {
-            audioSource.volume += (volume / fadeTime) * Time.deltaTime;
+            audioSource.volume += (volume / fadeInTime) * Time.deltaTime;
             audioSource.volume = Mathf.Min(audioSource.volume, volume);
             yield return 0;
         }
@@ -95,15 +113,25 @@ public class MusicTrigger : MonoBehaviour
 
     private IEnumerator FadeOut()
     {
-        AudioSource audioSource = this.audioSource;
-
         while (audioSource.volume > 0)
         {
-            audioSource.volume -= (volume / fadeTime) * Time.deltaTime;
-            audioSource.volume = Mathf.Min(audioSource.volume, volume);
+            audioSource.volume -= (volume / fadeOutTime) * Time.deltaTime;
+            audioSource.volume = Mathf.Max(audioSource.volume, 0.0f);
             yield return 0;
         }
 
-        GameObject.Destroy(audioSource.gameObject);
+        activeMusicTrigger = null;
+        musicEnd.Invoke();
+    }
+
+    public IEnumerator FadeTo(MusicTrigger musicTrigger)
+    {
+        Coroutine coroutine = StartCoroutine(activeMusicTrigger.FadeOut());
+        fadeCoroutines.Add(coroutine);
+        yield return coroutine;
+
+        coroutine = StartCoroutine(musicTrigger.FadeIn());
+        fadeCoroutines.Add(coroutine);
+        yield return coroutine;
     }
 }

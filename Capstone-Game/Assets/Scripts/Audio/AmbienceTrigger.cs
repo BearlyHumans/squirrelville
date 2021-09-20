@@ -8,11 +8,15 @@ public class AmbienceTrigger : MonoBehaviour
     [Tooltip("The audio mixer group to play the ambient sounds in")]
     public AudioMixerGroup group;
 
-    public List<AmbienceClip> ambience = new List<AmbienceClip>();
-
-    [Tooltip("How many seconds for the ambient sounds to fade in and out when entering and exiting the trigger")]
+    [Tooltip("How many seconds for the ambient sounds to fade in when entering the trigger")]
     [Min(0)]
-    public float fadeTime;
+    public float fadeInTime;
+
+    [Tooltip("How many seconds for the ambient sounds to fade out when exiting the trigger")]
+    [Min(0)]
+    public float fadeOutTime;
+
+    public List<AmbienceClip> ambience = new List<AmbienceClip>();
 
     private List<AudioSource> audioSources = new List<AudioSource>();
     private Coroutine fadeCoroutine;
@@ -21,17 +25,11 @@ public class AmbienceTrigger : MonoBehaviour
 
     private void Start()
     {
-        AddAudioSources();
-    }
-
-    private void AddAudioSources()
-    {
         foreach (AmbienceClip ambienceClip in ambience)
         {
             AudioSource audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.outputAudioMixerGroup = group;
             audioSource.clip = ambienceClip.clip;
-            audioSource.name = ambienceClip.clip.name;
             audioSource.volume = 0.0f;
             audioSource.loop = true;
             audioSource.Play();
@@ -75,12 +73,12 @@ public class AmbienceTrigger : MonoBehaviour
 
     private IEnumerator FadeIn()
     {
-        for (float t = 0; t < fadeTime; t += Time.deltaTime)
+        for (float t = 0; t < fadeInTime; t += Time.deltaTime)
         {
             // Increase the volume of each audio source
             foreach (AmbienceClip ambienceClip in ambience)
             {
-                ambienceClip.audioSource.volume += (ambienceClip.volume / fadeTime) * Time.deltaTime;
+                ambienceClip.audioSource.volume += (ambienceClip.volume / fadeInTime) * Time.deltaTime;
                 ambienceClip.audioSource.volume = Mathf.Min(ambienceClip.audioSource.volume, ambienceClip.volume);
             }
 
@@ -96,12 +94,12 @@ public class AmbienceTrigger : MonoBehaviour
 
     private IEnumerator FadeOut()
     {
-        for (float t = 0; t < fadeTime; t += Time.deltaTime)
+        for (float t = 0; t < fadeOutTime; t += Time.deltaTime)
         {
             // Reduce the volume of each audio source
             foreach (AmbienceClip ambienceClip in ambience)
             {
-                ambienceClip.audioSource.volume -= (ambienceClip.volume / fadeTime) * Time.deltaTime;
+                ambienceClip.audioSource.volume -= (ambienceClip.volume / fadeOutTime) * Time.deltaTime;
                 ambienceClip.audioSource.volume = Mathf.Max(ambienceClip.audioSource.volume, 0.0f);
             }
 

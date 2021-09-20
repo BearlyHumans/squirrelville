@@ -111,4 +111,11 @@ MonoBehaviour:
   group: {fileID: -7675471604306510293, guid: 34ca02f6309a2f549b4732abe7199d62, type: 2}
   clip: {fileID: 0}
   volume: 1
-  fadeTime: 1
+  fadeInTime: 2
+  fadeOutTime: 2
+  musicBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  musicEnd:
+    m_PersistentCalls:
+      m_Calls: []
