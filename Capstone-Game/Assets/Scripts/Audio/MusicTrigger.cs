@@ -1,35 +1,50 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
 public class MusicTrigger : MonoBehaviour
 {
+    [Tooltip("The audio mixer group to play the music in")]
     public AudioMixerGroup group;
+
+    [Tooltip("The music audio clip to play while within the trigger")]
     public AudioClip clip;
+
+    [Tooltip("How loud the music is")]
     [Range(0, 1)]
     public float volume = 1.0f;
 
-    private GameObject obj;
+    [Tooltip("How many seconds for the music to fade in and out when entering and exiting the trigger")]
+    [Min(0)]
+    public float fadeTime;
+
+    private AudioSource audioSource;
+    private Coroutine fadeCoroutine;
 
     private static List<MusicTrigger> musicTriggers = new List<MusicTrigger>();
 
     private void AddAudioSource()
     {
-        obj = new GameObject();
+        GameObject obj = new GameObject();
 
-        AudioSource audioSource = obj.AddComponent<AudioSource>();
+        audioSource = obj.AddComponent<AudioSource>();
         audioSource.outputAudioMixerGroup = group;
         audioSource.clip = clip;
-        audioSource.volume = volume;
         audioSource.name = clip.name;
         audioSource.loop = true;
-        audioSource.Play();
+
+        fadeCoroutine = StartCoroutine(FadeIn());
     }
 
     public void RemoveAudioSource()
     {
-        GameObject.Destroy(obj);
-        obj = null;
+        if (fadeCoroutine != null)
+        {
+            StopCoroutine(fadeCoroutine);
+        }
+
+        StartCoroutine(FadeOut());
     }
 
     private void OnTriggerEnter(Collider other)
@@ -63,5 +78,34 @@ public class MusicTrigger : MonoBehaviour
     private bool IsPlayer(Collider collider)
     {
         return collider.gameObject.layer == LayerMask.NameToLayer("Player");
+    }
+
+    private IEnumerator FadeIn()
+    {
+        audioSource.volume = 0.0f;
+        audioSource.Play();
+
+        while (audioSource.volume < volume)
+        {
+            audioSource.volume += (volume / fadeTime) * Time.deltaTime;
+            audioSource.volume = Mathf.Min(audioSource.volume, volume);
+            print(audioSource.volume);
+            yield return 0;
+        }
+    }
+
+    private IEnumerator FadeOut()
+    {
+        AudioSource audioSource = this.audioSource;
+
+        while (audioSource.volume > 0)
+        {
+            audioSource.volume -= (volume / fadeTime) * Time.deltaTime;
+            audioSource.volume = Mathf.Min(audioSource.volume, volume);
+            print(audioSource.volume);
+            yield return 0;
+        }
+
+        GameObject.Destroy(audioSource.gameObject);
     }
 }
