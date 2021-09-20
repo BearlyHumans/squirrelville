@@ -634,6 +634,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2539479117871752537, guid: f2cf49596ef8c7e44854b1c316e180eb, type: 3}
+      propertyPath: clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 0334b0fede367f740889ec5be473bc1e, type: 3}
+    - target: {fileID: 2539479117871752537, guid: f2cf49596ef8c7e44854b1c316e180eb, type: 3}
       propertyPath: audioClips.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -667,7 +671,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3158284920275043502, guid: f2cf49596ef8c7e44854b1c316e180eb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 4.06
       objectReference: {fileID: 0}
     - target: {fileID: 3158284920275043502, guid: f2cf49596ef8c7e44854b1c316e180eb, type: 3}
       propertyPath: m_LocalPosition.y
@@ -705,9 +709,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7644664059575268973, guid: f2cf49596ef8c7e44854b1c316e180eb, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d0054e2826ae0cc4e8abb517bd8d7ac5, type: 2}
     - target: {fileID: 8676674149244881902, guid: f2cf49596ef8c7e44854b1c316e180eb, type: 3}
       propertyPath: m_Name
-      value: AudioTrigger (1)
+      value: MusicTrigger 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f2cf49596ef8c7e44854b1c316e180eb, type: 3}
@@ -2052,6 +2060,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2539479117871752537, guid: f2cf49596ef8c7e44854b1c316e180eb, type: 3}
+      propertyPath: clip
+      value: 
+      objectReference: {fileID: 8300000, guid: f9e6495607d95194d953e3c95d239372, type: 3}
+    - target: {fileID: 2539479117871752537, guid: f2cf49596ef8c7e44854b1c316e180eb, type: 3}
       propertyPath: layer.m_Bits
       value: 0
       objectReference: {fileID: 0}
@@ -2131,9 +2143,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7644664059575268973, guid: f2cf49596ef8c7e44854b1c316e180eb, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7d937c04fbb734546b29eb971936bb5c, type: 2}
     - target: {fileID: 8676674149244881902, guid: f2cf49596ef8c7e44854b1c316e180eb, type: 3}
       propertyPath: m_Name
-      value: AudioTrigger
+      value: MusicTrigger
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f2cf49596ef8c7e44854b1c316e180eb, type: 3}

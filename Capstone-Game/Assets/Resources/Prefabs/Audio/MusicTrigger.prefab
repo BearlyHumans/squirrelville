@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5111612515830399149}
   - component: {fileID: 2539479117871752537}
   m_Layer: 2
-  m_Name: AudioTrigger
+  m_Name: MusicTrigger
   m_TagString: NoClimb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108,4 +108,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b9b3f8cb897c345847c43903e7b73e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioClips: []
+  group: {fileID: -7675471604306510293, guid: 34ca02f6309a2f549b4732abe7199d62, type: 2}
+  clip: {fileID: 0}
+  volume: 1
