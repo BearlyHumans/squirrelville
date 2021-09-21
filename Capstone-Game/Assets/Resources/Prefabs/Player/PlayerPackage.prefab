@@ -3039,7 +3039,7 @@ MonoBehaviour:
     moveAndClimb: {fileID: 1512199470005858204}
     ball: {fileID: 1512199470005858195}
     foodGrabber: {fileID: 1512199470005858194}
-  debugMessages: 1
+  debugMessages: 0
   animationEvents:
   - trigger: 1
     parameterChange:
@@ -3104,9 +3104,11 @@ MonoBehaviour:
       climbStamPerSec: 0.2
       climbMinAngle: 45
       climbMaxAngle: 130
-      easyClimbTag: EZClimb
-      hardClimbTag: HardClimb
-      noClimbTag: NoClimb
+      defaultSurface: 2
+      EZClimbTag: EZClimb
+      ClimbableTag: Climbable
+      nonClimbableTag: HardClimb
+      slipperyTag: NoClimb
     movement:
       acceleration: 20
       maxSpeed: 3
