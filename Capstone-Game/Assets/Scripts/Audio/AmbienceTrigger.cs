@@ -19,7 +19,6 @@ public class AmbienceTrigger : MonoBehaviour
     public List<AmbienceClip> ambience = new List<AmbienceClip>();
 
     private List<AudioSource> audioSources = new List<AudioSource>();
-    private Coroutine fadeCoroutine;
 
     private static List<AmbienceTrigger> ambienceTriggers = new List<AmbienceTrigger>();
 
@@ -48,12 +47,8 @@ public class AmbienceTrigger : MonoBehaviour
     {
         if (IsPlayer(other) && ambienceTriggers.IndexOf(this) == -1)
         {
-            if (fadeCoroutine != null)
-            {
-                StopCoroutine(fadeCoroutine);
-            }
-
-            fadeCoroutine = StartCoroutine(FadeIn());
+            StopAllCoroutines();
+            StartCoroutine(FadeIn());
             ambienceTriggers.Add(this);
         }
     }
@@ -62,12 +57,8 @@ public class AmbienceTrigger : MonoBehaviour
     {
         if (IsPlayer(other) && ambienceTriggers.IndexOf(this) > -1)
         {
-            if (fadeCoroutine != null)
-            {
-                StopCoroutine(fadeCoroutine);
-            }
-
-            fadeCoroutine = StartCoroutine(FadeOut());
+            StopAllCoroutines();
+            StartCoroutine(FadeOut());
             ambienceTriggers.Remove(this);
         }
     }
