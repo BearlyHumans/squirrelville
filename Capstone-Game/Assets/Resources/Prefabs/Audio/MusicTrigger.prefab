@@ -109,10 +109,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   group: {fileID: -7675471604306510293, guid: 34ca02f6309a2f549b4732abe7199d62, type: 2}
-  clip: {fileID: 0}
-  volume: 1
-  fadeInTime: 2
-  fadeOutTime: 2
+  clip: {fileID: 8300000, guid: f9e6495607d95194d953e3c95d239372, type: 3}
+  volume: 0.238
+  fadeInTime: 3
+  fadeOutTime: 5
   musicBegin:
     m_PersistentCalls:
       m_Calls: []
