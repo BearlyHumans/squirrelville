@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Eyes Base Colour
   m_Shader: {fileID: 4800000, guid: bee44b4a58655ee4cbff107302a3e131, type: 3}
-  m_ShaderKeywords: DR_RIM_ON _CELPRIMARYMODE_NONE _TEXTUREBLENDINGMODE_MULTIPLY
+  m_ShaderKeywords: DR_RIM_ON DR_SPECULAR_ON _CELPRIMARYMODE_NONE _TEXTUREBLENDINGMODE_MULTIPLY
     _UNITYSHADOWMODE_NONE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -46,9 +46,9 @@ Material:
     - _DstBlend: 0
     - _FlatRimEdgeSmoothness: 0.5
     - _FlatRimLightAlign: 0
-    - _FlatRimSize: 0.5
-    - _FlatSpecularEdgeSmoothness: 1
-    - _FlatSpecularSize: 0
+    - _FlatRimSize: 0.34
+    - _FlatSpecularEdgeSmoothness: 0
+    - _FlatSpecularSize: 0.494
     - _Flatness: 0.186
     - _FlatnessExtra: 1
     - _GradientAngle: 0
@@ -56,7 +56,7 @@ Material:
     - _GradientCenterY: 0
     - _GradientEnabled: 0
     - _GradientSize: 10
-    - _LightContribution: 0
+    - _LightContribution: 1
     - _LightmapDirectionPitch: 0
     - _LightmapDirectionYaw: 0
     - _OverrideLightmapDir: 0
@@ -66,7 +66,7 @@ Material:
     - _SelfShadingSizeExtra: 0.6
     - _ShadowEdgeSize: 0.095
     - _ShadowEdgeSizeExtra: 0.05
-    - _SpecularEnabled: 0
+    - _SpecularEnabled: 1
     - _SrcBlend: 1
     - _Surface: 0
     - _TextureBlendingMode: 0
@@ -77,14 +77,14 @@ Material:
     - _VertexColorsEnabled: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.066037714, g: 0.066037714, b: 0.066037714, a: 1}
+    - _Color: {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 1}
     - _ColorDim: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 1}
     - _ColorDimCurve: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
     - _ColorDimExtra: {r: 0, g: 0, b: 0, a: 1}
     - _ColorDimSteps: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
     - _ColorGradient: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
     - _FlatRimColor: {r: 0.06603769, g: 0.06603769, b: 0.06603769, a: 1}
-    - _FlatSpecularColor: {r: 0.09433961, g: 0.09433961, b: 0.09433961, a: 1}
+    - _FlatSpecularColor: {r: 0.03773582, g: 0.03773582, b: 0.03773582, a: 1}
     - _LightmapDirection: {r: 0, g: 1, b: 0, a: 0}
     - _UnityShadowColor: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
   m_BuildTextureStacks: []
