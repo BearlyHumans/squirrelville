@@ -96,6 +96,10 @@ namespace Player
         private void UpdMove()
         {
             //--------------------------MOVEMENT PHYSICS--------------------------//
+            
+            //No moving when on slippery.
+            if (vals.onSlippery)
+                return;
 
             //-----PHASE ONE: GET AND ADJUST INPUT-----//
 
@@ -113,8 +117,7 @@ namespace Player
             if (!Grounded)
                 alteredAcceleration *= settings.M.airControlFactor;
 
-            if (vals.onSlippery)
-                vals.desiredDirection *= 0.1f;
+                //vals.desiredDirection *= 0.1f;
 
             //Calculate the ideal velocity from the input and the acceleration settings.
             Vector3 newVelocity;
