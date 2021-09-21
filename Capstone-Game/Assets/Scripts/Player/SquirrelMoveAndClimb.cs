@@ -50,7 +50,8 @@ namespace Player
         {
             UpdInput();
             UpdMove();
-            DoJumpChecks();
+            Abilities();
+            Jump();
             FindAndRotateToSurface();
             RotateModel();
             UpdAnimator();
@@ -90,6 +91,26 @@ namespace Player
             //This helps make jumping more consistent if conditions are false on intermittent frames.
             if (Input.GetButtonDown("Jump"))
                 vals.jumpPressed = Time.time;
+
+
+            if (Input.GetButton("CarefulMode"))
+                vals.stopAtEdgesPressed = true;
+            else
+                vals.stopAtEdgesPressed = false;
+
+            if (Input.GetButtonDown("ClimbVault"))
+            {
+                vals.findClimbablePressed = true; //Reset when the check happens.
+                vals.cornerVaultDown = Time.time;
+                vals.cornerVaultHeld = true;
+            }
+            if (!Input.GetButton("ClimbVault"))
+                vals.cornerVaultHeld = false;
+
+            if (Input.GetButton("Zoom"))
+                vals.zoomPressed = true;
+            else
+                vals.zoomPressed = false;
         }
         
         /// <summary> Perform all the movement functions of the player, including applying forces such as friction and input relative to the players rotation. </summary>
@@ -129,13 +150,12 @@ namespace Player
 
             //-----PHASE THREE: AVOID EDGES AND SLOW TO MAX SPEED-----//
 
-            if (Grounded)
+            if (Grounded && (vals.stopAtEdgesPressed || vals.cornerVaultHeld))
             {
-                Vector3 preEdgeCodeLatVel = LateralVelocityNew;
-                LateralVelocityNew = AvoidEdgesLinear(preEdgeCodeLatVel);
-                //if (Input.GetButton("Jump"))// && vals.stoppedAtEdge)
-                    //CheckForSpecialJumps();
-                    //FindAndJumpAroundCorner(preEdgeCodeLatVel);
+                //Checks for edges (so that corner vaulting can work), but only actually stop at them if the button (Ctrl) is pressed.
+                Vector3 postEdgeCodeLatVel = AvoidEdgesLinear(LateralVelocityNew);
+                if (vals.stopAtEdgesPressed)
+                    LateralVelocityNew = postEdgeCodeLatVel;
             }
 
             //If the local lateral velocity of the player is above the max speed, do not allow any increases in speed due to input.
@@ -250,6 +270,7 @@ namespace Player
         {
             if (Time.time < vals.lastJump + settings.J.jumpCooldown)
                 return;
+
             //Raycasts:
             RaycastHit hitSurface;
             bool FoundSurface = Physics.Raycast(refs.climbRotateCheckRay.position, -refs.climbRotateCheckRay.up, out hitSurface, settings.WC.surfaceDetectRange, settings.WC.rotateToLayers);
@@ -359,59 +380,28 @@ namespace Player
 
         /// <summary> Call JumpToClimbWall when jump is pressed, or settings are correct for dash climbing.
         /// Also place the climb-point debug object. </summary>
-        private void DoJumpChecks()
+        private void Abilities()
         {
-            if (vals.dashing)
-            {   //DASH MODE
-
-                if (Input.GetButtonDown("Jump"))
-                {
-                    //Try to jump onto a wall, otherwise do a normal jump.
-                    if (JumpToClimbWall(1f))
-                        return;
-                    
-                    //Do normal Jump HERE
-                    Jump();
-                    return;
-                }
-
-                if (settings.M.dashForAutoclimb)
-                {
-                    if (Time.time > vals.lastJumpToWall + settings.WC.autoclimbCooldown)
-                    {
-                        if (JumpToClimbWall(0.5f, settings.WC.angleToFailAutoclimb))
-                            return;
-                    }
-
-                    if (vals.stoppedAtEdge && JumpAroundCorners())
-                    {
-                        //Temporarily disable automatic corner jump HERE
-                        return;
-                    }
-                }
+            bool zoomMode = false;
+            if (vals.zoomPressed)
+            {
+                //This might do something in the future such as changing the climb check accuracy.
+                zoomMode = true;
             }
-            else
-            {   //CAREFUL MODE
 
-                if (Input.GetButtonDown("Jump"))
-                {
-                    if (vals.stoppedAtEdge)
-                    {
-                        if (JumpAroundCorners())
-                        {
-                            //Temporarily disable automatic corner jump HERE
-                            return;
-                        }
-                    }
-                    
-                    //Try to jump onto a wall, otherwise do a normal jump.
-                    if (JumpToClimbWall(1f))
-                        return;
-                    
-                    //Do normal Jump HERE
-                    Jump();
+            if (vals.findClimbablePressed)
+            {
+                vals.findClimbablePressed = false;
+                //Try to jump onto a wall, otherwise do a normal jump.
+                if (JumpToClimbWall(1f))
                     return;
-                }
+            }
+
+            if (vals.cornerVaultHeld && Time.time > vals.cornerVaultDown + settings.WC.autoVaultActivationTime)
+            {
+
+                if (vals.stoppedAtEdge)
+                    JumpAroundCorners();
             }
         }
 
@@ -648,6 +638,19 @@ namespace Player
             /// <summary> The time.time value of the last time the player pressed the dash key down. 
             /// Used to evaluate a speed multiplier from the 'dashSpeedMultiplierCurve'. </summary>
             public float startedDashing;
+            /// <summary> The button to search for a climbable surface was pressed this frame. Default LMB. </summary>
+            public bool findClimbablePressed;
+            /// <summary> The button to stop at edges rather than walk off them like a normal platformer is held. Default Ctrl. </summary>
+            public bool stopAtEdgesPressed;
+            /// <summary> The button to vault around corners the the player walks near is held. Default LMB.
+            /// Used to activate this mode if it is held for a time. </summary>
+            public bool cornerVaultHeld;
+            /// <summary> Time that the button to vault around corners the the player walks near was first pressed. Default LMB.
+            /// Used to check how long the button has been held. </summary>
+            public float cornerVaultDown;
+            /// <summary> The button to zoom the camera is held. Default RMB. Does NOT effect camera in this script. </summary>
+            public bool zoomPressed;
+
 
             //ANIMATION RELATED:
             /// <summary> Value is true when the character is locked in a jumping state at the start of the jump.
@@ -886,6 +889,9 @@ namespace Player
                 public float rotateDegreesPerSecond = 360;
                 [Tooltip("How quickly the squirrel model moves back to alignment when the physics object is teleported.")]
                 public float moveUnitsPerSecond = 5f;
+
+                [Tooltip("Time between pressing the auto-vault button and the system activating (so it doesn't conflict with the climb check).")]
+                public float autoVaultActivationTime = 0.2f;
 
                 [Tooltip("Cooldown autoclimb teleport. Can help reduce buginess and improve performance.")]
                 public float autoclimbCooldown = 0.33f;
