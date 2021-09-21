@@ -36,6 +36,12 @@ public class AmbienceTrigger : MonoBehaviour
 
             ambienceClip.audioSource = audioSource;
         }
+
+        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+        if (meshRenderer != null)
+        {
+            meshRenderer.enabled = false;
+        }
     }
 
     private void OnTriggerEnter(Collider other)

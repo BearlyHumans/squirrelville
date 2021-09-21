@@ -42,6 +42,12 @@ public class MusicTrigger : MonoBehaviour
         audioSource.volume = 0.0f;
         audioSource.loop = true;
         audioSource.Play();
+
+        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+        if (meshRenderer != null)
+        {
+            meshRenderer.enabled = false;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
