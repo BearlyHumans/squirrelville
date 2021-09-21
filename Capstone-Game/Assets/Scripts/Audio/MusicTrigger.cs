@@ -106,7 +106,6 @@ public class MusicTrigger : MonoBehaviour
 
     private IEnumerator FadeIn()
     {
-        print("music fade in begin: " + gameObject.name);
         activeMusicTrigger = this;
         musicBegin.Invoke();
 
@@ -116,12 +115,10 @@ public class MusicTrigger : MonoBehaviour
             audioSource.volume = Mathf.Min(audioSource.volume, volume);
             yield return 0;
         }
-        print("music fade in end: " + gameObject.name);
     }
 
     private IEnumerator FadeOut()
     {
-        print("music fade out begin: " + gameObject.name);
         while (audioSource.volume > 0)
         {
             audioSource.volume -= (volume / fadeOutTime) * Time.deltaTime;
@@ -131,12 +128,10 @@ public class MusicTrigger : MonoBehaviour
 
         activeMusicTrigger = null;
         musicEnd.Invoke();
-        print("music fade out end: " + gameObject.name);
     }
 
     public IEnumerator FadeTo(MusicTrigger musicTrigger)
     {
-        print("music fade to begin: " + gameObject.name);
         Coroutine coroutine = StartCoroutine(activeMusicTrigger.FadeOut());
         fadeCoroutines.Add(coroutine);
         yield return coroutine;
@@ -144,6 +139,5 @@ public class MusicTrigger : MonoBehaviour
         coroutine = StartCoroutine(musicTrigger.FadeIn());
         fadeCoroutines.Add(coroutine);
         yield return coroutine;
-        print("music fade to end: " + gameObject.name);
     }
 }
