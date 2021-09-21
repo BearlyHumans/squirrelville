@@ -30,7 +30,6 @@ public class MusicTrigger : MonoBehaviour
 
     private AudioSource audioSource;
 
-    private static List<Coroutine> fadeCoroutines = new List<Coroutine>();
     private static List<MusicTrigger> musicTriggers = new List<MusicTrigger>();
     private static MusicTrigger activeMusicTrigger;
 
@@ -56,18 +55,18 @@ public class MusicTrigger : MonoBehaviour
         {
             musicTriggers.Add(this);
 
-            foreach (Coroutine coroutine in fadeCoroutines)
-            {
-                StopCoroutine(coroutine);
-            }
-
             if (activeMusicTrigger != null)
             {
-                fadeCoroutines.Add(StartCoroutine(activeMusicTrigger.FadeTo(this)));
+                activeMusicTrigger.StopAllCoroutines();
+            }
+
+            if (activeMusicTrigger != null && activeMusicTrigger != this)
+            {
+                activeMusicTrigger.StartCoroutine(activeMusicTrigger.FadeTo(this));
             }
             else
             {
-                fadeCoroutines.Add(StartCoroutine(FadeIn()));
+                StartCoroutine(FadeIn());
             }
         }
     }
@@ -80,20 +79,17 @@ public class MusicTrigger : MonoBehaviour
 
             musicTriggers.Remove(this);
 
-            if (lastTrigger)
+            if (lastTrigger && activeMusicTrigger != null)
             {
-                foreach (Coroutine coroutine in fadeCoroutines)
-                {
-                    StopCoroutine(coroutine);
-                }
+                activeMusicTrigger.StopAllCoroutines();
 
                 if (musicTriggers.Count > 0)
                 {
-                    fadeCoroutines.Add(StartCoroutine(activeMusicTrigger.FadeTo(musicTriggers[musicTriggers.Count - 1])));
+                    activeMusicTrigger.StartCoroutine(FadeTo(musicTriggers[musicTriggers.Count - 1]));
                 }
                 else
                 {
-                    fadeCoroutines.Add(StartCoroutine(activeMusicTrigger.FadeOut()));
+                    activeMusicTrigger.StartCoroutine(activeMusicTrigger.FadeOut());
                 }
             }
         }
@@ -132,12 +128,7 @@ public class MusicTrigger : MonoBehaviour
 
     public IEnumerator FadeTo(MusicTrigger musicTrigger)
     {
-        Coroutine coroutine = StartCoroutine(activeMusicTrigger.FadeOut());
-        fadeCoroutines.Add(coroutine);
-        yield return coroutine;
-
-        coroutine = StartCoroutine(musicTrigger.FadeIn());
-        fadeCoroutines.Add(coroutine);
-        yield return coroutine;
+        yield return StartCoroutine(FadeOut());
+        yield return musicTrigger.StartCoroutine(musicTrigger.FadeIn());
     }
 }
