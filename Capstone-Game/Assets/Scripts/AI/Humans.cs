@@ -83,7 +83,7 @@ public class Humans : MonoBehaviour
     float timeToFood = 0.0f;
     [Tooltip("How long until humans give more food")]
     [SerializeField]
-    public float foodTimer = 10.0f;
+    public float foodTimer = 11.0f;
 
     //--------------Chase----------------//
     [Tooltip("Detection Radius")]
