@@ -408,9 +408,6 @@ public class Humans : MonoBehaviour
                 navMesh.velocity = Vector3.zero;
                 
                 StartCoroutine(pickUpFood(bestCollider));
-
-                pickUpTimer += Time.deltaTime;
-                Invoke("pickUp", 0.8f);
             
             } 
             hasFood = true;
@@ -421,9 +418,10 @@ public class Humans : MonoBehaviour
     
     IEnumerator pickUpFood(Collider food)
     {
-        
+        aniChoice = "Pick Up";
         yield return new WaitForSeconds(2.8f);
-        food.enabled = false;
+        
+        food.gameObject.SetActive(false);
     }
 
     // when caught forces the player to spit up an ammont of food
@@ -435,12 +433,6 @@ public class Humans : MonoBehaviour
             foodGraber.ThrowFood(); 
             i++;
         }
-    }
-
-    void pickUp()
-    {
-        pickUpTimer = 0f;
-        aniChoice = "Pick Up";
     }
 
     void returnToPath()

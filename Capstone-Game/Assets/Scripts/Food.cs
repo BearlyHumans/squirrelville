@@ -15,6 +15,14 @@ public class Food : MonoBehaviour
         spawnPoint = transform.position;
     }
 
+    public void Update() 
+    {
+        if(gameObject.activeSelf)
+        {
+            print("is active");
+        }
+    }
+
     public bool isEaten()
     {
         return !gameObject.activeInHierarchy;
