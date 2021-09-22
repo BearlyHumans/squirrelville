@@ -328,8 +328,10 @@ namespace Player
                 {
                     PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.slipping);
 
-                    //Rotate to the surface but DON'T teleport to it.
-                    //CustomIntuitiveSnapRotation(-hitSurface.normal);
+                    CustomIntuitiveSnapRotation(-hitSurface.normal);
+
+                    //if (Time.time > vals.lastOnSurface + settings.WC.noSurfResetTime)
+                    //    StartFalling();
                 }
                 else
                 {
@@ -341,23 +343,28 @@ namespace Player
                     TeleportToSurface(hitSurface);
                     if (Vector3.Angle(vals.lastRotationDir, dir) > settings.WC.wallStickDangerAngle)
                         vals.eliminateUpForce = true;
-                }
 
-                //Reset falling, jumping and OnSurface values.
-                vals.falling = false;
-                vals.jumping = false;
-                vals.lastOnSurface = Time.time;
+                    //Reset falling, jumping and OnSurface values.
+                    vals.falling = false;
+                    vals.jumping = false;
+                    vals.lastOnSurface = Time.time;
+                }
 
                 //Save the current normal so the difference can be checked next frame.
                 vals.lastRotationDir = dir;
             }
             else if (Time.time > vals.lastOnSurface + settings.WC.noSurfResetTime)
             {
-                //Point feet down and start falling if not on a surface for long enough.
-                CustomIntuitiveSnapRotation(Vector3.down);
-                PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.falling);
-                vals.falling = true;
+                StartFalling();
             }
+        }
+
+        private void StartFalling()
+        {
+            //Point feet down and start falling if not on a surface for long enough.
+            CustomIntuitiveSnapRotation(Vector3.down);
+            PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.falling);
+            vals.falling = true;
         }
 
         //~~~~~~~~~~ HELPER/SUB-FUNCTIONS ~~~~~~~~~~
