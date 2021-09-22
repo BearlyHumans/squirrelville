@@ -14,7 +14,7 @@ public class Food : MonoBehaviour
         foodList.Add(this);
 
         spawnPoint = transform.position;
-        print(transform.position);
+        //print(transform.position);
         print(spawnPoint);
     }
 

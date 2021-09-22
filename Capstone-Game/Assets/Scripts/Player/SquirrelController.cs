@@ -14,6 +14,7 @@ namespace Player
         public SCChildren behaviourScripts = new SCChildren();
 
         public bool debugMessages = false;
+        public bool updateInFixed = false;
 
         [SerializeField]
         private List<ParameterChangeEvent> animationEvents = new List<ParameterChangeEvent>();
@@ -78,7 +79,10 @@ namespace Player
 
             if (vals.frozen)
                 return;
-			
+
+            if (debugMessages)
+                print(Time.frameCount + " Pre   Update = " + transform.position + " [1]");
+
             CallAnimationEvents(AnimationTrigger.frameStart);
 			
             refs.fCam.UpdateCamRotFromInput();
@@ -104,6 +108,15 @@ namespace Player
             {
                 behaviourScripts.ball.ManualUpdate();
             }
+
+            if (debugMessages)
+                print(Time.frameCount + " Post  Update = " + transform.position + " [2]");
+
+            if (!updateInFixed)
+            {
+                refs.fCam.UpdateCamPos();
+                refs.fCam.UpdateDolly();
+            }
         }
 
         private void FixedUpdate()
@@ -111,8 +124,14 @@ namespace Player
             if (PauseMenu.paused || vals.frozen)
                 return;
 
-            refs.fCam.UpdateCamPos();
-            refs.fCam.UpdateDolly();
+            if (debugMessages)
+                print(Time.frameCount + " Fixed Update = " + transform.position + " [3]");
+
+            if (updateInFixed)
+            {
+                refs.fCam.UpdateCamPos();
+                refs.fCam.UpdateDolly();
+            }
         }
 
         private bool CanEnterBallState()
@@ -168,8 +187,8 @@ namespace Player
 
         public void CallAnimationEvents(AnimationTrigger trigger)
         {
-            if (debugMessages)
-                print("Triggered Event: " + trigger.ToString());
+            //if (debugMessages)
+                //print("Triggered Event: " + trigger.ToString());
 
             foreach (ParameterChangeEvent PCE in animationEvents)
             {

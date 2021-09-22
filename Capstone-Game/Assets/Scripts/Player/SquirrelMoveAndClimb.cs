@@ -197,7 +197,10 @@ namespace Player
             {
                 //Jump to zero velocity when below max speed and on the ground to give more control and prevent gliding.
                 if (Grounded && LateralVelocityNew.magnitude < alteredMaxSpeed * settings.M.haltAtFractionOfMaxSpeed)
+                {
                     LateralVelocityNew = new Vector3();
+                    TransformedNewVelocity.z = 0;
+                }
                 else
                 {
                     //Otherwise apply a 'friction' force to the player.
@@ -340,7 +343,9 @@ namespace Player
                         PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.landJump);
 
                     //Teleport to the surface, and if its angle is too different eliminate the 'up force' to stop player flying off.
+                    Vector3 oldVel = transform.InverseTransformVector(ParentRefs.RB.velocity);
                     TeleportToSurface(hitSurface);
+                    ParentRefs.RB.velocity = transform.TransformVector(oldVel);
                     if (Vector3.Angle(vals.lastRotationDir, dir) > settings.WC.wallStickDangerAngle)
                         vals.eliminateUpForce = true;
 
