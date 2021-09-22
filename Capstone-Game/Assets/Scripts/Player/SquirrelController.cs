@@ -84,7 +84,7 @@ namespace Player
             refs.fCam.UpdateCamRotFromInput();
 
             //Debug State Changes
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetButtonDown("BallToggle"))
             {
                 if (vals.mState == MovementState.ball)
                     EnterRunState();
