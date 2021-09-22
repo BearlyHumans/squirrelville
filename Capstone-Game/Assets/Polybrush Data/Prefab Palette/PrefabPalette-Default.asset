@@ -207,7 +207,7 @@ MonoBehaviour:
     name: BeachGrass
   - gameObject: {fileID: 7240947560827918979, guid: ba40024b8ed5c1843be798c3c3c3ffd0, type: 3}
     settings:
-      m_Strength: 50
+      m_Strength: 100
       m_RotationRangeMin: {x: 0, y: 0, z: 0}
       m_RotationRangeMax: {x: 163.82024, y: 177.4648, z: 0}
       m_ScaleRangeMin: {x: 1, y: 1, z: 1}
@@ -237,3 +237,19 @@ MonoBehaviour:
       m_YScaleBool: 0
       m_ZScaleBool: 0
     name: Vine_001
+  - gameObject: {fileID: 6586619804469299257, guid: 9e4257d60baf0e34094709c1a0936fe0, type: 3}
+    settings:
+      m_Strength: 50
+      m_RotationRangeMin: {x: 0, y: 0, z: 180}
+      m_RotationRangeMax: {x: 0, y: 0, z: 180}
+      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
+      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
+      m_UniformScale: {x: 1, y: 1}
+      m_UniformBool: 1
+      m_XRotationBool: 1
+      m_YRotationBool: 1
+      m_ZRotationBool: 1
+      m_XScaleBool: 0
+      m_YScaleBool: 0
+      m_ZScaleBool: 0
+    name: Vine_Long_001
