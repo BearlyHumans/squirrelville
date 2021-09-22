@@ -1743,7 +1743,7 @@ MonoBehaviour:
   cameraTarget: {fileID: 1512199468782888033}
   dollyCamera: {fileID: 1512199469109834488}
   belowPoint: {fileID: 1512199468572587539}
-  angleRelativeZoom: 1
+  angleRelativeZoom: 0
   buttonZoomMultiplier: 0.3
   invertY: 1
   inputSensitivity: 150
@@ -2552,9 +2552,11 @@ MonoBehaviour:
       climbStamPerSec: 20
       climbMinAngle: 45
       climbMaxAngle: 130
-      easyClimbTag: EZClimb
-      hardClimbTag: HardClimb
-      noClimbTag: NoClimb
+      defaultSurface: 2
+      EZClimbTag: EZClimb
+      ClimbableTag: Climbable
+      nonClimbableTag: HardClimb
+      slipperyTag: NoClimb
     movement:
       acceleration: 20
       maxSpeed: 3
@@ -2635,6 +2637,7 @@ MonoBehaviour:
       noSurfResetTime: 0.3
       rotateDegreesPerSecond: 720
       moveUnitsPerSecond: 5
+      autoVaultActivationTime: 0.2
       autoclimbCooldown: 0.33
       cornerVaultCooldown: 0.33
       teleportCooldown: 0.01
@@ -2692,7 +2695,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1512199470005858200}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d49162572d3ed84c98fa66a642f051b, type: 3}
   m_Name: 
@@ -2721,7 +2724,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1512199470005858200}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72904a3db55978e428985db3ee3e9e76, type: 3}
   m_Name: 

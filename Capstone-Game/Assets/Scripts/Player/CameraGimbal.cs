@@ -153,7 +153,7 @@ public class CameraGimbal : MonoBehaviour
 
     public float UpdateDollyToggleZoom()
     {
-        if (Input.GetMouseButton(2))
+        if (Input.GetButton("Zoom"))
         {
             return programmerSettings.maxDistance * buttonZoomMultiplier;
         }
