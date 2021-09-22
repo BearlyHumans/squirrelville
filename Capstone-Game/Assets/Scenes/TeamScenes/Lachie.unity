@@ -130,6 +130,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1763253675}
     m_Modifications:
+    - target: {fileID: -7614975757069157110, guid: d8dad9d2d761e460bb0a3f03ef8fccb8, type: 3}
+      propertyPath: respawnTimer
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 1297172181180802, guid: d8dad9d2d761e460bb0a3f03ef8fccb8, type: 3}
       propertyPath: m_Name
       value: apple (8)
@@ -191,6 +195,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1763253675}
     m_Modifications:
+    - target: {fileID: -7614975757069157110, guid: d8dad9d2d761e460bb0a3f03ef8fccb8, type: 3}
+      propertyPath: respawnTimer
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 1297172181180802, guid: d8dad9d2d761e460bb0a3f03ef8fccb8, type: 3}
       propertyPath: m_Name
       value: apple (4)
@@ -877,6 +885,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 75113863030054203, guid: 9fc6027299151c9458ffd62c2b09bd51, type: 3}
+      propertyPath: respawnTimer
+      value: 30
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9fc6027299151c9458ffd62c2b09bd51, type: 3}
 --- !u!1001 &938046191
@@ -886,6 +898,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1763253675}
     m_Modifications:
+    - target: {fileID: -7614975757069157110, guid: d8dad9d2d761e460bb0a3f03ef8fccb8, type: 3}
+      propertyPath: respawnTimer
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 1297172181180802, guid: d8dad9d2d761e460bb0a3f03ef8fccb8, type: 3}
       propertyPath: m_Name
       value: apple (3)
@@ -1298,6 +1314,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1763253675}
     m_Modifications:
+    - target: {fileID: -7614975757069157110, guid: d8dad9d2d761e460bb0a3f03ef8fccb8, type: 3}
+      propertyPath: respawnTimer
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 1297172181180802, guid: d8dad9d2d761e460bb0a3f03ef8fccb8, type: 3}
       propertyPath: m_Name
       value: apple (1)
@@ -1592,6 +1612,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1763253675}
     m_Modifications:
+    - target: {fileID: -7614975757069157110, guid: d8dad9d2d761e460bb0a3f03ef8fccb8, type: 3}
+      propertyPath: respawnTimer
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 1297172181180802, guid: d8dad9d2d761e460bb0a3f03ef8fccb8, type: 3}
       propertyPath: m_Name
       value: apple (7)
@@ -1711,7 +1735,7 @@ PrefabInstance:
       objectReference: {fileID: 628919248}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: walkingPause
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: pathPoints.Array.size
@@ -1735,7 +1759,7 @@ PrefabInstance:
       objectReference: {fileID: 1013683880}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.size
-      value: 3
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[1].trigger
@@ -1744,6 +1768,26 @@ PrefabInstance:
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[2].trigger
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[3].trigger
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[4].trigger
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[5].trigger
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[6].trigger
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[7].trigger
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[0].animsParameter.paramName
@@ -1755,7 +1799,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[2].animsParameter.paramName
-      value: HumanRun
+      value: HumanMove
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[3].animsParameter.paramName
+      value: HumanMove
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[4].animsParameter.paramName
+      value: HumanMove
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[5].animsParameter.paramName
+      value: HumanMove
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[6].animsParameter.paramName
+      value: HumanDrop
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[7].animsParameter.paramName
+      value: HumanDrop
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[1].animsParameter.setToValue
@@ -1763,6 +1827,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[2].animsParameter.setToValue
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[3].animsParameter.setToValue
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[4].animsParameter.setToValue
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[5].animsParameter.setToValue
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[6].animsParameter.setToValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[7].animsParameter.setToValue
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2029,6 +2113,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1763253675}
     m_Modifications:
+    - target: {fileID: -7614975757069157110, guid: d8dad9d2d761e460bb0a3f03ef8fccb8, type: 3}
+      propertyPath: respawnTimer
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 1297172181180802, guid: d8dad9d2d761e460bb0a3f03ef8fccb8, type: 3}
       propertyPath: m_Name
       value: apple (6)
@@ -2179,6 +2267,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1763253675}
     m_Modifications:
+    - target: {fileID: -7614975757069157110, guid: d8dad9d2d761e460bb0a3f03ef8fccb8, type: 3}
+      propertyPath: respawnTimer
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 1297172181180802, guid: d8dad9d2d761e460bb0a3f03ef8fccb8, type: 3}
       propertyPath: m_Name
       value: apple (2)
@@ -2321,6 +2413,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1763253675}
     m_Modifications:
+    - target: {fileID: -7614975757069157110, guid: d8dad9d2d761e460bb0a3f03ef8fccb8, type: 3}
+      propertyPath: respawnTimer
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 1297172181180802, guid: d8dad9d2d761e460bb0a3f03ef8fccb8, type: 3}
       propertyPath: m_Name
       value: apple (5)
@@ -2415,6 +2511,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1763253675}
     m_Modifications:
+    - target: {fileID: -7614975757069157110, guid: d8dad9d2d761e460bb0a3f03ef8fccb8, type: 3}
+      propertyPath: respawnTimer
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 1297172181180802, guid: d8dad9d2d761e460bb0a3f03ef8fccb8, type: 3}
       propertyPath: m_Name
       value: apple

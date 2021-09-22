@@ -194,7 +194,7 @@ public class Humans : MonoBehaviour
     {  
         if(!hasCaughtRecently)
         {
-
+            print("no check being done");
             hasCaughtRecently = true;  
             // takes x ammount of food from the player when caught
             takeFood(takeFoodAmmount);
@@ -202,7 +202,7 @@ public class Humans : MonoBehaviour
             stillFood = checkForFood();
 
             // animation stunning (not moving)
-            //CallAnimationEvents(SquirrelController.AnimationTrigger.jump);
+            CallAnimationEvents(AnimTriggers.stunning);
 
             squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             Invoke("unFreezePlayer", unFreezeTime);
@@ -224,14 +224,15 @@ public class Humans : MonoBehaviour
                     if(bin.radius <= Vector3.Distance(bin.transform.position, transform.position))
                     {
                         // animation walk (not moving)
-                        //CallAnimationEvents(SquirrelController.AnimationTrigger.jump);
+                        CallAnimationEvents(AnimTriggers.walking);
                         navMesh.SetDestination(bin.transform.position);
                     }
                     // put food in bin
                     else
                     {
                         // animation drop (not moving)
-                        //CallAnimationEvents(SquirrelController.AnimationTrigger.jump);
+                        CallAnimationEvents(AnimTriggers.idle);
+                        //CallAnimationEvents(AnimTriggers.dropping);
                         navMesh.velocity = Vector3.zero;
                         Invoke("canCatchAgain", 5);
                         Invoke("returnToPath", 1.8f);
@@ -241,7 +242,7 @@ public class Humans : MonoBehaviour
                 else
                 {
                     // animation eating (not moving)
-                    //CallAnimationEvents(SquirrelController.AnimationTrigger.jump);
+                    CallAnimationEvents(AnimTriggers.eating);
                     Invoke("canCatchAgain", 5);
                     Invoke("returnToPath", 3);
                 }
@@ -263,7 +264,7 @@ public class Humans : MonoBehaviour
     private void ChaseState()
     {  
         // animation running (not moving)
-        //CallAnimationEvents(SquirrelController.AnimationTrigger.jump);
+        CallAnimationEvents(AnimTriggers.running);
 
         /// runs a check to see if the human is still within boundary
         if(checkBoundry() == true)
@@ -421,8 +422,8 @@ public class Humans : MonoBehaviour
             if(bestDistance < 1f)
             {
                 navMesh.velocity = Vector3.zero;
-                // animation pickup (not moving)
-                //CallAnimationEvents(SquirrelController.AnimationTrigger.jump);
+                
+                
                 StartCoroutine(pickUpFood(bestCollider));
             
             } 
@@ -434,11 +435,13 @@ public class Humans : MonoBehaviour
     
     IEnumerator pickUpFood(Collider food)
     {
-        //aniChoice = "Pick Up";
+        // animation pick up
+        CallAnimationEvents(AnimTriggers.pickup);
         yield return new WaitForSeconds(2.8f);
-        
+    
         food.gameObject.SetActive(false);
         food.GetComponent<Food>().respawn();
+ 
     }
 
     // when caught forces the player to spit up an ammont of food
@@ -569,9 +572,7 @@ public class Humans : MonoBehaviour
 
     private void ChangeParameter(ParameterChangeEvent PCE)
     {
-       
         anim.SetInteger(PCE.animsParameter.paramName, (int)PCE.animsParameter.setToValue);
-       
     }
     // Visualize area of points
     void OnDrawGizmosSelected() 
