@@ -3,12 +3,21 @@ using UnityEngine;
 
 public class Food : MonoBehaviour
 {
+    private Vector3 spawnPoint;
     private static List<Food> foodList = new List<Food>();
+
+    public float respawnTimer;
+
 
     private void Awake()
     {
         foodList.Add(this);
+
+        spawnPoint = transform.position;
+        print(transform.position);
+        print(spawnPoint);
     }
+
 
     public bool isEaten()
     {
@@ -25,4 +34,16 @@ public class Food : MonoBehaviour
         int foodLayer = LayerMask.NameToLayer("Food");
         return obj.layer == foodLayer;
     }
+    public void respawn()
+    {
+        Invoke("respawnSelf", respawnTimer);
+    }
+
+    public void respawnSelf()
+    {
+        gameObject.SetActive(true);
+        gameObject.transform.position = spawnPoint;
+
+    }
+
 }
