@@ -2660,7 +2660,7 @@ MonoBehaviour:
   settings:
     movement:
       acceleration: 8
-      boostMultiplier: 45
+      boostMultiplier: 30
       boostStaminaUse: 800
       maxSpeed: 1.7
       airControlFactor: 0.5
