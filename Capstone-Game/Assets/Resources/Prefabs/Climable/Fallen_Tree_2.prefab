@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8300811266078722154}
   m_Layer: 0
   m_Name: Fallen_Tree_2
-  m_TagString: Untagged
+  m_TagString: Climbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

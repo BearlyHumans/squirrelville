@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8301978955194652183}
   m_Layer: 0
   m_Name: Wood Hollow Log Climb
-  m_TagString: CanClimb
+  m_TagString: Climbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: b7f985551b7030749a7b73a05d1e9d60, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

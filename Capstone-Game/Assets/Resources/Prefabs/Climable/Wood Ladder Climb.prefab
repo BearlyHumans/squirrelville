@@ -53,7 +53,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: d66e722bd442c4008877d53166ffbcef, type: 3}
       propertyPath: m_TagString
-      value: CanClimb
+      value: Climbable
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: d66e722bd442c4008877d53166ffbcef, type: 3}
       propertyPath: m_RootOrder
