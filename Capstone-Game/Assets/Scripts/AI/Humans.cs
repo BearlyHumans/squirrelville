@@ -422,6 +422,7 @@ public class Humans : MonoBehaviour
         yield return new WaitForSeconds(2.8f);
         
         food.gameObject.SetActive(false);
+        food.GetComponent<Food>().respawn();
     }
 
     // when caught forces the player to spit up an ammont of food

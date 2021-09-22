@@ -6,22 +6,18 @@ public class Food : MonoBehaviour
     private Vector3 spawnPoint;
     private static List<Food> foodList = new List<Food>();
 
-    private bool isActive;
+    public bool isActive;
+
 
     private void Awake()
     {
         foodList.Add(this);
 
         spawnPoint = transform.position;
+        print(transform.position);
+        print(spawnPoint);
     }
 
-    public void Update() 
-    {
-        if(gameObject.activeSelf)
-        {
-            print("is active");
-        }
-    }
 
     public bool isEaten()
     {
@@ -37,6 +33,17 @@ public class Food : MonoBehaviour
     {
         int foodLayer = LayerMask.NameToLayer("Food");
         return obj.layer == foodLayer;
+    }
+    public void respawn()
+    {
+        Invoke("respawnSelf", 10);
+    }
+
+    public void respawnSelf()
+    {
+        gameObject.SetActive(true);
+        gameObject.transform.position = spawnPoint;
+
     }
 
 }
