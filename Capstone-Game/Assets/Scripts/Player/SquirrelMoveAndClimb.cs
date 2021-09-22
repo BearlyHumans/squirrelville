@@ -413,7 +413,6 @@ namespace Player
 
             if (vals.cornerVaultHeld && Time.time > vals.cornerVaultDown + settings.WC.autoVaultActivationTime)
             {
-
                 if (vals.stoppedAtEdge)
                     JumpAroundCorners();
             }
