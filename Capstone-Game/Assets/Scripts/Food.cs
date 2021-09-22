@@ -6,7 +6,7 @@ public class Food : MonoBehaviour
     private Vector3 spawnPoint;
     private static List<Food> foodList = new List<Food>();
 
-    public bool isActive;
+    public float respawnTimer;
 
 
     private void Awake()
@@ -36,7 +36,7 @@ public class Food : MonoBehaviour
     }
     public void respawn()
     {
-        Invoke("respawnSelf", 10);
+        Invoke("respawnSelf", respawnTimer);
     }
 
     public void respawnSelf()
