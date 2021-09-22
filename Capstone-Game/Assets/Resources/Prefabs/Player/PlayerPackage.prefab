@@ -119,7 +119,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1734878118}
-  m_Material: {fileID: 13400000, guid: dda2683f82cdf8f47b62e77a3cb38490, type: 2}
+  m_Material: {fileID: 13400000, guid: 82f6c088e3a69d044a07d645586aff2b, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -2435,7 +2435,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1512199470005858200}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -38.41, y: 0.69, z: -21.67}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1512199468974199795}
@@ -2551,7 +2551,7 @@ MonoBehaviour:
       jumpStamPerUse: 20
       climbStamPerSec: 20
       climbMinAngle: 45
-      climbMaxAngle: 130
+      climbMaxAngle: 180
       defaultSurface: 2
       EZClimbTag: EZClimb
       ClimbableTag: Climbable
@@ -2660,9 +2660,9 @@ MonoBehaviour:
   settings:
     movement:
       acceleration: 8
-      boostMultiplier: 20
-      boostStaminaUse: 500
-      maxSpeed: 1.5
+      boostMultiplier: 45
+      boostStaminaUse: 800
+      maxSpeed: 1.7
       airControlFactor: 0.5
     jump:
       jumpForce: 3
@@ -2683,7 +2683,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1512199470005858200}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 33dbc38ef86d5d04f9d504443ac266e0, type: 3}
   m_Name: 
@@ -2724,7 +2724,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1512199470005858200}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72904a3db55978e428985db3ee3e9e76, type: 3}
   m_Name: 

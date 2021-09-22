@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1510276050212817241}
   m_Layer: 0
   m_Name: Rock Platform 01
-  m_TagString: Untagged
+  m_TagString: NonClimbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 1570776084684090193}
   m_Layer: 0
   m_Name: Rock Platform 04
-  m_TagString: Untagged
+  m_TagString: NonClimbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 1623180591474153556}
   m_Layer: 0
   m_Name: Rock Platform 02
-  m_TagString: Untagged
+  m_TagString: NonClimbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -302,7 +302,7 @@ GameObject:
   - component: {fileID: 2268718654524045596}
   m_Layer: 0
   m_Name: Rock Platform 03
-  m_TagString: Untagged
+  m_TagString: NonClimbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -494,7 +494,7 @@ GameObject:
   - component: {fileID: 4988791869671800454}
   m_Layer: 0
   m_Name: Rock Platform 05
-  m_TagString: Untagged
+  m_TagString: NonClimbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -599,7 +599,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5611922138224696513}
-  m_LocalRotation: {x: -0, y: -1.4551915e-11, z: -4.3797854e-10, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -617,7 +617,7 @@ Transform:
   - {fileID: 6344178284174482520}
   - {fileID: 4121519078455451463}
   - {fileID: 8787801812210395250}
-  - {fileID: 4408378201209490575}
+  - {fileID: 4303046494524593505}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1160,6 +1160,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood Plank Climb
       objectReference: {fileID: 0}
+    - target: {fileID: 8418105871842137695, guid: 5540fea93da7dc64489fac9051d5b334, type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5540fea93da7dc64489fac9051d5b334, type: 3}
 --- !u!4 &4121519078455451463 stripped
@@ -1181,6 +1185,10 @@ PrefabInstance:
     - target: {fileID: 1579217532751501725, guid: 6bf46429100e4884b8d309977a936b8d, type: 3}
       propertyPath: m_Name
       value: Wood Small Log Climb
+      objectReference: {fileID: 0}
+    - target: {fileID: 1579217532751501725, guid: 6bf46429100e4884b8d309977a936b8d, type: 3}
+      propertyPath: m_TagString
+      value: Climbable
       objectReference: {fileID: 0}
     - target: {fileID: 1579217532751922621, guid: 6bf46429100e4884b8d309977a936b8d, type: 3}
       propertyPath: m_RootOrder
@@ -1244,6 +1252,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood Large Log Climb
       objectReference: {fileID: 0}
+    - target: {fileID: 3752912752708987308, guid: 271763b38801f134d9153dc78e7c1178, type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
     - target: {fileID: 3752912752709328154, guid: 271763b38801f134d9153dc78e7c1178, type: 3}
       propertyPath: m_RootOrder
       value: 13
@@ -1299,77 +1311,65 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3752912752709328154, guid: 271763b38801f134d9153dc78e7c1178, type: 3}
   m_PrefabInstance: {fileID: 5611922139886155112}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &7971317790465970920
+--- !u!1001 &8681069644519316019
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 5611922138224696512}
     m_Modifications:
-    - target: {fileID: 6031019009566252647, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
+    - target: {fileID: 4885885681552904018, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
       propertyPath: m_RootOrder
       value: 14
       objectReference: {fileID: 0}
-    - target: {fileID: 6031019009566252647, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
+    - target: {fileID: 4885885681552904018, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6031019009566252647, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
+    - target: {fileID: 4885885681552904018, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6031019009566252647, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
+    - target: {fileID: 4885885681552904018, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6031019009566252647, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
+    - target: {fileID: 4885885681552904018, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6031019009566252647, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
+    - target: {fileID: 4885885681552904018, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 6031019009566252647, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
+    - target: {fileID: 4885885681552904018, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
       propertyPath: m_LocalRotation.y
       value: 1.4551915e-11
       objectReference: {fileID: 0}
-    - target: {fileID: 6031019009566252647, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
+    - target: {fileID: 4885885681552904018, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
       propertyPath: m_LocalRotation.z
       value: 4.3797854e-10
       objectReference: {fileID: 0}
-    - target: {fileID: 6031019009566252647, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
+    - target: {fileID: 4885885681552904018, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6031019009566252647, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
+    - target: {fileID: 4885885681552904018, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6031019009566252647, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
+    - target: {fileID: 4885885681552904018, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6411344082737775837, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
+    - target: {fileID: 5225855108613445096, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
       propertyPath: m_Name
       value: Rock Arch Ramp
       objectReference: {fileID: 0}
-    - target: {fileID: 6917091997012130335, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8399570204284509814, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
-      propertyPath: m_PolyMesh.m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8399570204284509814, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
-      propertyPath: m_OriginalMeshObject
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
---- !u!4 &4408378201209490575 stripped
+--- !u!4 &4303046494524593505 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 6031019009566252647, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
-  m_PrefabInstance: {fileID: 7971317790465970920}
+  m_CorrespondingSourceObject: {fileID: 4885885681552904018, guid: 8a38347cf13f65146a2991d0c8f6a766, type: 3}
+  m_PrefabInstance: {fileID: 8681069644519316019}
   m_PrefabAsset: {fileID: 0}
