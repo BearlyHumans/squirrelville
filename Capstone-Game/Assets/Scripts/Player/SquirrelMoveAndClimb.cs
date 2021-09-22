@@ -137,8 +137,10 @@ namespace Player
 
             if (!Grounded)
                 alteredAcceleration *= settings.M.airControlFactor;
-
-                //vals.desiredDirection *= 0.1f;
+            else if (vals.animationSlow =)
+            {
+                vals.desiredDirection *= 0f;
+            }
 
             //Calculate the ideal velocity from the input and the acceleration settings.
             Vector3 newVelocity;
@@ -245,37 +247,53 @@ namespace Player
         /// <summary> Check for jump input, and do the appropriate jump for the situation (needs work). </summary>
         private void Jump()
         {
-            //If the player wants to and is able to jump, apply a force and set the last jump time.
-            bool tryingToJump = Time.time < vals.jumpPressed + settings.J.checkJumpTime;
-            bool offCooldown = Time.time > vals.lastJump + settings.J.jumpCooldown;
-            bool groundedOrCoyotee = Grounded || Time.time < vals.lastOnSurface + settings.J.coyoteeTime;
-            if (tryingToJump && groundedOrCoyotee && offCooldown)
+            if (vals.inJumpAnimation)
             {
-                vals.jumping = true;
-                vals.lastJump = Time.time;
-                vals.jumpPressed = -5;
-
-                PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.jump);
-
-                bool forwardJump = vals.moving && settings.J.allowForwardJumps;
-                if (forwardJump)
+                if (Time.time > vals.jumpAnimationStart + settings.J.jumpDelay)
                 {
-                    //Do a 'forward' jump relative to the character.
-                    ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * settings.J.forwardJumpVerticalFraction;
-                    ParentRefs.RB.velocity += ParentRefs.body.forward * settings.J.forwardJumpForce;
-                }
-                else if (Vector3.Angle(transform.forward, Vector3.down) > settings.J.onWallAngle)
-                { //If player is rotated to face the ground.
-                  //Do a wall jump (biased towards up instead of out).
-                    ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * (1 - settings.J.standingWallJumpVerticalRatio);
-                    ParentRefs.RB.velocity += Vector3.up * settings.J.jumpForce * settings.J.standingWallJumpVerticalRatio;
-                }
-                else
-                {
-                    //Do a normal jump.
-                    ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce;
-                }
+                    vals.jumping = true;
+                    vals.lastJump = Time.time;
+                    vals.inJumpAnimation = false;
+                    vals.animationSlow = false;
 
+                    PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.falling);
+
+                    bool forwardJump = vals.moving && settings.J.allowForwardJumps;
+                    if (forwardJump)
+                    {
+                        //Do a 'forward' jump relative to the character.
+                        ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * settings.J.forwardJumpVerticalFraction;
+                        ParentRefs.RB.velocity += ParentRefs.body.forward * settings.J.forwardJumpForce;
+                    }
+                    else if (Vector3.Angle(transform.forward, Vector3.down) > settings.J.onWallAngle)
+                    { //If player is rotated to face the ground.
+                      //Do a wall jump (biased towards up instead of out).
+                        ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * (1 - settings.J.standingWallJumpVerticalRatio);
+                        ParentRefs.RB.velocity += Vector3.up * settings.J.jumpForce * settings.J.standingWallJumpVerticalRatio;
+                    }
+                    else
+                    {
+                        //Do a normal jump.
+                        ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce;
+                    }
+                }
+            }
+            else
+            {
+                //If the player wants to and is able to jump, apply a force and set the last jump time.
+                bool tryingToJump = Time.time < vals.jumpPressed + settings.J.checkJumpTime;
+                bool offCooldown = Time.time > vals.lastJump + settings.J.jumpCooldown;
+                bool groundedOrCoyotee = Grounded || Time.time < vals.lastOnSurface + settings.J.coyoteeTime;
+                if (tryingToJump && groundedOrCoyotee && offCooldown)
+                {
+                    vals.jumpPressed = -5;
+
+                    vals.jumpAnimationStart = Time.time;
+                    vals.inJumpAnimation = true;
+                    vals.animationSlow = true;
+
+                    PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.jump);
+                }
             }
         }
 
@@ -715,15 +733,21 @@ namespace Player
             /// <summary> Value is true when the character is locked in a jumping state at the start of the jump.
             /// Used to play jump animations, and as a secondary check</summary>
             public bool jumping;
+            /// <summary> The player is doing the jump animation, and will jump when it is finished.
+            /// Used to delay the jump for animations. </summary>
+            public bool inJumpAnimation;
             /// <summary> The time.time value of when a jump was sucessfully started.
             /// Used to delay the jump for a short time so animations work properly. </summary>
-            public float jumpStarted;
+            public float jumpAnimationStart;
             /// <summary> True when the characters lateral velocity (i.e not up/down relative to rotation) is greater than 'M.turningThreshold'.
             /// Used to play running animations, and to change between jump modes. </summary>
             public bool moving;
             /// <summary> True when the characters lateral velocity (i.e not up/down relative to rotation) is greater than 'M.turningThreshold'.
             /// Used to play running animations, and to change between jump modes. </summary>
             public bool falling;
+            /// <summary> True when the character is part way through an animation, and should move more slowly to make it look better.
+            /// Used for jumping and landing. </summary>
+            public bool animationSlow;
 
             //MESSAGES AND MULTIPLE-UPDATE VALUES:
             /// <summary> The time.time value of the last time the player started a jump.
@@ -918,6 +942,9 @@ namespace Player
                 [HideInInspector]
                 [Tooltip("Number of teleport-jump checks.")]
                 public int SJCheckCount = 4;
+
+                [Space]
+                public float jumpDelay = 0.2f;
 
             }
 

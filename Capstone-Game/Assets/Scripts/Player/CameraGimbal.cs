@@ -148,7 +148,7 @@ public class CameraGimbal : MonoBehaviour
     public void UpdateCamPos()
     {
         // Move towards target
-        if ((cameraTarget.transform.position - transform.position).sqrMagnitude > 0.0001f)
+        if ((cameraTarget.transform.position - transform.position).sqrMagnitude > 0.0005f)
             transform.position = Vector3.SmoothDamp(transform.position + new Vector3(0, 0.05f, 0), cameraTarget.transform.position, ref velocity, translationSmoothing);
     }
 
