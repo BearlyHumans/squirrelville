@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Squirrel Ball Base Colour NEW
   m_Shader: {fileID: 4800000, guid: bee44b4a58655ee4cbff107302a3e131, type: 3}
-  m_ShaderKeywords: _CELPRIMARYMODE_SINGLE _TEXTUREBLENDINGMODE_MULTIPLY _UNITYSHADOWMODE_NONE
+  m_ShaderKeywords: _CELPRIMARYMODE_SINGLE _TEXTUREBLENDINGMODE_MULTIPLY _UNITYSHADOWMODE_MULTIPLY
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -99,9 +99,9 @@ Material:
     - _Parallax: 0.02
     - _QueueOffset: 0
     - _RimEnabled: 0
-    - _SelfShadingSize: 0.5
+    - _SelfShadingSize: 0
     - _SelfShadingSizeExtra: 0.6
-    - _ShadowEdgeSize: 0.4
+    - _ShadowEdgeSize: 0
     - _ShadowEdgeSizeExtra: 0.05
     - _SmoothnessTextureChannel: 0
     - _SpecularEnabled: 0
@@ -111,13 +111,13 @@ Material:
     - _TextureBlendingMode: 0
     - _TextureImpact: 1
     - _UVSec: 0
-    - _UnityShadowMode: 0
-    - _UnityShadowPower: 0.2
-    - _UnityShadowSharpness: 1
+    - _UnityShadowMode: 1
+    - _UnityShadowPower: 1
+    - _UnityShadowSharpness: 10
     - _VertexColorsEnabled: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 1}
+    - _Color: {r: 0.8962264, g: 0.8962264, b: 0.8962264, a: 1}
     - _ColorDim: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 1}
     - _ColorDimCurve: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
     - _ColorDimExtra: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
