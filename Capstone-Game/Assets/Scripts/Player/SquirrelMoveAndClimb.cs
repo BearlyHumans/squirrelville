@@ -695,6 +695,9 @@ namespace Player
             /// <summary> Value is true when the character is locked in a jumping state at the start of the jump.
             /// Used to play jump animations, and as a secondary check</summary>
             public bool jumping;
+            /// <summary> The time.time value of when a jump was sucessfully started.
+            /// Used to delay the jump for a short time so animations work properly. </summary>
+            public float jumpStarted;
             /// <summary> True when the characters lateral velocity (i.e not up/down relative to rotation) is greater than 'M.turningThreshold'.
             /// Used to play running animations, and to change between jump modes. </summary>
             public bool moving;
