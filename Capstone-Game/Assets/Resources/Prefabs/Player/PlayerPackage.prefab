@@ -2546,10 +2546,10 @@ MonoBehaviour:
       allowNegativeStamina: 1
       zeroStopsRegen: 0
       failStopsRegen: 0
-      dashStamPerSec: 50
+      dashStamPerSec: 30
       walkStamPerSec: 0
       jumpStamPerUse: 20
-      climbStamPerSec: 20
+      climbStamPerSec: 10
       climbMinAngle: 45
       climbMaxAngle: 180
       defaultSurface: 2
