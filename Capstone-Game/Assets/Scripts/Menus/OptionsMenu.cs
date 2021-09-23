@@ -31,8 +31,6 @@ public class OptionsMenu : MonoBehaviour
         selectedResolution = new Resolution();
         selectedResolution.width = PlayerPrefs.GetInt("resolutionWidth", Screen.currentResolution.width);
         selectedResolution.height = PlayerPrefs.GetInt("resolutionHeight", Screen.currentResolution.height);
-
-        Screen.SetResolution(selectedResolution.width, selectedResolution.height, fullscreenToggle.isOn);
     }
 
     private void InitResolutionDropdown()
