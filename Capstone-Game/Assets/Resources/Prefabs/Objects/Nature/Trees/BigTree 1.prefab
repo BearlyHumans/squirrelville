@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 7753772136051326779}
   m_Layer: 0
   m_Name: BigTree 1
-  m_TagString: Untagged
+  m_TagString: Climbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

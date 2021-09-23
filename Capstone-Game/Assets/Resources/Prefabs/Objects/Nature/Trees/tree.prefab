@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2098420199193711030}
   m_Layer: 0
   m_Name: tree
-  m_TagString: Untagged
+  m_TagString: Climbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8bebfd6b3d650e44994f128b0eedd972, type: 2}
+  - {fileID: 2100000, guid: deb62e6d41547b2478959bc1d65e0045, type: 2}
   - {fileID: 2100000, guid: d17f25220dbc74f4caf62d1e6bf73150, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
