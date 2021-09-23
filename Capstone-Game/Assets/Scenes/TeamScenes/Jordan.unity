@@ -709,13 +709,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7644664059575268973, guid: f2cf49596ef8c7e44854b1c316e180eb, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8676674149244881902, guid: f2cf49596ef8c7e44854b1c316e180eb, type: 3}
       propertyPath: m_Name
-      value: MusicTrigger 2
+      value: MusicTrigger
       objectReference: {fileID: 0}
     - target: {fileID: 8676674149244881902, guid: f2cf49596ef8c7e44854b1c316e180eb, type: 3}
       propertyPath: m_IsActive
@@ -1236,13 +1232,9 @@ PrefabInstance:
       propertyPath: ambience.Array.data[1].volume
       value: 0.256
       objectReference: {fileID: 0}
-    - target: {fileID: 7644664059575268973, guid: e26a305d0545c1e4c8480db554078a43, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: d0054e2826ae0cc4e8abb517bd8d7ac5, type: 2}
     - target: {fileID: 8676674149244881902, guid: e26a305d0545c1e4c8480db554078a43, type: 3}
       propertyPath: m_Name
-      value: AmbienceTrigger 2
+      value: AmbienceTrigger
       objectReference: {fileID: 0}
     - target: {fileID: 8676674149244881902, guid: e26a305d0545c1e4c8480db554078a43, type: 3}
       propertyPath: m_IsActive
@@ -2325,14 +2317,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7644664059575268973, guid: f2cf49596ef8c7e44854b1c316e180eb, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7644664059575268973, guid: f2cf49596ef8c7e44854b1c316e180eb, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 7d937c04fbb734546b29eb971936bb5c, type: 2}
     - target: {fileID: 8676674149244881902, guid: f2cf49596ef8c7e44854b1c316e180eb, type: 3}
       propertyPath: m_Name
       value: MusicTrigger

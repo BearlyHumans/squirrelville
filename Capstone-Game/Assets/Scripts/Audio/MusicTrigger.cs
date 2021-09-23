@@ -51,53 +51,46 @@ public class MusicTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (IsPlayer(other) && musicTriggers.IndexOf(this) == -1)
+        if (musicTriggers.IndexOf(this) > -1) return;
+
+        musicTriggers.Add(this);
+
+        if (activeMusicTrigger != null)
         {
-            musicTriggers.Add(this);
+            activeMusicTrigger.StopAllCoroutines();
+        }
 
-            if (activeMusicTrigger != null)
-            {
-                activeMusicTrigger.StopAllCoroutines();
-            }
-
-            if (activeMusicTrigger != null && activeMusicTrigger != this)
-            {
-                activeMusicTrigger.StartCoroutine(activeMusicTrigger.FadeTo(this));
-            }
-            else
-            {
-                StartCoroutine(FadeIn());
-            }
+        if (activeMusicTrigger != null && activeMusicTrigger != this)
+        {
+            activeMusicTrigger.StartCoroutine(activeMusicTrigger.FadeTo(this));
+        }
+        else
+        {
+            StartCoroutine(FadeIn());
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (IsPlayer(other) && musicTriggers.IndexOf(this) > -1)
+        if (musicTriggers.IndexOf(this) == -1) return;
+
+        bool lastTrigger = musicTriggers[musicTriggers.Count - 1] == this;
+
+        musicTriggers.Remove(this);
+
+        if (lastTrigger && activeMusicTrigger != null)
         {
-            bool lastTrigger = musicTriggers[musicTriggers.Count - 1] == this;
+            activeMusicTrigger.StopAllCoroutines();
 
-            musicTriggers.Remove(this);
-
-            if (lastTrigger && activeMusicTrigger != null)
+            if (musicTriggers.Count > 0)
             {
-                activeMusicTrigger.StopAllCoroutines();
-
-                if (musicTriggers.Count > 0)
-                {
-                    activeMusicTrigger.StartCoroutine(FadeTo(musicTriggers[musicTriggers.Count - 1]));
-                }
-                else
-                {
-                    activeMusicTrigger.StartCoroutine(activeMusicTrigger.FadeOut());
-                }
+                activeMusicTrigger.StartCoroutine(FadeTo(musicTriggers[musicTriggers.Count - 1]));
+            }
+            else
+            {
+                activeMusicTrigger.StartCoroutine(activeMusicTrigger.FadeOut());
             }
         }
-    }
-
-    private bool IsPlayer(Collider collider)
-    {
-        return collider.gameObject.layer == LayerMask.NameToLayer("Player");
     }
 
     private IEnumerator FadeIn()

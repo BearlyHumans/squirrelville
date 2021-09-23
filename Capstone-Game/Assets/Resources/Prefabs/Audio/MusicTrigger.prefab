@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7644664059575268973}
   - component: {fileID: 5111612515830399149}
   - component: {fileID: 2539479117871752537}
-  m_Layer: 2
+  m_Layer: 14
   m_Name: MusicTrigger
   m_TagString: NoClimb
   m_Icon: {fileID: 0}

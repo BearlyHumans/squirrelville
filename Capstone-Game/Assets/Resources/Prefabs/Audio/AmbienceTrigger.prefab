@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7644664059575268973}
   - component: {fileID: 5111612515830399149}
   - component: {fileID: 7421814300443638957}
-  m_Layer: 2
+  m_Layer: 14
   m_Name: AmbienceTrigger
   m_TagString: NoClimb
   m_Icon: {fileID: 0}
