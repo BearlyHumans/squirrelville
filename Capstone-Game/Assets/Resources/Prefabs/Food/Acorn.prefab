@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 7083401372424241177}
   - component: {fileID: 7083401372424241176}
   - component: {fileID: 7083401372424241175}
+  - component: {fileID: 3399476415910717850}
   m_Layer: 10
   m_Name: Acorn
   m_TagString: Untagged
@@ -168,3 +169,19 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.009107958
   m_Center: {x: 0.000081443046, y: 0.00051519123, z: -0.005869131}
+--- !u!54 &3399476415910717850
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5074675727973285806}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
