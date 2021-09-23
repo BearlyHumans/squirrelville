@@ -419,7 +419,7 @@ public class Humans : MonoBehaviour
                    bestCollider = hitCollider;
                 }
             }
-            
+            CallAnimationEvents(AnimTriggers.walking);
             navMesh.SetDestination(bestCollider.transform.position);
 
             if(bestDistance < 1f)
