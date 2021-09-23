@@ -755,7 +755,7 @@ GameObject:
   - component: {fileID: 8194542876997667122}
   - component: {fileID: 6767587695065880796}
   m_Layer: 0
-  m_Name: woman-casual_Rig
+  m_Name: GenericNPC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -844,6 +844,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31d72aa5e57329240b19538fbe187f95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animationEvents:
+  - trigger: 0
+    animsParameter:
+      paramName: HumanWalk
+      setToValue: 0
+  - trigger: 1
+    animsParameter:
+      paramName: HumanWalk
+      setToValue: 1
+  - trigger: 1
+    animsParameter:
+      paramName: HumanStun
+      setToValue: 0
+  - trigger: 1
+    animsParameter:
+      paramName: HumanRun
+      setToValue: 0
+  - trigger: 1
+    animsParameter:
+      paramName: HumanPickup
+      setToValue: 0
+  - trigger: 1
+    animsParameter:
+      paramName: HumanEating
+      setToValue: 0
+  - trigger: 1
+    animsParameter:
+      paramName: HumanDrop
+      setToValue: 0
+  - trigger: 2
+    animsParameter:
+      paramName: HumanRun
+      setToValue: 1
+  - trigger: 3
+    animsParameter:
+      paramName: HumanStun
+      setToValue: 1
+  - trigger: 3
+    animsParameter:
+      paramName: HumanWalk
+      setToValue: 1
+  - trigger: 4
+    animsParameter:
+      paramName: HumanPickup
+      setToValue: 1
+  - trigger: 5
+    animsParameter:
+      paramName: HumanEating
+      setToValue: 1
+  - trigger: 6
+    animsParameter:
+      paramName: HumanDrop
+      setToValue: 1
   walkingPause: 0
   turnAroundChance: 0.2
   pathPoints:
