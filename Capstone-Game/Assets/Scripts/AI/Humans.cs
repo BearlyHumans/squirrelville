@@ -237,7 +237,8 @@ public class Humans : MonoBehaviour
                         
                         navMesh.velocity = Vector3.zero;
                         Invoke("canCatchAgain", catchAgainTimer);
-                        Invoke("returnToPath", 1.5f);
+                        Invoke("returnToPath", 1f);
+                        //returnToPath();
                     }
                 }
                 // option 2 - eat the food
@@ -246,13 +247,15 @@ public class Humans : MonoBehaviour
                     print("eating");
                     CallAnimationEvents(AnimTriggers.eating);
                     Invoke("canCatchAgain", catchAgainTimer);
-                    Invoke("returnToPath", 3);
+                    Invoke("returnToPath", 2);
+                    //returnToPath();
                 }
             }
             else
             {
                 Invoke("canCatchAgain", catchAgainTimer);
                 Invoke("returnToPath", 1.5f);
+                //returnToPath();
             }
         }
         else
