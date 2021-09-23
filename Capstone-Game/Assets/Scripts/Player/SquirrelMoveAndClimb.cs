@@ -63,6 +63,12 @@ namespace Player
                 PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.moving);
             else if (vals.jumping == false)
                 PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.notMoving);
+
+            if (ParentRefs.animator.GetCurrentAnimatorStateInfo(0).IsName("Jumping"))
+            {
+                //if (PARENT.debugMessages)
+                    print("Jump Animation");
+            }
         }
 
         private void UpdInput()
@@ -137,9 +143,21 @@ namespace Player
 
             if (!Grounded)
                 alteredAcceleration *= settings.M.airControlFactor;
-            else if (vals.animationSlow =)
+            else if (vals.inLandingAnimation && Time.time > vals.landingAnimationStart + settings.J.landingDelay)
             {
-                vals.desiredDirection *= 0f;
+                vals.inLandingAnimation = false;
+                vals.animationSlow = false;
+            }
+            if (vals.animationSlow)
+            {
+                if (settings.J.stopWhenJumping && vals.inJumpAnimation)
+                    vals.desiredDirection = Vector3.zero;
+
+                if (settings.J.stopWhenLanding && vals.inLandingAnimation)
+                    vals.desiredDirection = Vector3.zero;
+
+                if (settings.J.carefulModeInAnimations)
+                    vals.stopAtEdgesPressed = true;
             }
 
             //Calculate the ideal velocity from the input and the acceleration settings.
@@ -181,7 +199,7 @@ namespace Player
 
                 //FRICTION
                 //If the new lateral velocity is still greater than the max speed, reduce it by the relevant amount until it is AT the max speed.
-                if (LateralVelocityNew.magnitude > settings.M.maxSpeed)
+                if (LateralVelocityNew.magnitude > alteredMaxSpeed)
                 {
                     if (Grounded && !vals.jumping)
                         LateralVelocityNew = LateralVelocityNew.normalized
@@ -255,8 +273,9 @@ namespace Player
                     vals.lastJump = Time.time;
                     vals.inJumpAnimation = false;
                     vals.animationSlow = false;
+                    vals.falling = true;
 
-                    PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.falling);
+                    //PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.falling);
 
                     bool forwardJump = vals.moving && settings.J.allowForwardJumps;
                     if (forwardJump)
@@ -284,7 +303,8 @@ namespace Player
                 bool tryingToJump = Time.time < vals.jumpPressed + settings.J.checkJumpTime;
                 bool offCooldown = Time.time > vals.lastJump + settings.J.jumpCooldown;
                 bool groundedOrCoyotee = Grounded || Time.time < vals.lastOnSurface + settings.J.coyoteeTime;
-                if (tryingToJump && groundedOrCoyotee && offCooldown)
+                bool notAnimationLocked = (vals.inJumpAnimation == false && vals.inLandingAnimation == false);
+                if (tryingToJump && groundedOrCoyotee && offCooldown && notAnimationLocked)
                 {
                     vals.jumpPressed = -5;
 
@@ -358,7 +378,12 @@ namespace Player
                 {
                     ParentRefs.RB.useGravity = false;
                     if (vals.falling)
+                    {
                         PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.landJump);
+                        vals.inLandingAnimation = true;
+                        vals.landingAnimationStart = Time.time;
+                        vals.animationSlow = true;
+                    }
 
                     //Teleport to the surface, and if its angle is too different eliminate the 'up force' to stop player flying off.
                     Vector3 oldVel = transform.InverseTransformVector(ParentRefs.RB.velocity);
@@ -425,6 +450,9 @@ namespace Player
                 //This might do something in the future such as changing the climb check accuracy.
                 zoomMode = true;
             }
+
+            if (vals.inJumpAnimation || vals.inLandingAnimation)
+                return;
 
             if (vals.findClimbablePressed)
             {
@@ -739,6 +767,12 @@ namespace Player
             /// <summary> The time.time value of when a jump was sucessfully started.
             /// Used to delay the jump for a short time so animations work properly. </summary>
             public float jumpAnimationStart;
+            /// <summary> The player is doing the landing animation, and cannot jump until finished.
+            /// Used to delay the jump for animations. </summary>
+            public bool inLandingAnimation;
+            /// <summary> The time.time value of when the landing animation started.
+            /// Used to delay behaviours so the landing animation can finish. </summary>
+            public float landingAnimationStart;
             /// <summary> True when the characters lateral velocity (i.e not up/down relative to rotation) is greater than 'M.turningThreshold'.
             /// Used to play running animations, and to change between jump modes. </summary>
             public bool moving;
@@ -945,7 +979,10 @@ namespace Player
 
                 [Space]
                 public float jumpDelay = 0.2f;
-
+                public float landingDelay = 0.2f;
+                public bool stopWhenJumping = false;
+                public bool stopWhenLanding = false;
+                public bool carefulModeInAnimations = true;
             }
 
             [System.Serializable]
