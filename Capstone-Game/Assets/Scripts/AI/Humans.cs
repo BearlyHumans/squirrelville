@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
+using Player;
 
 
 //The different states each NPC can 
@@ -36,6 +36,9 @@ public class Humans : MonoBehaviour
     //---------Food Graber Script---------//
     private SquirrelFoodGrabber foodGraber;
     private GameObject foodController;
+
+    private SquirrelController squirrelController;
+    private GameObject sController;
 
     //----------Path Following -----------//
     [Tooltip("Do you want to npc to pause on each point?")]
@@ -126,6 +129,8 @@ public class Humans : MonoBehaviour
         foodController = GameObject.FindWithTag("Player");
         foodGraber = foodController.GetComponent<SquirrelFoodGrabber>();
 
+        sController = GameObject.FindWithTag("Player");
+        squirrelController = sController.GetComponent<SquirrelController>();
 
         navMesh = this.GetComponent<NavMeshAgent>();
 
@@ -157,12 +162,9 @@ public class Humans : MonoBehaviour
     /// handles the main swaping of states for each person. Runs specific behaviour while in a certain state.
     public void Update() 
     {
-        print(hasCaughtRecently);
         distance = Vector3.Distance(target.position, transform.position);
         timeToFood += Time.deltaTime;
-        
-        print(currentState);
-        
+    
         // -----States------
         switch(currentState)
         {
@@ -203,10 +205,10 @@ public class Humans : MonoBehaviour
             stillFood = checkForFood();
 
             // animation stunning (not moving)
-            print("stunning");
             CallAnimationEvents(AnimTriggers.stunning);
 
-            squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            squirrelController.FreezeMovement();
+
             Invoke("unFreezePlayer", unFreezeTime);
             catchChoice = Random.Range(0,2);
         }
@@ -232,7 +234,6 @@ public class Humans : MonoBehaviour
                     // put food in bin
                     else
                     {
-                        print("dropping");
                         CallAnimationEvents(AnimTriggers.dropping);
                         
                         navMesh.velocity = Vector3.zero;
@@ -244,7 +245,7 @@ public class Humans : MonoBehaviour
                 // option 2 - eat the food
                 else
                 {
-                    print("eating");
+                    
                     CallAnimationEvents(AnimTriggers.eating);
                     Invoke("canCatchAgain", catchAgainTimer);
                     Invoke("returnToPath", 2);
@@ -267,7 +268,6 @@ public class Humans : MonoBehaviour
     ///functionaility for chasing behaviour. Added checks to see if the npc leaves their boundry area or chases for 'x' ammount of time 
     private void ChaseState()
     {  
-        print("running");
         CallAnimationEvents(AnimTriggers.running);
 
         /// runs a check to see if the human is still within boundary
@@ -381,7 +381,6 @@ public class Humans : MonoBehaviour
         }
         if(waiting)
         {
-            print("idle");
             CallAnimationEvents(AnimTriggers.idle);
             waitTimer += Time.deltaTime;
             if(waitTimer >= pathPoints[currentPathPt].waitForThisLong)
@@ -425,8 +424,7 @@ public class Humans : MonoBehaviour
             if(bestDistance < 1f)
             {
                 navMesh.velocity = Vector3.zero;
-                
-                print("pickup");
+               
                 CallAnimationEvents(AnimTriggers.pickup);
                 StartCoroutine(pickUpFood(bestCollider));
             
@@ -515,8 +513,7 @@ public class Humans : MonoBehaviour
     /// unfreezes player when run
     void unFreezePlayer()
     {
-        
-        squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+        squirrelController.UnfreezeMovement();
     }
 
     void canCatchAgain()
@@ -530,7 +527,6 @@ public class Humans : MonoBehaviour
     {
         if (pathPoints != null)
         {
-            print("walking");
             CallAnimationEvents(AnimTriggers.walking);
 
             Vector3 targetVector = pathPoints[currentPathPt].transform.position;
