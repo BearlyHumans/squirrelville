@@ -105,7 +105,9 @@ public class Humans : MonoBehaviour
     int catchChoice;
     bool stillFood = false;
     bool hasFood = false;
-    //string aniChoice = "Stun";
+
+    float catchAgainTimer = 10;
+   
 
     //used to check if player has been caught recently 
     bool hasCaughtRecently = false;
@@ -234,8 +236,8 @@ public class Humans : MonoBehaviour
                         CallAnimationEvents(AnimTriggers.dropping);
                         
                         navMesh.velocity = Vector3.zero;
-                        Invoke("canCatchAgain", 10);
-                        Invoke("returnToPath", 1.8f);
+                        Invoke("canCatchAgain", catchAgainTimer);
+                        Invoke("returnToPath", 1.5f);
                     }
                 }
                 // option 2 - eat the food
@@ -243,13 +245,13 @@ public class Humans : MonoBehaviour
                 {
                     print("eating");
                     CallAnimationEvents(AnimTriggers.eating);
-                    Invoke("canCatchAgain", 10);
+                    Invoke("canCatchAgain", catchAgainTimer);
                     Invoke("returnToPath", 3);
                 }
             }
             else
             {
-                Invoke("canCatchAgain", 10);
+                Invoke("canCatchAgain", catchAgainTimer);
                 Invoke("returnToPath", 1.5f);
             }
         }
@@ -454,6 +456,7 @@ public class Humans : MonoBehaviour
 
     void returnToPath()
     {
+        CallAnimationEvents(AnimTriggers.walking);
         hasFood = false;
         currentState = HumanStates.PathFollowing;
     }
