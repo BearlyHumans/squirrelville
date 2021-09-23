@@ -155,10 +155,11 @@ public class Humans : MonoBehaviour
     /// handles the main swaping of states for each person. Runs specific behaviour while in a certain state.
     public void Update() 
     {
-        
+        print(hasCaughtRecently);
         distance = Vector3.Distance(target.position, transform.position);
         timeToFood += Time.deltaTime;
         
+        print(currentState);
         
         // -----States------
         switch(currentState)
@@ -166,7 +167,6 @@ public class Humans : MonoBehaviour
             case HumanStates.PathFollowing:
             {
                 PathFollowingState();
-
                 break;
             }
             case HumanStates.Chase:
@@ -194,7 +194,6 @@ public class Humans : MonoBehaviour
     {  
         if(!hasCaughtRecently)
         {
-            print("no check being done");
             hasCaughtRecently = true;  
             // takes x ammount of food from the player when caught
             takeFood(takeFoodAmmount);
@@ -202,6 +201,7 @@ public class Humans : MonoBehaviour
             stillFood = checkForFood();
 
             // animation stunning (not moving)
+            print("stunning");
             CallAnimationEvents(AnimTriggers.stunning);
 
             squrrielTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
@@ -230,27 +230,26 @@ public class Humans : MonoBehaviour
                     // put food in bin
                     else
                     {
-                        // animation drop (not moving)
-                        CallAnimationEvents(AnimTriggers.idle);
-                        //CallAnimationEvents(AnimTriggers.dropping);
+                        print("dropping");
+                        CallAnimationEvents(AnimTriggers.dropping);
+                        
                         navMesh.velocity = Vector3.zero;
-                        Invoke("canCatchAgain", 5);
+                        Invoke("canCatchAgain", 10);
                         Invoke("returnToPath", 1.8f);
                     }
                 }
                 // option 2 - eat the food
                 else
                 {
-                    // animation eating (not moving)
+                    print("eating");
                     CallAnimationEvents(AnimTriggers.eating);
-                    Invoke("canCatchAgain", 5);
+                    Invoke("canCatchAgain", 10);
                     Invoke("returnToPath", 3);
                 }
             }
             else
             {
-                
-                Invoke("canCatchAgain", 5);
+                Invoke("canCatchAgain", 10);
                 Invoke("returnToPath", 1.5f);
             }
         }
@@ -263,7 +262,7 @@ public class Humans : MonoBehaviour
     ///functionaility for chasing behaviour. Added checks to see if the npc leaves their boundry area or chases for 'x' ammount of time 
     private void ChaseState()
     {  
-        // animation running (not moving)
+        print("running");
         CallAnimationEvents(AnimTriggers.running);
 
         /// runs a check to see if the human is still within boundary
@@ -366,20 +365,19 @@ public class Humans : MonoBehaviour
                     
             if(walkingPause)
             {
-                // animation idle (not moving)
-                CallAnimationEvents(AnimTriggers.idle);
                 waiting = true;
                 waitTimer = 2f;
             }
             else
             {
-                
                 ChangePathPt();
                 SetDest();
             }
         }
         if(waiting)
         {
+            print("idle");
+            CallAnimationEvents(AnimTriggers.idle);
             waitTimer += Time.deltaTime;
             if(waitTimer >= pathPoints[currentPathPt].waitForThisLong)
             {
@@ -423,7 +421,8 @@ public class Humans : MonoBehaviour
             {
                 navMesh.velocity = Vector3.zero;
                 
-                
+                print("pickup");
+                CallAnimationEvents(AnimTriggers.pickup);
                 StartCoroutine(pickUpFood(bestCollider));
             
             } 
@@ -435,8 +434,6 @@ public class Humans : MonoBehaviour
     
     IEnumerator pickUpFood(Collider food)
     {
-        // animation pick up
-        CallAnimationEvents(AnimTriggers.pickup);
         yield return new WaitForSeconds(2.8f);
     
         food.gameObject.SetActive(false);
@@ -458,7 +455,6 @@ public class Humans : MonoBehaviour
     void returnToPath()
     {
         hasFood = false;
-    
         currentState = HumanStates.PathFollowing;
     }
 
@@ -528,8 +524,9 @@ public class Humans : MonoBehaviour
     {
         if (pathPoints != null)
         {
-            // animation walking
+            print("walking");
             CallAnimationEvents(AnimTriggers.walking);
+
             Vector3 targetVector = pathPoints[currentPathPt].transform.position;
             navMesh.SetDestination(targetVector);
             

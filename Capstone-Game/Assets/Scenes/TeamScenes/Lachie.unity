@@ -534,7 +534,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 1
-  waitForThisLong: 10
+  waitForThisLong: 5
 --- !u!95 &767409963 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 1420553865083361496, guid: c1702d763353abb47949987bc6e72495, type: 3}
@@ -1071,7 +1071,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 1
-  waitForThisLong: 10
+  waitForThisLong: 5
 --- !u!1 &1030656843
 GameObject:
   m_ObjectHideFlags: 0
@@ -1734,8 +1734,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 628919248}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: unFreezeTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: walkingPause
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: pathPoints.Array.size
@@ -1759,7 +1763,11 @@ PrefabInstance:
       objectReference: {fileID: 1013683880}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.size
-      value: 7
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[0].trigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[1].trigger
@@ -1767,51 +1775,71 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[2].trigger
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[3].trigger
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[4].trigger
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[5].trigger
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[6].trigger
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[7].trigger
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[8].trigger
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[9].trigger
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[10].trigger
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[11].trigger
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[12].trigger
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[0].animsParameter.paramName
-      value: HumanMove
+      value: HumanWalk
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[1].animsParameter.paramName
-      value: HumanMove
+      value: HumanWalk
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[2].animsParameter.paramName
-      value: HumanMove
+      value: HumanStun
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[3].animsParameter.paramName
-      value: HumanMove
+      value: HumanRun
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[4].animsParameter.paramName
-      value: HumanMove
+      value: HumanPickup
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[5].animsParameter.paramName
-      value: HumanMove
+      value: HumanEating
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[6].animsParameter.paramName
@@ -1819,6 +1847,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[7].animsParameter.paramName
+      value: HumanRun
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[8].animsParameter.paramName
+      value: HumanStun
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[9].animsParameter.paramName
+      value: HumanWalk
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[0].animsParameter.setToValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[10].animsParameter.paramName
+      value: HumanPickup
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[11].animsParameter.paramName
+      value: HumanEating
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[12].animsParameter.paramName
       value: HumanDrop
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
@@ -1827,19 +1879,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[2].animsParameter.setToValue
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[3].animsParameter.setToValue
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[4].animsParameter.setToValue
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[5].animsParameter.setToValue
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[6].animsParameter.setToValue
@@ -1847,6 +1899,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[7].animsParameter.setToValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[8].animsParameter.setToValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[9].animsParameter.setToValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[10].animsParameter.setToValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[11].animsParameter.setToValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[12].animsParameter.setToValue
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
