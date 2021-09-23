@@ -148,7 +148,8 @@ public class CameraGimbal : MonoBehaviour
     public void UpdateCamPos()
     {
         // Move towards target
-        transform.position = Vector3.SmoothDamp(transform.position + new Vector3(0, 0.05f, 0), cameraTarget.transform.position, ref velocity, translationSmoothing);
+        if ((cameraTarget.transform.position - transform.position).sqrMagnitude > 0.0005f)
+            transform.position = Vector3.SmoothDamp(transform.position + new Vector3(0, 0.05f, 0), cameraTarget.transform.position, ref velocity, translationSmoothing);
     }
 
     public float UpdateDollyToggleZoom()
@@ -172,8 +173,6 @@ public class CameraGimbal : MonoBehaviour
             zoomedMax = programmerSettings.minDistance + range * fraction;
         }
 
-        desiredCameraPos = transform.TransformPoint(dollyDir * zoomedMax);
-
         return zoomedMax;
     }
 
@@ -189,6 +188,8 @@ public class CameraGimbal : MonoBehaviour
         {
             zoomedMax = UpdateDollyToggleZoom();
         }
+
+        desiredCameraPos = transform.TransformPoint(dollyDir * zoomedMax);
 
         //Move the camera closer if certain bad conditions are found:
         RaycastHit hit;
