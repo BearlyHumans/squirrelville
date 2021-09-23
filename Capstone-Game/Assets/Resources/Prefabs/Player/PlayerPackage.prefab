@@ -2435,7 +2435,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1512199470005858200}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -38.41, y: 0.69, z: -21.67}
+  m_LocalPosition: {x: -28.06, y: 19.4, z: 0.26}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1512199468974199795}
@@ -2546,7 +2546,7 @@ MonoBehaviour:
       allowNegativeStamina: 1
       zeroStopsRegen: 0
       failStopsRegen: 0
-      dashStamPerSec: 30
+      dashStamPerSec: 0
       walkStamPerSec: 0
       jumpStamPerUse: 20
       climbStamPerSec: 10
@@ -2601,9 +2601,9 @@ MonoBehaviour:
       haltAtFractionOfMaxSpeed: 0.9
       turningThreshold: 0.2
     jump:
-      jumpForce: 1.5
+      jumpForce: 3
       allowForwardJumps: 1
-      forwardJumpForce: 3
+      forwardJumpForce: 2
       forwardJumpVerticalFraction: 1
       jumpCooldown: 0.2
       checkJumpTime: 0.2
