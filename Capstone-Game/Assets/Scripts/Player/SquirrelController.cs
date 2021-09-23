@@ -264,6 +264,11 @@ namespace Player
                 "Multiple Events can be made for each trigger and they will all be called.")]
             public AnimationTrigger trigger;
             public ExposedAnimationParameter parameterChange;
+
+            public override string ToString()
+            {
+                return trigger.ToString();
+            }
         }
 
         public enum AnimationTrigger
@@ -282,6 +287,7 @@ namespace Player
             sneaking,
             slipping,
             climbing,
+            notClimbing,
             falling,
             rolling,
             barking,

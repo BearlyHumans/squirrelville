@@ -3057,7 +3057,7 @@ MonoBehaviour:
       type: 1
       paramName: JumpState
       setToValue: 1
-  - trigger: 14
+  - trigger: 15
     parameterChange:
       type: 1
       paramName: JumpState
@@ -3066,6 +3066,16 @@ MonoBehaviour:
     parameterChange:
       type: 1
       paramName: JumpState
+      setToValue: 0
+  - trigger: 13
+    parameterChange:
+      type: 2
+      paramName: ClimbAngle
+      setToValue: 1
+  - trigger: 14
+    parameterChange:
+      type: 2
+      paramName: ClimbAngle
       setToValue: 0
 --- !u!114 &1512199470005858204
 MonoBehaviour:
@@ -3185,7 +3195,7 @@ MonoBehaviour:
       sphereDetectRadius: 0.01
       secondPassMultiplier: 5
       sphereDetectDistance: 1
-      surfaceDetectRange: 0.3
+      surfaceDetectRange: 0.31
       edgeStopLatRadius: 0.15
       edgeStopDownDist: 0.15
       edgeSlideCheckDist: 0.1

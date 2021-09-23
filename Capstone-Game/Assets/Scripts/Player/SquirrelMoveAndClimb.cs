@@ -64,11 +64,10 @@ namespace Player
             else if (vals.jumping == false)
                 PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.notMoving);
 
-            if (ParentRefs.animator.GetCurrentAnimatorStateInfo(0).IsName("Jumping"))
-            {
-                //if (PARENT.debugMessages)
-                    print("Jump Animation");
-            }
+            if (vals.climbingAngle)
+                PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.climbing);
+            else
+                PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.notClimbing);
         }
 
         private void UpdInput()
@@ -142,7 +141,10 @@ namespace Player
             }
 
             if (!Grounded)
+            {
                 alteredAcceleration *= settings.M.airControlFactor;
+                alteredMaxSpeed *= settings.M.airControlFactor;
+            }
             else if (vals.inLandingAnimation && Time.time > vals.landingAnimationStart + settings.J.landingDelay)
             {
                 vals.inLandingAnimation = false;
@@ -281,10 +283,10 @@ namespace Player
                     if (forwardJump)
                     {
                         //Do a 'forward' jump relative to the character.
+                        ParentRefs.RB.velocity = ParentRefs.model.forward * settings.J.forwardJumpForce;
                         ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * settings.J.forwardJumpVerticalFraction;
-                        ParentRefs.RB.velocity += ParentRefs.body.forward * settings.J.forwardJumpForce;
                     }
-                    else if (Vector3.Angle(transform.forward, Vector3.down) > settings.J.onWallAngle)
+                    else if (Vector3.Angle(transform.forward, Vector3.down) > settings.S.climbMinAngle)
                     { //If player is rotated to face the ground.
                       //Do a wall jump (biased towards up instead of out).
                         ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * (1 - settings.J.standingWallJumpVerticalRatio);
@@ -337,6 +339,8 @@ namespace Player
                 
                 //Get the angle of this surface.
                 float angle = Vector3.Angle(-dir, Vector3.down);
+
+                vals.climbingAngle = angle > settings.S.climbMinAngle;
 
                 //Get the type of this surface.
                 SCRunModeSettings.SCStaminaSettings.SurfaceTypes surface = GetSurfaceType(hitSurface);
@@ -403,6 +407,7 @@ namespace Player
             }
             else if (Time.time > vals.lastOnSurface + settings.WC.noSurfResetTime)
             {
+                print("falling");
                 StartFalling();
             }
         }
@@ -782,6 +787,9 @@ namespace Player
             /// <summary> True when the character is part way through an animation, and should move more slowly to make it look better.
             /// Used for jumping and landing. </summary>
             public bool animationSlow;
+            /// <summary> True when the character is attached to a surface at an angle greater than the min climbing angle.
+            /// Used to swap between running and climbing animation. </summary>
+            public bool climbingAngle;
 
             //MESSAGES AND MULTIPLE-UPDATE VALUES:
             /// <summary> The time.time value of the last time the player started a jump.
