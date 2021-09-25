@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8418105871841643135}
   - component: {fileID: 8418105871845034591}
   - component: {fileID: 8418105871844067487}
-  - component: {fileID: 1301676410689413115}
+  - component: {fileID: 3295386494591064646}
   m_Layer: 0
   m_Name: Wood Plank Climb
   m_TagString: Climbable
@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d17f25220dbc74f4caf62d1e6bf73150, type: 2}
+  - {fileID: 2100000, guid: 59f793fc4e4819b44b61b5982cd11eef, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -82,8 +82,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1301676410689413115
-MeshCollider:
+--- !u!65 &3295386494591064646
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -92,7 +92,6 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 7a2c53c9e1991437dbabb1e19d14efcb, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.19999981, y: 2.999997, z: 0.19999981}
+  m_Center: {x: 0.0000000010349996, y: 1.4999999, z: -0.000015258357}

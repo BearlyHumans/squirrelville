@@ -99,7 +99,7 @@ Material:
     - _Parallax: 0.02
     - _QueueOffset: 0
     - _RimEnabled: 0
-    - _SelfShadingSize: 0.4
+    - _SelfShadingSize: 0.6
     - _SelfShadingSizeExtra: 0.6
     - _ShadowEdgeSize: 0.4
     - _ShadowEdgeSizeExtra: 0.05
@@ -112,19 +112,19 @@ Material:
     - _TextureImpact: 1
     - _UVSec: 0
     - _UnityShadowMode: 1
-    - _UnityShadowPower: 0.3
-    - _UnityShadowSharpness: 10
+    - _UnityShadowPower: 0.248
+    - _UnityShadowSharpness: 1
     - _VertexColorsEnabled: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.41960788, g: 0.4431373, b: 0.43529415, a: 1}
-    - _ColorDim: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
+    - _Color: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 1}
+    - _ColorDim: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 1}
     - _ColorDimCurve: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
     - _ColorDimExtra: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
     - _ColorDimSteps: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
     - _ColorGradient: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FlatRimColor: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
+    - _FlatRimColor: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 1}
     - _FlatSpecularColor: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
     - _LightmapDirection: {r: 0, g: 1, b: 0, a: 0}
     - _UnityShadowColor: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
