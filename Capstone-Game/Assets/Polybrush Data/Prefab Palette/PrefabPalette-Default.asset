@@ -317,3 +317,19 @@ MonoBehaviour:
       m_YScaleBool: 0
       m_ZScaleBool: 0
     name: grass
+  - gameObject: {fileID: 3851059724385444808, guid: 35f9d1b46663b6b4987c262ca63593a4, type: 3}
+    settings:
+      m_Strength: 46
+      m_RotationRangeMin: {x: 90, y: 0, z: 0}
+      m_RotationRangeMax: {x: 90, y: 360, z: 0}
+      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
+      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
+      m_UniformScale: {x: 2, y: 3}
+      m_UniformBool: 1
+      m_XRotationBool: 1
+      m_YRotationBool: 1
+      m_ZRotationBool: 1
+      m_XScaleBool: 0
+      m_YScaleBool: 0
+      m_ZScaleBool: 0
+    name: Vine Leaf
