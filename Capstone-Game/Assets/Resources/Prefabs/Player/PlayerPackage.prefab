@@ -2309,6 +2309,7 @@ MonoBehaviour:
     m_Bits: 257
   collisionSphereRadius: 0.1
   translationSmoothing: 0.01
+  cameraSmoothThreshold: 0
   programmerSettings:
     smooth: 10
     upperWorldClampAngle: 70
@@ -3111,12 +3112,12 @@ MonoBehaviour:
       allowNegativeStamina: 0
       zeroStopsRegen: 0
       failStopsRegen: 0
-      dashStamPerSec: 10
+      dashStamPerSec: 0
       walkStamPerSec: 0
-      jumpStamPerUse: 20
-      climbStamPerSec: 30
+      jumpStamPerUse: 0
+      climbStamPerSec: 0
       climbMinAngle: 45
-      climbMaxAngle: 130
+      climbMaxAngle: 190
       defaultSurface: 2
       EZClimbTag: EZClimb
       ClimbableTag: Climbable
@@ -3159,7 +3160,7 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       dashForAutoclimb: 1
-      airControlFactor: 0.5
+      airControlFactor: 1
       frictionForce: 50
       stoppingForce: 50
       airStoppingForce: 1
@@ -3294,7 +3295,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1512199470005858200}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72904a3db55978e428985db3ee3e9e76, type: 3}
   m_Name: 
