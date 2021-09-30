@@ -1410,7 +1410,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2560365287483943289
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3122,7 +3122,7 @@ MonoBehaviour:
       EZClimbTag: EZClimb
       ClimbableTag: Climbable
       nonClimbableTag: HardClimb
-      slipperyTag: NoClimb
+      slipperyTag: Slippery
     movement:
       acceleration: 20
       maxSpeed: 3
@@ -4366,7 +4366,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8736800309113941757
 RectTransform:
   m_ObjectHideFlags: 0
