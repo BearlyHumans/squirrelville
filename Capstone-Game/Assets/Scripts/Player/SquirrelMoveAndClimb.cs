@@ -373,10 +373,10 @@ namespace Player
                 {
                     PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.slipping);
 
-                    CustomIntuitiveSnapRotation(-hitSurface.normal);
-
-                    //if (Time.time > vals.lastOnSurface + settings.WC.noSurfResetTime)
-                    //    StartFalling();
+                    if (Time.time < vals.lastOnSurface + settings.S.maxRotatedSlidingTime)
+                        CustomIntuitiveSnapRotation(-hitSurface.normal);
+                    else
+                        StartFalling();
                 }
                 else
                 {
@@ -407,7 +407,6 @@ namespace Player
             }
             else if (Time.time > vals.lastOnSurface + settings.WC.noSurfResetTime)
             {
-                print("falling");
                 StartFalling();
             }
         }
@@ -850,7 +849,7 @@ namespace Player
 
             [Header("Settings Categories")]
             /// <summary> Contains variables which are exposed in the inspector, and are used as values for Stamina behaviours. </summary>
-            public SCStaminaSettings stamina = new SCStaminaSettings();
+            public SCStaminaSettings staminaAndSurfaces = new SCStaminaSettings();
             /// <summary> Contains variables which are exposed in the inspector, and are used as values for normal Movement behaviours. </summary>
             public SCMoveSettings movement = new SCMoveSettings();
             /// <summary> Contains variables which are exposed in the inspector, and are used as values for Jumping behaviours. </summary>
@@ -859,7 +858,7 @@ namespace Player
             public SCWallClimbSettings wallClimbing = new SCWallClimbSettings();
 
             /// <summary> Shorthand for Stamina settings class. </summary>
-            public SCStaminaSettings S { get { return stamina; } }
+            public SCStaminaSettings S { get { return staminaAndSurfaces; } }
             /// <summary> Shorthand for Movement settings class. </summary>
             public SCMoveSettings M { get { return movement; } }
             /// <summary> Shorthand for Jump settings class. </summary>
@@ -907,6 +906,9 @@ namespace Player
                 public string ClimbableTag = "Climbable";
                 public string nonClimbableTag = "HardClimb";
                 public string slipperyTag = "NoClimb";
+
+                [Space]
+                public float maxRotatedSlidingTime = 0.5f;
             }
 
             [System.Serializable]
