@@ -3101,28 +3101,29 @@ MonoBehaviour:
     startClimbCheckRay: {fileID: 1512199468204343836}
     climbRotateCheckRay: {fileID: 1512199468629165261}
     mainCollider: {fileID: 1512199469965420349}
-    staminaBar: {fileID: 7500992045671800574}
   settings:
     squirrelCenterToNoseDist: 0.16
-    stamina:
-      maxStamina: 100
-      minStaminaToStartUse: 5
-      staminaRegenPerSecond: 30
+    staminaAndSurfaces:
+      maxStamina: 10
+      minStaminaToStartUse: 10
+      staminaRegenPerSecond: 1
       staminaRegenDelay: 1
-      allowNegativeStamina: 0
+      allowNegativeStamina: 1
       zeroStopsRegen: 0
       failStopsRegen: 0
-      dashStamPerSec: 0
+      dashStamPerSec: 1
       walkStamPerSec: 0
-      jumpStamPerUse: 0
-      climbStamPerSec: 0
-      climbMinAngle: 45
-      climbMaxAngle: 190
+      jumpStamPerUse: 1
+      climbStamPerSec: 1
       defaultSurface: 2
       EZClimbTag: EZClimb
       ClimbableTag: Climbable
-      nonClimbableTag: HardClimb
+      nonClimbableTag: NonClimbable
       slipperyTag: Slippery
+      climbMinAngle: 60
+      climbMaxAngle: 175
+      slipperyAngle: 20
+      maxRotatedSlidingTime: 1
     movement:
       acceleration: 20
       maxSpeed: 3
@@ -3159,7 +3160,6 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-      dashForAutoclimb: 1
       airControlFactor: 1
       frictionForce: 50
       stoppingForce: 50
@@ -3170,18 +3170,11 @@ MonoBehaviour:
       jumpForce: 3.5
       allowForwardJumps: 1
       forwardJumpForce: 1
-      forwardJumpVerticalFraction: 1
+      forwardJumpHeightDiff: 1
+      WallJumpAngleEffect: 0.5
       jumpCooldown: 0.2
       checkJumpTime: 0.2
       coyoteeTime: 0.2
-      onWallAngle: 90
-      standingWallJumpVerticalRatio: 0.5
-      SJCheckHeight: 2
-      EdgeDetectDepth: 2
-      EdgeDetectAngle: 70
-      CornerJumpDepth: 2
-      SJCheckInterval: 1
-      SJCheckCount: 4
       jumpDelay: 0.15
       landingDelay: 0.15
       stopWhenJumping: 0
@@ -3194,17 +3187,6 @@ MonoBehaviour:
       rotateToLayers:
         serializedVersion: 2
         m_Bits: 951
-      angleToFailAutoclimb: 30
-      sphereDetectRadius: 0.01
-      secondPassMultiplier: 5
-      sphereDetectDistance: 1
-      surfaceDetectRange: 0.31
-      edgeStopLatRadius: 0.15
-      edgeStopDownDist: 0.15
-      edgeSlideCheckDist: 0.1
-      wallStickDangerAngle: 10
-      wallStickForce: 0.2
-      teleportDist: 0.01
       noSurfResetTime: 0.3
       rotateDegreesPerSecond: 720
       moveUnitsPerSecond: 5
@@ -3212,6 +3194,19 @@ MonoBehaviour:
       autoclimbCooldown: 0.33
       cornerVaultCooldown: 0.33
       teleportCooldown: 0.01
+      programmerSettings:
+        sphereDetectRadius: 0.01
+        secondPassMultiplier: 5
+        sphereDetectDistance: 1
+        surfaceDetectRange: 0.31
+        edgeStopLatRadius: 0.15
+        edgeStopDownDist: 0.15
+        edgeSlideCheckDist: 0.1
+        wallStickDangerAngle: 10
+        SJCheckHeight: 2
+        EdgeDetectDepth: 2
+        EdgeDetectAngle: 70
+        CornerJumpDepth: 2
   triggers:
     feet: {fileID: 1512199468921853536}
   debugString: null
@@ -3295,7 +3290,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1512199470005858200}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72904a3db55978e428985db3ee3e9e76, type: 3}
   m_Name: 
