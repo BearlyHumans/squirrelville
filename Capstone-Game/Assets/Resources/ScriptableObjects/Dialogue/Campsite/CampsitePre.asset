@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04273a48ccd3fc44983e66b6acdba9a3, type: 3}
+  m_Name: CampsitePre
+  m_EditorClassIdentifier: 
+  entries:
+  - text: "Hey there! I think I\u2019ll need more than that."
+    sprite: {fileID: 21300000, guid: c31dcd4e483e68d4dba2aad7039afdbd, type: 3}
+  - text: "Be sure to grab 15 acorns for me - the humans have a whole heap! I\u2019m
+      sure you\u2019d do a better job of stealing than I would mate!!"
+    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}

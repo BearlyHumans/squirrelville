@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04273a48ccd3fc44983e66b6acdba9a3, type: 3}
+  m_Name: CampsiteIntro
+  m_EditorClassIdentifier: 
+  entries:
+  - text: Little guy! Great to see you again.
+    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
+  - text: "Just be happy you didn\u2019t see me need to sneak through here, not the
+      most graceful sight!"
+    sprite: {fileID: 21300000, guid: b8042a022772c244ca2c5433cbea3e51, type: 3}
+  - text: "We\u2019re not too far from the top now\u2026 but there\u2019s another
+      bloody rock in the way."
+    sprite: {fileID: 21300000, guid: 48f9b57e80877e3499e629c7bcc247d0, type: 3}
+  - text: "Hahahaha! You\u2019d think someone\u2019s trying to stop us or something."
+    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
+  - text: "I reckon I\u2019ll need some more acorns this time, she\u2019s a big one!"
+    sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}
+  - text: "Could you grab me 15 acorns and I\u2019ll be able to handle this one.
+      Thanks buddy."
+    sprite: {fileID: 21300000, guid: f2b47b7936547f34689640c321e86f82, type: 3}
