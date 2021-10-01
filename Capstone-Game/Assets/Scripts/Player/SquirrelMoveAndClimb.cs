@@ -365,7 +365,8 @@ namespace Player
                 }
                 else if (surface == SCRunModeSettings.SCStaminaSettings.SurfaceTypes.Slippery)
                 {
-                    vals.onSlippery = true;
+                    if (angle > settings.S.slipperyAngle)
+                        vals.onSlippery = true;
                 }
 
                 //Do animations and behaviour based on if surface is slippery.
@@ -894,10 +895,6 @@ namespace Player
                 public float jumpStamPerUse = 1f;
                 [Tooltip("Amount of stamina used per second when on a sufficiently steep surface.")]
                 public float climbStamPerSec = 1f;
-                [Tooltip("The angle of a surface for moving on it to be defined as climbing.")]
-                public float climbMinAngle = 30f;
-                [Tooltip("The angle of a surface where the player will immediately fall off (except EZ Climb).")]
-                public float climbMaxAngle = 175f;
 
                 [Header("Surface Settings")]
                 public SurfaceTypes defaultSurface = SurfaceTypes.NonClimbable;
@@ -906,6 +903,12 @@ namespace Player
                 public string ClimbableTag = "Climbable";
                 public string nonClimbableTag = "HardClimb";
                 public string slipperyTag = "NoClimb";
+                [Tooltip("The angle of a surface for moving on it to be defined as climbing.")]
+                public float climbMinAngle = 30f;
+                [Tooltip("The angle of a surface where the player will immediately fall off (except EZ Climb).")]
+                public float climbMaxAngle = 175f;
+                [Tooltip("The angle of a surface where the player will immediately fall off (except EZ Climb).")]
+                public float slipperyAngle = 20f;
 
                 [Space]
                 public float maxRotatedSlidingTime = 0.5f;
