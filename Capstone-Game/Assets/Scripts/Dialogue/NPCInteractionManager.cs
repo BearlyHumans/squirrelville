@@ -53,9 +53,9 @@ public class NPCInteractionManager : MonoBehaviour
                         isInteracting = true;
                         squirrelController.FreezeMovement();
                         interactionStart?.Invoke();
-                        if (npc.TryGetComponent<Dialogue>(out Dialogue dialogue))
+                        if (npc.TryGetComponent<NPCDialogue>(out NPCDialogue npcDialogue))
                         {
-                            dialogueBox.SetDialogue(dialogue);
+                            dialogueBox.SetDialogue(npcDialogue);
                         }
                     }
                 }
