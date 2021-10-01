@@ -80,9 +80,6 @@ namespace Player
             if (vals.frozen)
                 return;
 
-            if (debugMessages)
-                print(Time.frameCount + " Pre   Update = " + transform.position + " [1]");
-
             CallAnimationEvents(AnimationTrigger.frameStart);
 			
             refs.fCam.UpdateCamRotFromInput();
@@ -109,9 +106,6 @@ namespace Player
                 behaviourScripts.ball.ManualUpdate();
             }
 
-            if (debugMessages)
-                print(Time.frameCount + " Post  Update = " + transform.position + " [2]");
-
             if (!updateInFixed)
             {
                 refs.fCam.UpdateCamPos();
@@ -123,9 +117,6 @@ namespace Player
         {
             if (PauseMenu.paused || vals.frozen)
                 return;
-
-            if (debugMessages)
-                print(Time.frameCount + " Fixed Update = " + transform.position + " [3]");
 
             if (updateInFixed)
             {
@@ -187,9 +178,6 @@ namespace Player
 
         public void CallAnimationEvents(AnimationTrigger trigger)
         {
-            //if (debugMessages)
-                //print("Triggered Event: " + trigger.ToString());
-
             foreach (ParameterChangeEvent PCE in animationEvents)
             {
                 if (PCE.trigger == trigger)
