@@ -505,6 +505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fc91294ee9bed645b938865957038cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialDialogue: {fileID: 0}
   preFoodDialogue: {fileID: 0}
   foodDialogue: {fileID: 0}
   postFoodDialogue: {fileID: 0}
@@ -1229,6 +1230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fc91294ee9bed645b938865957038cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialDialogue: {fileID: 11400000, guid: e7c872acf241e664992a390bdfd4b58c, type: 2}
   preFoodDialogue: {fileID: 11400000, guid: dd9bbe9acb723a84ebfed0c9d110019a, type: 2}
   foodDialogue: {fileID: 11400000, guid: 058fb32c51c265b40851b4eef529abd7, type: 2}
   postFoodDialogue: {fileID: 11400000, guid: 029c9a24ba8f1164da983e10011e5d69, type: 2}
