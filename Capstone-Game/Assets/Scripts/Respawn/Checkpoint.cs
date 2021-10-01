@@ -17,7 +17,7 @@ public class Checkpoint : MonoBehaviour
     private static Checkpoint currentCheckpoint;
     private static Vector3 defaultRespawnPoint;
 
-    void Start()
+    private void Start()
     {
         if (defaultRespawnPoint == null)
         {
