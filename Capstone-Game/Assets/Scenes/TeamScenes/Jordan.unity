@@ -1233,7 +1233,7 @@ MonoBehaviour:
   foodDialogue: {fileID: 11400000, guid: 058fb32c51c265b40851b4eef529abd7, type: 2}
   postFoodDialogue: {fileID: 11400000, guid: 029c9a24ba8f1164da983e10011e5d69, type: 2}
   foodArea: {fileID: 720750694}
-  foodRequired: 0
+  foodRequired: 3
   dialogueStart:
     m_PersistentCalls:
       m_Calls: []
