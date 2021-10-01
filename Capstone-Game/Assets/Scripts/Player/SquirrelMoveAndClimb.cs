@@ -907,10 +907,11 @@ namespace Player
                 public float climbMinAngle = 30f;
                 [Tooltip("The angle of a surface where the player will immediately fall off (except EZ Climb).")]
                 public float climbMaxAngle = 175f;
-                [Tooltip("The angle of a surface where the player will immediately fall off (except EZ Climb).")]
+                [Tooltip("The angle of a surface where slipperyness applies (i.e. player can walk when below this angle).")]
                 public float slipperyAngle = 20f;
 
                 [Space]
+                [Tooltip("Maximum duration of 'sticky slipping' before the players rotation is reset.")]
                 public float maxRotatedSlidingTime = 0.5f;
             }
 
