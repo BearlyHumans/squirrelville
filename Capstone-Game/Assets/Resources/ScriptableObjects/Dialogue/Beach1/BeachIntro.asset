@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04273a48ccd3fc44983e66b6acdba9a3, type: 3}
+  m_Name: BeachIntro
+  m_EditorClassIdentifier: 
+  entries:
+  - text: "G'day little dude! I've never seen anything like you around here before\r"
+    sprite: {fileID: 0}
+  - text: What brings you to our famous acorn island?
+    sprite: {fileID: 0}
+  - text: 'You alright? You look lost mate! '
+    sprite: {fileID: 0}
+  - text: Well... I am more than happy to show you around!
+    sprite: {fileID: 0}
+  - text: "Problem is I don't have the energy to move this giant boulder that's blocking
+      our way\u2026 my dad has wanted me to get that..."
+    sprite: {fileID: 0}
+  - text: ...Giant Acorn...
+    sprite: {fileID: 0}
+  - text: "...from the top of the mountain for a few\u2026 days, months, years? Sometimes
+      it\u2019s hard to tell. Hahaha!"
+    sprite: {fileID: 0}
+  - text: Our cousins back home told us not to eat acorns, but after living on this
+      island we just can't get enough of the things!
+    sprite: {fileID: 0}
+  - text: "Wait\u2026 you want it too? Little guy!!! We can work together on this!!
+      Yes!! Let\u2019s do it! My family will be so chuffed!"
+    sprite: {fileID: 0}
+  - text: "I\u2019ve seen some acorns around the place here, but I\u2019m a little
+      tired. You wouldn't happen to have any acorns already?"
+    sprite: {fileID: 0}
+  - text: If you bring me 5 acorns, I just might have enough energy to move those
+      rocks!
+    sprite: {fileID: 0}
