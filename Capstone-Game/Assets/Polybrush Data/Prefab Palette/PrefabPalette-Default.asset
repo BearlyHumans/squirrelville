@@ -82,24 +82,24 @@ MonoBehaviour:
       m_Strength: 50
       m_RotationRangeMin: {x: 0, y: 0, z: 0}
       m_RotationRangeMax: {x: 0, y: 360, z: 0}
-      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
-      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
+      m_ScaleRangeMin: {x: 0.75, y: 0.75, z: 1}
+      m_ScaleRangeMax: {x: 1.25, y: 1.25, z: 1}
       m_UniformScale: {x: 1, y: 1}
       m_UniformBool: 0
       m_XRotationBool: 0
       m_YRotationBool: 1
       m_ZRotationBool: 0
-      m_XScaleBool: 0
+      m_XScaleBool: 1
       m_YScaleBool: 0
       m_ZScaleBool: 0
     name: tree_2
   - gameObject: {fileID: 519052635182701490, guid: 3a20843f67d9f7b42a460b5709511877, type: 3}
     settings:
-      m_Strength: 30
+      m_Strength: 57
       m_RotationRangeMin: {x: 0, y: 0, z: 0}
       m_RotationRangeMax: {x: 0, y: 360, z: 0}
-      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
-      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
+      m_ScaleRangeMin: {x: 0.7627119, y: 1, z: 1}
+      m_ScaleRangeMax: {x: 1.3728814, y: 1.2711865, z: 1}
       m_UniformScale: {x: 1, y: 1}
       m_UniformBool: 0
       m_XRotationBool: 0
@@ -114,15 +114,15 @@ MonoBehaviour:
       m_Strength: 50
       m_RotationRangeMin: {x: 0, y: 0, z: 0}
       m_RotationRangeMax: {x: 0, y: 360, z: 0}
-      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
-      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
+      m_ScaleRangeMin: {x: 0.75, y: 0.75, z: 1}
+      m_ScaleRangeMax: {x: 1.25, y: 1.25, z: 1}
       m_UniformScale: {x: 1, y: 1}
       m_UniformBool: 0
       m_XRotationBool: 0
       m_YRotationBool: 1
       m_ZRotationBool: 0
-      m_XScaleBool: 0
-      m_YScaleBool: 0
+      m_XScaleBool: 1
+      m_YScaleBool: 1
       m_ZScaleBool: 0
     name: BigTree 1
   - gameObject: {fileID: 145726, guid: 1be5e82b1cbc5d243947fbcf678997fa, type: 3}
@@ -223,16 +223,16 @@ MonoBehaviour:
     name: Rocks Climb
   - gameObject: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
     settings:
-      m_Strength: 100
-      m_RotationRangeMin: {x: 0, y: -90, z: 180}
-      m_RotationRangeMax: {x: -360, y: -90, z: 180}
+      m_Strength: 79.75
+      m_RotationRangeMin: {x: 0, y: 0, z: 160}
+      m_RotationRangeMax: {x: 0, y: 0, z: 180}
       m_ScaleRangeMin: {x: 1, y: 1, z: 1}
       m_ScaleRangeMax: {x: 1, y: 1, z: 1}
       m_UniformScale: {x: 1, y: 1}
       m_UniformBool: 1
       m_XRotationBool: 1
-      m_YRotationBool: 0
-      m_ZRotationBool: 0
+      m_YRotationBool: 1
+      m_ZRotationBool: 1
       m_XScaleBool: 0
       m_YScaleBool: 0
       m_ZScaleBool: 0
