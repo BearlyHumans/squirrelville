@@ -615,17 +615,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4406374539086946, guid: 9fc6027299151c9458ffd62c2b09bd51, type: 3}
   m_PrefabInstance: {fileID: 1401098818}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &335092906 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1512199470005858206, guid: c1702d763353abb47949987bc6e72495, type: 3}
-  m_PrefabInstance: {fileID: 1923068767}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0870beee427039345bd93b084cf75e79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &401902773
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2520,13 +2509,5 @@ PrefabInstance:
       propertyPath: m_Name
       value: Water
       objectReference: {fileID: 0}
-    - target: {fileID: 7698266402831919927, guid: f0d764122900a664ab589960633f5bd6, type: 3}
-      propertyPath: depth
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7698266402831919927, guid: f0d764122900a664ab589960633f5bd6, type: 3}
-      propertyPath: squirrel
-      value: 
-      objectReference: {fileID: 335092906}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0d764122900a664ab589960633f5bd6, type: 3}
