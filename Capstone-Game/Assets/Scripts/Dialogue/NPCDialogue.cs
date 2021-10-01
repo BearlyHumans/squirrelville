@@ -72,4 +72,9 @@ public class NPCDialogue : MonoBehaviour
             return preFoodDialogue;
         }
     }
+
+    public bool HasDialogue()
+    {
+        return GetDialogue() != null;
+    }
 }
