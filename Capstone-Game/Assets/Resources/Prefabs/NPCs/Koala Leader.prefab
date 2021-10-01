@@ -812,8 +812,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2195673325780848076}
-  - component: {fileID: 4258537776924691523}
   - component: {fileID: 398269382195743090}
+  - component: {fileID: 5297654498197416666}
   m_Layer: 13
   m_Name: Koala Leader
   m_TagString: Untagged
@@ -838,28 +838,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -10.538, z: 0}
---- !u!114 &4258537776924691523
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1527645981590919030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04273a48ccd3fc44983e66b6acdba9a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  entries: []
-  dialogueStart:
-    m_PersistentCalls:
-      m_Calls: []
-  dialogueNext:
-    m_PersistentCalls:
-      m_Calls: []
-  dialogueFinish:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!136 &398269382195743090
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -874,6 +852,35 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5297654498197416666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1527645981590919030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fc91294ee9bed645b938865957038cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preFoodDialogue: {fileID: 11400000, guid: dd9bbe9acb723a84ebfed0c9d110019a, type: 2}
+  foodDialogue: {fileID: 11400000, guid: 058fb32c51c265b40851b4eef529abd7, type: 2}
+  postFoodDialogue: {fileID: 11400000, guid: 029c9a24ba8f1164da983e10011e5d69, type: 2}
+  foodArea: {fileID: 0}
+  foodRequired: 0
+  dialogueStart:
+    m_PersistentCalls:
+      m_Calls: []
+  dialogueNext:
+    m_PersistentCalls:
+      m_Calls: []
+  dialogueFinish:
+    m_PersistentCalls:
+      m_Calls: []
+  foodCollected:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1587956862052040840
 GameObject:
   m_ObjectHideFlags: 0

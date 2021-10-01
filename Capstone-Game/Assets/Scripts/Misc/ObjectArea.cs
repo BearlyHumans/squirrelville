@@ -23,7 +23,7 @@ public class ObjectArea : MonoBehaviour
         // Detect when food is eaten from within the area
         foreach (GameObject obj in oldObjectsInArea)
         {
-            if (!obj.activeInHierarchy)
+            if (obj == null || !obj.activeInHierarchy)
             {
                 objectsInArea.Remove(obj);
 
