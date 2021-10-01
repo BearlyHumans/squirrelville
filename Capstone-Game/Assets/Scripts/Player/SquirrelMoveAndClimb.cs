@@ -99,18 +99,24 @@ namespace Player
 
 
             if (Input.GetButton("CarefulMode"))
-                vals.stopAtEdgesPressed = true;
+                vals.carefulModePressed = true;
             else
-                vals.stopAtEdgesPressed = false;
+                vals.carefulModePressed = false;
 
+            vals.climbButtonPressed = false;
             if (Input.GetButtonDown("ClimbVault"))
             {
-                vals.findClimbablePressed = true; //Reset when the check happens.
-                vals.cornerVaultDown = Time.time;
-                vals.cornerVaultHeld = true;
+                vals.climbButtonPressed = true;
+                vals.climbButtonDown = Time.time;
+                vals.climbButtonHeld = true;
             }
+            vals.climbButtonReleased = false;
             if (!Input.GetButton("ClimbVault"))
-                vals.cornerVaultHeld = false;
+            {
+                if (vals.climbButtonHeld)
+                    vals.climbButtonReleased = true;
+                vals.climbButtonHeld = false;
+            }
 
             if (Input.GetButton("Zoom"))
                 vals.zoomPressed = true;
@@ -159,7 +165,7 @@ namespace Player
                     vals.desiredDirection = Vector3.zero;
 
                 if (settings.J.carefulModeInAnimations)
-                    vals.stopAtEdgesPressed = true;
+                    vals.carefulModePressed = true;
             }
 
             //Calculate the ideal velocity from the input and the acceleration settings.
@@ -178,11 +184,11 @@ namespace Player
 
             //-----PHASE THREE: AVOID EDGES AND SLOW TO MAX SPEED-----//
             
-            if (Grounded && (vals.stopAtEdgesPressed || vals.cornerVaultHeld))
+            if (Grounded && (vals.carefulModePressed || vals.climbButtonHeld))
             {
                 //Checks for edges (so that corner vaulting can work), but only actually stop at them if the button (Ctrl) is pressed.
                 Vector3 postEdgeCodeLatVel = AvoidEdgesLinear(LateralVelocityNew);
-                if (vals.stopAtEdgesPressed)
+                if (vals.carefulModePressed)
                     LateralVelocityNew = postEdgeCodeLatVel;
             }
 
@@ -342,6 +348,9 @@ namespace Player
 
                 vals.climbingAngle = angle > settings.S.climbMinAngle;
 
+                if (!vals.climbButtonHeld && vals.climbingAngle)
+                    return;
+
                 //Get the type of this surface.
                 SCRunModeSettings.SCStaminaSettings.SurfaceTypes surface = GetSurfaceType(hitSurface);
                 
@@ -449,43 +458,73 @@ namespace Player
         /// Also place the climb-point debug object. </summary>
         private void Abilities()
         {
-            bool zoomMode = false;
-            if (vals.zoomPressed)
-            {
-                //This might do something in the future such as changing the climb check accuracy.
-                zoomMode = true;
-            }
+            //If M1 was pressed this frame:
+            //      Do Forwards climb check (Bigger Range?)
+            //      Do radial climb check
+            //else If M1 is held
+            //  If falling:
+            //      Do Forwards climb check
+            //      Do radial climb check
+            //  else:
+            //      Do Forwards climb check
+            //      If At Edge:
+            //          If NOT pressing careful mode:
+            //              Do Edge vault
+            //else:
+            //  Disable rotating to surface if the angle is too great
 
+
+            //Cancel climb checks if currently jumping or landing ('save' button press until finished like jump?)
             if (vals.inJumpAnimation || vals.inLandingAnimation)
                 return;
 
-            if (vals.findClimbablePressed)
+            if (vals.climbButtonPressed)
             {
-                vals.findClimbablePressed = false;
-                //Try to jump onto a wall, otherwise do a normal jump.
-                if (JumpToClimbWall(1f))
+                if (ForwardClimbCheck(1f))
+                    return;
+                if (FlowerClimbCheck(0.8f))
                     return;
             }
-
-            if (vals.cornerVaultHeld && Time.time > vals.cornerVaultDown + settings.WC.autoVaultActivationTime)
+            else if (vals.climbButtonHeld)
             {
-                if (vals.stoppedAtEdge)
-                    JumpAroundCorners();
+                if (vals.falling)
+                {
+                    if (ForwardClimbCheck(1.2f))
+                        return;
+                    if (FlowerClimbCheck(1f))
+                        return;
+                }
+                else
+                {
+                    if (ForwardClimbCheck(1f))
+                        return;
+                    if (vals.stoppedAtEdge)
+                    {
+                        if (!vals.carefulModePressed)
+                            JumpAroundCorners();
+                    }
+                }
+            }
+            else if (vals.climbButtonReleased)
+            {
+                //Simple testing version:
+                ParentRefs.RB.velocity += -transform.forward * 3;
+                
             }
         }
 
-        private bool JumpToClimbWall(float distMultiplier)
+        private bool ForwardClimbCheck(float distMultiplier)
         {
-            return JumpToClimbWall(distMultiplier, 0);
+            return ForwardClimbCheck(distMultiplier, 0);
         }
 
         /// <summary> Use 'FindClimbableWall' to get a surface, and then jump to it while translating the squirrels model smoothly.
         /// Raycasting to check if the point is in LOS can be enabled here. </summary>
-        private bool JumpToClimbWall(float distMultiplier, float relativeAngleToCancel)
+        private bool ForwardClimbCheck(float distMultiplier, float relativeAngleToCancel)
         {
             RaycastHit mainHit;
 
-            if (FindClimbableWall(out mainHit, distMultiplier))
+            if (FindClimbableWallInFront(out mainHit, distMultiplier))
             {
                 if (!ValidClimb(mainHit))
                     return false;
@@ -522,7 +561,7 @@ namespace Player
 
         /// <summary> Sphere-cast in the input direction to find any nearby surfaces that the squirrel can climb on.
         /// Does two passes to make it more likely a wall will be found, while maintaining tight control. </summary>
-        private bool FindClimbableWall(out RaycastHit hit, float distanceMultiplier)
+        private bool FindClimbableWallInFront(out RaycastHit hit, float distanceMultiplier)
         {
             RaycastHit mainHit;
 
@@ -563,7 +602,85 @@ namespace Player
             hit = mainHit;
             return found;
         }
-        
+
+        private bool FlowerClimbCheck(float distMultiplier)
+        {
+            RaycastHit mainHit;
+
+            if (FindClimbableWallInCircle(out mainHit, distMultiplier))
+            {
+                if (!ValidClimb(mainHit))
+                    return false;
+                //Fail the teleport if there is not line-of-sight between the player and the new point.
+                RaycastHit validityCheck;
+                Vector3 checkDir = mainHit.point - refs.climbRotateCheckRay.position;
+                float checkDist = Vector3.Distance(mainHit.point, refs.climbRotateCheckRay.position) - refs.mainCollider.radius * 0.5f;
+                if (Physics.SphereCast(refs.climbRotateCheckRay.position, refs.mainCollider.radius * 0.1f, checkDir, out validityCheck, checkDist, settings.WC.rotateToLayers))
+                {
+                    return false;
+                }
+
+                /*
+                if (relativeAngleToCancel > 0)
+                {
+                    if (Vector3.Angle(mainHit.normal, -transform.forward) < relativeAngleToCancel)
+                    {
+                        return false;
+                    }
+                }
+                */
+
+                //Teleport to the point, while maintaining the models position so it moves smoothly.
+                Quaternion oldRot = ParentRefs.model.rotation;
+                TeleportToSurface(mainHit);
+                ParentRefs.model.localRotation = oldRot;
+                vals.lastJumpToWall = Time.time;
+                vals.eliminateUpForce = true;
+
+                //Set velocity to zero to mitigate weird physics.
+                ParentRefs.RB.velocity = Vector3.zero;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary> Sphere-cast in the input direction to find any nearby surfaces that the squirrel can climb on.
+        /// Does two passes to make it more likely a wall will be found, while maintaining tight control. </summary>
+        private bool FindClimbableWallInCircle(out RaycastHit hit, float distanceMultiplier)
+        {
+            Vector3 sphereStart;
+            Vector3 sphereDir;
+
+            //Use input direction when moving and model direction when not moving.
+            float modifiedDist = settings.WC.programmerSettings.sphereDetectDistance * distanceMultiplier;
+            if (vals.desiredDirection != Vector3.zero)
+            {
+                sphereStart = refs.startClimbCheckRay.position - (vals.desiredDirection * settings.WC.programmerSettings.sphereDetectRadius);
+                sphereDir = vals.desiredDirection;
+            }
+            else
+            {
+                sphereStart = refs.startClimbCheckRay.position - (ParentRefs.body.forward * settings.WC.programmerSettings.sphereDetectRadius);
+                sphereDir = ParentRefs.body.forward;
+            }
+
+            //Iterate for each of the eight segments/petals except for the forwards one which is done seperately.
+            //   \ x /
+            //   - o -
+            //   / | \
+            hit = new RaycastHit();
+            int angle = 0;
+            for (int i = 0; i < 7; ++i)
+            {
+                angle += 45;
+                Vector3 rotatedDir = Quaternion.AngleAxis(angle, Vector3.up) * sphereDir;
+                if (Physics.SphereCast(sphereStart, settings.WC.programmerSettings.sphereDetectRadius, sphereDir, out hit, modifiedDist, settings.WC.climableLayers.value))
+                    return true;
+            }
+
+            return false;
+        }
+
         /// <summary> Check if there is a sharp edge in front of the player, and return a new movement vector to either stop, slide along an angled edge or move forward normally.
         /// (Uses 5 raycasts in a line in front of the direction of movement to check for surfaces). </summary>
         private Vector3 AvoidEdgesLinear(Vector3 lateralVelocity)
@@ -683,11 +800,13 @@ namespace Player
             ParentRefs.model.position = oldPos;
         }
 
+        /// <summary> Check if the climbing teleport is valid based on the angle and surface type. </summary>
         private bool ValidClimb(RaycastHit hit)
         {
             return ValidClimb(Vector3.Angle(hit.normal, Vector3.up), hit);
         }
 
+        /// <summary> Check if the climbing teleport is valid based on the angle and surface type. </summary>
         private bool ValidClimb(float angle, RaycastHit hit)
         {
             SCRunModeSettings.SCStaminaSettings.SurfaceTypes surface = GetSurfaceType(hit);
@@ -748,15 +867,17 @@ namespace Player
             /// Used to evaluate a speed multiplier from the 'dashSpeedMultiplierCurve'. </summary>
             public float startedDashing;
             /// <summary> The button to search for a climbable surface was pressed this frame. Default LMB. </summary>
-            public bool findClimbablePressed;
+            public bool climbButtonPressed;
+            /// <summary> The button to search for a climbable surface was released this frame. Default LMB. </summary>
+            public bool climbButtonReleased;
             /// <summary> The button to stop at edges rather than walk off them like a normal platformer is held. Default Ctrl. </summary>
-            public bool stopAtEdgesPressed;
-            /// <summary> The button to vault around corners the the player walks near is held. Default LMB.
-            /// Used to activate this mode if it is held for a time. </summary>
-            public bool cornerVaultHeld;
-            /// <summary> Time that the button to vault around corners the the player walks near was first pressed. Default LMB.
+            public bool carefulModePressed;
+            /// <summary> The climb button is held. Default LMB.
+            /// Used to activate this mode if it is held for a time (possibly instant). </summary>
+            public bool climbButtonHeld;
+            /// <summary> Time that the climbing button was first pressed. Default LMB.
             /// Used to check how long the button has been held. </summary>
-            public float cornerVaultDown;
+            public float climbButtonDown;
             /// <summary> The button to zoom the camera is held. Default RMB. Does NOT effect camera in this script. </summary>
             public bool zoomPressed;
 
