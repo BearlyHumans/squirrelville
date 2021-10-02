@@ -39,7 +39,7 @@ public class ObjectArea : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (ObjectMatchesMask(other.gameObject))
+        if (ObjectMatchesMask(other.gameObject) && objectsInArea.IndexOf(other.gameObject) == -1)
         {
             objectsInArea.Add(other.gameObject);
 
@@ -52,7 +52,7 @@ public class ObjectArea : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (ObjectMatchesMask(other.gameObject))
+        if (ObjectMatchesMask(other.gameObject) && objectsInArea.IndexOf(other.gameObject) > -1)
         {
             objectsInArea.Remove(other.gameObject);
 
