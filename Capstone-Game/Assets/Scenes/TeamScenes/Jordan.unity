@@ -520,6 +520,9 @@ MonoBehaviour:
   dialogueFinish:
     m_PersistentCalls:
       m_Calls: []
+  initialDialogueFinished:
+    m_PersistentCalls:
+      m_Calls: []
   foodCollected:
     m_PersistentCalls:
       m_Calls: []
@@ -1332,6 +1335,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   dialogueFinish:
+    m_PersistentCalls:
+      m_Calls: []
+  initialDialogueFinished:
     m_PersistentCalls:
       m_Calls: []
   foodCollected:

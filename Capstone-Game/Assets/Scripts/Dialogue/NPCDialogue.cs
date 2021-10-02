@@ -24,6 +24,7 @@ public class NPCDialogue : MonoBehaviour
     public UnityEvent dialogueStart;
     public UnityEvent dialogueNext;
     public UnityEvent dialogueFinish;
+    public UnityEvent initialDialogueFinished;
     public UnityEvent foodCollected;
 
     private bool firstTimeSpeaking = true;
@@ -36,8 +37,6 @@ public class NPCDialogue : MonoBehaviour
 
     void OnDialogueFinish()
     {
-        firstTimeSpeaking = false;
-
         if (GetDialogue() == foodDialogue)
         {
             foodCollected.Invoke();
@@ -54,6 +53,12 @@ public class NPCDialogue : MonoBehaviour
 
             foodTaken = true;
         }
+
+        if (firstTimeSpeaking)
+        {
+            initialDialogueFinished.Invoke();
+            firstTimeSpeaking = false;
+        }
     }
 
     private bool CollectedEnoughFood()
@@ -63,17 +68,17 @@ public class NPCDialogue : MonoBehaviour
 
     public Dialogue GetDialogue()
     {
-        if (foodTaken)
+        if (firstTimeSpeaking && initialDialogue != null)
+        {
+            return initialDialogue;
+        }
+        else if (foodTaken)
         {
             return postFoodDialogue;
         }
         else if (CollectedEnoughFood())
         {
             return foodDialogue;
-        }
-        else if (firstTimeSpeaking && initialDialogue != null)
-        {
-            return initialDialogue;
         }
         else
         {
