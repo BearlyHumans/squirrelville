@@ -192,6 +192,11 @@ namespace Player
                 Vector3 postEdgeCodeLatVel = AvoidEdgesLinear(LateralVelocityNew);
                 if (vals.carefulModePressed)
                     LateralVelocityNew = postEdgeCodeLatVel;
+                else if (vals.stoppedAtEdge && vals.climbButtonHeld)
+                {
+                    if (!JumpAroundCorners())
+                        LateralVelocityNew = postEdgeCodeLatVel;
+                }
             }
 
             //If the local lateral velocity of the player is above the max speed, do not allow any increases in speed due to input.
@@ -470,43 +475,47 @@ namespace Player
             
             if (vals.climbButtonPressed)
             {
-                if (ForwardClimbCheck(1f))
+                if (ClimbCheck(1f, climbChecks.headbutt))
                     return;
-                if (FlowerClimbCheck(0.8f))
+                if (ClimbCheck(1f, climbChecks.forwards))
+                    return;
+                if (ClimbCheck(0.8f, climbChecks.circle))
                     return;
             }
             else if (vals.climbButtonHeld)
             {
                 if (vals.falling)
                 {
-                    if (ForwardClimbCheck(1.2f))
+                    if (ClimbCheck(1.2f, climbChecks.forwards))
                         return;
-                    if (FlowerClimbCheck(1f))
+                    if (ClimbCheck(1f, climbChecks.circle))
                         return;
                 }
                 else
                 {
-                    if (settings.WC.stopAllOnEZClimb && vals.lastSurface == SCRunModeSettings.SCStaminaSettings.SurfaceTypes.EZClimb)
-                        return;
-                    if (ForwardClimbCheck(1f))
-                        return;
-
-                    if (vals.stoppedAtEdge)
-                    {
-                        if (!vals.carefulModePressed)
-                            JumpAroundCorners();
-                    }
+                    ClimbCheck(1f, climbChecks.headbutt);
                 }
             }
         }
 
+        private enum climbChecks { forwards, circle, headbutt }
+
         /// <summary> Use 'FindClimbableWall' to get a surface, and then jump to it while translating the squirrels model smoothly.
         /// Raycasting to check if the point is in LOS can be enabled here. </summary>
-        private bool ForwardClimbCheck(float distMultiplier)
+        private bool ClimbCheck(float distMultiplier, climbChecks type)
         {
-            RaycastHit mainHit;
+            RaycastHit mainHit = new RaycastHit();
 
-            if (FindClimbableWallInFront(out mainHit, distMultiplier))
+            bool found = false;
+
+            if (type == climbChecks.forwards)
+                found = FindClimbableWallInFront(out mainHit, distMultiplier);
+            else if (type == climbChecks.circle)
+                found = FindClimbableWallInCircle(out mainHit, distMultiplier);
+            else if (type == climbChecks.headbutt)
+                found = FindClimbableWallOnHeadbutt(out mainHit);
+
+            if (found)
             {
                 if (!ValidClimb(mainHit))
                     return false;
@@ -558,7 +567,7 @@ namespace Player
             else
             {
                 sphereStart = refs.startClimbCheckRay.position - (ParentRefs.body.forward * settings.WC.programmerSettings.sphereDetectRadius);
-                sphereDir = ParentRefs.body.forward;
+                sphereDir = ParentRefs.model.forward;
             }
 
             bool found = Physics.SphereCast(sphereStart, settings.WC.programmerSettings.sphereDetectRadius, sphereDir, out mainHit, modifiedDist, settings.WC.climableLayers.value);
@@ -585,41 +594,6 @@ namespace Player
             return found;
         }
 
-        private bool FlowerClimbCheck(float distMultiplier)
-        {
-            RaycastHit mainHit;
-
-            if (FindClimbableWallInCircle(out mainHit, distMultiplier))
-            {
-                if (!ValidClimb(mainHit))
-                    return false;
-                //Fail the teleport if there is not line-of-sight between the player and the new point.
-                RaycastHit validityCheck;
-                Vector3 checkDir = mainHit.point - refs.climbRotateCheckRay.position;
-                float checkDist = Vector3.Distance(mainHit.point, refs.climbRotateCheckRay.position) - refs.mainCollider.radius * 0.5f;
-                if (Physics.SphereCast(refs.climbRotateCheckRay.position, refs.mainCollider.radius * 0.1f, checkDir, out validityCheck, checkDist, settings.WC.rotateToLayers))
-                    return false;
-
-                if (settings.WC.minAngleDiffToClimb > 0)
-                {
-                    if (Vector3.Angle(mainHit.normal, -transform.forward) < settings.WC.minAngleDiffToClimb)
-                        return false;
-                }
-
-                //Teleport to the point, while maintaining the models position so it moves smoothly.
-                Quaternion oldRot = ParentRefs.model.rotation;
-                TeleportToSurface(mainHit);
-                ParentRefs.model.localRotation = oldRot;
-                vals.lastJumpToWall = Time.time;
-                vals.eliminateUpForce = true;
-
-                //Set velocity to zero to mitigate weird physics.
-                ParentRefs.RB.velocity = Vector3.zero;
-                return true;
-            }
-            return false;
-        }
-
         /// <summary> Sphere-cast in the input direction to find any nearby surfaces that the squirrel can climb on.
         /// Checks in 45deg increments around the player to simulate a circle. </summary>
         private bool FindClimbableWallInCircle(out RaycastHit hit, float distanceMultiplier)
@@ -637,7 +611,7 @@ namespace Player
             else
             {
                 sphereStart = refs.startClimbCheckRay.position - (ParentRefs.body.forward * settings.WC.programmerSettings.sphereDetectRadius);
-                sphereDir = ParentRefs.body.forward;
+                sphereDir = ParentRefs.model.forward;
             }
 
             //Iterate for each of the eight segments/petals except for the forwards one which is done seperately.
@@ -650,11 +624,17 @@ namespace Player
             {
                 angle += 45;
                 Vector3 rotatedDir = Quaternion.AngleAxis(angle, Vector3.up) * sphereDir;
-                if (Physics.SphereCast(sphereStart, settings.WC.programmerSettings.sphereDetectRadius, sphereDir, out hit, modifiedDist, settings.WC.climableLayers.value))
+                if (Physics.SphereCast(sphereStart, settings.WC.programmerSettings.sphereDetectRadius, rotatedDir, out hit, modifiedDist, settings.WC.climableLayers.value))
                     return true;
             }
 
             return false;
+        }
+
+        /// <summary> Ray-cast in the input direction to find any surfaces right in front of the squirrels face. </summary>
+        private bool FindClimbableWallOnHeadbutt(out RaycastHit hit)
+        {
+            return Physics.Raycast(refs.startClimbCheckRay.position, ParentRefs.body.forward, out hit, settings.WC.programmerSettings.headbuttDist, settings.WC.climableLayers);
         }
 
         /// <summary> Check if there is a sharp edge in front of the player, and return a new movement vector to either stop, slide along an angled edge or move forward normally.
@@ -1192,6 +1172,8 @@ namespace Player
                     public float secondPassMultiplier = 5f;
                     [Tooltip("Length of the sphere-cast that detects surfaces. Larger means the check will find objects further from the player.")]
                     public float sphereDetectDistance = 1f;
+                    [Tooltip("Length of the ray-cast that detects surfaces directly in front of the players head.")]
+                    public float headbuttDist = 1f;
                     [Tooltip("Distance from the center of the character from which surfaces below will be detected.")]
                     public float surfaceDetectRange = 0.31f;
                     public bool basicGizmos = false;
@@ -1211,8 +1193,6 @@ namespace Player
                     [Header("Edge Vault")]
                     [Tooltip("Starting Height for edge-detection, corner detection and teleport-jumps, as a MULTIPLIER OF THE PLAYERS SIZE.")]
                     public float SJCheckHeight = 2f;
-                    [Tooltip("Distance the edge detect will check below the player (in ADDITION to the starting height).")]
-                    public float EdgeDetectDepth = 2f;
                     [Tooltip("The difference in angle between the current surface and the new surface which will still count as an edge.")]
                     public float EdgeDetectAngle = 70f;
                     [Tooltip("Distance the below the player that corner jump checks will occur (in ADDITION to the starting height)." +
