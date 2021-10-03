@@ -298,7 +298,60 @@ PrefabInstance:
 
         Eat food
 
-        Spit out food'
+        Spit out food
+
+        Climb
+
+        Zoom
+        in camera'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312333601288374524, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_fontSize
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312333601288374524, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_lineSpacing
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312333601288374524, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312333601317718692, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_text
+      value: 'WASD
+
+        Mouse
+
+        Spacebar
+
+        Shift
+
+        Q
+
+        E
+
+        Left-click
+        (hold)
+
+        Right-click (hold)
+
+        Left-click (hold)
+
+        Right-click
+        (hold)'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312333601317718692, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_fontSize
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312333601317718692, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_lineSpacing
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312333601317718692, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5312333601330429715, guid: f1ad784ca6024534895668913043967c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

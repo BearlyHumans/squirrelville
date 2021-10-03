@@ -3,10 +3,12 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(NPCInteractionManager))]
 public class SquirrelFoodGrabber : MonoBehaviour
 {
     private Stack<GameObject> foodStack = new Stack<GameObject>();
     private Rigidbody squirrelrb;
+    private NPCInteractionManager npcInteractionManager;
 
     [Header("Mouth")]
 
@@ -53,6 +55,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
     private void Awake()
     {
         squirrelrb = GetComponent<Rigidbody>();
+        npcInteractionManager = GetComponent<NPCInteractionManager>();
     }
 
     private void Update()
@@ -102,16 +105,19 @@ public class SquirrelFoodGrabber : MonoBehaviour
             PickupFood(nearestFood);
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (CanThrowFood())
         {
-            throwDelay = initialThrowDelay;
-        }
+            if (Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                throwDelay = initialThrowDelay;
+            }
 
-        if (Input.GetKey(KeyCode.Mouse1))
-        {
-            if (Time.time < throwTime) return;
+            if (Input.GetKey(KeyCode.Mouse1))
+            {
+                if (Time.time < throwTime) return;
 
-            ThrowFood();
+                ThrowFood();
+            }
         }
     }
 
@@ -152,7 +158,15 @@ public class SquirrelFoodGrabber : MonoBehaviour
 
     public bool CanEatFood()
     {
-        return maxFoodInInventory < 0 || GetFoodCount() < maxFoodInInventory;
+        return (
+            (maxFoodInInventory < 0 || GetFoodCount() < maxFoodInInventory) &&
+            !npcInteractionManager.isInteracting
+        );
+    }
+
+    public bool CanThrowFood()
+    {
+        return !npcInteractionManager.isInteracting;
     }
 
     public int GetFoodCount()
