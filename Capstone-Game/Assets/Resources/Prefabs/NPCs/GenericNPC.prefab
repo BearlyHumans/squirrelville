@@ -906,7 +906,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 1024
-  foodToGive: {fileID: 0}
+  foodToGive: {fileID: 6834729697976214412, guid: 29a3643e9f57a5e43a8d43b2a06538be, type: 3}
   takeFoodAmmount: 7
   anim: {fileID: 1194168816744384584}
   detectionAngle: 70

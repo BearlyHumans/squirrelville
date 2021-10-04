@@ -9,6 +9,8 @@ TagManager:
   - Climbable
   - NonClimbable
   - Slippery
+  - NoClimb
+  - NPCFood
   layers:
   - Default
   - TransparentFX
