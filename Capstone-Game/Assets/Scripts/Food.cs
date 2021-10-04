@@ -4,9 +4,11 @@ using UnityEngine;
 public class Food : MonoBehaviour
 {
     private Vector3 spawnPoint;
+    private Quaternion spawnRotation;
     private static List<Food> foodList = new List<Food>();
 
     public float respawnTimer;
+    private Rigidbody rb;
 
 
     private void Awake()
@@ -14,6 +16,8 @@ public class Food : MonoBehaviour
         foodList.Add(this);
 
         spawnPoint = transform.position;
+        spawnRotation = transform.rotation;
+        rb = GetComponent<Rigidbody>();
     }
 
 
@@ -41,7 +45,8 @@ public class Food : MonoBehaviour
     {
         gameObject.SetActive(true);
         gameObject.transform.position = spawnPoint;
-
+        gameObject.transform.rotation = spawnRotation;
+        rb.velocity = Vector3.zero;
     }
 
 }
