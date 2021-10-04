@@ -249,9 +249,9 @@ namespace Player
         {
             if (PE.action == ParticleEvent.Action.Play)
                 refs.particlesController.PlayParticle(PE.particleName);
-            else if (PE.action == ParticleEvent.Action.Play)
+            else if (PE.action == ParticleEvent.Action.PlayOrContinue)
                 refs.particlesController.PlayOrContinueParticle(PE.particleName);
-            else if (PE.action == ParticleEvent.Action.Play)
+            else if (PE.action == ParticleEvent.Action.Stop)
                 refs.particlesController.StopParticle(PE.particleName);
         }
 
