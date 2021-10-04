@@ -14,9 +14,10 @@ public class SFXController : MonoBehaviour
     /// <summary> Play the sound from the start (good for landing). </summary>
     public void PlaySound(string soundName)
     {
+        soundName = soundName.ToLower();
         foreach (AudioSource s in sources)
         {
-            if (s.clip != null && s.clip.name == soundName)
+            if (s.clip != null && s.clip.name.ToLower() == soundName)
             {
                 s.Stop();
                 s.Play();
@@ -27,7 +28,7 @@ public class SFXController : MonoBehaviour
 
         foreach (AudioClip c in sounds)
         {
-            if (c.name == soundName)
+            if (c.name.ToLower() == soundName)
             {
                 AudioSource source = GetBestSource();
                 source.clip = c;
@@ -41,9 +42,10 @@ public class SFXController : MonoBehaviour
     /// <summary> Play the sound if it isn't playing currently (good for triggering every frame). </summary>
     public void PlayOrContinueSound(string soundName)
     {
+        soundName = soundName.ToLower();
         foreach (AudioSource s in sources)
         {
-            if (s.clip != null && s.clip.name == soundName)
+            if (s.clip != null && s.clip.name.ToLower() == soundName)
             {
                 if (!s.isPlaying)
                     s.Play();
@@ -54,7 +56,7 @@ public class SFXController : MonoBehaviour
 
         foreach (AudioClip c in sounds)
         {
-            if (c.name == soundName)
+            if (c.name.ToLower() == soundName)
             {
                 AudioSource source = GetBestSource();
                 source.clip = c;
@@ -68,12 +70,13 @@ public class SFXController : MonoBehaviour
     /// <summary> Play the sound if there is a free source (same as PlayOrContinue otherwise). </summary>
     public void PlayIfQuiet(string soundName)
     {
+        soundName = soundName.ToLower();
         int numPlaying = 0;
         foreach (AudioSource s in sources)
         {
             if (s.clip != null)
             {
-                if (s.clip.name == soundName)
+                if (s.clip.name.ToLower() == soundName)
                 {
                     if (!s.isPlaying)
                         s.Play();
@@ -90,7 +93,7 @@ public class SFXController : MonoBehaviour
 
         foreach (AudioClip c in sounds)
         {
-            if (c.name == soundName)
+            if (c.name.ToLower() == soundName)
             {
                 AudioSource source = GetBestSource();
                 source.clip = c;
@@ -104,6 +107,7 @@ public class SFXController : MonoBehaviour
     /// <summary> Play the sound if there are no other sounds playing in this controller (same as PlayOrContinue otherwise). </summary>
     public void PlayIfSilent(string soundName)
     {
+        soundName = soundName.ToLower();
         int numPlaying = 0;
         foreach (AudioSource s in sources)
         {
@@ -116,7 +120,7 @@ public class SFXController : MonoBehaviour
 
         foreach (AudioSource s in sources)
         {
-            if (s.clip != null && s.clip.name == soundName)
+            if (s.clip != null && s.clip.name.ToLower() == soundName)
             {
                 if (!s.isPlaying)
                     s.Play();
@@ -127,7 +131,7 @@ public class SFXController : MonoBehaviour
 
         foreach (AudioClip c in sounds)
         {
-            if (c.name == soundName)
+            if (c.name.ToLower() == soundName)
             {
                 AudioSource source = GetBestSource();
                 source.clip = c;
@@ -141,9 +145,10 @@ public class SFXController : MonoBehaviour
     /// <summary> Play the sound and set it to loop (good for events that only trigger at the start and end). </summary>
     public void LoopSound(string soundName)
     {
+        soundName = soundName.ToLower();
         foreach (AudioSource s in sources)
         {
-            if (s.clip != null && s.clip.name == soundName)
+            if (s.clip != null && s.clip.name.ToLower() == soundName)
             {
                 s.Play();
                 s.loop = true;
@@ -153,7 +158,7 @@ public class SFXController : MonoBehaviour
 
         foreach (AudioClip c in sounds)
         {
-            if (c.name == soundName)
+            if (c.name.ToLower() == soundName)
             {
                 AudioSource source = GetBestSource();
                 source.clip = c;
@@ -167,9 +172,10 @@ public class SFXController : MonoBehaviour
     /// <summary> Stop the sound immediately (good for cancelling other sounds when hit). </summary>
     public void StopSound(string soundName)
     {
+        soundName = soundName.ToLower();
         foreach (AudioSource s in sources)
         {
-            if (s.clip != null && s.clip.name == soundName)
+            if (s.clip != null && s.clip.name.ToLower() == soundName)
             {
                 s.Stop();
                 s.loop = false;
@@ -181,9 +187,10 @@ public class SFXController : MonoBehaviour
     /// <summary> Turn looping off for the sound so it stops after this playthrough (other half of loop). </summary>
     public void StopLoopingSound(string soundName)
     {
+        soundName = soundName.ToLower();
         foreach (AudioSource s in sources)
         {
-            if (s.clip != null && s.clip.name == soundName)
+            if (s.clip != null && s.clip.name.ToLower() == soundName)
             {
                 s.loop = false;
                 return;
