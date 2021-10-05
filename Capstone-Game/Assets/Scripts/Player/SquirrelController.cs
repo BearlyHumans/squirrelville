@@ -327,9 +327,12 @@ namespace Player
             falling,
             rolling,
             barking,
-            eating,
+            eat,
             collision,
-            humanAttack
+            humanAttack,
+            startDashing,
+            spit,
+            stopRolling,
         }
 
         [System.Serializable]

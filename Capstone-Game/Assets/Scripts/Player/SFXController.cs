@@ -6,7 +6,7 @@ public class SFXController : MonoBehaviour
 {
     public int numberOfSources = 0;
 
-    public List<AudioClip> sounds = new List<AudioClip>();
+    public List<Sound> sounds = new List<Sound>();
 
     private List<AudioSource> sources = new List<AudioSource>();
     private int lastSourcePlayed = 0;
@@ -15,23 +15,34 @@ public class SFXController : MonoBehaviour
     public void PlaySound(string soundName)
     {
         soundName = soundName.ToLower();
-        foreach (AudioSource s in sources)
+        foreach (AudioSource AS in sources)
         {
-            if (s.clip != null && s.clip.name.ToLower() == soundName)
+            if (AS.clip != null && AS.clip.name.ToLower() == soundName)
             {
-                s.Stop();
-                s.Play();
-                s.loop = false;
+                foreach (Sound s in sounds)
+                {
+                    if (s.randomSound.name.ToLower() == soundName)
+                    {
+                        AS.clip = s.randomSound;
+                        AS.volume = s.volume;
+                        AS.pitch = s.randomPitch;
+                    }
+                }
+                AS.Stop();
+                AS.Play();
+                AS.loop = false;
                 return;
             }
         }
 
-        foreach (AudioClip c in sounds)
+        foreach (Sound s in sounds)
         {
-            if (c.name.ToLower() == soundName)
+            if (s.randomSound.name.ToLower() == soundName)
             {
                 AudioSource source = GetBestSource();
-                source.clip = c;
+                source.clip = s.randomSound;
+                source.volume = s.volume;
+                source.pitch = s.randomPitch;
                 source.Play();
                 source.loop = false;
                 return;
@@ -43,23 +54,25 @@ public class SFXController : MonoBehaviour
     public void PlayOrContinueSound(string soundName)
     {
         soundName = soundName.ToLower();
-        foreach (AudioSource s in sources)
+        foreach (AudioSource AS in sources)
         {
-            if (s.clip != null && s.clip.name.ToLower() == soundName)
+            if (AS.clip != null && AS.clip.name.ToLower() == soundName)
             {
-                if (!s.isPlaying)
-                    s.Play();
-                s.loop = false;
+                if (!AS.isPlaying)
+                    AS.Play();
+                AS.loop = false;
                 return;
             }
         }
 
-        foreach (AudioClip c in sounds)
+        foreach (Sound s in sounds)
         {
-            if (c.name.ToLower() == soundName)
+            if (s.randomSound.name.ToLower() == soundName)
             {
                 AudioSource source = GetBestSource();
-                source.clip = c;
+                source.clip = s.randomSound;
+                source.volume = s.volume;
+                source.pitch = s.randomPitch;
                 source.Play();
                 source.loop = false;
                 return;
@@ -72,18 +85,18 @@ public class SFXController : MonoBehaviour
     {
         soundName = soundName.ToLower();
         int numPlaying = 0;
-        foreach (AudioSource s in sources)
+        foreach (AudioSource AS in sources)
         {
-            if (s.clip != null)
+            if (AS.clip != null)
             {
-                if (s.clip.name.ToLower() == soundName)
+                if (AS.clip.name.ToLower() == soundName)
                 {
-                    if (!s.isPlaying)
-                        s.Play();
-                    s.loop = false;
+                    if (!AS.isPlaying)
+                        AS.Play();
+                    AS.loop = false;
                     return;
                 }
-                else if (s.isPlaying)
+                else if (AS.isPlaying)
                     numPlaying += 1;
             }
         }
@@ -91,12 +104,14 @@ public class SFXController : MonoBehaviour
         if (numPlaying == numberOfSources)
             return;
 
-        foreach (AudioClip c in sounds)
+        foreach (Sound s in sounds)
         {
-            if (c.name.ToLower() == soundName)
+            if (s.randomSound.name.ToLower() == soundName)
             {
                 AudioSource source = GetBestSource();
-                source.clip = c;
+                source.clip = s.randomSound;
+                source.volume = s.volume;
+                source.pitch = s.randomPitch;
                 source.Play();
                 source.loop = false;
                 return;
@@ -129,12 +144,14 @@ public class SFXController : MonoBehaviour
             }
         }
 
-        foreach (AudioClip c in sounds)
+        foreach (Sound s in sounds)
         {
-            if (c.name.ToLower() == soundName)
+            if (s.randomSound.name.ToLower() == soundName)
             {
                 AudioSource source = GetBestSource();
-                source.clip = c;
+                source.clip = s.randomSound;
+                source.volume = s.volume;
+                source.pitch = s.randomPitch;
                 source.Play();
                 source.loop = false;
                 return;
@@ -146,22 +163,24 @@ public class SFXController : MonoBehaviour
     public void LoopSound(string soundName)
     {
         soundName = soundName.ToLower();
-        foreach (AudioSource s in sources)
+        foreach (AudioSource AS in sources)
         {
-            if (s.clip != null && s.clip.name.ToLower() == soundName)
+            if (AS.clip != null && AS.clip.name.ToLower() == soundName)
             {
-                s.Play();
-                s.loop = true;
+                AS.Play();
+                AS.loop = true;
                 return;
             }
         }
 
-        foreach (AudioClip c in sounds)
+        foreach (Sound s in sounds)
         {
-            if (c.name.ToLower() == soundName)
+            if (s.name.ToLower() == soundName)
             {
                 AudioSource source = GetBestSource();
-                source.clip = c;
+                source.clip = s.randomSound;
+                source.volume = s.volume;
+                source.pitch = s.randomPitch;
                 source.Play();
                 source.loop = true;
                 return;
@@ -173,12 +192,12 @@ public class SFXController : MonoBehaviour
     public void StopSound(string soundName)
     {
         soundName = soundName.ToLower();
-        foreach (AudioSource s in sources)
+        foreach (AudioSource AS in sources)
         {
-            if (s.clip != null && s.clip.name.ToLower() == soundName)
+            if (AS.clip != null && AS.clip.name.ToLower() == soundName)
             {
-                s.Stop();
-                s.loop = false;
+                AS.Stop();
+                AS.loop = false;
                 return;
             }
         }
@@ -236,6 +255,12 @@ public class SFXController : MonoBehaviour
             for (int i = sources.Count; i < numberOfSources; ++i)
                 sources.Add(gameObject.AddComponent<AudioSource>());
         }
+
+        foreach (Sound s in sounds)
+        {
+            if ((s.name == null || s.name == "") && s.numClips == 0)
+                s.name = s.randomSound.name;
+        }
     }
 
     public void Pause()
@@ -256,6 +281,30 @@ public class SFXController : MonoBehaviour
         {
             if (s.clip != null)
                 s.Play();
+        }
+    }
+
+    [System.Serializable]
+    public class Sound
+    {
+        public string name;
+        [SerializeField]
+        private List<AudioClip> sounds = new List<AudioClip>();
+        [Range(0, 1)]
+        public float volume = 1;
+        [SerializeField]
+        private Vector2 randomPitchRange = new Vector2(1, 1);
+        public AudioClip randomSound
+        {
+            get { return sounds[Random.Range(0, sounds.Count)]; }
+        }
+        public float randomPitch
+        {
+            get { return Random.Range(randomPitchRange.x, randomPitchRange.y); }
+        }
+        public float numClips
+        {
+            get { return sounds.Count; }
         }
     }
 }

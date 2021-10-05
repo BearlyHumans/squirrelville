@@ -86,8 +86,12 @@ namespace Player
             if (Input.GetButton("Dash") && ParentRefs.stamina.UseStamina(settings.S.dashStamPerSec * Time.deltaTime))
             {
                 if (vals.dashing == false)
+                {
                     vals.startedDashing = Time.time;
+                    PARENT.CallEvents(SquirrelController.EventTrigger.startDashing);
+                }
                 vals.dashing = true;
+                PARENT.CallEvents(SquirrelController.EventTrigger.dashing);
             }
             else if (vals.desiredDirection != Vector3.zero)
                 ParentRefs.stamina.UseStamina(settings.S.walkStamPerSec * Time.deltaTime);
