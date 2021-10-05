@@ -21,7 +21,7 @@ public class SFXController : MonoBehaviour
             {
                 foreach (Sound s in sounds)
                 {
-                    if (s.randomSound.name.ToLower() == soundName)
+                    if (s.name.ToLower() == soundName)
                     {
                         AS.clip = s.randomSound;
                         AS.volume = s.volume;
@@ -37,7 +37,7 @@ public class SFXController : MonoBehaviour
 
         foreach (Sound s in sounds)
         {
-            if (s.randomSound.name.ToLower() == soundName)
+            if (s.name.ToLower() == soundName)
             {
                 AudioSource source = GetBestSource();
                 source.clip = s.randomSound;
@@ -59,7 +59,18 @@ public class SFXController : MonoBehaviour
             if (AS.clip != null && AS.clip.name.ToLower() == soundName)
             {
                 if (!AS.isPlaying)
+                {
+                    foreach (Sound s in sounds)
+                    {
+                        if (s.name.ToLower() == soundName)
+                        {
+                            AS.clip = s.randomSound;
+                            AS.volume = s.volume;
+                            AS.pitch = s.randomPitch;
+                        }
+                    }
                     AS.Play();
+                }
                 AS.loop = false;
                 return;
             }
@@ -67,7 +78,7 @@ public class SFXController : MonoBehaviour
 
         foreach (Sound s in sounds)
         {
-            if (s.randomSound.name.ToLower() == soundName)
+            if (s.name.ToLower() == soundName)
             {
                 AudioSource source = GetBestSource();
                 source.clip = s.randomSound;
@@ -106,7 +117,7 @@ public class SFXController : MonoBehaviour
 
         foreach (Sound s in sounds)
         {
-            if (s.randomSound.name.ToLower() == soundName)
+            if (s.name.ToLower() == soundName)
             {
                 AudioSource source = GetBestSource();
                 source.clip = s.randomSound;
@@ -146,7 +157,7 @@ public class SFXController : MonoBehaviour
 
         foreach (Sound s in sounds)
         {
-            if (s.randomSound.name.ToLower() == soundName)
+            if (s.name.ToLower() == soundName)
             {
                 AudioSource source = GetBestSource();
                 source.clip = s.randomSound;
