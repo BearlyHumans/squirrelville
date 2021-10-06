@@ -14,9 +14,19 @@ public class Trees : MonoBehaviour
     [SerializeField]
     public float fallRate;
 
+    public Color color; 
+
+    public float hSliderValueR = 10.0F;
+    public float hSliderValueG = 10.0F;
+    public float hSliderValueB = 10.0F;
+    public float hSliderValueA = 11.0F;
+
     // Start is called before the first frame update
     void Start()
     {
+        var main = leaves.main;
+        main.startColor = new Color(hSliderValueR, hSliderValueG, hSliderValueB, hSliderValueA);
+
         // setting leaves particle systems emission to the desired rate.
         var emission = leaves.emission;
         emission.rateOverTime = fallRate;

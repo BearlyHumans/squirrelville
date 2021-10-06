@@ -2261,6 +2261,11 @@ MonoBehaviour:
   leaves: {fileID: 4998771388003460906, guid: 79d4aa33e71725b4ebe572745df2ac05, type: 3}
   hasLeaves: 1
   fallRate: 4
+  color: {r: 0, g: 0, b: 0, a: 0}
+  hSliderValueR: 0
+  hSliderValueG: 0
+  hSliderValueB: 0
+  hSliderValueA: 1
 --- !u!1001 &1857878049
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2749,3 +2754,8 @@ MonoBehaviour:
   leaves: {fileID: 4998771388003460906, guid: 79d4aa33e71725b4ebe572745df2ac05, type: 3}
   hasLeaves: 1
   fallRate: 10
+  color: {r: 0, g: 0, b: 0, a: 0}
+  hSliderValueR: 10
+  hSliderValueG: 10
+  hSliderValueB: 10
+  hSliderValueA: 60
