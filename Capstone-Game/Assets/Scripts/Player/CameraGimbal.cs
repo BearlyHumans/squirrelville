@@ -130,6 +130,7 @@ public class CameraGimbal : MonoBehaviour
         Quaternion localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
         transform.rotation = localRotation;
 
+        /*
         if (Vector3.Distance(dollyCamera.transform.position, oldPos) > collisionSphereRadius)
         {
             if (Physics.Linecast(oldPos, dollyCamera.transform.position, noClippingEverLayers))
@@ -143,6 +144,7 @@ public class CameraGimbal : MonoBehaviour
         }
 
         RotateToUnblockedPoint(deltaY);
+        */
     }
 
     /// <summary> Move the camera gameobject towards the target at the move speed. </summary>
@@ -191,6 +193,15 @@ public class CameraGimbal : MonoBehaviour
         }
 
         desiredCameraPos = transform.TransformPoint(dollyDir * zoomedMax);
+
+        Vector3 dir = dollyCamera.transform.position - cameraTarget.transform.position;
+        Vector3 offset = dir.normalized * collisionSphereRadius;
+        RaycastHit hit;
+        if (Physics.Linecast(cameraTarget.transform.position, dollyCamera.transform.position + dir.normalized * collisionSphereRadius, out hit, noClippingEverLayers))
+        {
+            CamObj.position = hit.point - offset;
+        }
+
 
         //Move the camera closer if certain bad conditions are found:
         RaycastHit hit;
