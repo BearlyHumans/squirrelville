@@ -14,6 +14,8 @@ public class Trees : MonoBehaviour
     [SerializeField]
     public float fallRate;
 
+    public float fallingRadius = 0.4f;
+
     public Color color; 
 
     public float hSliderValueR = 10.0F;
@@ -24,12 +26,16 @@ public class Trees : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var main = leaves.main;
-        main.startColor = new Color(hSliderValueR, hSliderValueG, hSliderValueB, hSliderValueA);
+        // changes the radius in which leafs drop based on float ^
+        var shape = leaves.shape;
+        shape.scale = new Vector3(fallingRadius, fallingRadius, 1.0f);
 
         // setting leaves particle systems emission to the desired rate.
         var emission = leaves.emission;
         emission.rateOverTime = fallRate;
+
+        //ParticleSystem.MainModule settings = leaves.main;
+        //settings.startColor = new ParticleSystem.MinMaxGradient(color);
 
         // correctly setting the position of the instantiated particle effect in the tree
         Vector3 pos = transform.position;
