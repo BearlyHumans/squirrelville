@@ -60,14 +60,14 @@ namespace Player
         private void UpdAnimator()
         {
             if (vals.moving)
-                PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.moving);
+                PARENT.CallEvents(SquirrelController.EventTrigger.moving);
             else if (vals.jumping == false)
-                PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.notMoving);
+                PARENT.CallEvents(SquirrelController.EventTrigger.notMoving);
 
             if (vals.climbingAngle)
-                PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.climbing);
+                PARENT.CallEvents(SquirrelController.EventTrigger.climbing);
             else
-                PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.notClimbing);
+                PARENT.CallEvents(SquirrelController.EventTrigger.notClimbing);
         }
 
         private void UpdInput()
@@ -86,8 +86,12 @@ namespace Player
             if (Input.GetButton("Dash") && ParentRefs.stamina.UseStamina(settings.S.dashStamPerSec * Time.deltaTime))
             {
                 if (vals.dashing == false)
+                {
                     vals.startedDashing = Time.time;
+                    PARENT.CallEvents(SquirrelController.EventTrigger.startDashing);
+                }
                 vals.dashing = true;
+                PARENT.CallEvents(SquirrelController.EventTrigger.dashing);
             }
             else if (vals.desiredDirection != Vector3.zero)
                 ParentRefs.stamina.UseStamina(settings.S.walkStamPerSec * Time.deltaTime);
@@ -314,7 +318,7 @@ namespace Player
                     vals.inJumpAnimation = true;
                     vals.animationSlow = true;
 
-                    PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.jump);
+                    PARENT.CallEvents(SquirrelController.EventTrigger.jump);
                 }
             }
         }
@@ -372,7 +376,7 @@ namespace Player
                 //Do animations and behaviour based on if surface is slippery.
                 if (vals.onSlippery)
                 {
-                    PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.slipping);
+                    PARENT.CallEvents(SquirrelController.EventTrigger.slipping);
 
                     if (Time.time < vals.lastOnSurface + settings.S.maxRotatedSlidingTime)
                         CustomIntuitiveSnapRotation(-hitSurface.normal);
@@ -384,7 +388,7 @@ namespace Player
                     ParentRefs.RB.useGravity = false;
                     if (vals.falling)
                     {
-                        PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.landJump);
+                        PARENT.CallEvents(SquirrelController.EventTrigger.landJump);
                         vals.inLandingAnimation = true;
                         vals.landingAnimationStart = Time.time;
                         vals.animationSlow = true;
@@ -416,7 +420,7 @@ namespace Player
         {
             //Point feet down and start falling if not on a surface for long enough.
             CustomIntuitiveSnapRotation(Vector3.down);
-            PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.falling);
+            PARENT.CallEvents(SquirrelController.EventTrigger.falling);
             vals.falling = true;
         }
 
