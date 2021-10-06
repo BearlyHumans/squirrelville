@@ -46,7 +46,7 @@ public class NPCDialogue : MonoBehaviour
 
             for (int i = 0; i < objectsToRemove; i++)
             {
-                GameObject.Destroy(objects[i]);
+                objects[i].SetActive(false);
             }
 
             GameObject.Destroy(foodArea.gameObject);
