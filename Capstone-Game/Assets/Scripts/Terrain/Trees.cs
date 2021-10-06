@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class Trees : MonoBehaviour
 {
-    
-    
     public ParticleSystem leaves;
+
+    [Tooltip("Do you want this tree to have falling leaves?")]
+    [SerializeField]
     public bool hasLeaves;
+
+    [Tooltip("how fast do you want the leaves to fall?")]
+    [SerializeField]
     public float fallRate;
 
     // Start is called before the first frame update
