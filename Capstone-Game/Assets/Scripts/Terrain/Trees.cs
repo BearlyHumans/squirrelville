@@ -53,8 +53,6 @@ public class Trees : MonoBehaviour
         var rot = transform.rotation;
         rot.x = 1.0f;
 
-        print(transform.position);
-
         // if tree has falling leaves
         if (hasLeaves)
         {
