@@ -16,16 +16,18 @@ public class Trees : MonoBehaviour
 
     public float fallingRadius = 0.4f;
 
-    public Color color; 
+    // custom color
+    public Color leafColor; 
 
-    public float hSliderValueR = 10.0F;
-    public float hSliderValueG = 10.0F;
-    public float hSliderValueB = 10.0F;
-    public float hSliderValueA = 11.0F;
+    // ensure thats leaves are always viable
+    private float alphaLevel = 255.0F;
 
     // Start is called before the first frame update
     void Start()
     {
+        // set leaves alpha color to max
+        leafColor[3] = alphaLevel;
+
         // changes the radius in which leafs drop based on float ^
         var shape = leaves.shape;
         shape.scale = new Vector3(fallingRadius, fallingRadius, 1.0f);
@@ -34,8 +36,8 @@ public class Trees : MonoBehaviour
         var emission = leaves.emission;
         emission.rateOverTime = fallRate;
 
-        //ParticleSystem.MainModule settings = leaves.main;
-        //settings.startColor = new ParticleSystem.MinMaxGradient(color);
+        var color = leaves.main;
+        color.startColor = new Color(leafColor[0],leafColor[1],leafColor[2],leafColor[3]);
 
         // correctly setting the position of the instantiated particle effect in the tree
         Vector3 pos = transform.position;
