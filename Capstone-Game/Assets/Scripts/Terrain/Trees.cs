@@ -14,6 +14,11 @@ public class Trees : MonoBehaviour
     [SerializeField]
     public float fallRate;
 
+    [Tooltip("how far up the tree do the leaves start?")]
+    [SerializeField]
+    public float particleHeight = 7.5f;
+
+    // float to determine the radius of the particle system
     public float fallingRadius = 0.4f;
 
     // custom color
@@ -36,14 +41,19 @@ public class Trees : MonoBehaviour
         var emission = leaves.emission;
         emission.rateOverTime = fallRate;
 
+        // setting color of particle system 
         var color = leaves.main;
         color.startColor = new Color(leafColor[0],leafColor[1],leafColor[2],leafColor[3]);
 
         // correctly setting the position of the instantiated particle effect in the tree
         Vector3 pos = transform.position;
-        pos.y = 7.5f;
+        pos.y = particleHeight;
+
+        // setting rotation of particle system to point downwards
         var rot = transform.rotation;
         rot.x = 1.0f;
+
+        print(transform.position);
 
         // if tree has falling leaves
         if (hasLeaves)

@@ -148,5 +148,6 @@ MonoBehaviour:
   leaves: {fileID: 4998771388003460906, guid: 79d4aa33e71725b4ebe572745df2ac05, type: 3}
   hasLeaves: 1
   fallRate: 2
+  particleHeight: 4
   fallingRadius: 0.4
   leafColor: {r: 0.32156864, g: 0.38431376, b: 0.16470589, a: 1}

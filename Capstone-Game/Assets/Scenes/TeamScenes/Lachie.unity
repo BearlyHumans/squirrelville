@@ -340,30 +340,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4509007271572627646, guid: 995c7f8eac9aef24297f64811c5df5c8, type: 3}
+      propertyPath: particleHeight
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 995c7f8eac9aef24297f64811c5df5c8, type: 3}
---- !u!1 &74299580 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3698917680147567752, guid: 995c7f8eac9aef24297f64811c5df5c8, type: 3}
-  m_PrefabInstance: {fileID: 74299579}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &74299581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 74299580}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5340992767fd6904d8a8c79e20f1c9c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leaves: {fileID: 4998771388003460906, guid: 79d4aa33e71725b4ebe572745df2ac05, type: 3}
-  hasLeaves: 1
-  fallRate: 1
-  fallingRadius: 0.4
-  leafColor: {r: 0.43529415, g: 0.53333336, b: 0.23137257, a: 1}
 --- !u!20 &96457474 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 1512199469109834488, guid: c1702d763353abb47949987bc6e72495, type: 3}
@@ -1494,6 +1476,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4982934136259194281, guid: 1c4a74ccbc6a03a4288a839910ca7851, type: 3}
+      propertyPath: particleHeight
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c4a74ccbc6a03a4288a839910ca7851, type: 3}
 --- !u!4 &1176664876 stripped
@@ -2160,30 +2146,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2352507330757869131, guid: 5c9de7283eb7304419a30532403d04e6, type: 3}
+      propertyPath: particleHeight
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c9de7283eb7304419a30532403d04e6, type: 3}
---- !u!1 &1477102391 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1000014109055006, guid: 5c9de7283eb7304419a30532403d04e6, type: 3}
-  m_PrefabInstance: {fileID: 1477102390}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1477102392
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1477102391}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5340992767fd6904d8a8c79e20f1c9c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leaves: {fileID: 4998771388003460906, guid: 79d4aa33e71725b4ebe572745df2ac05, type: 3}
-  hasLeaves: 1
-  fallRate: 2
-  fallingRadius: 0.4
-  leafColor: {r: 0.32156864, g: 0.38431376, b: 0.16470589, a: 1}
 --- !u!1001 &1482613610
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2353,30 +2321,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4322815654807873560, guid: 3a20843f67d9f7b42a460b5709511877, type: 3}
+      propertyPath: particleHeight
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a20843f67d9f7b42a460b5709511877, type: 3}
---- !u!1 &1699720973 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 519052635182701490, guid: 3a20843f67d9f7b42a460b5709511877, type: 3}
-  m_PrefabInstance: {fileID: 1699720972}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1699720974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1699720973}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5340992767fd6904d8a8c79e20f1c9c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leaves: {fileID: 4998771388003460906, guid: 79d4aa33e71725b4ebe572745df2ac05, type: 3}
-  hasLeaves: 1
-  fallRate: 2
-  fallingRadius: 0.4
-  leafColor: {r: 0.10196079, g: 0.29411766, b: 0.10196079, a: 1}
 --- !u!1 &1763253674
 GameObject:
   m_ObjectHideFlags: 0
@@ -2534,6 +2484,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2436588551875124957, guid: 76255851c81ea8c40a6120fea8eded6b, type: 3}
+      propertyPath: particleHeight
+      value: 7.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6976425474811061633, guid: 76255851c81ea8c40a6120fea8eded6b, type: 3}
       propertyPath: m_Name
       value: BigTree 1
