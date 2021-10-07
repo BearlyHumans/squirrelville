@@ -11,6 +11,7 @@ public class SFXController : MonoBehaviour
     private List<AudioSource> sources = new List<AudioSource>();
     public List<Sound> currentlyPlaying = new List<Sound>();
     private int lastSourcePlayed = 0;
+    private List<string> blockedSounds = new List<string>();
 
     /// <summary> Play the sound from the start (good for landing). </summary>
     public void PlaySound(string soundName)
@@ -154,6 +155,18 @@ public class SFXController : MonoBehaviour
         {
             AS.loop = false;
         }
+    }
+
+    public void BlockSound(string soundName)
+    {
+        if (!blockedSounds.Contains(soundName))
+            blockedSounds.Add(soundName);
+    }
+
+    public void UnBlockSound(string soundName)
+    {
+        if (!blockedSounds.Contains(soundName))
+            blockedSounds.Add(soundName);
     }
 
     private AudioSource GetBestSource(out int index)

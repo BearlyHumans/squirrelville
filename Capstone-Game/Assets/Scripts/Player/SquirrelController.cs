@@ -79,6 +79,8 @@ namespace Player
                 refs.stamina = GetComponent<Stamina>();
 
             EnterRunState();
+
+            CallEvents(EventTrigger.gameStart);
         }
 
         /// <summary> Runs all updates for the squirrel character. This is done by calling ManualUpdate() in child scripts based on a statemachine.
@@ -243,6 +245,10 @@ namespace Player
                 refs.SFXControl.StopLoopingSound(SE.soundName);
             else if (SE.action == SoundEvent.Action.StopImmediately)
                 refs.SFXControl.StopSound(SE.soundName);
+            else if (SE.action == SoundEvent.Action.Block)
+                refs.SFXControl.BlockSound(SE.soundName);
+            else if (SE.action == SoundEvent.Action.Unblock)
+                refs.SFXControl.UnBlockSound(SE.soundName);
         }
 
         private void DoParticleEvent(ParticleEvent PE)
@@ -333,6 +339,7 @@ namespace Player
             startDashing,
             spit,
             stopRolling,
+            gameStart
         }
 
         [System.Serializable]
@@ -455,7 +462,9 @@ namespace Player
                 PlayIfSilent,
                 PlayAndLoop,
                 StopAfterLoop,
-                StopImmediately
+                StopImmediately,
+                Block,
+                Unblock
             }
 
             public class CustomListTitlesAttribute : PropertyAttribute
