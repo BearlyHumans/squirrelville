@@ -827,13 +827,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c0d6f1dcf651754eae98b40d9978c2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfSources: 3
+  numberOfSources: 4
   sounds:
-  - {fileID: 8300000, guid: 96e41a9e5de4dc741a46a606e8e0d190, type: 3}
-  - {fileID: 8300000, guid: c179647cf4a6f3e4aa1b9627ac637a17, type: 3}
-  - {fileID: 8300000, guid: 9e9f1fee1c527e84ea1b725ab21c35e6, type: 3}
-  - {fileID: 8300000, guid: eb0c7b40382c9ab4c80ade0b3893233f, type: 3}
-  - {fileID: 8300000, guid: 60b9f62ed62eb714384ad980c251d9d4, type: 3}
+  - name: Moving
+    sounds:
+    - {fileID: 8300000, guid: faccaba1278b06241afe8875d0fa93ea, type: 3}
+    - {fileID: 8300000, guid: 80c23a77f1919c44dbadd7a110e8c2e7, type: 3}
+    - {fileID: 8300000, guid: f7e515cfbd6e02f41a04fc21346543e3, type: 3}
+    - {fileID: 8300000, guid: 23f36212de0b4c0468a5f7436d99bfc7, type: 3}
+    - {fileID: 8300000, guid: ed6b413857f356c42afa05ceb30d9f24, type: 3}
+    - {fileID: 8300000, guid: 133c40ba3746c2a49944446bbf281247, type: 3}
+    volume: 0.6
+    randomPitchRange: {x: 0.9, y: 1.1}
+  - name: Dashing
+    sounds:
+    - {fileID: 8300000, guid: eb0c7b40382c9ab4c80ade0b3893233f, type: 3}
+    volume: 1
+    randomPitchRange: {x: 1, y: 1}
+  - name: Rolling
+    sounds:
+    - {fileID: 8300000, guid: 96e41a9e5de4dc741a46a606e8e0d190, type: 3}
+    volume: 1
+    randomPitchRange: {x: 1, y: 1}
+  - name: Eating
+    sounds:
+    - {fileID: 8300000, guid: c179647cf4a6f3e4aa1b9627ac637a17, type: 3}
+    volume: 1
+    randomPitchRange: {x: 1, y: 1}
+  - name: Spitting
+    sounds:
+    - {fileID: 8300000, guid: 9e9f1fee1c527e84ea1b725ab21c35e6, type: 3}
+    volume: 1
+    randomPitchRange: {x: 0.9, y: 1.1}
+  currentlyPlaying: []
 --- !u!82 &3127635603426240798
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3569,12 +3595,33 @@ MonoBehaviour:
     paramName: ClimbAngle
     setToValue: 0
   soundEvents:
-  - trigger: 8
+  - trigger: 1
     action: 1
-    soundName: Ball Descent
-  - trigger: 8
+    soundName: Moving
+  - trigger: 2
+    action: 6
+    soundName: Moving
+  - trigger: 15
+    action: 6
+    soundName: Moving
+  - trigger: 16
+    action: 6
+    soundName: Moving
+  - trigger: 21
     action: 1
-    soundName: Ball Descent
+    soundName: Dashing
+  - trigger: 21
+    action: 6
+    soundName: Moving
+  - trigger: 16
+    action: 1
+    soundName: Rolling
+  - trigger: 18
+    action: 1
+    soundName: Eating
+  - trigger: 22
+    action: 1
+    soundName: Spitting
   particleEvents:
   - trigger: 8
     action: 2
@@ -3645,10 +3692,10 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 0.40697324
-          value: 3
-          inSlope: -0.46927297
-          outSlope: -0.46927297
+          time: 0.86113584
+          value: 2.9291573
+          inSlope: -6.412185
+          outSlope: -6.412185
           tangentMode: 34
           weightedMode: 0
           inWeight: 0.33333334
@@ -3656,8 +3703,8 @@ MonoBehaviour:
         - serializedVersion: 3
           time: 1
           value: 1
-          inSlope: -3.372529
-          outSlope: -3.372529
+          inSlope: -13.8924055
+          outSlope: -13.8924055
           tangentMode: 34
           weightedMode: 0
           inWeight: 0.33333334
@@ -3665,14 +3712,14 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-      airControlFactor: 1
+      airControlFactor: 1.1
       frictionForce: 50
       stoppingForce: 50
       airStoppingForce: 1
       haltAtFractionOfMaxSpeed: 0.9
       turningThreshold: 0.2
     jump:
-      jumpForce: 3.5
+      jumpForce: 4
       allowForwardJumps: 1
       forwardJumpForce: 1
       forwardJumpHeightDiff: 1
@@ -3680,7 +3727,7 @@ MonoBehaviour:
       jumpCooldown: 0.2
       checkJumpTime: 0.2
       coyoteeTime: 0.2
-      jumpDelay: 0.15
+      jumpDelay: 0.1
       landingDelay: 0.15
       stopWhenJumping: 0
       stopWhenLanding: 0
@@ -3731,7 +3778,7 @@ MonoBehaviour:
   settings:
     movement:
       acceleration: 10
-      boostMultiplier: 25
+      boostMultiplier: 33
       boostStaminaUse: 800
       maxSpeed: 1.8
       airControlFactor: 0.5
@@ -3740,7 +3787,7 @@ MonoBehaviour:
       jumpCooldown: 0.2
       checkJumpTime: 0.2
       coyoteeTime: 0.2
-      staminaUsed: 20
+      staminaUsed: 0
       JumpableLayers:
         serializedVersion: 2
         m_Bits: 16311
@@ -3776,7 +3823,7 @@ MonoBehaviour:
   pickupDelay: 0.5
   pickupRadius: 0.4
   maxFoodInInventory: 10
-  foodCountBallForm: 3
+  foodCountBallForm: 0
   highlightMaterial: {fileID: 2100000, guid: 73bed7dbf5548254bb64a23da6fda468, type: 2}
   throwVelocity: 1
   initialThrowDelay: 0.6
@@ -3823,8 +3870,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   staminaBar: {fileID: 4863738633296884124}
   maxStamina: 100
-  minStaminaToStartUse: 5
-  staminaRegenPerSecond: 30
+  minStaminaToStartUse: 0
+  staminaRegenPerSecond: 50
   staminaRegenDelay: 1
   allowNegativeStamina: 0
   zeroStopsRegen: 0
