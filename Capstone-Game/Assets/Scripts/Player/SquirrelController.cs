@@ -67,6 +67,9 @@ namespace Player
             if (refs.stamina == null)
                 refs.stamina = GetComponent<Stamina>();
 
+            if (refs.runCameraTarget == null)
+                refs.runCameraTarget = refs.model;
+
             EnterRunState();
         }
 
@@ -147,7 +150,7 @@ namespace Player
             refs.RB.useGravity = true;
 
             refs.fCam.UseRelativeAngles = false;
-            refs.fCam.cameraTarget = refs.ballModel.gameObject;
+            refs.fCam.cameraTarget = refs.ballModel;
 
             vals.mState = MovementState.ball;
         }
@@ -160,7 +163,7 @@ namespace Player
             refs.RB.constraints = RigidbodyConstraints.FreezeRotation;
 
             refs.fCam.UseRelativeAngles = true;
-            refs.fCam.cameraTarget = refs.model.gameObject;
+            refs.fCam.cameraTarget = refs.runCameraTarget;
 
             vals.mState = MovementState.moveAndClimb;
         }
@@ -211,6 +214,7 @@ namespace Player
             public Animator animator;
             public GameObject runBody;
             public GameObject ballBody;
+            public Transform runCameraTarget;
         }
 
         [System.Serializable]
