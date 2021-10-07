@@ -61,6 +61,15 @@ public class SFXController : MonoBehaviour
         AudioSource source = FindAndSetSound(soundName);
     }
 
+    /// <summary> Play the sound if it isn't playing currently (good for triggering every frame). </summary>
+    public void PlayAswell(string soundName)
+    {
+        if (blockedSounds.Contains(soundName))
+            return;
+
+        AudioSource source = FindAndSetSound(soundName);
+    }
+
     /// <summary> Play the sound if there is a free source (same as PlayOrContinue otherwise). </summary>
     public void PlayIfQuiet(string soundName)
     {
