@@ -82,7 +82,6 @@ namespace Player
             vals.desiredDirection.Normalize();
 
             //Dash button:
-            vals.dashing = false;
             if (Input.GetButton("Dash") && ParentRefs.stamina.UseStamina(settings.S.dashStamPerSec * Time.deltaTime))
             {
                 if (vals.dashing == false)
@@ -93,8 +92,16 @@ namespace Player
                 vals.dashing = true;
                 PARENT.CallEvents(SquirrelController.EventTrigger.dashing);
             }
-            else if (vals.desiredDirection != Vector3.zero)
-                ParentRefs.stamina.UseStamina(settings.S.walkStamPerSec * Time.deltaTime);
+            else
+            {
+                if (vals.dashing)
+                {
+                    vals.dashing = false;
+                    PARENT.CallEvents(SquirrelController.EventTrigger.stopDashing);
+                }
+                if (vals.desiredDirection != Vector3.zero)
+                    ParentRefs.stamina.UseStamina(settings.S.walkStamPerSec * Time.deltaTime);
+            }
 
             //Request a jump if the player presses the button.
             //This helps make jumping more consistent if conditions are false on intermittent frames.
