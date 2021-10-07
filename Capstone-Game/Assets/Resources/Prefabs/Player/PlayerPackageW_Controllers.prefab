@@ -3786,7 +3786,7 @@ MonoBehaviour:
       maxSpeed: 1.8
       airControlFactor: 0.5
     jump:
-      jumpForce: 5
+      jumpForce: 0
       jumpCooldown: 0.2
       checkJumpTime: 0.2
       coyoteeTime: 0.2
