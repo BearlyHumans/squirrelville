@@ -16,6 +16,9 @@ public class SFXController : MonoBehaviour
     /// <summary> Play the sound from the start (good for landing). </summary>
     public void PlaySound(string soundName)
     {
+        if (blockedSounds.Contains(soundName))
+            return;
+
         AudioSource AS = null;
         int i = -1;
         if (GetSourcePlayingSound(soundName, out AS, out i))
@@ -36,11 +39,13 @@ public class SFXController : MonoBehaviour
     /// <summary> Play the sound if it isn't playing currently (good for triggering every frame). </summary>
     public void PlayOrContinueSound(string soundName)
     {
+        if (blockedSounds.Contains(soundName))
+            return;
+
         AudioSource AS = null;
         int i = -1;
         if (GetSourcePlayingSound(soundName, out AS, out i))
         {
-            print("here" + i);
             Sound s = currentlyPlaying[i];
             if (!AS.isPlaying)
             {
@@ -59,6 +64,9 @@ public class SFXController : MonoBehaviour
     /// <summary> Play the sound if there is a free source (same as PlayOrContinue otherwise). </summary>
     public void PlayIfQuiet(string soundName)
     {
+        if (blockedSounds.Contains(soundName))
+            return;
+
         soundName = soundName.ToLower();
         int numPlaying = 0;
         foreach (AudioSource AS in sources)
@@ -86,6 +94,9 @@ public class SFXController : MonoBehaviour
     /// <summary> Play the sound if there are no other sounds playing in this controller (same as PlayOrContinue otherwise). </summary>
     public void PlayIfSilent(string soundName)
     {
+        if (blockedSounds.Contains(soundName))
+            return;
+
         soundName = soundName.ToLower();
         int numPlaying = 0;
         foreach (AudioSource s in sources)
@@ -114,6 +125,9 @@ public class SFXController : MonoBehaviour
     /// <summary> Play the sound and set it to loop (good for events that only trigger at the start and end). </summary>
     public void LoopSound(string soundName)
     {
+        if (blockedSounds.Contains(soundName))
+            return;
+
         AudioSource AS = null;
         int i = -1;
         if (GetSourcePlayingSound(soundName, out AS, out i))
@@ -165,8 +179,7 @@ public class SFXController : MonoBehaviour
 
     public void UnBlockSound(string soundName)
     {
-        if (!blockedSounds.Contains(soundName))
-            blockedSounds.Add(soundName);
+        blockedSounds.Remove(soundName);
     }
 
     private AudioSource GetBestSource(out int index)
@@ -226,6 +239,7 @@ public class SFXController : MonoBehaviour
                 index = i;
                 return true;
             }
+            ++i;
         }
         return false;
     }
