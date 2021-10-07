@@ -339,7 +339,8 @@ namespace Player
             startDashing,
             spit,
             stopRolling,
-            gameStart
+            gameStart,
+            stopDashing
         }
 
         [System.Serializable]
