@@ -2755,9 +2755,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93939dd5d492a0340ad7455d795bef2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraTarget: {fileID: 4583522462429072131}
+  cameraTarget: {fileID: 4583522462429072130}
   dollyCamera: {fileID: 4583522462924152218}
   belowPoint: {fileID: 4583522462385363313}
+  targetRenderers: []
   angleRelativeZoom: 0
   buttonZoomMultiplier: 0.3
   invertY: 1
@@ -2769,6 +2770,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 257
   collisionSphereRadius: 0.1
+  targetInvisibleRadius: 0.15
   translationSmoothing: 0.01
   cameraSmoothThreshold: 0
   programmerSettings:
@@ -3557,6 +3559,7 @@ MonoBehaviour:
     animator: {fileID: 4094135124660549562}
     runBody: {fileID: 4583522462175479631}
     ballBody: {fileID: 4583522462795349150}
+    runCameraTarget: {fileID: 0}
     SFXControl: {fileID: 3127635603426240799}
     particlesController: {fileID: 3127635603458357778}
   behaviourScripts:
