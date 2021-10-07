@@ -3738,7 +3738,7 @@ MonoBehaviour:
         m_Bits: 385
       rotateToLayers:
         serializedVersion: 2
-        m_Bits: 951
+        m_Bits: 897
       noSurfResetTime: 0.3
       rotateDegreesPerSecond: 720
       moveUnitsPerSecond: 5
