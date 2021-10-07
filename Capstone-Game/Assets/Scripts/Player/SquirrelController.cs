@@ -19,15 +19,21 @@ namespace Player
         public bool updateInFixed = false;
 
         [SerializeField]
+#if UNITY_EDITOR
         [AnimationEvent.CustomListTitles("trigger", "paramName", "setToValue")]
+#endif
         private List<AnimationEvent> animationEvents = new List<AnimationEvent>();
 
         [SerializeField]
+#if UNITY_EDITOR
         [SoundEvent.CustomListTitles("trigger", "action", "soundName")]
+#endif
         private List<SoundEvent> soundEvents = new List<SoundEvent>();
 
         [SerializeField]
+#if UNITY_EDITOR
         [ParticleEvent.CustomListTitles("trigger", "action", "particleName")]
+#endif
         private List<ParticleEvent> particleEvents = new List<ParticleEvent>();
 
         private SCStoredValues vals = new SCStoredValues();
@@ -369,6 +375,7 @@ namespace Player
                 Bool
             }
 
+#if UNITY_EDITOR
             public class CustomListTitlesAttribute : PropertyAttribute
             {
                 public string TriggerName;
@@ -445,6 +452,7 @@ namespace Player
                     return "";
                 }
             }
+#endif
         }
 
         [System.Serializable]
@@ -472,6 +480,7 @@ namespace Player
                 Unblock
             }
 
+#if UNITY_EDITOR
             public class CustomListTitlesAttribute : PropertyAttribute
             {
                 public string TriggerName;
@@ -548,6 +557,7 @@ namespace Player
                     return "";
                 }
             }
+#endif
         }
 
         [System.Serializable]
@@ -569,6 +579,7 @@ namespace Player
                 Stop
             }
 
+#if UNITY_EDITOR
             public class CustomListTitlesAttribute : PropertyAttribute
             {
                 public string TriggerName;
@@ -645,6 +656,7 @@ namespace Player
                     return "";
                 }
             }
+#endif
         }
     }
 
