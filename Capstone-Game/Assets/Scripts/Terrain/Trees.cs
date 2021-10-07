@@ -12,7 +12,7 @@ public class Trees : MonoBehaviour
 
     [Tooltip("how fast do you want the leaves to fall?")]
     [SerializeField]
-    public float fallRate;
+    public float fallRate = 0.5f;
 
     [Tooltip("how far up the tree do the leaves start?")]
     [SerializeField]
@@ -36,6 +36,7 @@ public class Trees : MonoBehaviour
         // changes the radius in which leafs drop based on float ^
         var shape = leaves.shape;
         shape.scale = new Vector3(fallingRadius, fallingRadius, 1.0f);
+        shape.rotation = new Vector3(90.0f, 0.0f, 0.0f);
 
         // setting leaves particle systems emission to the desired rate.
         var emission = leaves.emission;
@@ -47,17 +48,17 @@ public class Trees : MonoBehaviour
 
         // correctly setting the position of the instantiated particle effect in the tree
         Vector3 pos = transform.position;
-        pos.y = particleHeight;
+        pos.y += particleHeight;
 
         // setting rotation of particle system to point downwards
-        var rot = transform.rotation;
-        rot.x = 1.0f;
+        //var rot = transform.rotation;
+        //rot.y = -90.0f;
 
         // if tree has falling leaves
         if (hasLeaves)
         {
             // instaniate new leaf particle 
-            ParticleSystem leavesParticle = Instantiate(leaves, pos, rot);
+            ParticleSystem leavesParticle = Instantiate(leaves, pos, transform.rotation);
         }
             
     }
