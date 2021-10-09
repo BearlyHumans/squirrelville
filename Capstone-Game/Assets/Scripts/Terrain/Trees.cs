@@ -59,6 +59,7 @@ public class Trees : MonoBehaviour
         {
             // instaniate new leaf particle 
             ParticleSystem leavesParticle = Instantiate(leaves, pos, transform.rotation);
+            leavesParticle.transform.parent = GameObject.Find("leaves").transform;
         }
             
     }
