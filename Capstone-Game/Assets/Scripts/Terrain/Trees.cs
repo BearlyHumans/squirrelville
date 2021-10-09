@@ -30,6 +30,7 @@ public class Trees : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        // create empty game object for leaf particles to join
         if (GameObject.Find("leavesHolder") == null)
         {
             GameObject newObj = new GameObject("leavesHolder");   
