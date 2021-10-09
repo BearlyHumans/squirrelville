@@ -33,11 +33,13 @@ public class Trees : MonoBehaviour
         // create empty game object for leaf particles to join
         if (GameObject.Find("leavesHolder") == null)
         {
-            GameObject newObj = new GameObject("leavesHolder");   
+            new GameObject("leavesHolder");   
         }
     }
     void Start()
     {
+        GameObject leavesParent = GameObject.Find("leavesHolder");
+        
         // set leaves alpha color to max
         leafColor[3] = alphaLevel;
 
@@ -66,10 +68,10 @@ public class Trees : MonoBehaviour
         if (hasLeaves)
         {
             // instaniate new leaf particle 
-            if (GameObject.Find("leavesHolder") != null)
+            if (leavesParent != null)
             {
                 ParticleSystem leavesParticle = Instantiate(leaves, pos, transform.rotation);
-                leavesParticle.transform.parent = GameObject.Find("leavesHolder").transform;
+                leavesParticle.transform.parent = leavesParent.transform;
             }
         }
             
