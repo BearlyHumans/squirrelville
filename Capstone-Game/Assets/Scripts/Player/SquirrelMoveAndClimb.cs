@@ -18,6 +18,7 @@ namespace Player
         public SCTriggers triggers = new SCTriggers();
 
         public string debugString = "null";
+        public List<string> debugStrings = new List<string>();
         private bool DEBUGhere = false;
 
         private SCRunStoredValues vals = new SCRunStoredValues();
@@ -134,8 +135,9 @@ namespace Player
         /// <summary> Perform all the movement functions of the player, including applying forces such as friction and input relative to the players rotation. </summary>
         private void UpdMove()
         {
+            debugStrings.Clear();
             //--------------------------MOVEMENT PHYSICS--------------------------//
-            
+
             //No moving when on slippery.
             if (vals.onSlippery)
                 return;
@@ -199,6 +201,7 @@ namespace Player
             
             if (Grounded && (vals.carefulModePressed || vals.climbButtonHeld))
             {
+                debugStrings.Add("Checking Edges");
                 //Checks for edges (so that corner vaulting can work), but only actually stop at them if the button (Ctrl) is pressed.
                 Vector3 postEdgeCodeLatVel = AvoidEdgesLinear(LateralVelocityNew);
                 if (vals.carefulModePressed)
@@ -241,14 +244,17 @@ namespace Player
             //If the player is not trying to move and not jumping, apply stopping force.
             if (!vals.jumping && !vals.onSlippery && vals.desiredDirection.magnitude < 0.01f)
             {
+                debugStrings.Add("Friction because not moving");
                 //Jump to zero velocity when below max speed and on the ground to give more control and prevent gliding.
                 if (Grounded && LateralVelocityNew.magnitude < settings.M.maxSpeed * settings.M.haltAtFractionOfMaxSpeed) //alteredMaxSpeed * settings.M.haltAtFractionOfMaxSpeed)
                 {
+                    debugStrings.Add("Velocity Zero");
                     LateralVelocityNew = new Vector3();
                     TransformedNewVelocity.z = 0;
                 }
                 else
                 {
+                    debugStrings.Add("Apply Friction");
                     //Otherwise apply a 'friction' force to the player.
                     if (Grounded)
                         LateralVelocityNew = LateralVelocityNew.normalized * Mathf.Max(0, LateralVelocityNew.magnitude - (settings.M.stoppingForce * Time.deltaTime));
@@ -262,6 +268,7 @@ namespace Player
             //Delete the 'upwards' force (relative to player rotation), if requested by the climbing system.
             if (vals.eliminateUpForce)
             {
+                debugStrings.Add("Eliminated Up");
                 vals.eliminateUpForce = false;
                 TransformedNewVelocity.z = 0;
             }
