@@ -108,7 +108,10 @@ public class SquirrelFoodGrabber : MonoBehaviour
 
         if (nearestFood != null && Input.GetKey(KeyCode.Mouse0) && CanEatFood())
         {
-            Instantiate(foodEaten, nearestFood.transform.position, nearestFood.transform.rotation);
+            if (Input.GetMouseButtonDown(0))
+            {
+                Instantiate(foodEaten, nearestFood.transform.position, nearestFood.transform.rotation);
+            }
             PickupFood(nearestFood);
         }
 
