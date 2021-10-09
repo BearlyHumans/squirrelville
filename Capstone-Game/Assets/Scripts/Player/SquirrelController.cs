@@ -254,6 +254,8 @@ namespace Player
                 refs.SFXControl.StopLoopingSound(SE.soundName);
             else if (SE.action == SoundEvent.Action.StopImmediately)
                 refs.SFXControl.StopSound(SE.soundName);
+            else if (SE.action == SoundEvent.Action.PlayAswell)
+                refs.SFXControl.PlayAswell(SE.soundName);
             else if (SE.action == SoundEvent.Action.Block)
                 refs.SFXControl.BlockSound(SE.soundName);
             else if (SE.action == SoundEvent.Action.Unblock)
@@ -476,6 +478,7 @@ namespace Player
                 PlayAndLoop,
                 StopAfterLoop,
                 StopImmediately,
+                PlayAswell,
                 Block,
                 Unblock
             }
