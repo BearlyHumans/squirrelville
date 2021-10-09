@@ -6,9 +6,11 @@ public class CameraGimbal : MonoBehaviour
 {
     [Header("References:")]
     [Header("Usefull Settings:")]
-    public GameObject cameraTarget;
+    public Transform cameraTarget;
     public Camera dollyCamera;
     public Transform belowPoint;
+    public List<Renderer> targetRenderers = new List<Renderer>();
+    private bool targetInvisible = false;
 
     [Header("Control Settings:")]
     [Tooltip("Uses 'zoom when at low angle' system when true, or 'button-toggle zoom' when false.")]
@@ -26,6 +28,8 @@ public class CameraGimbal : MonoBehaviour
     public LayerMask noClippingEverLayers;
     [Tooltip("Size of the virtual collision sphere around the camera - i.e. how close the camera can get to obstacles (shown with solid blue gizmo).")]
     public float collisionSphereRadius = 0.1f;
+    [Tooltip("Size of the virtual collision sphere around the camera - i.e. how close the camera can get to obstacles (shown with solid blue gizmo).")]
+    public float targetInvisibleRadius = 0.15f;
 
     [Header("Other Settings:")]
     [Tooltip("Roughly the time it takes the camera to catch up to the players position/velocity. Higher means more smoothing.")]
@@ -114,11 +118,11 @@ public class CameraGimbal : MonoBehaviour
         rotY += deltaY;
 
         //X (Up Down)
-        if (finalInputY > 0 || PlayerCanSeeBelowPoint())
+        //if (finalInputY > 0 || PlayerCanSeeBelowPoint())
             rotX += finalInputY * inputSensitivity * Time.deltaTime;
 
         if (useRelativeAngles)
-            playerAngle = Vector3.Angle(Vector3.up, cameraTarget.transform.up);
+            playerAngle = Vector3.Angle(Vector3.up, cameraTarget.up);
         else
             playerAngle = 0;
         float oldRelativeAngle = rotX + playerAngle;
@@ -129,28 +133,14 @@ public class CameraGimbal : MonoBehaviour
 
         Quaternion localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
         transform.rotation = localRotation;
-
-        if (Vector3.Distance(dollyCamera.transform.position, oldPos) > collisionSphereRadius)
-        {
-            if (Physics.Linecast(oldPos, dollyCamera.transform.position, noClippingEverLayers))
-            {
-                rotY -= deltaY;
-                rotX -= deltaX;
-
-                localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
-                transform.rotation = localRotation;
-            }
-        }
-
-        RotateToUnblockedPoint(deltaY);
     }
 
     /// <summary> Move the camera gameobject towards the target at the move speed. </summary>
     public void UpdateCamPos()
     {
         // Move towards target
-        if (!cameraSmoothThreshold || (cameraTarget.transform.position - transform.position).sqrMagnitude > 0.0005f)
-            transform.position = Vector3.SmoothDamp(transform.position + new Vector3(0, 0.05f, 0), cameraTarget.transform.position, ref velocity, translationSmoothing);
+        if (!cameraSmoothThreshold || (cameraTarget.position - transform.position).sqrMagnitude > 0.0005f)
+            transform.position = Vector3.SmoothDamp(transform.position, cameraTarget.position, ref velocity, translationSmoothing);
     }
 
     public float UpdateDollyToggleZoom()
@@ -192,24 +182,59 @@ public class CameraGimbal : MonoBehaviour
 
         desiredCameraPos = transform.TransformPoint(dollyDir * zoomedMax);
 
-        //Move the camera closer if certain bad conditions are found:
+        float dist1 = zoomedMax;
+        float dist2 = zoomedMax;
+        float dist3 = zoomedMax;
+
+        Vector3 dir = CamObj.position - transform.position;
+        Vector3 offset = dir.normalized * collisionSphereRadius;
         RaycastHit hit;
-        if (Physics.Linecast(transform.position, desiredCameraPos, out hit, zoomToAvoidLayers.value))
-        { //If line of sight is blocked by the specified layer(s), move in quickly (10x smooth speed).
-            dollyDistance = Mathf.Clamp((hit.distance - programmerSettings.collisionPadding), programmerSettings.minDistance, zoomedMax);
-            if (hit.collider.CompareTag("CameraSolid"))
+        if (Physics.Linecast(transform.position, CamObj.position + offset * 2f, out hit, noClippingEverLayers))
+        {
+            float dist = Vector3.Distance(transform.position, hit.point - offset);
+            CamObj.localPosition = dollyDir * dist;
+        }
+        else
+        {
+            if (Physics.CheckSphere(CamObj.position, collisionSphereRadius, noClippingEverLayers))
+            { //If the camera is VERY near or inside an object in specified layer(s), move in at a smooth speed.
+                dollyDistance = Mathf.Clamp(dollyDistance - collisionSphereRadius * 0.5f, programmerSettings.minDistance, zoomedMax);
                 CamObj.localPosition = Vector3.Lerp(CamObj.localPosition, dollyDir * dollyDistance, Time.deltaTime * programmerSettings.smooth * 10);
+            }
+
+            //Move the camera closer if certain bad conditions are found:
+            if (Physics.Linecast(transform.position, desiredCameraPos, out hit, zoomToAvoidLayers))
+            { //If line of sight is blocked by the specified layer(s), move in quickly (10x smooth speed).
+              dollyDistance = Mathf.Clamp((hit.distance - programmerSettings.collisionPadding), programmerSettings.minDistance, zoomedMax);
+              CamObj.localPosition = Vector3.Lerp(CamObj.localPosition, dollyDir * dollyDistance, Time.deltaTime * programmerSettings.smooth * 10);
+            }
+            else if (Physics.CheckSphere(CamObj.position, collisionSphereRadius, zoomToAvoidLayers))
+            { //If the camera is VERY near or inside an object in specified layer(s), move in at a smooth speed.
+                dollyDistance = Mathf.Clamp(dollyDistance - Time.deltaTime * programmerSettings.smooth, programmerSettings.minDistance, zoomedMax);
+                CamObj.localPosition = Vector3.Lerp(CamObj.localPosition, dollyDir * dollyDistance, Time.deltaTime * programmerSettings.smooth);
+            }
+            else if (!Physics.CheckSphere(CamObj.position, collisionSphereRadius * programmerSettings.largeSphereMultiplier, zoomToAvoidLayers))
+            { //If the camera is NOT near any specified objects, move out again at the smooth speed.
+              //(MUST be defined by a larger sphere than the previous check to prevent flickering)
+                dollyDistance = zoomedMax;
+                CamObj.localPosition = Vector3.Lerp(CamObj.localPosition, dollyDir * dollyDistance, Time.deltaTime * programmerSettings.smooth);
+            }
         }
-        else if (Physics.CheckSphere(CamObj.position, collisionSphereRadius, zoomToAvoidLayers.value))
-        { //If the camera is VERY near or inside an object in specified layer(s), move in at a smooth speed.
-            dollyDistance = Mathf.Clamp(dollyDistance - Time.deltaTime * programmerSettings.smooth, programmerSettings.minDistance, zoomedMax);
-            CamObj.localPosition = Vector3.Lerp(CamObj.localPosition, dollyDir * dollyDistance, Time.deltaTime * programmerSettings.smooth);
+
+        if (Vector3.Distance(CamObj.position, transform.position) < targetInvisibleRadius)
+        {
+            foreach (Renderer MR in targetRenderers)
+                MR.enabled = false;
+            targetInvisible = true;
         }
-        else if (!Physics.CheckSphere(CamObj.position, collisionSphereRadius * programmerSettings.largeSphereMultiplier, zoomToAvoidLayers.value))
-        { //If the camera is NOT near any specified objects, move out again at the smooth speed.
-            //(MUST be defined by a larger sphere than the previous check to prevent flickering)
-            dollyDistance = zoomedMax;
-            CamObj.localPosition = Vector3.Lerp(CamObj.localPosition, dollyDir * dollyDistance, Time.deltaTime * programmerSettings.smooth);
+        else 
+        {
+            if (targetInvisible)
+            {
+                foreach (Renderer MR in targetRenderers)
+                    MR.enabled = true;
+                targetInvisible = false;
+            }
         }
     }
 
@@ -261,5 +286,7 @@ public class CameraGimbal : MonoBehaviour
         Gizmos.DrawSphere(dollyCamera.transform.position, collisionSphereRadius);
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(dollyCamera.transform.position, collisionSphereRadius * programmerSettings.largeSphereMultiplier);
+        Gizmos.DrawLine(transform.position, CamObj.transform.position);
+        Gizmos.DrawLine(transform.position, belowPoint.position);
     }
 }

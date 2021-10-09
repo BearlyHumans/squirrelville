@@ -1,13 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Player;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(NPCInteractionManager))]
+[RequireComponent(typeof(SquirrelController))]
 public class SquirrelFoodGrabber : MonoBehaviour
 {
     private Stack<GameObject> foodStack = new Stack<GameObject>();
     private Rigidbody squirrelrb;
+    private SquirrelController controller;
     private NPCInteractionManager npcInteractionManager;
 
     [Header("Mouth")]
@@ -56,6 +59,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
     {
         squirrelrb = GetComponent<Rigidbody>();
         npcInteractionManager = GetComponent<NPCInteractionManager>();
+        controller = GetComponent<SquirrelController>();
     }
 
     private void Update()
@@ -132,6 +136,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
         food.SetActive(false);
         pickupTime = Time.time + pickupDelay;
 
+        controller.CallEvents(SquirrelController.EventTrigger.eat);
         pickupEvent.Invoke(food);
     }
 
@@ -153,6 +158,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
         throwTime = Time.time + throwDelay;
         throwDelay = Mathf.Max(throwDelay / throwDelayDivisor, minThrowDelay);
 
+        controller.CallEvents(SquirrelController.EventTrigger.spit);
         throwEvent.Invoke(food);
     }
 

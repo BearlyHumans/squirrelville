@@ -88,6 +88,15 @@ namespace Player
 
 
             ParentRefs.RB.velocity += addedVelocity;
+
+            if (ParentRefs.RB.velocity.magnitude > 0.3f)
+            {
+                PARENT.CallEvents(SquirrelController.EventTrigger.rolling);
+            }
+            else
+            {
+                PARENT.CallEvents(SquirrelController.EventTrigger.stopRolling);
+            }
         }
 
         private void UpdJump()
