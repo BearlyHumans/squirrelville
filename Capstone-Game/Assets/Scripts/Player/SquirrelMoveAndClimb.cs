@@ -212,7 +212,12 @@ namespace Player
                     LateralVelocityNew = postEdgeCodeLatVel;
                 else if (vals.stoppedAtEdge && vals.climbButtonHeld)
                 {
-                    if (!JumpAroundCorners())
+                    if (vals.dashing)
+                    {
+                        if (!JumpAroundCorners())
+                            LateralVelocityNew = postEdgeCodeLatVel;
+                    }
+                    else
                         LateralVelocityNew = postEdgeCodeLatVel;
                 }
             }
@@ -1211,11 +1216,13 @@ namespace Player
                 public float moveUnitsPerSecond = 5f;
 
                 [Space]
-                [Tooltip("Time between pressing the auto-vault button and the system activating (so it doesn't conflict with the climb check).")]
+                [Tooltip("")]
+                public bool onlyVaultOnDash = true;
+                [Tooltip("")]
                 public float postVaultSlowTime = 0.2f;
-                [Tooltip("Time between pressing the auto-vault button and the system activating (so it doesn't conflict with the climb check).")]
+                [Tooltip("")]
                 public float postVaultSpeedFactor = 0.2f;
-                [Tooltip("Time between pressing the auto-vault button and the system activating (so it doesn't conflict with the climb check).")]
+                [Tooltip("")]
                 public bool vaultSlowsWhenClimbing = false;
                 [Tooltip("Time between pressing the auto-vault button and the system activating (so it doesn't conflict with the climb check).")]
                 public float autoVaultActivationTime = 0.2f;
