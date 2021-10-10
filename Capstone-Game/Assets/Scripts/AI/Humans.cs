@@ -178,8 +178,7 @@ public class Humans : MonoBehaviour
     {
         distance = Vector3.Distance(target.position, transform.position);
         timeToFood += Time.deltaTime;
-    
-        print(currentState);
+   
         // -----States------
         switch(currentState)
         {
