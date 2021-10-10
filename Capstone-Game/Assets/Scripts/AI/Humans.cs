@@ -61,7 +61,7 @@ public class Humans : MonoBehaviour
     // --- good object for friendly humans to give---- /
     public GameObject foodToGive;
 
-    NavMeshAgent navMesh;
+    NavMeshAgent human;
     float distance;
     int currentPathPt;
     bool walking;
@@ -119,6 +119,14 @@ public class Humans : MonoBehaviour
     [SerializeField]
     public float unFreezeTime = 5.0f;
 
+    [Tooltip("speed of walking player")]
+    [SerializeField]
+    public float humanWalkSpeed = 2.0f;
+
+    [Tooltip("speed of running player")]
+    [SerializeField]
+    public float humanRunSpeed = 5.0f;
+
     Transform target;
     GameObject squrrielTarget;
 
@@ -132,7 +140,7 @@ public class Humans : MonoBehaviour
         sController = GameObject.FindWithTag("Player");
         squirrelController = sController.GetComponent<SquirrelController>();
 
-        navMesh = this.GetComponent<NavMeshAgent>();
+        human = this.GetComponent<NavMeshAgent>();
 
         chaseTimer = chaseTime;
 
@@ -140,7 +148,7 @@ public class Humans : MonoBehaviour
         squrrielTarget = GameObject.FindWithTag("Player");
 
         currentState = HumanStates.PathFollowing;
-        if(navMesh == null)
+        if(human == null)
         {
             Debug.Log("No nav mesh");
         }
@@ -196,6 +204,8 @@ public class Humans : MonoBehaviour
     /// functionaility for catching behaviour 
     private void CatchingState()
     {  
+        human.speed = humanWalkSpeed;
+
         if(!hasCaughtRecently)
         {
             hasCaughtRecently = true;  
@@ -229,14 +239,14 @@ public class Humans : MonoBehaviour
                     {
                         // animation walk (not moving)
                         CallAnimationEvents(AnimTriggers.walking);
-                        navMesh.SetDestination(bin.transform.position);
+                        human.SetDestination(bin.transform.position);
                     }
                     // put food in bin
                     else
                     {
                         CallAnimationEvents(AnimTriggers.dropping);
                         
-                        navMesh.velocity = Vector3.zero;
+                        human.velocity = Vector3.zero;
                         Invoke("canCatchAgain", catchAgainTimer);
                         Invoke("returnToPath", 1f);
                         //returnToPath();
@@ -268,6 +278,7 @@ public class Humans : MonoBehaviour
     ///functionaility for chasing behaviour. Added checks to see if the npc leaves their boundry area or chases for 'x' ammount of time 
     private void ChaseState()
     {  
+        human.speed = humanRunSpeed;
         CallAnimationEvents(AnimTriggers.running);
 
         /// runs a check to see if the human is still within boundary
@@ -276,7 +287,7 @@ public class Humans : MonoBehaviour
             // runs a check to test if human can see the player 
             SeePlayer();
             // if can see player then target and move towards player
-            navMesh.SetDestination(target.position);
+            human.SetDestination(target.position);
             
             // if within boundary then chase while timer is above -
             if (chaseTimer > 0f)
@@ -286,7 +297,7 @@ public class Humans : MonoBehaviour
 
                 chaseTimer -= Time.deltaTime;
                 // checks to see if human is within range to "catch" player
-                if (distance < 1.0f)
+                if (distance < 1.5f)
                 {
                     currentState = HumanStates.Catch;
                 }
@@ -315,7 +326,7 @@ public class Humans : MonoBehaviour
         anim.SetInteger("HumanMove", 0);
         watchedFor += Time.deltaTime;
         facePlayer();
-        navMesh.SetDestination(transform.position);
+        human.SetDestination(transform.position);
         
         if (!givenfood)
         {
@@ -338,7 +349,7 @@ public class Humans : MonoBehaviour
     ///runs checks to find player, while cant see playing iterate through list of path points and walk between them
     private void PathFollowingState()
     {
-        
+        human.speed = humanWalkSpeed;
         bool canSee = SeePlayer();
         
         if(canSee)
@@ -364,7 +375,7 @@ public class Humans : MonoBehaviour
                 currentState = HumanStates.PathFollowing;
             }
         }
-        if(walking && navMesh.remainingDistance <= 1.0f)
+        if(walking && human.remainingDistance <= 1.0f)
         {
             walking = false;
                     
@@ -419,11 +430,11 @@ public class Humans : MonoBehaviour
                 }
             }
             CallAnimationEvents(AnimTriggers.walking);
-            navMesh.SetDestination(bestCollider.transform.position);
+            human.SetDestination(bestCollider.transform.position);
 
             if(bestDistance < 1f)
             {
-                navMesh.velocity = Vector3.zero;
+                human.velocity = Vector3.zero;
                
                 CallAnimationEvents(AnimTriggers.pickup);
                 StartCoroutine(pickUpFood(bestCollider));
@@ -530,7 +541,7 @@ public class Humans : MonoBehaviour
             CallAnimationEvents(AnimTriggers.walking);
 
             Vector3 targetVector = pathPoints[currentPathPt].transform.position;
-            navMesh.SetDestination(targetVector);
+            human.SetDestination(targetVector);
             
             walking = true;
         }
