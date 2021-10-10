@@ -18,7 +18,6 @@ namespace Player
         public SCTriggers triggers = new SCTriggers();
 
         public string debugString = "null";
-        public List<string> debugStrings = new List<string>();
         private bool DEBUGhere = false;
 
         private SCRunStoredValues vals = new SCRunStoredValues();
@@ -135,7 +134,6 @@ namespace Player
         /// <summary> Perform all the movement functions of the player, including applying forces such as friction and input relative to the players rotation. </summary>
         private void UpdMove()
         {
-            debugStrings.Clear();
             //--------------------------MOVEMENT PHYSICS--------------------------//
 
             //No moving when on slippery.
@@ -143,6 +141,18 @@ namespace Player
                 return;
 
             //-----PHASE ONE: GET AND ADJUST INPUT-----//
+
+            if (vals.animationSlow)
+            {
+                if (settings.J.stopWhenJumping && vals.inJumpAnimation)
+                    vals.desiredDirection = Vector3.zero;
+
+                if (settings.J.stopWhenLanding && vals.inLandingAnimation)
+                    vals.desiredDirection = Vector3.zero;
+
+                if (settings.J.carefulModeInAnimations)
+                    vals.carefulModePressed = true;
+            }
 
             //Factor any modifiers like sneaking or slow effects into the max speed;
             float alteredMaxSpeed = settings.M.maxSpeed;
@@ -161,6 +171,12 @@ namespace Player
                 alteredMaxSpeed *= settings.M.climbingMaxSpeedFactor;
             }
 
+            if (Time.time < vals.lastCornerVault + settings.WC.postVaultSlowTime && (settings.WC.vaultSlowsWhenClimbing || !vals.climbing))
+            {
+                alteredAcceleration *= settings.WC.postVaultSpeedFactor;
+                alteredMaxSpeed *= settings.WC.postVaultSpeedFactor;
+            }
+
             if (!Grounded)
             {
                 alteredAcceleration *= settings.M.airAccelerationFactor;
@@ -170,17 +186,6 @@ namespace Player
             {
                 vals.inLandingAnimation = false;
                 vals.animationSlow = false;
-            }
-            if (vals.animationSlow)
-            {
-                if (settings.J.stopWhenJumping && vals.inJumpAnimation)
-                    vals.desiredDirection = Vector3.zero;
-
-                if (settings.J.stopWhenLanding && vals.inLandingAnimation)
-                    vals.desiredDirection = Vector3.zero;
-
-                if (settings.J.carefulModeInAnimations)
-                    vals.carefulModePressed = true;
             }
 
             //Calculate the ideal velocity from the input and the acceleration settings.
@@ -198,10 +203,9 @@ namespace Player
             Vector3 LateralVelocityNew = new Vector3(TransformedNewVelocity.x, TransformedNewVelocity.y, 0);
 
             //-----PHASE THREE: AVOID EDGES AND SLOW TO MAX SPEED-----//
-            
+
             if (Grounded && (vals.carefulModePressed || vals.climbButtonHeld))
             {
-                debugStrings.Add("Checking Edges");
                 //Checks for edges (so that corner vaulting can work), but only actually stop at them if the button (Ctrl) is pressed.
                 Vector3 postEdgeCodeLatVel = AvoidEdgesLinear(LateralVelocityNew);
                 if (vals.carefulModePressed)
@@ -232,10 +236,10 @@ namespace Player
                 {
                     if (Grounded && !vals.jumping)
                         LateralVelocityNew = LateralVelocityNew.normalized
-                            * Mathf.Max(settings.M.maxSpeed, LateralVelocityNew.magnitude - settings.M.frictionForce * Time.deltaTime);
+                            * Mathf.Max(alteredMaxSpeed, LateralVelocityNew.magnitude - settings.M.frictionForce * Time.deltaTime);
                     else
                         LateralVelocityNew = LateralVelocityNew.normalized
-                            * Mathf.Max(settings.M.maxSpeed, LateralVelocityNew.magnitude - (settings.M.frictionForce * settings.M.airAccelerationFactor) * Time.deltaTime);
+                            * Mathf.Max(alteredMaxSpeed, LateralVelocityNew.magnitude - (settings.M.frictionForce * settings.M.airAccelerationFactor) * Time.deltaTime);
                 }
             }
 
@@ -244,17 +248,14 @@ namespace Player
             //If the player is not trying to move and not jumping, apply stopping force.
             if (!vals.jumping && !vals.onSlippery && vals.desiredDirection.magnitude < 0.01f)
             {
-                debugStrings.Add("Friction because not moving");
                 //Jump to zero velocity when below max speed and on the ground to give more control and prevent gliding.
-                if (Grounded && LateralVelocityNew.magnitude < settings.M.maxSpeed * settings.M.haltAtFractionOfMaxSpeed) //alteredMaxSpeed * settings.M.haltAtFractionOfMaxSpeed)
+                if (Grounded && LateralVelocityNew.magnitude < alteredMaxSpeed * settings.M.haltAtFractionOfMaxSpeed)
                 {
-                    debugStrings.Add("Velocity Zero");
                     LateralVelocityNew = new Vector3();
                     TransformedNewVelocity.z = 0;
                 }
                 else
                 {
-                    debugStrings.Add("Apply Friction");
                     //Otherwise apply a 'friction' force to the player.
                     if (Grounded)
                         LateralVelocityNew = LateralVelocityNew.normalized * Mathf.Max(0, LateralVelocityNew.magnitude - (settings.M.stoppingForce * Time.deltaTime));
@@ -268,7 +269,6 @@ namespace Player
             //Delete the 'upwards' force (relative to player rotation), if requested by the climbing system.
             if (vals.eliminateUpForce)
             {
-                debugStrings.Add("Eliminated Up");
                 vals.eliminateUpForce = false;
                 TransformedNewVelocity.z = 0;
             }
@@ -376,7 +376,8 @@ namespace Player
 
                 if (!vals.climbButtonHeld && vals.climbing)
                 {
-                    StartFalling();
+                    if (Time.time > vals.lastOnSurface + settings.WC.noSurfResetTime)
+                        StartFalling();
                     return;
                 }
 
@@ -452,10 +453,21 @@ namespace Player
 
         private void StartFalling()
         {
-            //Point feet down and start falling if not on a surface for long enough.
-            CustomIntuitiveSnapRotation(Vector3.down);
             PARENT.CallEvents(SquirrelController.EventTrigger.falling);
-            vals.falling = true;
+            if (vals.falling == false)
+            {
+                //Point feet down and start falling if not on a surface for long enough.
+                Vector3 up = -transform.forward;
+
+                CustomIntuitiveSnapRotation(Vector3.down);
+                vals.falling = true;
+
+                if (Physics.CheckSphere(refs.climbRotateCheckRay.position, settings.squirrelCenterToNoseDist))
+                {
+                    up = new Vector3(up.x, 0, up.z);
+                    transform.position += up * settings.squirrelCenterToNoseDist;
+                }
+            }
         }
 
         //~~~~~~~~~~ HELPER/SUB-FUNCTIONS ~~~~~~~~~~
@@ -497,7 +509,7 @@ namespace Player
                     return;
                 if (ClimbCheck(1f, climbChecks.forwards))
                     return;
-                if (ClimbCheck(0.8f, climbChecks.circle))
+                if (ClimbCheck(1f, climbChecks.circle))
                     return;
             }
             else if (vals.climbButtonHeld)
@@ -506,7 +518,7 @@ namespace Player
                 {
                     if (ClimbCheck(1.2f, climbChecks.forwards))
                         return;
-                    if (ClimbCheck(1f, climbChecks.circle))
+                    if (ClimbCheck(1.2f, climbChecks.circle))
                         return;
                 }
                 else
@@ -620,7 +632,7 @@ namespace Player
             Vector3 sphereDir;
 
             //Use input direction when moving and model direction when not moving.
-            float modifiedDist = settings.WC.programmerSettings.sphereDetectDistance * distanceMultiplier;
+            float modifiedDist = settings.WC.programmerSettings.flowerDetectDistance * distanceMultiplier;
             if (vals.desiredDirection != Vector3.zero)
             {
                 sphereStart = refs.startClimbCheckRay.position - (vals.desiredDirection * settings.WC.programmerSettings.sphereDetectRadius);
@@ -642,6 +654,7 @@ namespace Player
             {
                 angle += 45;
                 Vector3 rotatedDir = Quaternion.AngleAxis(angle, Vector3.up) * sphereDir;
+                Debug.DrawLine(sphereStart, sphereStart + rotatedDir * modifiedDist, Color.red);
                 if (Physics.SphereCast(sphereStart, settings.WC.programmerSettings.sphereDetectRadius, rotatedDir, out hit, modifiedDist, settings.WC.climableLayers.value))
                     return true;
             }
@@ -813,16 +826,33 @@ namespace Player
             if (settings.WC.programmerSettings.basicGizmos)
             {
                 Gizmos.color = Color.blue;
-                Gizmos.DrawWireSphere(refs.climbRotateCheckRay.position, settings.WC.programmerSettings.sphereDetectRadius);
-                Gizmos.DrawLine(refs.climbRotateCheckRay.position, refs.climbRotateCheckRay.position + ParentRefs.body.forward * settings.WC.programmerSettings.sphereDetectDistance);
-                Gizmos.DrawWireSphere(refs.climbRotateCheckRay.position + ParentRefs.body.forward * settings.WC.programmerSettings.sphereDetectDistance, settings.WC.programmerSettings.sphereDetectRadius);
+                //Forwards Check distance
+                Gizmos.DrawLine(refs.startClimbCheckRay.position, refs.startClimbCheckRay.position + ParentRefs.body.forward * settings.WC.programmerSettings.sphereDetectDistance);
+                //Sphere Detect radius at start
+                Gizmos.DrawWireSphere(refs.startClimbCheckRay.position, settings.WC.programmerSettings.sphereDetectRadius);
+                //Sphere Detect radius at end
+                Gizmos.DrawWireSphere(refs.startClimbCheckRay.position + ParentRefs.body.forward * settings.WC.programmerSettings.sphereDetectDistance, settings.WC.programmerSettings.sphereDetectRadius);
 
-                Gizmos.color = Color.black;
+                //Second pass sphere size at end
+                Gizmos.color = Color.cyan;
                 Gizmos.DrawWireSphere(refs.climbRotateCheckRay.position + ParentRefs.body.forward * settings.WC.programmerSettings.sphereDetectDistance,
                     settings.WC.programmerSettings.sphereDetectRadius * settings.WC.programmerSettings.secondPassMultiplier);
 
+                //Headbutt check range
+                Gizmos.color = Color.green;
+                Gizmos.DrawLine(refs.startClimbCheckRay.position, refs.startClimbCheckRay.position + new Vector3(0, 0.001f, 0) + ParentRefs.body.forward * settings.WC.programmerSettings.headbuttDist);
+
+
+                //Down check range
                 Gizmos.color = Color.magenta;
                 Gizmos.DrawLine(refs.climbRotateCheckRay.position, refs.climbRotateCheckRay.position - refs.climbRotateCheckRay.up * settings.WC.programmerSettings.surfaceDetectRange);
+            }
+
+
+            if (settings.WC.programmerSettings.flowerCheckGizmos)
+            {
+                Gizmos.color = Color.green;
+                DrawFlowerCheckGizmos();
             }
 
 
@@ -837,6 +867,20 @@ namespace Player
             {
                 Gizmos.color = Color.red;
                 DrawEdgeVaultGizmos();
+            }
+        }
+
+        private void DrawFlowerCheckGizmos()
+        {
+            Vector3 dir = ParentRefs.body.forward;
+            Vector3 start = refs.startClimbCheckRay.position;
+            int angle = 0;
+            for (int i = 0; i < 7; ++i)
+            {
+                angle += 45;
+                Vector3 rotatedDir = Quaternion.AngleAxis(angle, Vector3.up) * dir;
+                Gizmos.DrawLine(start, start + rotatedDir * settings.WC.programmerSettings.flowerDetectDistance);
+                Gizmos.DrawWireSphere(start + rotatedDir * settings.WC.programmerSettings.flowerDetectDistance, settings.WC.programmerSettings.sphereDetectRadius);
             }
         }
 
@@ -998,9 +1042,6 @@ namespace Player
         public class MovementRefs
         {
             public Transform climbPointDisplay;
-            public Transform backCheckRay;
-            public Transform frontCheckRay;
-            public Transform acuteCheckRay;
             public Transform startClimbCheckRay;
             public Transform climbRotateCheckRay;
             public SphereCollider mainCollider;
@@ -1169,9 +1210,17 @@ namespace Player
                 [Tooltip("How quickly the squirrel model moves back to alignment when the physics object is teleported.")]
                 public float moveUnitsPerSecond = 5f;
 
+                [Space]
+                [Tooltip("Time between pressing the auto-vault button and the system activating (so it doesn't conflict with the climb check).")]
+                public float postVaultSlowTime = 0.2f;
+                [Tooltip("Time between pressing the auto-vault button and the system activating (so it doesn't conflict with the climb check).")]
+                public float postVaultSpeedFactor = 0.2f;
+                [Tooltip("Time between pressing the auto-vault button and the system activating (so it doesn't conflict with the climb check).")]
+                public bool vaultSlowsWhenClimbing = false;
                 [Tooltip("Time between pressing the auto-vault button and the system activating (so it doesn't conflict with the climb check).")]
                 public float autoVaultActivationTime = 0.2f;
 
+                [Space]
                 [Tooltip("Cooldown autoclimb teleport. Can help reduce buginess and improve performance.")]
                 public float autoclimbCooldown = 0.33f;
                 [Tooltip("Cooldown corner vaulting. Should be roughly human reaction-time so players can control which side of branche/fence etc they want.")]
@@ -1190,11 +1239,15 @@ namespace Player
                     public float secondPassMultiplier = 5f;
                     [Tooltip("Length of the sphere-cast that detects surfaces. Larger means the check will find objects further from the player.")]
                     public float sphereDetectDistance = 1f;
+                    [Tooltip("Length of the 7 sphere-casts that detect surfaces around the player. Larger means the check will find objects further from the player.")]
+                    public float flowerDetectDistance = 1f;
                     [Tooltip("Length of the ray-cast that detects surfaces directly in front of the players head.")]
                     public float headbuttDist = 1f;
                     [Tooltip("Distance from the center of the character from which surfaces below will be detected.")]
                     public float surfaceDetectRange = 0.31f;
+                    [Tooltip("Blue line = forwards climb check dist (on click). Blue spheres = forwards climb check radius. Green line = headbutt climb check dist (on hold). Pink line = down check distance")]
                     public bool basicGizmos = false;
+                    public bool flowerCheckGizmos = false;
 
                     [Header("Edge Detect")]
                     [Tooltip("Distance from the center of the character in the direction of movement from which edges will be detected.")]
