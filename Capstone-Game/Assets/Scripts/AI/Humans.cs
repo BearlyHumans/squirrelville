@@ -144,7 +144,7 @@ public class Humans : MonoBehaviour
 
         chaseTimer = chaseTime;
 
-        layerMask = LayerMask.GetMask("Food");
+        layerMask = LayerMask.GetMask("EatenFood");
 
         target = playerController.transform;
 
@@ -423,7 +423,6 @@ public class Humans : MonoBehaviour
             foreach (Collider hitCollider in hitColliders)
             {
                 float distToFood = Vector3.Distance(hitCollider.transform.position, transform.position);
-                
                 if (distToFood < bestDistance)
                 {
                    bestDistance = distToFood;
@@ -468,7 +467,7 @@ public class Humans : MonoBehaviour
         int i = 0; 
         while(i < takeFoodAmmount)
         {
-            foodGraber.ThrowFood(); 
+            foodGraber.ThrowFood(1); 
             i++;
         }
     }
