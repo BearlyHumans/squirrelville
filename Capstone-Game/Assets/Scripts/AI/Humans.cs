@@ -40,8 +40,7 @@ public class Humans : MonoBehaviour
     private SquirrelController squirrelController;
     private GameObject sController;
 
-    private Stun stunScript;
-    private GameObject stunController;
+    public Stun stunScript;
 
     //----------Path Following -----------//
     [Tooltip("Do you want to npc to pause on each point?")]
@@ -133,10 +132,12 @@ public class Humans : MonoBehaviour
     Transform target;
     GameObject squrrielTarget;
 
+    GameObject playerController;
+
     /// set the nav mesh agent for humans to walk on as well as set target (player) to chase.
     public void Start() 
     {
-        GameObject playerController = GameObject.FindWithTag("Player");
+        playerController = GameObject.FindWithTag("Player");
         
         foodController = playerController;
         foodGraber = foodController.GetComponent<SquirrelFoodGrabber>();
@@ -144,12 +145,12 @@ public class Humans : MonoBehaviour
         sController = playerController;
         squirrelController = sController.GetComponent<SquirrelController>();
 
-
         human = this.GetComponent<NavMeshAgent>();
 
         chaseTimer = chaseTime;
 
         target = playerController.transform;
+
         squrrielTarget = playerController;
 
         currentState = HumanStates.PathFollowing;
@@ -178,6 +179,7 @@ public class Humans : MonoBehaviour
         distance = Vector3.Distance(target.position, transform.position);
         timeToFood += Time.deltaTime;
     
+        print(currentState);
         // -----States------
         switch(currentState)
         {
@@ -203,7 +205,6 @@ public class Humans : MonoBehaviour
                 break;
             }
         }
-        //UpdAnimator();
     }
 
     /// functionaility for catching behaviour 
@@ -223,10 +224,7 @@ public class Humans : MonoBehaviour
             // animation stunning (not moving)
             CallAnimationEvents(AnimTriggers.stunning);
 
-                    //squirrelController.FreezeMovement();
-                    //Invoke("unFreezePlayer", unFreezeTime);
-
-            //call stun script. 
+            StartCoroutine(stunPlayer());
 
             catchChoice = Random.Range(0,2);
         }
@@ -453,6 +451,12 @@ public class Humans : MonoBehaviour
         }
         return false;
     }
+
+    IEnumerator stunPlayer()
+    {
+        yield return new WaitForSeconds(1.15f);
+        stunScript.stompEffect(squirrelController);
+    }
     
     IEnumerator pickUpFood(Collider food)
     {
@@ -494,7 +498,6 @@ public class Humans : MonoBehaviour
     /// runs a ray cast to check if the player is within a LOS.  
     bool SeePlayer()
     {
-        
         float distance = Vector3.Distance(target.position, transform.position);
         Vector3 targetDir = target.position - transform.position;
 
