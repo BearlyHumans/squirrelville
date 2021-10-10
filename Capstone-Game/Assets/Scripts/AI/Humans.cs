@@ -27,6 +27,7 @@ public enum NpcModes
 
 public class Humans : MonoBehaviour
 {
+    [Tooltip("Animation events")]
     [SerializeField]
     private List<ParameterChangeEvent> animationEvents = new List<ParameterChangeEvent>();
     
@@ -40,28 +41,30 @@ public class Humans : MonoBehaviour
     private SquirrelController squirrelController;
     private GameObject sController;
 
+    // auto find
     public Stun stunScript;
 
-    //----------Path Following -----------//
-    [Tooltip("Do you want to npc to pause on each point?")]
+    [Tooltip("Select the behavior for the NPC")]
     [SerializeField]
-    bool walkingPause;
-    [Tooltip("added change for NPC to turn around")]
+    public NpcModes npcCurrentMode;
+
     [SerializeField]
-    float turnAroundChance = 0.2f;
-    [Tooltip("Add ammount of path points for human to walk to")]
+    private PathFollowingVarible pathFollowingVariables;
+
     [SerializeField]
-    List<WayPoints> pathPoints;
-    [Tooltip("adds a home area that acts as boundary")]
-    public HomePoint homePoint;
+    private FriendlyVarible friendlyVariables;
+
+    [SerializeField]
+    private CatchVarible catchVariables;
+
+    [SerializeField]
+    private ChaseVarible chaseVariables;
 
     //---sphere cast ---//
     private Vector3 origin;
     private Vector3 sDirection;
     private LayerMask layerMask;
 
-    // --- good object for friendly humans to give---- /
-    public GameObject foodToGive;
 
     NavMeshAgent human;
     float distance;
@@ -71,36 +74,21 @@ public class Humans : MonoBehaviour
     bool walkForward;
     float waitTimer;
 
-
-    public int takeFoodAmmount;
-
     public Animator anim;
 
     [Tooltip("Angle in which the NPC can see player")]
     [SerializeField]
     public float detectionAngle = 70;
-
-    //--------------Friendly----------------//
-    [Tooltip("Select the behavior for the NPC")]
+    [Tooltip("Detection Radius")]
     [SerializeField]
-    public NpcModes npcCurrentMode;
+    public float range = 2f;
     
     bool givenfood = false;
     float watchedFor = 0.0f;
     float watchTimer = 5.0f;
 
     float timeToFood = 0.0f;
-    [Tooltip("How long until humans give more food")]
-    [SerializeField]
-    public float foodTimer = 11.0f;
 
-    //--------------Chase----------------//
-    [Tooltip("Detection Radius")]
-    [SerializeField]
-    public float range = 2f;
-    [Tooltip("How long does the human chase the player")]
-    [SerializeField]
-    float chaseTime = 10f;
     float chaseTimer;
 
 
@@ -142,7 +130,7 @@ public class Humans : MonoBehaviour
 
         human = this.GetComponent<NavMeshAgent>();
 
-        chaseTimer = chaseTime;
+        chaseTimer = chaseVariables.chaseTime;
 
         layerMask = LayerMask.GetMask("EatenFood");
 
@@ -157,7 +145,7 @@ public class Humans : MonoBehaviour
         }
         else
         {
-            if (pathPoints != null && pathPoints.Count >= 2)
+            if (pathFollowingVariables.pathPoints != null && pathFollowingVariables.pathPoints.Count >= 2)
             {
                 currentPathPt = 0;
                 SetDest();
@@ -213,7 +201,7 @@ public class Humans : MonoBehaviour
             hasCaughtRecently = true;  
             // takes x ammount of food from the player when caught
             // TODO assign variable to check store how much food is taken
-            takeFood(takeFoodAmmount);
+            takeFood(catchVariables.takeFoodAmmount);
 
             stillFood = checkForFood();
 
@@ -234,7 +222,7 @@ public class Humans : MonoBehaviour
                 // option 1 = go to bin
                 if(catchChoice == 0)
                 {
-                    Bin bin = homePoint.closestBin(transform.position);
+                    Bin bin = pathFollowingVariables.homePoint.closestBin(transform.position);
 
 
                     if(bin.radius <= Vector3.Distance(bin.transform.position, transform.position))
@@ -307,7 +295,7 @@ public class Humans : MonoBehaviour
             }
             else
             {
-                chaseTimer = chaseTime;
+                chaseTimer = chaseVariables.chaseTime;
                         
                 SetDest();
                 currentState = HumanStates.PathFollowing;
@@ -332,7 +320,7 @@ public class Humans : MonoBehaviour
         
         if (!givenfood)
         {
-           Instantiate(foodToGive, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
+           Instantiate(friendlyVariables.foodToGive, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
            givenfood = true;
            timeToFood = 0.0f;
         }
@@ -343,7 +331,7 @@ public class Humans : MonoBehaviour
             watchedFor = 0.0f;
         }
 
-        if(timeToFood > foodTimer)
+        if(timeToFood > friendlyVariables.foodTimer)
         {
             givenfood = false;
         }
@@ -381,7 +369,7 @@ public class Humans : MonoBehaviour
         {
             walking = false;
                     
-            if(walkingPause)
+            if(pathFollowingVariables.walkingPause)
             {
                 waiting = true;
                 waitTimer = 2f;
@@ -396,7 +384,7 @@ public class Humans : MonoBehaviour
         {
             CallAnimationEvents(AnimTriggers.idle);
             waitTimer += Time.deltaTime;
-            if(waitTimer >= pathPoints[currentPathPt].waitForThisLong)
+            if(waitTimer >= pathFollowingVariables.pathPoints[currentPathPt].waitForThisLong)
             {
                 waiting = false;
                 ChangePathPt();
@@ -516,8 +504,8 @@ public class Humans : MonoBehaviour
     /// checks if the humans locations is outside of a set boundary
     bool checkBoundry()
     {
-        float dist = Vector3.Distance(homePoint.transform.position, transform.position);
-        if (dist > homePoint.boundary)
+        float dist = Vector3.Distance(pathFollowingVariables.homePoint.transform.position, transform.position);
+        if (dist > pathFollowingVariables.homePoint.boundary)
         {
             return false;
         }
@@ -537,11 +525,11 @@ public class Humans : MonoBehaviour
     /// used within path following to move human to current path point
     private void SetDest()
     {
-        if (pathPoints != null)
+        if (pathFollowingVariables.pathPoints != null)
         {
             CallAnimationEvents(AnimTriggers.walking);
 
-            Vector3 targetVector = pathPoints[currentPathPt].transform.position;
+            Vector3 targetVector = pathFollowingVariables.pathPoints[currentPathPt].transform.position;
             human.SetDestination(targetVector);
             
             walking = true;
@@ -551,14 +539,14 @@ public class Humans : MonoBehaviour
     private void ChangePathPt()
     {
         // if turn around chance is true. 
-        if (UnityEngine.Random.Range(0f, 1f) <= turnAroundChance)
+        if (UnityEngine.Random.Range(0f, 1f) <= pathFollowingVariables.turnAroundChance)
         {
             // selects the path point they just came from
             walkForward = !walkForward;
         }
         if (walkForward)
         {
-            currentPathPt = (currentPathPt + 1) % pathPoints.Count;
+            currentPathPt = (currentPathPt + 1) % pathFollowingVariables.pathPoints.Count;
             
         }
         else 
@@ -566,7 +554,7 @@ public class Humans : MonoBehaviour
             currentPathPt--;
             if (currentPathPt < 0)
             {
-                currentPathPt = pathPoints.Count - 1;
+                currentPathPt = pathFollowingVariables.pathPoints.Count - 1;
                 
             }
         }
@@ -619,5 +607,38 @@ public class Humans : MonoBehaviour
         [Tooltip("Use 0/1 for false/true.")]
         public float setToValue;
 
+    }
+
+    [System.Serializable]
+    private class PathFollowingVarible
+    {
+        
+        public bool walkingPause;
+        
+        public float turnAroundChance = 0.2f;
+        
+        public List<WayPoints> pathPoints;
+
+        public HomePoint homePoint;
+    }
+
+    [System.Serializable]
+    private class FriendlyVarible
+    {
+        public GameObject foodToGive;
+
+        public float foodTimer;
+    }
+
+    [System.Serializable]
+    private class ChaseVarible
+    {
+        public float chaseTime;
+    }
+
+    [System.Serializable]
+    private class CatchVarible
+    {
+        public int takeFoodAmmount;
     }
 }

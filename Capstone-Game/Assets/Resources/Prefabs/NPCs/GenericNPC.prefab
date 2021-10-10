@@ -899,24 +899,23 @@ MonoBehaviour:
       paramName: HumanDrop
       setToValue: 1
   stunScript: {fileID: 3591709830310655803}
-  walkingPause: 0
-  turnAroundChance: 0.2
-  pathPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  homePoint: {fileID: 0}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 1024
-  foodToGive: {fileID: 6834729697976214412, guid: 29a3643e9f57a5e43a8d43b2a06538be, type: 3}
-  takeFoodAmmount: 7
+  npcCurrentMode: 1
+  pathFollowingVariables:
+    walkingPause: 0
+    turnAroundChance: 0.2
+    pathPoints:
+    - {fileID: 0}
+    homePoint: {fileID: 0}
+  friendlyVariables:
+    foodToGive: {fileID: 6834729697976214412, guid: 29a3643e9f57a5e43a8d43b2a06538be, type: 3}
+    foodTimer: 10
+  catchVariables:
+    takeFoodAmmount: 0
+  chaseVariables:
+    chaseTime: 0
   anim: {fileID: 1194168816744384584}
   detectionAngle: 70
-  npcCurrentMode: 1
-  foodTimer: 10
   range: 8
-  chaseTime: 30
-  unFreezeTime: 2
   humanWalkSpeed: 2
   humanRunSpeed: 5
 --- !u!1 &1194168816736975858
@@ -1224,6 +1223,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stomp: {fileID: 1529563150530141598}
+  stunRange: 0
+  stunTime: 0
 --- !u!1 &8516749792529396220
 GameObject:
   m_ObjectHideFlags: 0
