@@ -40,6 +40,9 @@ public class Humans : MonoBehaviour
     private SquirrelController squirrelController;
     private GameObject sController;
 
+    private Stun stunScript;
+    private GameObject stunController;
+
     //----------Path Following -----------//
     [Tooltip("Do you want to npc to pause on each point?")]
     [SerializeField]
@@ -133,19 +136,21 @@ public class Humans : MonoBehaviour
     /// set the nav mesh agent for humans to walk on as well as set target (player) to chase.
     public void Start() 
     {
+        GameObject playerController = GameObject.FindWithTag("Player");
         
-        foodController = GameObject.FindWithTag("Player");
+        foodController = playerController;
         foodGraber = foodController.GetComponent<SquirrelFoodGrabber>();
 
-        sController = GameObject.FindWithTag("Player");
+        sController = playerController;
         squirrelController = sController.GetComponent<SquirrelController>();
+
 
         human = this.GetComponent<NavMeshAgent>();
 
         chaseTimer = chaseTime;
 
-        target = GameObject.FindWithTag("Player").transform;
-        squrrielTarget = GameObject.FindWithTag("Player");
+        target = playerController.transform;
+        squrrielTarget = playerController;
 
         currentState = HumanStates.PathFollowing;
         if(human == null)
@@ -210,6 +215,7 @@ public class Humans : MonoBehaviour
         {
             hasCaughtRecently = true;  
             // takes x ammount of food from the player when caught
+            // TODO assign variable to check store how much food is taken
             takeFood(takeFoodAmmount);
 
             stillFood = checkForFood();
@@ -217,9 +223,11 @@ public class Humans : MonoBehaviour
             // animation stunning (not moving)
             CallAnimationEvents(AnimTriggers.stunning);
 
-            squirrelController.FreezeMovement();
+                    //squirrelController.FreezeMovement();
+                    //Invoke("unFreezePlayer", unFreezeTime);
 
-            Invoke("unFreezePlayer", unFreezeTime);
+            //call stun script. 
+
             catchChoice = Random.Range(0,2);
         }
 
