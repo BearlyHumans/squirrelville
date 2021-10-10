@@ -6,8 +6,11 @@ using Player;
 public class Stun : MonoBehaviour
 {
     public ParticleSystem stomp; 
+
     private LayerMask layerMask;
 
+    public float stunRange;
+    public float stunTime;
     void Start()
     {
         layerMask = LayerMask.GetMask("Player");
@@ -20,19 +23,27 @@ public class Stun : MonoBehaviour
         {
             stomp.Play();
         }
-        Collider[] thingsInBounds = Physics.OverlapSphere(transform.position, 5.0f);
+        Collider[] thingsInBounds = Physics.OverlapSphere(transform.position, stunRange);
         foreach(var thing in thingsInBounds)
         {
             if (thing.tag == playerController.tag) 
             {
-                print("player in range");
+                playerController.FreezeMovement();
+                StartCoroutine(unfreezePlayer(playerController));
+
             }
         }
+    }
+
+    IEnumerator unfreezePlayer(SquirrelController playerController)
+    {
+        yield return new WaitForSeconds(stunTime);
+        playerController.UnfreezeMovement();
     }
 
     private void OnDrawGizmosSelected() 
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere (transform.position, 5.0f);
+        Gizmos.DrawWireSphere (transform.position, stunRange);
     }
 }

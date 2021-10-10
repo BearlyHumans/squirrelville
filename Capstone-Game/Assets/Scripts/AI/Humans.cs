@@ -58,7 +58,7 @@ public class Humans : MonoBehaviour
     //---sphere cast ---//
     private Vector3 origin;
     private Vector3 sDirection;
-    public LayerMask layerMask;
+    private LayerMask layerMask;
 
     // --- good object for friendly humans to give---- /
     public GameObject foodToGive;
@@ -112,14 +112,9 @@ public class Humans : MonoBehaviour
     bool hasFood = false;
 
     float catchAgainTimer = 10;
-   
 
     //used to check if player has been caught recently 
     bool hasCaughtRecently = false;
-
-    [Tooltip("Time the Player is frozen")]
-    [SerializeField]
-    public float unFreezeTime = 5.0f;
 
     [Tooltip("speed of walking player")]
     [SerializeField]
@@ -148,6 +143,8 @@ public class Humans : MonoBehaviour
         human = this.GetComponent<NavMeshAgent>();
 
         chaseTimer = chaseTime;
+
+        layerMask = LayerMask.GetMask("Food");
 
         target = playerController.transform;
 
@@ -425,7 +422,6 @@ public class Humans : MonoBehaviour
 
             foreach (Collider hitCollider in hitColliders)
             {
-                
                 float distToFood = Vector3.Distance(hitCollider.transform.position, transform.position);
                 
                 if (distToFood < bestDistance)
@@ -453,7 +449,7 @@ public class Humans : MonoBehaviour
 
     IEnumerator stunPlayer()
     {
-        yield return new WaitForSeconds(1.15f);
+        yield return new WaitForSeconds(1.1f);
         stunScript.stompEffect(squirrelController);
     }
     
@@ -531,12 +527,8 @@ public class Humans : MonoBehaviour
             return true;
         } 
     }
-    /// unfreezes player when run
-    void unFreezePlayer()
-    {
-        squirrelController.UnfreezeMovement();
-    }
-
+    
+  
     void canCatchAgain()
     {
         

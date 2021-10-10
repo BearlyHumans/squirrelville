@@ -1465,9 +1465,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: Woman
       objectReference: {fileID: 0}
+    - target: {fileID: 1529563150530141598, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2678005943229891372, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.112
+      value: 0.021
+      objectReference: {fileID: 0}
+    - target: {fileID: 2678005943229891372, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 3591709830310655803, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: stunTime
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3591709830310655803, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: stunRange
+      value: 1.4
       objectReference: {fileID: 0}
     - target: {fileID: 4338684374575172170, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: m_IsActive
@@ -1487,7 +1503,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: humanRunSpeed
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: humanWalkSpeed
@@ -1536,6 +1552,10 @@ PrefabInstance:
     - target: {fileID: 8391098695642741264, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: m_Size.z
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8879912959433224634, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.01
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8391098695642741264, guid: 29dda92717219af479073042bfc0d19f, type: 3}
