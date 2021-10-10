@@ -2682,7 +2682,7 @@ MonoBehaviour:
     smooth: 10
     upperWorldClampAngle: 70
     lowerWorldClampAngle: -89
-    upperRelativeClampAngle: 150
+    upperRelativeClampAngle: 180
     lowerRelativeClampAngle: 0
     relativeZoomAngle: 30
     minDistance: 0.5
@@ -3378,27 +3378,18 @@ MonoBehaviour:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 2.009434
-          inSlope: 0.19033264
-          outSlope: 0.19033264
-          tangentMode: 0
+          value: 1.5306702
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
           weightedMode: 0
           inWeight: 0
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 0.86113584
-          value: 2.9291573
-          inSlope: -6.412185
-          outSlope: -6.412185
-          tangentMode: 34
-          weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.33333334
-        - serializedVersion: 3
           time: 1
-          value: 1
-          inSlope: -13.8924055
-          outSlope: -13.8924055
+          value: 1.5306702
+          inSlope: 0
+          outSlope: 0
           tangentMode: 34
           weightedMode: 0
           inWeight: 0.33333334
@@ -3407,6 +3398,7 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       frictionForce: 50
+      airFrictionFactor: 0
       stoppingForce: 50
       airStoppingForce: 1
       haltAtFractionOfMaxSpeed: 0.9
@@ -3438,6 +3430,10 @@ MonoBehaviour:
       noSurfResetTime: 0.3
       rotateDegreesPerSecond: 720
       moveUnitsPerSecond: 5
+      onlyVaultOnDash: 1
+      postVaultSlowTime: 0.2
+      postVaultSpeedFactor: 0.5
+      vaultSlowsWhenClimbing: 0
       autoVaultActivationTime: 0.2
       autoclimbCooldown: 0.33
       cornerVaultCooldown: 0.33
@@ -3446,8 +3442,8 @@ MonoBehaviour:
         sphereDetectRadius: 0.01
         secondPassMultiplier: 5
         sphereDetectDistance: 1
-        flowerDetectDistance: 1
-        headbuttDist: 1
+        flowerDetectDistance: 0.8
+        headbuttDist: 0.2
         surfaceDetectRange: 0.31
         basicGizmos: 0
         flowerCheckGizmos: 0
@@ -3455,16 +3451,15 @@ MonoBehaviour:
         edgeStopDownDist: 0.15
         edgeSlideCheckDist: 0.1
         wallStickDangerAngle: 10
-        edgeDetectGizmos: 0
+        edgeDetectGizmos: 1
         SJCheckHeight: 2
         EdgeDetectAngle: 70
-        CornerJumpDepth: 2
-        CornerJumpBackDepth: 2
-        edgeVaultGizmos: 0
+        CornerJumpDepth: 0.7
+        CornerJumpBackDepth: 1
+        edgeVaultGizmos: 1
   triggers:
     feet: {fileID: 4583522462575261954}
   debugString: null
-  debugStrings: []
 --- !u!114 &4583522463626215665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3534,7 +3529,19 @@ MonoBehaviour:
   minThrowDelay: 0.2
   pickupEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4094135124660549562}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: Play
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 10
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   throwEvent:
     m_PersistentCalls:
       m_Calls: []

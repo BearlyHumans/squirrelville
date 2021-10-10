@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2391644}
   - component: {fileID: 6434150}
   - component: {fileID: 7897751795733427070}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: palm-big
   m_TagString: Climbable
   m_Icon: {fileID: 0}
