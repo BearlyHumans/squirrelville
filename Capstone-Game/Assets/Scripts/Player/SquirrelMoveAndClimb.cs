@@ -253,7 +253,7 @@ namespace Player
                             * Mathf.Max(alteredMaxSpeed, LateralVelocityNew.magnitude - settings.M.frictionForce * Time.deltaTime);
                     else
                         LateralVelocityNew = LateralVelocityNew.normalized
-                            * Mathf.Max(alteredMaxSpeed, LateralVelocityNew.magnitude - (settings.M.frictionForce * settings.M.airAccelerationFactor) * Time.deltaTime);
+                            * Mathf.Max(alteredMaxSpeed, LateralVelocityNew.magnitude - (settings.M.frictionForce * settings.movement.airFrictionFactor) * Time.deltaTime);
                 }
             }
 
@@ -467,21 +467,19 @@ namespace Player
 
         private void StartFalling()
         {
+            //Point feet down and start falling if not on a surface for long enough.
+            Vector3 up = -transform.forward;
+            CustomIntuitiveSnapRotation(Vector3.down);
             PARENT.CallEvents(SquirrelController.EventTrigger.falling);
             if (vals.falling == false)
             {
-                //Point feet down and start falling if not on a surface for long enough.
-                Vector3 up = -transform.forward;
-
-                CustomIntuitiveSnapRotation(Vector3.down);
-                vals.falling = true;
-
                 if (Physics.CheckSphere(refs.climbRotateCheckRay.position, settings.squirrelCenterToNoseDist))
                 {
                     up = new Vector3(up.x, 0, up.z);
                     transform.position += up * settings.squirrelCenterToNoseDist;
                 }
             }
+            vals.falling = true;
         }
 
         //~~~~~~~~~~ HELPER/SUB-FUNCTIONS ~~~~~~~~~~
@@ -1157,6 +1155,8 @@ namespace Player
                 public AnimationCurve dashSpeedMultiplierCurve = new AnimationCurve();
                 [Tooltip("Rate at which speed naturally decays back to max speed (used in case of external forces).")]
                 public float frictionForce = 50f;
+                [Tooltip("Fraction of friction when in the air (can be 0).")]
+                public float airFrictionFactor = 50f;
                 [Tooltip("Rate at which speed falls to zero when not moving.")]
                 public float stoppingForce = 50f;
                 [Tooltip("Rate at which speed falls to zero when not moving and in the air.")]
