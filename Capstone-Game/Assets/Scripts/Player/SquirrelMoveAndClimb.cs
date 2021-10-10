@@ -212,13 +212,22 @@ namespace Player
                     LateralVelocityNew = postEdgeCodeLatVel;
                 else if (vals.stoppedAtEdge && vals.climbButtonHeld)
                 {
-                    if (vals.dashing)
+                    if (settings.WC.onlyVaultOnDash)
+                    {
+                        if (vals.dashing)
+                        {
+                            if (!JumpAroundCorners())
+                                LateralVelocityNew = postEdgeCodeLatVel;
+                        }
+                        else
+                            LateralVelocityNew = postEdgeCodeLatVel;
+                    }
+                    else
                     {
                         if (!JumpAroundCorners())
                             LateralVelocityNew = postEdgeCodeLatVel;
                     }
-                    else
-                        LateralVelocityNew = postEdgeCodeLatVel;
+                        
                 }
             }
 
