@@ -16,7 +16,8 @@ public class Stun : MonoBehaviour
         layerMask = LayerMask.GetMask("Player");
     }
 
-    public void stompEffect(SquirrelController playerController)
+    public void stompEffect(SquirrelController playerController, 
+                            SquirrelFoodGrabber foodController, int takeFoodAmmount)
     {
         //play stomp
         if(!stomp.isPlaying)
@@ -29,9 +30,20 @@ public class Stun : MonoBehaviour
             if (thing.tag == playerController.tag) 
             {
                 playerController.FreezeMovement();
+
+                takeFood(foodController,takeFoodAmmount);
                 StartCoroutine(unfreezePlayer(playerController));
 
             }
+        }
+    }
+    private void takeFood(SquirrelFoodGrabber foodController, int takeFoodAmmount)
+    {
+        int i = 0; 
+        while(i < takeFoodAmmount)
+        {
+            foodController.ThrowFood(1); 
+            i++;
         }
     }
 

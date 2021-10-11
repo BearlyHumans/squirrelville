@@ -12,6 +12,7 @@ public enum HumanStates
     Chase,
     Catch,
     Friendly,
+    HandleFood,
 }
 
 //Modes the Npcs can be set to
@@ -165,6 +166,7 @@ public class Humans : MonoBehaviour
         timeToFood += Time.deltaTime;
    
         // -----States------
+        print(currentState);
         switch(currentState)
         {
             case HumanStates.PathFollowing:
@@ -185,7 +187,11 @@ public class Humans : MonoBehaviour
             case HumanStates.Catch:
             {
                 CatchingState();
-                
+                break;
+            }
+            case HumanStates.HandleFood:
+            {
+                HandleFood();
                 break;
             }
         }
@@ -199,11 +205,8 @@ public class Humans : MonoBehaviour
         if(!hasCaughtRecently)
         {
             hasCaughtRecently = true;  
-            // takes x ammount of food from the player when caught
-            // TODO assign variable to check store how much food is taken
-            takeFood(catchVariables.takeFoodAmmount);
 
-            stillFood = checkForFood();
+            //stillFood = checkForFood();
 
             // animation stunning (not moving)
             CallAnimationEvents(AnimTriggers.stunning);
@@ -263,6 +266,10 @@ public class Humans : MonoBehaviour
         {
             stillFood = checkForFood();
         }
+    }
+    private void HandleFood()
+    {
+        print("handlefood");
     }
 
     ///functionaility for chasing behaviour. Added checks to see if the npc leaves their boundry area or chases for 'x' ammount of time 
@@ -437,7 +444,7 @@ public class Humans : MonoBehaviour
     IEnumerator stunPlayer()
     {
         yield return new WaitForSeconds(1.1f);
-        stunScript.stompEffect(squirrelController);
+        stunScript.stompEffect(squirrelController, foodGraber, catchVariables.takeFoodAmmount);
     }
     
     IEnumerator pickUpFood(Collider food)
@@ -449,16 +456,6 @@ public class Humans : MonoBehaviour
  
     }
 
-    // when caught forces the player to spit up an ammont of food
-    private void takeFood(int takeFoodAmmount)
-    {
-        int i = 0; 
-        while(i < takeFoodAmmount)
-        {
-            foodGraber.ThrowFood(1); 
-            i++;
-        }
-    }
 
     void returnToPath()
     {
