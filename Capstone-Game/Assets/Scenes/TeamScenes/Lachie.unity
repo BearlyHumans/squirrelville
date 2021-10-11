@@ -1473,7 +1473,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3591709830310655803, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: stunTime
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3591709830310655803, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: stunRange
@@ -1544,8 +1544,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: catchVariables.catchResetTimer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: catchVariables.takeFoodAmmount
-      value: 2
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: pathFollowingVariables.homePoint

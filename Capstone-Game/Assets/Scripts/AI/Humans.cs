@@ -92,15 +92,14 @@ public class Humans : MonoBehaviour
 
     float chaseTimer;
 
+    bool checkBeenRun = false;
 
     float pickUpTimer;
 
     // -----catching variables ------//
     int catchChoice;
     bool stillFood = false;
-    bool hasFood = false;
-
-    float catchAgainTimer = 10;
+    bool pickedUpFood = false;
 
     //used to check if player has been caught recently 
     bool hasCaughtRecently = false;
@@ -165,6 +164,7 @@ public class Humans : MonoBehaviour
         distance = Vector3.Distance(target.position, transform.position);
         timeToFood += Time.deltaTime;
    
+        print(stillFood);
         // -----States------
         print(currentState);
         switch(currentState)
@@ -201,26 +201,42 @@ public class Humans : MonoBehaviour
     private void CatchingState()
     {  
         human.speed = humanWalkSpeed;
-
         if(!hasCaughtRecently)
         {
+            checkBeenRun = false;
             hasCaughtRecently = true;  
-
-            //stillFood = checkForFood();
 
             // animation stunning (not moving)
             CallAnimationEvents(AnimTriggers.stunning);
 
             StartCoroutine(stunPlayer());
-
-            catchChoice = Random.Range(0,2);
         }
-
         // checks to see if there is still food to pick up and if not then chose what to do with it
+        if(checkBeenRun)
+        {
+            stillFood = checkForFood();
+            if(!stillFood)
+            {
+                if(pickedUpFood)
+                {
+                    currentState = HumanStates.HandleFood;
+                }
+                else
+                {
+                    print("no food");
+                    Invoke("canCatchPlayerAgain", catchVariables.catchResetTimer);
+                    returnToPath();
+                }
+            }
+        }
+    }
+
+    private void HandleFood()
+    {
         if(!stillFood)
         {
             // if food was picked up
-            if(hasFood)
+            if(pickedUpFood)
             {
                 // option 1 = go to bin
                 if(catchChoice == 0)
@@ -240,7 +256,7 @@ public class Humans : MonoBehaviour
                         CallAnimationEvents(AnimTriggers.dropping);
                         
                         human.velocity = Vector3.zero;
-                        Invoke("canCatchAgain", catchAgainTimer);
+                        //Invoke("canCatchAgain", catchAgainTimer);
                         Invoke("returnToPath", 1f);
                         //returnToPath();
                     }
@@ -250,14 +266,14 @@ public class Humans : MonoBehaviour
                 {
                     
                     CallAnimationEvents(AnimTriggers.eating);
-                    Invoke("canCatchAgain", catchAgainTimer);
+                    //Invoke("canCatchAgain", catchAgainTimer);
                     Invoke("returnToPath", 2);
                     //returnToPath();
                 }
             }
             else
             {
-                Invoke("canCatchAgain", catchAgainTimer);
+                //
                 Invoke("returnToPath", 1.5f);
                 //returnToPath();
             }
@@ -266,10 +282,6 @@ public class Humans : MonoBehaviour
         {
             stillFood = checkForFood();
         }
-    }
-    private void HandleFood()
-    {
-        print("handlefood");
     }
 
     ///functionaility for chasing behaviour. Added checks to see if the npc leaves their boundry area or chases for 'x' ammount of time 
@@ -435,7 +447,7 @@ public class Humans : MonoBehaviour
                 StartCoroutine(pickUpFood(bestCollider));
             
             } 
-            hasFood = true;
+            pickedUpFood = true;
             return true;
         }
         return false;
@@ -444,7 +456,14 @@ public class Humans : MonoBehaviour
     IEnumerator stunPlayer()
     {
         yield return new WaitForSeconds(1.1f);
+        
         stunScript.stompEffect(squirrelController, foodGraber, catchVariables.takeFoodAmmount);
+
+        yield return new WaitForSeconds(1.2f);
+        stillFood = checkForFood();
+        
+        yield return new WaitForSeconds(1.4f);
+        checkBeenRun = true;
     }
     
     IEnumerator pickUpFood(Collider food)
@@ -456,11 +475,16 @@ public class Humans : MonoBehaviour
  
     }
 
+    void canCatchPlayerAgain()
+    {
+        hasCaughtRecently = false;
+    }
+
 
     void returnToPath()
     {
         CallAnimationEvents(AnimTriggers.walking);
-        hasFood = false;
+        pickedUpFood = false;
         currentState = HumanStates.PathFollowing;
     }
 
@@ -510,13 +534,6 @@ public class Humans : MonoBehaviour
         {
             return true;
         } 
-    }
-    
-  
-    void canCatchAgain()
-    {
-        
-        hasCaughtRecently = false;
     }
      
     /// used within path following to move human to current path point
@@ -636,6 +653,7 @@ public class Humans : MonoBehaviour
     [System.Serializable]
     private class CatchVarible
     {
+        public float catchResetTimer;
         public int takeFoodAmmount;
     }
 }
