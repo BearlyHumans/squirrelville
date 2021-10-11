@@ -207,7 +207,12 @@ namespace Player
             if (Grounded && (vals.carefulModePressed || vals.climbButtonHeld))
             {
                 //Checks for edges (so that corner vaulting can work), but only actually stop at them if the button (Ctrl) is pressed.
-                Vector3 postEdgeCodeLatVel = AvoidEdgesLinear(LateralVelocityNew);
+                Vector3 postEdgeCodeLatVel;
+                if (LateralVelocityNew != Vector3.zero)
+                    postEdgeCodeLatVel = AvoidEdgesLinear(LateralVelocityNew);
+                else
+                    postEdgeCodeLatVel = AvoidEdgesLinear(vals.desiredDirection);
+
                 if (vals.carefulModePressed)
                     LateralVelocityNew = postEdgeCodeLatVel;
                 else if (vals.stoppedAtEdge && vals.climbButtonHeld)
