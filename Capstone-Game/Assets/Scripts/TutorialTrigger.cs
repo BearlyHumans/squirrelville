@@ -4,6 +4,7 @@ using TMPro;
 
 public class TutorialTrigger : MonoBehaviour
 {
+    public GameObject tutorialBox;
     public TMP_Text textObject;
     public TMP_Text hintObject;
 
@@ -18,6 +19,7 @@ public class TutorialTrigger : MonoBehaviour
     {
         textObject.text = text;
         hintObject.text = hint;
+        tutorialBox.SetActive(false);
 
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
         if (meshRenderer != null)
@@ -31,6 +33,7 @@ public class TutorialTrigger : MonoBehaviour
         if (tutorialTriggers.IndexOf(this) == -1)
         {
             print("Enter " + name);
+            tutorialBox.SetActive(true);
             tutorialTriggers.Add(this);
         }
     }
@@ -40,6 +43,7 @@ public class TutorialTrigger : MonoBehaviour
         if (tutorialTriggers.IndexOf(this) > -1)
         {
             print("Exit " + name);
+            tutorialBox.SetActive(false);
             tutorialTriggers.Remove(this);
         }
     }
