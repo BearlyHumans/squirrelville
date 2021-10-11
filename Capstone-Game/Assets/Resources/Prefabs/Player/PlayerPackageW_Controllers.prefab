@@ -3841,6 +3841,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d49162572d3ed84c98fa66a642f051b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  foodEaten: {fileID: 6705387753241196898, guid: 30c54d705f6f7b24b88b6c85ee03b7e8, type: 3}
   normalMouth: {fileID: 8994160757153684403}
   ballMouth: {fileID: 6726835270587309855}
   pickupDelay: 0.5
