@@ -12,7 +12,7 @@ public class TutorialTrigger : MonoBehaviour
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
         if (meshRenderer != null)
         {
-            meshRenderer.enabled = false;
+            // meshRenderer.enabled = false;
         }
     }
 
