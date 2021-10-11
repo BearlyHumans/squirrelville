@@ -223,7 +223,6 @@ public class Humans : MonoBehaviour
                 }
                 else
                 {
-                    print("no food");
                     Invoke("canCatchPlayerAgain", catchVariables.catchResetTimer);
                     returnToPath();
                 }
@@ -423,22 +422,24 @@ public class Humans : MonoBehaviour
         
         if(hitColliders.Length != 0)
         {
-            
-            float bestDistance = 9999.0f;
             Collider bestCollider = null;
-
+            float bestDistance = Mathf.Infinity;
+            
             foreach (Collider hitCollider in hitColliders)
             {
-                float distToFood = Vector3.Distance(hitCollider.transform.position, transform.position);
-                if (distToFood < bestDistance)
+                Vector3 distToFood = hitCollider.transform.position - transform.position;
+                float distSq = distToFood.sqrMagnitude;
+
+                if (distSq < bestDistance)
                 {
-                   bestDistance = distToFood;
+                   bestDistance = distSq;
                    bestCollider = hitCollider;
                 }
             }
+            print(bestDistance);
             CallAnimationEvents(AnimTriggers.walking);
             human.SetDestination(bestCollider.transform.position);
-
+            
             if(bestDistance < 1f)
             {
                 human.velocity = Vector3.zero;
