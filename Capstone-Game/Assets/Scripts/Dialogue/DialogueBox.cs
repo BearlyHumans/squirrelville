@@ -54,7 +54,7 @@ public class DialogueBox : MonoBehaviour
 
         if (dialogue != null && wasDialogueOpen)
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape))
             {
                 if (isTyping)
                 {
