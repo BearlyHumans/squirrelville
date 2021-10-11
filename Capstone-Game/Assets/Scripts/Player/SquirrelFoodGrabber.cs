@@ -13,6 +13,8 @@ public class SquirrelFoodGrabber : MonoBehaviour
     private SquirrelController controller;
     private NPCInteractionManager npcInteractionManager;
 
+    public ParticleSystem foodEaten;
+
     [Header("Mouth")]
 
     [Tooltip("The position of the mouth for the normal state rotated in the direction food will be spat out towards")]
@@ -106,6 +108,10 @@ public class SquirrelFoodGrabber : MonoBehaviour
 
         if (nearestFood != null && Input.GetKey(KeyCode.Mouse0) && CanEatFood())
         {
+            if (Input.GetMouseButtonDown(0))
+            {
+                Instantiate(foodEaten, nearestFood.transform.position, nearestFood.transform.rotation);
+            }
             PickupFood(nearestFood);
         }
 
