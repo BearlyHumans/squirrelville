@@ -671,7 +671,6 @@ namespace Player
             {
                 angle += 45;
                 Vector3 rotatedDir = Quaternion.AngleAxis(angle, Vector3.up) * sphereDir;
-                Debug.DrawLine(sphereStart, sphereStart + rotatedDir * modifiedDist, Color.red);
                 if (Physics.SphereCast(sphereStart, settings.WC.programmerSettings.sphereDetectRadius, rotatedDir, out hit, modifiedDist, settings.WC.climableLayers.value))
                     return true;
             }
