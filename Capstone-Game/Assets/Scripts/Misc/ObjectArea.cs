@@ -16,6 +16,12 @@ public class ObjectArea : MonoBehaviour
     private void Start()
     {
         trigger = GetComponent<Collider>();
+
+        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+        if (meshRenderer != null)
+        {
+            meshRenderer.enabled = false;
+        }
     }
 
     private void Update()
