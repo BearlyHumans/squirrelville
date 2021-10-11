@@ -682,7 +682,7 @@ namespace Player
         /// <summary> Ray-cast in the input direction to find any surfaces right in front of the squirrels face. </summary>
         private bool FindClimbableWallOnHeadbutt(out RaycastHit hit)
         {
-            return Physics.Raycast(refs.startClimbCheckRay.position, ParentRefs.body.forward, out hit, settings.WC.programmerSettings.headbuttDist, settings.WC.climableLayers);
+            return Physics.Raycast(refs.startClimbCheckRay.position, ParentRefs.body.forward, out hit, settings.WC.programmerSettings.headbuttDist, settings.WC.headbuttLayers);
         }
 
         /// <summary> Check if there is a sharp edge in front of the player, and return a new movement vector to either stop, slide along an angled edge or move forward normally.
@@ -1211,10 +1211,13 @@ namespace Player
             public class SCWallClimbSettings
             {
                 [Header("Wallclimb Settings")]
-                [Tooltip("The layers of objects the player is allowed to climb on.")]
+                [Tooltip("The layers of objects the player is allowed to climb on by pressing or holding click. Should NOT include the ground to make climbing detection more reliable.")]
                 public LayerMask climableLayers = new LayerMask();
-                [Tooltip("The layers of objects the player is allowed to climb on.")]
+                [Tooltip("The layers of objects the player is allowed to stick to based on normal (not holding click) movement. Should include anything and everything solid.")]
                 public LayerMask rotateToLayers = new LayerMask();
+                [Tooltip("The layers of objects the player will climb on to if holding click and it is directly in front of it." +
+                    "This layer should include the ground so that getting from (e.g.) trees to the ground is easy.")]
+                public LayerMask headbuttLayers = new LayerMask();
 
                 public float minAngleDiffToClimb = 20;
 
