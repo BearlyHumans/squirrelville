@@ -7,6 +7,7 @@ public class TutorialTrigger : MonoBehaviour
     public GameObject tutorialBox;
     public TMP_Text textObject;
     public TMP_Text hintObject;
+    private Animator animator;
 
     [TextArea]
     public string text;
@@ -17,9 +18,13 @@ public class TutorialTrigger : MonoBehaviour
 
     private void Start()
     {
+        animator = tutorialBox.GetComponent<Animator>();
+        animator.SetBool("visible", false);
+
+        tutorialBox.SetActive(false);
+
         textObject.text = text;
         hintObject.text = hint;
-        tutorialBox.SetActive(false);
 
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
         if (meshRenderer != null)
@@ -32,8 +37,8 @@ public class TutorialTrigger : MonoBehaviour
     {
         if (tutorialTriggers.IndexOf(this) == -1)
         {
-            print("Enter " + name);
             tutorialBox.SetActive(true);
+            animator.SetBool("visible", true);
             tutorialTriggers.Add(this);
         }
     }
@@ -42,9 +47,13 @@ public class TutorialTrigger : MonoBehaviour
     {
         if (tutorialTriggers.IndexOf(this) > -1)
         {
-            print("Exit " + name);
-            tutorialBox.SetActive(false);
+            animator.SetBool("visible", false);
             tutorialTriggers.Remove(this);
         }
+    }
+
+    public bool IsVisible()
+    {
+        return animator.GetBool("visible");
     }
 }
