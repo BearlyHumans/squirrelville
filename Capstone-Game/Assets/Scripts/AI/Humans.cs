@@ -240,7 +240,6 @@ public class Humans : MonoBehaviour
 
     private void HandleFood()
     {
-        catchChoice = 0;
         // option 1 = go to bin
         if(catchChoice == 0)
         {
@@ -260,8 +259,8 @@ public class Humans : MonoBehaviour
                 CallAnimationEvents(AnimTriggers.dropping);
                         
                 human.velocity = Vector3.zero;
-                //Invoke("canCatchAgain", catchAgainTimer);
-                //Invoke("returnToPath", 1f);
+                Invoke("canCatchPlayerAgain", catchVariables.catchResetTimer);
+                Invoke("returnToPath", 3f);
                 //returnToPath();
             }
         }    
@@ -270,9 +269,9 @@ public class Humans : MonoBehaviour
         {
             print("eating");      
             CallAnimationEvents(AnimTriggers.eating);
-            //Invoke("canCatchAgain", catchAgainTimer);
-            //Invoke("returnToPath", 2);
-            //returnToPath();
+            Invoke("canCatchPlayerAgain", catchVariables.catchResetTimer);
+            Invoke("returnToPath", 3f);
+            
         }
         
     }
@@ -438,14 +437,14 @@ public class Humans : MonoBehaviour
                    bestCollider = hitCollider;
                 }
             }
-            print(bestDistance);
+            
             CallAnimationEvents(AnimTriggers.walking);
             human.SetDestination(bestCollider.transform.position);
-            
+            print(bestCollider.gameObject.name);
             if(bestDistance < 1f)
             {
                 human.velocity = Vector3.zero;
-               
+                bestCollider.gameObject.layer = LayerMask.NameToLayer("Default");
                 CallAnimationEvents(AnimTriggers.pickup);
                 StartCoroutine(pickUpFood(bestCollider));
             
