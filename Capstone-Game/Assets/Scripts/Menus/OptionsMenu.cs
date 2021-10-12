@@ -15,17 +15,20 @@ public class OptionsMenu : MonoBehaviour
     private Resolution[] resolutions;
     private Resolution selectedResolution;
     public Animation anim;
+    private LoadAudioSettings audioSettings;
 
     private void Start()
     {
+        audioSettings = GameObject.FindObjectOfType<LoadAudioSettings>();
+
         LoadSettings();
         InitResolutionDropdown();
     }
 
     private void LoadSettings()
     {
-        musicVolumeSlider.value = PlayerPrefs.GetFloat("musicVolume", 1.0f);
-        sfxVolumeSlider.value = PlayerPrefs.GetFloat("sfxVolume", 1.0f);
+        musicVolumeSlider.value = PlayerPrefs.GetFloat("musicVolume", audioSettings.initialMusicVolume);
+        sfxVolumeSlider.value = PlayerPrefs.GetFloat("sfxVolume", audioSettings.initialSfxVolume);
         fullscreenToggle.isOn = PlayerPrefs.GetInt("fullscreen", 1) == 1;
 
         selectedResolution = new Resolution();
@@ -61,13 +64,13 @@ public class OptionsMenu : MonoBehaviour
 
     public void SetMusicVolume(float volume)
     {
-        audioMixer.SetFloat("musicVolume", Mathf.Log10(volume) * 20);
+        audioMixer.SetFloat("musicVolume", Mathf.Log10(volume * audioSettings.maxMusicVolume) * 20);
         PlayerPrefs.SetFloat("musicVolume", volume);
     }
 
     public void SetSFXVolume(float volume)
     {
-        audioMixer.SetFloat("sfxVolume", Mathf.Log10(volume) * 20);
+        audioMixer.SetFloat("sfxVolume", Mathf.Log10(volume * audioSettings.maxSfxVolume) * 20);
         PlayerPrefs.SetFloat("sfxVolume", volume);
     }
 
