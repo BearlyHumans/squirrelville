@@ -168,10 +168,8 @@ public class Humans : MonoBehaviour
     {
         distance = Vector3.Distance(target.position, transform.position);
         timeToFood += Time.deltaTime;
-   
-        print(stillFood);
         // -----States------
-        print(currentState);
+        
         switch(currentState)
         {
             case HumanStates.PathFollowing:
@@ -215,7 +213,6 @@ public class Humans : MonoBehaviour
             CallAnimationEvents(AnimTriggers.stunning);
 
             catchChoice = UnityEngine.Random.Range(0, 2);
-            print(catchChoice);
 
             StartCoroutine(stunPlayer());
         }
@@ -255,7 +252,6 @@ public class Humans : MonoBehaviour
             // put food in bin
             else
             {
-                print("bin"); 
                 CallAnimationEvents(AnimTriggers.dropping);
                         
                 human.velocity = Vector3.zero;
@@ -266,8 +262,7 @@ public class Humans : MonoBehaviour
         }    
         // option 2 - eat the food
         else
-        {
-            print("eating");      
+        {    
             CallAnimationEvents(AnimTriggers.eating);
             Invoke("canCatchPlayerAgain", catchVariables.catchResetTimer);
             Invoke("returnToPath", 3f);
@@ -440,11 +435,11 @@ public class Humans : MonoBehaviour
             
             CallAnimationEvents(AnimTriggers.walking);
             human.SetDestination(bestCollider.transform.position);
-            print(bestCollider.gameObject.name);
+            
             if(bestDistance < 1f)
             {
                 human.velocity = Vector3.zero;
-                bestCollider.gameObject.layer = LayerMask.NameToLayer("Default");
+                
                 CallAnimationEvents(AnimTriggers.pickup);
                 StartCoroutine(pickUpFood(bestCollider));
             
