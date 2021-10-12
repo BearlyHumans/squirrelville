@@ -45,6 +45,8 @@ public class Humans : MonoBehaviour
     // auto find
     public Stun stunScript;
 
+    public ParticleSystem exclaim;
+
     [Tooltip("Select the behavior for the NPC")]
     [SerializeField]
     public NpcModes npcCurrentMode;
@@ -100,6 +102,9 @@ public class Humans : MonoBehaviour
     int catchChoice;
     bool stillFood = false;
     bool pickedUpFood = false;
+
+    // used for only playing exclaim once
+    bool havntSpotted = false;
 
     //used to check if player has been caught recently 
     bool hasCaughtRecently = false;
@@ -288,6 +293,12 @@ public class Humans : MonoBehaviour
     {  
         human.speed = humanRunSpeed;
         CallAnimationEvents(AnimTriggers.running);
+        
+        if(!havntSpotted)
+        {
+            havntSpotted = true;
+            exclaim.Play();
+        }
 
         /// runs a check to see if the human is still within boundary
         if(checkBoundry() == true)
@@ -307,6 +318,7 @@ public class Humans : MonoBehaviour
                 // checks to see if human is within range to "catch" player
                 if (distance < 1.5f)
                 {
+                    havntSpotted = false;
                     currentState = HumanStates.Catch;
                 }
                      
@@ -316,6 +328,7 @@ public class Humans : MonoBehaviour
                 chaseTimer = chaseVariables.chaseTime;
                         
                 SetDest();
+                havntSpotted = false;
                 currentState = HumanStates.PathFollowing;
             }
         }
