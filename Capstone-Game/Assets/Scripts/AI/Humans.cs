@@ -214,6 +214,9 @@ public class Humans : MonoBehaviour
             // animation stunning (not moving)
             CallAnimationEvents(AnimTriggers.stunning);
 
+            catchChoice = UnityEngine.Random.Range(0, 2);
+            print(catchChoice);
+
             StartCoroutine(stunPlayer());
         }
         // checks to see if there is still food to pick up and if not then chose what to do with it
@@ -237,55 +240,41 @@ public class Humans : MonoBehaviour
 
     private void HandleFood()
     {
-        if(!stillFood)
+        catchChoice = 0;
+        // option 1 = go to bin
+        if(catchChoice == 0)
         {
-            // if food was picked up
-            if(pickedUpFood)
+            Bin bin = pathFollowingVariables.homePoint.closestBin(transform.position);
+
+
+            if(bin.radius <= Vector3.Distance(bin.transform.position, transform.position))
             {
-                // option 1 = go to bin
-                if(catchChoice == 0)
-                {
-                    Bin bin = pathFollowingVariables.homePoint.closestBin(transform.position);
-
-
-                    if(bin.radius <= Vector3.Distance(bin.transform.position, transform.position))
-                    {
-                        // animation walk (not moving)
-                        CallAnimationEvents(AnimTriggers.walking);
-                        human.SetDestination(bin.transform.position);
-                    }
-                    // put food in bin
-                    else
-                    {
-                        CallAnimationEvents(AnimTriggers.dropping);
-                        
-                        human.velocity = Vector3.zero;
-                        //Invoke("canCatchAgain", catchAgainTimer);
-                        Invoke("returnToPath", 1f);
-                        //returnToPath();
-                    }
-                }
-                // option 2 - eat the food
-                else
-                {
-                    
-                    CallAnimationEvents(AnimTriggers.eating);
-                    //Invoke("canCatchAgain", catchAgainTimer);
-                    Invoke("returnToPath", 2);
-                    //returnToPath();
-                }
+                // animation walk (not moving)
+                CallAnimationEvents(AnimTriggers.walking);
+                human.SetDestination(bin.transform.position);
             }
+            // put food in bin
             else
             {
-                //
-                Invoke("returnToPath", 1.5f);
+                print("bin"); 
+                CallAnimationEvents(AnimTriggers.dropping);
+                        
+                human.velocity = Vector3.zero;
+                //Invoke("canCatchAgain", catchAgainTimer);
+                //Invoke("returnToPath", 1f);
                 //returnToPath();
             }
-        }
+        }    
+        // option 2 - eat the food
         else
         {
-            stillFood = checkForFood();
+            print("eating");      
+            CallAnimationEvents(AnimTriggers.eating);
+            //Invoke("canCatchAgain", catchAgainTimer);
+            //Invoke("returnToPath", 2);
+            //returnToPath();
         }
+        
     }
 
     ///functionaility for chasing behaviour. Added checks to see if the npc leaves their boundry area or chases for 'x' ammount of time 
@@ -476,7 +465,7 @@ public class Humans : MonoBehaviour
         yield return new WaitForSeconds(1.2f);
         stillFood = checkForFood();
         
-        yield return new WaitForSeconds(1.4f);
+        yield return new WaitForSeconds(1.25f);
         checkBeenRun = true;
     }
     
