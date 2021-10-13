@@ -262,7 +262,7 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: EatInteract
+    m_Name: Eat
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -278,7 +278,7 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: EatInteract
+    m_Name: Eat
     descriptiveName: Controller Eat and Interact
     descriptiveNegativeName: 
     negativeButton: 
@@ -326,11 +326,11 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Bark
+    m_Name: Interact
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: r
+    positiveButton: e
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
@@ -342,11 +342,11 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Bark
+    m_Name: Interact
     descriptiveName: Controller Spit
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: joystick button 2
+    positiveButton: joystick button 3
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000

@@ -106,9 +106,9 @@ public class SquirrelFoodGrabber : MonoBehaviour
             }
         }
 
-        if (nearestFood != null && Input.GetButton("EatInteract") && CanEatFood())
+        if (nearestFood != null && Input.GetButton("Eat") && CanEatFood())
         {
-            if (Input.GetButtonDown("EatInteract"))
+            if (Input.GetButtonDown("Eat"))
             {
                 Instantiate(foodEaten, nearestFood.transform.position, nearestFood.transform.rotation);
             }
