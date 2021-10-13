@@ -155,7 +155,7 @@ public class Humans : MonoBehaviour
         currentState = HumanStates.PathFollowing;
         if(human == null)
         {
-            Debug.Log("No nav mesh");
+            Debug.LogWarning("No nav mesh");
         }
         else
         {
@@ -167,7 +167,7 @@ public class Humans : MonoBehaviour
             else
             {
                 SetDest();
-                Debug.Log("Add more points to walk between");
+                Debug.LogWarning("Add more points to walk between");
             }
         }
     }
@@ -444,7 +444,7 @@ public class Humans : MonoBehaviour
             }
             CallAnimationEvents(AnimTriggers.walking);
             human.SetDestination(bestCollider.transform.position);
-            
+            print(walkToFoodTimer);
             if (bestDistance < 5f)
             {
                 walkToFoodTimer += Time.deltaTime;

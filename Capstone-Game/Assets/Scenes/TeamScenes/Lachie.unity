@@ -593,9 +593,13 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3452970906002354115, guid: c5699ce4a87a11141a3d66c7e7c7a422, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3452970906002354115, guid: c5699ce4a87a11141a3d66c7e7c7a422, type: 3}
       propertyPath: dialogueBox
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2049830879}
     - target: {fileID: 4583522462603621253, guid: c5699ce4a87a11141a3d66c7e7c7a422, type: 3}
       propertyPath: m_TagString
       value: Player
@@ -1593,7 +1597,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: pathFollowingVariables.pathPoints.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: pathFollowingVariables.pathPoints.Array.data[0]
@@ -1602,7 +1606,7 @@ PrefabInstance:
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: pathFollowingVariables.pathPoints.Array.data[1]
       value: 
-      objectReference: {fileID: 1828673097}
+      objectReference: {fileID: 0}
     - target: {fileID: 8391098695642741264, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: m_Size.x
       value: 1
@@ -2413,3 +2417,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0435ce9217d18b648a96da4dea4dd1f5, type: 3}
+--- !u!114 &2049830879 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7862625194389111470, guid: 0435ce9217d18b648a96da4dea4dd1f5, type: 3}
+  m_PrefabInstance: {fileID: 2049830878}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1ac8912b3547864aa6b4beb55e938ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

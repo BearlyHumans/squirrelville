@@ -120,7 +120,6 @@ public class SquirrelFoodGrabber : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Mouse1))
             {
                 throwDelay = initialThrowDelay;
-                //nearestFood.layer = LayerMask.NameToLayer("Food");
             }
 
             if (Input.GetKey(KeyCode.Mouse1))
