@@ -15,7 +15,6 @@ public class InputLogger : MonoBehaviour
     {
         if (print)
         {
-            Debug.Log("~~~ Start of Frame ~~~");
             foreach (KeyCode vKey in System.Enum.GetValues(typeof(KeyCode)))
             {
                 if (Input.GetKey(vKey))
