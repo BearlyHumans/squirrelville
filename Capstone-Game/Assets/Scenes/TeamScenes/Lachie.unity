@@ -1202,7 +1202,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2701396504794906783, guid: 1c4a74ccbc6a03a4288a839910ca7851, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.66
+      value: -0.15
       objectReference: {fileID: 0}
     - target: {fileID: 2701396504794906783, guid: 1c4a74ccbc6a03a4288a839910ca7851, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1235,6 +1235,14 @@ PrefabInstance:
     - target: {fileID: 2701396504794906783, guid: 1c4a74ccbc6a03a4288a839910ca7851, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701812670272567023, guid: 1c4a74ccbc6a03a4288a839910ca7851, type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701812670272567023, guid: 1c4a74ccbc6a03a4288a839910ca7851, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4982934136259194281, guid: 1c4a74ccbc6a03a4288a839910ca7851, type: 3}
       propertyPath: particleHeight

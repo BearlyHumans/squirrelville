@@ -42,7 +42,8 @@ public class Humans : MonoBehaviour
     private SquirrelController squirrelController;
     private GameObject sController;
 
-    // auto find
+    NavMeshAgent human;
+
     public Stun stunScript;
 
     public ParticleSystem exclaim;
@@ -63,13 +64,10 @@ public class Humans : MonoBehaviour
     [SerializeField]
     private ChaseVarible chaseVariables;
 
-    //---sphere cast ---//
-    private Vector3 origin;
-    private Vector3 sDirection;
+    // layer mask for what layer humans check spat out food on
     private LayerMask layerMask;
 
-
-    NavMeshAgent human;
+    // path following variables
     float distance;
     int currentPathPt;
     bool walking;
@@ -77,6 +75,7 @@ public class Humans : MonoBehaviour
     bool walkForward;
     float waitTimer;
 
+    // animator for controlling human animations 
     public Animator anim;
 
     [Tooltip("Angle in which the NPC can see player")]
@@ -86,21 +85,32 @@ public class Humans : MonoBehaviour
     [SerializeField]
     public float range = 2f;
     
+    // bool check for if the friendly human has given player food
     bool givenfood = false;
-    float watchedFor = 0.0f;
-    float watchTimer = 5.0f;
 
+    //Timers how long friendly humans stand to watch player for
+    float watchedFor = 0.0f;
+
+    // increment timer used to check if timer is above set time for humans to give food
     float timeToFood = 0.0f;
 
+    // used to keep tracking of how long human has chased player
     float chaseTimer;
 
+    // bool check to make sure a check for food has been run after catching player
     bool checkBeenRun = false;
 
-    float pickUpTimer;
+    // timer for stopping humans getting stuck walking to food if out of reach
+    float walkToFoodTimer = 0f;
+    float howLongCanWalkToFood = 5f;
 
-    // -----catching variables ------//
+    
+    // used to determine what action "handleFood" does
     int catchChoice;
+
+    // boolean check for if spat out food is still in area
     bool stillFood = false;
+    // bool check for if human picked up any food after catching player
     bool pickedUpFood = false;
 
     // used for only playing exclaim once
@@ -119,7 +129,6 @@ public class Humans : MonoBehaviour
 
     Transform target;
     GameObject squrrielTarget;
-
     GameObject playerController;
 
     /// set the nav mesh agent for humans to walk on as well as set target (player) to chase.
@@ -219,7 +228,7 @@ public class Humans : MonoBehaviour
         // checks to see if there is still food to pick up and if not then chose what to do with it
         if(checkBeenRun)
         {
-            stillFood = checkForFood();
+            //stillFood = checkForFood();
             if(!stillFood)
             {
                 if(pickedUpFood)
@@ -232,6 +241,7 @@ public class Humans : MonoBehaviour
                     returnToPath();
                 }
             }
+            stillFood = checkForFood();
         }
     }
 
@@ -339,7 +349,7 @@ public class Humans : MonoBehaviour
            timeToFood = 0.0f;
         }
 
-        if(watchedFor > watchTimer)
+        if(watchedFor > friendlyVariables.watchTimer)
         {
             currentState = HumanStates.PathFollowing;
             watchedFor = 0.0f;
@@ -432,9 +442,17 @@ public class Humans : MonoBehaviour
                    bestCollider = hitCollider;
                 }
             }
-            
+            walkToFoodTimer += Time.deltaTime;
             CallAnimationEvents(AnimTriggers.walking);
             human.SetDestination(bestCollider.transform.position);
+
+            if(walkToFoodTimer > howLongCanWalkToFood)
+            {
+                print(bestCollider);
+                bestCollider.gameObject.layer = LayerMask.GetMask("Food");
+                
+                walkToFoodTimer = 0f;
+            }
             
             if(bestDistance < 1f)
             {
@@ -442,6 +460,8 @@ public class Humans : MonoBehaviour
                 
                 CallAnimationEvents(AnimTriggers.pickup);
                 StartCoroutine(pickUpFood(bestCollider));
+
+                walkToFoodTimer = 0f;
             
             } 
             pickedUpFood = true;
@@ -459,7 +479,7 @@ public class Humans : MonoBehaviour
         yield return new WaitForSeconds(1.2f);
         stillFood = checkForFood();
         
-        yield return new WaitForSeconds(1.25f);
+        //yield return new WaitForSeconds(1.22f);
         checkBeenRun = true;
     }
     
@@ -639,6 +659,8 @@ public class Humans : MonoBehaviour
         public GameObject foodToGive;
 
         public float foodTimer;
+
+        public float watchTimer = 5;
     }
 
     [System.Serializable]
