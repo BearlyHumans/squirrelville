@@ -83,7 +83,7 @@ namespace Player
             vals.desiredDirection.Normalize();
 
             //Dash button:
-            if (Input.GetButton("Dash") && ParentRefs.stamina.UseStamina(settings.S.dashStamPerSec * Time.deltaTime))
+            if ((Input.GetButton("Dash") || Input.GetAxis("Dash") > 0) && ParentRefs.stamina.UseStamina(settings.S.dashStamPerSec * Time.deltaTime))
             {
                 if (vals.dashing == false)
                 {
@@ -116,13 +116,13 @@ namespace Player
                 vals.carefulModePressed = false;
 
             vals.climbButtonPressed = false;
-            if (Input.GetButtonDown("ClimbVault"))
+            if (Input.GetButtonDown("ClimbVault") || Input.GetAxis("ClimbVault") > 0)
             {
                 vals.climbButtonPressed = true;
                 vals.climbButtonDown = Time.time;
                 vals.climbButtonHeld = true;
             }
-            if (!Input.GetButton("ClimbVault"))
+            if (!Input.GetButton("ClimbVault") && Input.GetAxis("ClimbVault") <= 0)
                 vals.climbButtonHeld = false;
 
             if (Input.GetButton("Zoom"))
