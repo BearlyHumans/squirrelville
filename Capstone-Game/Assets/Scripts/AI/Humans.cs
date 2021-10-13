@@ -102,7 +102,7 @@ public class Humans : MonoBehaviour
 
     // timer for stopping humans getting stuck walking to food if out of reach
     float walkToFoodTimer = 0f;
-    float howLongCanWalkToFood = 5f;
+    float howLongCanWalkToFood = 10f;
 
     
     // used to determine what action "handleFood" does
@@ -445,15 +445,14 @@ public class Humans : MonoBehaviour
             walkToFoodTimer += Time.deltaTime;
             CallAnimationEvents(AnimTriggers.walking);
             human.SetDestination(bestCollider.transform.position);
-
+        
             if(walkToFoodTimer > howLongCanWalkToFood)
             {
-                print(bestCollider);
-                bestCollider.gameObject.layer = LayerMask.GetMask("Food");
+                bestCollider.gameObject.layer = LayerMask.NameToLayer("Food");
                 
                 walkToFoodTimer = 0f;
             }
-            
+          
             if(bestDistance < 1f)
             {
                 human.velocity = Vector3.zero;
