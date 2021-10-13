@@ -442,10 +442,14 @@ public class Humans : MonoBehaviour
                    bestCollider = hitCollider;
                 }
             }
-            walkToFoodTimer += Time.deltaTime;
             CallAnimationEvents(AnimTriggers.walking);
             human.SetDestination(bestCollider.transform.position);
-        
+            
+            if (bestDistance < 5f)
+            {
+                walkToFoodTimer += Time.deltaTime;
+            }
+            
             if(walkToFoodTimer > howLongCanWalkToFood)
             {
                 bestCollider.gameObject.layer = LayerMask.NameToLayer("Food");
