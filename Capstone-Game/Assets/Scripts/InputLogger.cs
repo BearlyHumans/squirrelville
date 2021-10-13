@@ -23,6 +23,8 @@ public class InputLogger : MonoBehaviour
                     Debug.Log("Pressed: " + vKey.ToString());
                 }
             }
+            Debug.Log(Input.GetAxis("ClimbVault"));
+            Debug.Log(Input.GetAxis("Dash"));
         }
     }
 }
