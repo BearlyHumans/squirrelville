@@ -17,12 +17,12 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
   - text: "Let\u2019s get into it! You want one? Hahahaha naaah! Wouldn\u2019t want
       to weigh you down!!\r ...alright, that\u2019ll do it!\r\n\n"
-    sprite: {fileID: 21300000, guid: c31dcd4e483e68d4dba2aad7039afdbd, type: 3}
+    sprite: {fileID: 21300000, guid: b8042a022772c244ca2c5433cbea3e51, type: 3}
   - text: "And just so you know, there are some HUMANS up there. They\u2019re nice
       enough, but they\u2019ll get a little irritated if you mess with their stuff!
       \u2026 personal experience!\r"
-    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
+    sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}
   - text: "I\u2019ll meet you up there again then! I haven\u2019t been up there in
       a long time, so take a look around if you can\u2019t find me. You\u2019ll be
       right!"
-    sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}
+    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
