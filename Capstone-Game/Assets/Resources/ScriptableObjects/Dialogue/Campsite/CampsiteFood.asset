@@ -13,18 +13,11 @@ MonoBehaviour:
   m_Name: CampsiteFood
   m_EditorClassIdentifier: 
   entries:
-  - text: You bloody ripper! I knew you could do it buddy!
+  - text: "You ripper! I knew you could do it buddy! Alright, here we go\u2026\r\n"
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-  - text: "Alright, here we go\u2026"
+  - text: "Hahahaha! I\u2019ll be honest, I wasn't sure I\u2019d be able to handle
+      that one!\r\n"
+    sprite: {fileID: 21300000, guid: b8042a022772c244ca2c5433cbea3e51, type: 3}
+  - text: "Ok so, little guy - this is the last climb before the summit. I\u2019ll
+      meet you further up\u2026 we\u2019re almost there! Good luck mate!\r\n"
     sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}
-  - text: "...hahahaha! I\u2019ll be honest, I wasn't sure I\u2019d be able to handle
-      that one!"
-    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-  - text: ...
-    sprite: {fileID: 21300000, guid: f2b47b7936547f34689640c321e86f82, type: 3}
-  - text: Ok so, little guy - this is the last climb before the summit.
-    sprite: {fileID: 21300000, guid: c31dcd4e483e68d4dba2aad7039afdbd, type: 3}
-  - text: "I\u2019ll meet you further up\u2026 we\u2019re almost there!"
-    sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}
-  - text: Good luck mate!
-    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
