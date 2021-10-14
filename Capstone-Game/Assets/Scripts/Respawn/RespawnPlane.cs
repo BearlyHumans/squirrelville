@@ -18,7 +18,7 @@ public class RespawnPlane : MonoBehaviour
 
         if (squirrel.transform.position.y < transform.position.y)
         {
-            squirrel.transform.position = Checkpoint.getRespawnPoint();
+            Respawn();
         }
 
         foreach (Food food in foods)
@@ -33,9 +33,14 @@ public class RespawnPlane : MonoBehaviour
         {
             if (npcfood.transform.position.y < transform.position.y)
             {
-               Destroy(npcfood);
+                Destroy(npcfood);
             }
         }
+    }
 
+    private void Respawn()
+    {
+        squirrel.transform.position = Checkpoint.getRespawnPoint();
+        squirrel.refs.RB.velocity = Vector3.zero;
     }
 }
