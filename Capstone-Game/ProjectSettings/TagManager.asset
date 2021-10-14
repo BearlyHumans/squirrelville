@@ -27,8 +27,8 @@ TagManager:
   - Stumps
   - NPC
   - PlayerDetection
-  - 
-  - 
+  - CameraSolid
+  - CameraGhost
   - 
   - 
   - 
