@@ -127,6 +127,14 @@ public class Humans : MonoBehaviour
     [SerializeField]
     public float humanRunSpeed = 5.0f;
 
+
+    // walk to path wait times
+    float returnToPathWaitTime = 3.0f;
+    float returnToPathNoWaitTime = 0f;
+
+    //handle food single use check
+    bool returnedToPath = false;
+
     Transform target;
     GameObject squrrielTarget;
     GameObject playerController;
@@ -178,7 +186,7 @@ public class Humans : MonoBehaviour
         distance = Vector3.Distance(target.position, transform.position);
         timeToFood += Time.deltaTime;
         // -----States------
-        
+
         switch(currentState)
         {
             case HumanStates.PathFollowing:
@@ -212,19 +220,20 @@ public class Humans : MonoBehaviour
     /// functionaility for catching behaviour 
     private void CatchingState()
     {  
-        human.speed = humanWalkSpeed;
+        human.speed = humanWalkSpeed; 
         if(!hasCaughtRecently)
         {
-            checkBeenRun = false;
             hasCaughtRecently = true;  
-
+            checkBeenRun = false;
+            
             // animation stunning (not moving)
             CallAnimationEvents(AnimTriggers.stunning);
 
             catchChoice = UnityEngine.Random.Range(0, 2);
-
+            
             StartCoroutine(stunPlayer());
         }
+        
         // checks to see if there is still food to pick up and if not then chose what to do with it
         if(checkBeenRun)
         {
@@ -237,8 +246,7 @@ public class Humans : MonoBehaviour
                 }
                 else
                 {
-                    Invoke("canCatchPlayerAgain", catchVariables.catchResetTimer);
-                    returnToPath();
+                    StartCoroutine(returnToPath(returnToPathNoWaitTime));
                 }
             }
             stillFood = checkForFood();
@@ -250,6 +258,7 @@ public class Humans : MonoBehaviour
         // option 1 = go to bin
         if(catchChoice == 0)
         {
+            
             Bin bin = pathFollowingVariables.homePoint.closestBin(transform.position);
 
 
@@ -262,20 +271,28 @@ public class Humans : MonoBehaviour
             // put food in bin
             else
             {
+                
                 CallAnimationEvents(AnimTriggers.dropping);
-                        
+                            
                 human.velocity = Vector3.zero;
-                Invoke("canCatchPlayerAgain", catchVariables.catchResetTimer);
-                Invoke("returnToPath", 3f);
-                //returnToPath();
+                if(!returnedToPath)
+                {
+                    returnedToPath = true;
+                    StartCoroutine(returnToPath(returnToPathWaitTime));
+                }
+                
             }
         }    
-        // option 2 - eat the food
         else
         {    
+            
             CallAnimationEvents(AnimTriggers.eating);
-            Invoke("canCatchPlayerAgain", catchVariables.catchResetTimer);
-            Invoke("returnToPath", 3f);
+            
+            if(!returnedToPath)
+            {
+                returnedToPath = true;
+                StartCoroutine(returnToPath(returnToPathWaitTime));
+            }
             
         }
         
@@ -283,10 +300,9 @@ public class Humans : MonoBehaviour
 
     ///functionaility for chasing behaviour. Added checks to see if the npc leaves their boundry area or chases for 'x' ammount of time 
     private void ChaseState()
-    {  
+    { 
         human.speed = humanRunSpeed;
         CallAnimationEvents(AnimTriggers.running);
-        
         if(!havntSpotted)
         {
             havntSpotted = true;
@@ -312,6 +328,7 @@ public class Humans : MonoBehaviour
                 if (distance < 1.5f)
                 {
                     havntSpotted = false;
+                    
                     currentState = HumanStates.Catch;
                 }
                      
@@ -319,7 +336,6 @@ public class Humans : MonoBehaviour
             else
             {
                 chaseTimer = chaseVariables.chaseTime;
-                        
                 SetDest();
                 havntSpotted = false;
                 currentState = HumanStates.PathFollowing;
@@ -422,7 +438,6 @@ public class Humans : MonoBehaviour
     private bool checkForFood()
     {
         float radius = 5.0f;
-
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius, layerMask);
         
         
@@ -444,7 +459,6 @@ public class Humans : MonoBehaviour
             }
             CallAnimationEvents(AnimTriggers.walking);
             human.SetDestination(bestCollider.transform.position);
-            print(walkToFoodTimer);
             if (bestDistance < 5f)
             {
                 walkToFoodTimer += Time.deltaTime;
@@ -482,7 +496,6 @@ public class Humans : MonoBehaviour
         yield return new WaitForSeconds(1.2f);
         stillFood = checkForFood();
         
-        //yield return new WaitForSeconds(1.22f);
         checkBeenRun = true;
     }
     
@@ -495,17 +508,16 @@ public class Humans : MonoBehaviour
  
     }
 
-    void canCatchPlayerAgain()
+    IEnumerator returnToPath(float waitTime)
     {
-        hasCaughtRecently = false;
-    }
-
-
-    void returnToPath()
-    {
+        yield return new WaitForSeconds(waitTime);
         CallAnimationEvents(AnimTriggers.walking);
         pickedUpFood = false;
         currentState = HumanStates.PathFollowing;
+
+        yield return new WaitForSeconds(catchVariables.catchResetTimer);
+        hasCaughtRecently = false;
+        returnedToPath = false;
     }
 
     /// turns to face player
