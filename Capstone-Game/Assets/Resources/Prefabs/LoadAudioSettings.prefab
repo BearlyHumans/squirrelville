@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7575136933874560867}
   - component: {fileID: -4380973460752333832}
   m_Layer: 0
-  m_Name: LoadSettings
+  m_Name: LoadAudioSettings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,3 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 24100000, guid: 34ca02f6309a2f549b4732abe7199d62, type: 2}
+  maxMusicVolume: 1
+  maxSfxVolume: 0.2
+  initialMusicVolume: 0.5
+  initialSfxVolume: 0.5

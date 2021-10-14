@@ -16,6 +16,8 @@ MonoBehaviour:
   - text: "Hey mate! I don\u2019t reckon that\u2019s enough acorns there\u2026 sorry
       to be a hassle!"
     sprite: {fileID: 21300000, guid: b8042a022772c244ca2c5433cbea3e51, type: 3}
-  - text: I just need 10 acorns and I think I'll be able to help us get rid of that
-      rock!
+  - text: 'I just need 7 acorns and I think I''ll be able to help us get through
+      this gate!
+
+'
     sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}
