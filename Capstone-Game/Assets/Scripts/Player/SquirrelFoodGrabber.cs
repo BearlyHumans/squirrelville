@@ -126,7 +126,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
             {
                 if (Time.time < throwTime) return;
 
-                ThrowFood();
+                ThrowFood(0);
             }
         }
     }
@@ -141,13 +141,13 @@ public class SquirrelFoodGrabber : MonoBehaviour
         foodStack.Push(food);
         food.SetActive(false);
         pickupTime = Time.time + pickupDelay;
-
+        food.layer = LayerMask.NameToLayer("EatenFood");
         controller.CallEvents(SquirrelController.EventTrigger.eat);
         pickupEvent.Invoke(food);
     }
 
     [ContextMenu("Throw food")]
-    public void ThrowFood()
+    public void ThrowFood(int mode)
     {
         if (foodStack.Count == 0) return;
 
@@ -160,6 +160,15 @@ public class SquirrelFoodGrabber : MonoBehaviour
         foodrb.transform.rotation = Quaternion.identity;
 
         food.SetActive(true);
+
+        if(mode == 0)
+        {
+            food.layer = LayerMask.NameToLayer("Food");
+        }
+        else
+        {
+            food.layer = LayerMask.NameToLayer("EatenFood");
+        }
 
         throwTime = Time.time + throwDelay;
         throwDelay = Mathf.Max(throwDelay / throwDelayDivisor, minThrowDelay);
@@ -190,7 +199,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
     {
         List<GameObject> food = new List<GameObject>();
 
-        Collider[] colliders = Physics.OverlapSphere(squirrelrb.position, pickupRadius, LayerMask.GetMask("Food"));
+        Collider[] colliders = Physics.OverlapSphere(squirrelrb.position, pickupRadius, LayerMask.GetMask("Food", "EatenFood"));
         foreach (Collider collider in colliders)
         {
             food.Add(collider.gameObject);

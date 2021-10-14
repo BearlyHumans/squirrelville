@@ -44,6 +44,7 @@ public class Food : MonoBehaviour
     public void respawnSelf()
     {
         gameObject.SetActive(true);
+        gameObject.layer = LayerMask.NameToLayer("Food");
         gameObject.transform.position = spawnPoint;
         gameObject.transform.rotation = spawnRotation;
         rb.velocity = Vector3.zero;
