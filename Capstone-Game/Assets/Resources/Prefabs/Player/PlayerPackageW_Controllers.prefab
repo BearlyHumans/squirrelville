@@ -1321,7 +1321,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 2.03252
+  m_Radius: 1.9
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3127635604846443052
 GameObject:
@@ -3476,6 +3476,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PARENT: {fileID: 4583522463626215676}
+  ballModel: {fileID: 3247353483585849910}
   settings:
     movement:
       acceleration: 10
@@ -3483,6 +3484,69 @@ MonoBehaviour:
       boostStaminaUse: 800
       maxSpeed: 1.8
       airControlFactor: 0.5
+    squishiness:
+      squishCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: -2.9513059
+          outSlope: -2.9513059
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.08924051
+        - serializedVersion: 3
+          time: 0.005
+          value: -0.2
+          inSlope: -3.2971208
+          outSlope: -3.2971208
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.12549718
+        - serializedVersion: 3
+          time: 0.13965511
+          value: -0.003237649
+          inSlope: 4.6740837
+          outSlope: 4.6740837
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.08454326
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.27905446
+          value: -0.009091124
+          inSlope: -2.1112487
+          outSlope: -2.1112487
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.11752671
+        - serializedVersion: 3
+          time: 0.4097239
+          value: -0.002501958
+          inSlope: 2.6151903
+          outSlope: 2.6151903
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.241264
+        - serializedVersion: 3
+          time: 0.5
+          value: 0
+          inSlope: 0.9593888
+          outSlope: 0.9593888
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 1
+          outWeight: 0.33333334
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      squishForceRange: {x: 0, y: 5}
+      squishMinForceMultiplier: 0.2
     jump:
       jumpForce: 0
       jumpCooldown: 0.2
