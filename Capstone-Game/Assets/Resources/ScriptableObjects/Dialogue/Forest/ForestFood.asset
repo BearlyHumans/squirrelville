@@ -16,7 +16,7 @@ MonoBehaviour:
   - text: "You bloody ripper! That\u2019s a great amount of acorns, thanks mate."
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
   - text: "Let\u2019s get into it! You want one? Hahahaha naaah! Wouldn\u2019t want
-      to weigh you down!!\r ...alright, that\u2019ll do it!\r\n\n"
+      to weigh you down!! ...alright, that'll do it!"
     sprite: {fileID: 21300000, guid: b8042a022772c244ca2c5433cbea3e51, type: 3}
   - text: "And just so you know, there are some HUMANS up there. They\u2019re nice
       enough, but they\u2019ll get a little irritated if you mess with their stuff!
