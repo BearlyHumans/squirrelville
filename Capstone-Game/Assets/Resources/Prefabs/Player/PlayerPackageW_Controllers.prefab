@@ -2670,16 +2670,16 @@ MonoBehaviour:
   inputSensitivity: 150
   zoomToAvoidLayers:
     serializedVersion: 2
-    m_Bits: 5009
+    m_Bits: 129
   noClippingEverLayers:
     serializedVersion: 2
-    m_Bits: 257
+    m_Bits: 264
   collisionSphereRadius: 0.1
   targetInvisibleRadius: 0.15
   translationSmoothing: 0.01
   cameraSmoothThreshold: 0
   programmerSettings:
-    smooth: 10
+    smooth: 0.5
     upperWorldClampAngle: 70
     lowerWorldClampAngle: -89
     upperRelativeClampAngle: 180
@@ -3420,13 +3420,13 @@ MonoBehaviour:
     wallClimbing:
       climableLayers:
         serializedVersion: 2
-        m_Bits: 129
+        m_Bits: 4233
       rotateToLayers:
         serializedVersion: 2
-        m_Bits: 897
+        m_Bits: 5001
       headbuttLayers:
         serializedVersion: 2
-        m_Bits: 897
+        m_Bits: 777
       minAngleDiffToClimb: 20
       stopFlowerOnEZClimb: 1
       stopAllOnEZClimb: 0
