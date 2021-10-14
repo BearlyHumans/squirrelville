@@ -13,36 +13,18 @@ MonoBehaviour:
   m_Name: SummitIntro
   m_EditorClassIdentifier: 
   entries:
-  - text: Well, here we are.
+  - text: "Well, here we are. I can just TASTE that thing up there\r!\n"
     sprite: {fileID: 21300000, guid: c31dcd4e483e68d4dba2aad7039afdbd, type: 3}
-  - text: I can just TASTE that thing up there!
+  - text: "Just another bloody boulder in the way, of course ahahaha! You know what
+      mate, I think you\u2019ve done more than enough helping my lazy bum! Let me
+      try\u2026\r\n"
     sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}
-  - text: Just another bloody boulder in the way, of course ahahaha!
-    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-  - text: "You know what mate, I think you\u2019ve done more than enough helping
-      my lazy bum! Let me try\u2026"
-    sprite: {fileID: 21300000, guid: f2b47b7936547f34689640c321e86f82, type: 3}
-  - text: Aha, YES!
-    sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}
-  - text: ...
-    sprite: {fileID: 21300000, guid: c31dcd4e483e68d4dba2aad7039afdbd, type: 3}
-  - text: ...
-    sprite: {fileID: 21300000, guid: 48f9b57e80877e3499e629c7bcc247d0, type: 3}
-  - text: "It\u2019s so beautiful up here\u2026 I didn\u2019t think I would ever
-      get to see this."
-    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-  - text: ...
-    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-  - text: ...
-    sprite: {fileID: 21300000, guid: c31dcd4e483e68d4dba2aad7039afdbd, type: 3}
-  - text: Alright, you ready to go?
+  - text: "...It\u2019s so beautiful up here\u2026...I didn\u2019t think I would
+      ever get to see this..."
     sprite: {fileID: 21300000, guid: f2b47b7936547f34689640c321e86f82, type: 3}
   - text: "Little buddy - I wish I could go up with you, but something tells me you\u2019re
-      going to get back down a lot faster than I will!"
-    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-  - text: "I\u2019ll go down to the beach and get everything set up, and you just
-      meet me there mate. I\u2019m sure you\u2019ll figure out how!"
+      going to get back down to the beach a lot faster than I will!\r\n"
     sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}
-  - text: "Just head on up there and eat that bloody thing! You can tell me all about
-      the view. I\u2019ll see you at the beach with the acorn!"
-    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
+  - text: "Just head on up there and eat that thing! You can tell me all about the
+      view. I\u2019ll see you at the beach with the acorn!\r\n"
+    sprite: {fileID: 21300000, guid: c31dcd4e483e68d4dba2aad7039afdbd, type: 3}
