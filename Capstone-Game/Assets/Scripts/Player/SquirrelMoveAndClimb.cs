@@ -114,10 +114,14 @@ namespace Player
             if(Input.GetButton("Jump"))
             {
                 
-                settings.J.jumpForce += Time.deltaTime * 4f;
-                if(settings.J.jumpForce > settings.J.maxJumpForce)
+                settings.J.minJumpForce += Time.deltaTime * 4f;
+                if(settings.J.minJumpForce > settings.J.maxJumpForce)
                 {
-                    settings.J.jumpForce = settings.J.maxJumpForce;
+                    settings.J.minJumpForce = settings.J.maxJumpForce;
+                    if(settings.J.autoJump)
+                    {
+                        jumpRelease = true;
+                    }
                 }
                 
                     
@@ -349,21 +353,21 @@ namespace Player
                     if (forwardJump)
                     {
                         //Do a 'forward' jump relative to the character.
-                        ParentRefs.RB.velocity = ParentRefs.model.forward * (settings.J.forwardJumpForce + (settings.J.jumpForce / 2));
-                        ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * settings.J.forwardJumpHeightDiff;
+                        ParentRefs.RB.velocity = ParentRefs.model.forward * (settings.J.forwardJumpForce + (settings.J.minJumpForce / 2));
+                        ParentRefs.RB.velocity += -transform.forward * settings.J.minJumpForce * settings.J.forwardJumpHeightDiff;
                     }
                     else if (Vector3.Angle(transform.forward, Vector3.down) > settings.S.climbMinAngle)
                     { //If player is rotated to face the ground.
                     //Do a wall jump (biased towards up instead of out).
-                        ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * (1 - settings.J.WallJumpAngleEffect);
-                        ParentRefs.RB.velocity += Vector3.up * settings.J.jumpForce * settings.J.WallJumpAngleEffect;
+                        ParentRefs.RB.velocity += -transform.forward * settings.J.minJumpForce * (1 - settings.J.WallJumpAngleEffect);
+                        ParentRefs.RB.velocity += Vector3.up * settings.J.minJumpForce * settings.J.WallJumpAngleEffect;
                     }
                     else
                     {
                         //Do a normal jump.
-                        ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce;
+                        ParentRefs.RB.velocity += -transform.forward * settings.J.minJumpForce;
                     }
-                    settings.J.jumpForce = settings.J.baseJumpForce;
+                    settings.J.minJumpForce = settings.J.baseJumpForce;
                     jumpRelease = false;
                     PARENT.CallEvents(SquirrelController.EventTrigger.jump);
                 }
@@ -465,7 +469,7 @@ namespace Player
                         vals.inLandingAnimation = true;
                         vals.landingAnimationStart = Time.time;
                         vals.animationSlow = true;
-                        settings.J.jumpForce = settings.J.baseJumpForce;
+                        settings.J.minJumpForce = settings.J.baseJumpForce;
 
                         jumpRelease = false;
                     }
@@ -1200,11 +1204,14 @@ namespace Player
             {
                 [Header("Jump Force Settings")]
                 [Tooltip("Force applied upwards (or outwards) when the player jumps.")]
-                public float jumpForce = 1.5f;
+                public float minJumpForce = 1.5f;
                 [Tooltip("Force jump gets set back to.")]
+                [HideInInspector]
                 public float baseJumpForce = 1.5f;
                 [Tooltip("Max Force.")]
                 public float maxJumpForce = 5f;
+                [Tooltip("Max Force.")]
+                public bool autoJump = true;
                 [Tooltip("Toggles if a burst of force is applied when jumping and moving.")]
                 public bool allowForwardJumps = true;
                 [Tooltip("Force applied in the direction of motion when the player jumps.")]
