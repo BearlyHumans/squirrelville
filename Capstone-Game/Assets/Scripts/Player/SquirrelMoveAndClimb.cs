@@ -21,7 +21,8 @@ namespace Player
         private bool DEBUGhere = false;
 
         private SCRunStoredValues vals = new SCRunStoredValues();
-        
+
+        public bool jumpRelease = false;
         //~~~~~~~~~~ PROPERTIES ~~~~~~~~~~
 
         private SquirrelController.SCReferences ParentRefs
@@ -49,13 +50,15 @@ namespace Player
         /// <summary> Call all the update steps for movement, climing and jumping. </summary>
         public override void ManualUpdate()
         {
+            print(jumpRelease);
             UpdInput();
-            UpdMove();
-            Abilities();
+            UpdMove(); 
             Jump();
+            Abilities();
             FindAndRotateToSurface();
             RotateModel();
             UpdAnimator();
+            
         }
 
         private void UpdAnimator()
@@ -109,6 +112,15 @@ namespace Player
             if (Input.GetButtonDown("Jump"))
                 vals.jumpPressed = Time.time;
 
+            if(Input.GetButton("Jump"))
+            {
+                settings.J.jumpForce += Time.deltaTime;
+            }
+            if(Input.GetButtonUp("Jump"))
+            {
+                jumpRelease = true;
+                print(settings.J.jumpForce);
+            }
 
             if (Input.GetButton("CarefulMode"))
                 vals.carefulModePressed = true;
@@ -317,54 +329,62 @@ namespace Player
         /// <summary> Check for jump input, and do the appropriate jump for the situation (needs work). </summary>
         private void Jump()
         {
-            if (vals.inJumpAnimation)
+            if(jumpRelease)
             {
-                if (Time.time > vals.jumpAnimationStart + settings.J.jumpDelay)
+                if (vals.inJumpAnimation)
                 {
-                    vals.jumping = true;
-                    vals.lastJump = Time.time;
-                    vals.inJumpAnimation = false;
-                    vals.animationSlow = false;
-                    vals.falling = true;
-
-                    //PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.falling);
-
-                    bool forwardJump = vals.moving && settings.J.allowForwardJumps;
-                    if (forwardJump)
+                    
+                    if (Time.time > vals.jumpAnimationStart + settings.J.jumpDelay)
                     {
-                        //Do a 'forward' jump relative to the character.
-                        ParentRefs.RB.velocity = ParentRefs.model.forward * settings.J.forwardJumpForce;
-                        ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * settings.J.forwardJumpHeightDiff;
+                        vals.jumping = true;
+                        vals.lastJump = Time.time;
+                        vals.inJumpAnimation = false;
+                        vals.animationSlow = false;
+                        vals.falling = true;
+                        //PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.falling);
+                        
+                        bool forwardJump = vals.moving && settings.J.allowForwardJumps;
+                        if (forwardJump)
+                        {
+                            //Do a 'forward' jump relative to the character.
+                            ParentRefs.RB.velocity = ParentRefs.model.forward * settings.J.forwardJumpForce;
+                            ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * settings.J.forwardJumpHeightDiff;
+                        }
+                        else if (Vector3.Angle(transform.forward, Vector3.down) > settings.S.climbMinAngle)
+                        { //If player is rotated to face the ground.
+                        //Do a wall jump (biased towards up instead of out).
+                            ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * (1 - settings.J.WallJumpAngleEffect);
+                            ParentRefs.RB.velocity += Vector3.up * settings.J.jumpForce * settings.J.WallJumpAngleEffect;
+                        }
+                        else
+                        {
+                            //Do a normal jump.
+                            ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce;
+                        }
+                        settings.J.jumpForce = 3.0f;
+                        jumpRelease = false; 
                     }
-                    else if (Vector3.Angle(transform.forward, Vector3.down) > settings.S.climbMinAngle)
-                    { //If player is rotated to face the ground.
-                      //Do a wall jump (biased towards up instead of out).
-                        ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * (1 - settings.J.WallJumpAngleEffect);
-                        ParentRefs.RB.velocity += Vector3.up * settings.J.jumpForce * settings.J.WallJumpAngleEffect;
-                    }
-                    else
-                    {
-                        //Do a normal jump.
-                        ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce;
-                    }
+                    
                 }
-            }
-            else
-            {
-                //If the player wants to and is able to jump, apply a force and set the last jump time.
-                bool tryingToJump = Time.time < vals.jumpPressed + settings.J.checkJumpTime;
-                bool offCooldown = Time.time > vals.lastJump + settings.J.jumpCooldown;
-                bool groundedOrCoyotee = Grounded || Time.time < vals.lastOnSurface + settings.J.coyoteeTime;
-                bool notAnimationLocked = (vals.inJumpAnimation == false && vals.inLandingAnimation == false);
-                if (tryingToJump && groundedOrCoyotee && offCooldown && notAnimationLocked)
+                else
                 {
-                    vals.jumpPressed = -5;
+                    
+                    //If the player wants to and is able to jump, apply a force and set the last jump time.
+                    bool tryingToJump = Time.time < vals.jumpPressed + settings.J.checkJumpTime;
+                    bool offCooldown = Time.time > vals.lastJump + settings.J.jumpCooldown;
+                    bool groundedOrCoyotee = Grounded || Time.time < vals.lastOnSurface + settings.J.coyoteeTime;
+                    bool notAnimationLocked = (vals.inJumpAnimation == false && vals.inLandingAnimation == false);
+                    if (tryingToJump && groundedOrCoyotee && offCooldown && notAnimationLocked)
+                    {
+                        vals.jumpPressed = -5;
 
-                    vals.jumpAnimationStart = Time.time;
-                    vals.inJumpAnimation = true;
-                    vals.animationSlow = true;
+                        vals.jumpAnimationStart = Time.time;
+                        vals.inJumpAnimation = true;
+                        vals.animationSlow = true;
 
-                    PARENT.CallEvents(SquirrelController.EventTrigger.jump);
+                        PARENT.CallEvents(SquirrelController.EventTrigger.jump);
+                    }
+                    
                 }
             }
         }
@@ -1179,6 +1199,8 @@ namespace Player
                 [Header("Jump Force Settings")]
                 [Tooltip("Force applied upwards (or outwards) when the player jumps.")]
                 public float jumpForce = 3f;
+                [Tooltip("Force applied upwards (or outwards) when the player jumps.")]
+                public float bigjumpForce = 3f;
                 [Tooltip("Toggles if a burst of force is applied when jumping and moving.")]
                 public bool allowForwardJumps = true;
                 [Tooltip("Force applied in the direction of motion when the player jumps.")]
