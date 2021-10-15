@@ -21,6 +21,11 @@ public class CameraGimbal : MonoBehaviour
     [Tooltip("Multiplier for input.")]
     public float inputSensitivity = 150.0f;
 
+    [Header("FOV Settings:")]
+    [Tooltip("FOV for Dashing")]
+    public float alternateFOV = 65;
+    private float normalFOV = 60;
+
     [Header("Obstacle Avoidance Settings:")]
     [Tooltip("Should contain layers of objects which have small and fiddly hitboxes, or which the player often goes around or under (e.g. chairs, trees, people).")]
     public LayerMask zoomToAvoidLayers;
@@ -96,8 +101,25 @@ public class CameraGimbal : MonoBehaviour
         rotY = rot.y;
         rotX = rot.x;
 
+        normalFOV = dollyCamera.fieldOfView;
+
         dollyDir = CamObj.localPosition.normalized;
         dollyDistance = CamObj.localPosition.magnitude;
+    }
+
+    public void SwapToAlternateFOV()
+    {
+        dollyCamera.fieldOfView = alternateFOV;
+    }
+
+    public void ResetToNormalFOV()
+    {
+        dollyCamera.fieldOfView = normalFOV;
+    }
+
+    public void SetToCustomFOV(float newFOV)
+    {
+        dollyCamera.fieldOfView = newFOV;
     }
 
     /// <summary> Change the rotation of the camera parent based on inputs. </summary>

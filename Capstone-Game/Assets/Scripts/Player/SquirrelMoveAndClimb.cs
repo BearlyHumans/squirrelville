@@ -91,7 +91,12 @@ namespace Player
                 {
                     vals.startedDashing = Time.time;
                     PARENT.CallEvents(SquirrelController.EventTrigger.startDashing);
+                    ParentRefs.fCam.SwapToAlternateFOV();
                 }
+                if (vals.moving)
+                    ParentRefs.fCam.SwapToAlternateFOV();
+                else
+                    ParentRefs.fCam.ResetToNormalFOV();
                 vals.dashing = true;
                 PARENT.CallEvents(SquirrelController.EventTrigger.dashing);
             }
@@ -101,6 +106,7 @@ namespace Player
                 {
                     vals.dashing = false;
                     PARENT.CallEvents(SquirrelController.EventTrigger.stopDashing);
+                    ParentRefs.fCam.ResetToNormalFOV();
                 }
                 if (vals.desiredDirection != Vector3.zero)
                     ParentRefs.stamina.UseStamina(settings.S.walkStamPerSec * Time.deltaTime);
