@@ -18,8 +18,6 @@ public class CameraGimbal : MonoBehaviour
     [Tooltip("The new maximum distance when the zoom toggle is pressed - larger to zoom out (e.g. 2), smaller to zoom in (e.g. 0.3).")]
     public float buttonZoomMultiplier = 0.3f;
     public bool invertY = false;
-    [Tooltip("Multiplier for input.")]
-    public float inputSensitivity = 150.0f;
 
     [Header("FOV Settings:")]
     [Tooltip("FOV for Dashing")]
@@ -41,6 +39,8 @@ public class CameraGimbal : MonoBehaviour
     [SerializeField, Range(0.0f, 1.0f)]
     public float translationSmoothing = 0.1f;
     public bool cameraSmoothThreshold = false;
+    [Tooltip("How fast the camera rotates when you move your mouse/joystick")]
+    public float cameraSensitivity = 250.0f;
 
     private Transform CamObj
     {
@@ -71,7 +71,7 @@ public class CameraGimbal : MonoBehaviour
         public float collisionPadding = 0.9f;
         public float largeSphereMultiplier = 2f;
     }
-    
+
     private Vector3 dollyDirAdjusted;
     private float dollyDistance;
     private float finalInputX;
@@ -136,12 +136,12 @@ public class CameraGimbal : MonoBehaviour
         Vector3 oldPos = dollyCamera.transform.position;
 
         //Y (Left Right)
-        float deltaY = finalInputX * inputSensitivity * Time.deltaTime;
+        float deltaY = finalInputX * cameraSensitivity * Time.deltaTime;
         rotY += deltaY;
 
         //X (Up Down)
         //if (finalInputY > 0 || PlayerCanSeeBelowPoint())
-            rotX += finalInputY * inputSensitivity * Time.deltaTime;
+        rotX += finalInputY * cameraSensitivity * Time.deltaTime;
 
         if (useRelativeAngles)
             playerAngle = Vector3.Angle(Vector3.up, cameraTarget.up);
@@ -155,6 +155,11 @@ public class CameraGimbal : MonoBehaviour
 
         Quaternion localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
         transform.rotation = localRotation;
+    }
+
+    public void SetSensitivity(float sensitivity)
+    {
+        cameraSensitivity = sensitivity;
     }
 
     /// <summary> Move the camera gameobject towards the target at the move speed. </summary>
@@ -227,8 +232,8 @@ public class CameraGimbal : MonoBehaviour
             //Move the camera closer if certain bad conditions are found:
             if (Physics.Linecast(transform.position, desiredCameraPos, out hit, zoomToAvoidLayers))
             { //If line of sight is blocked by the specified layer(s), move in quickly (10x smooth speed).
-              dollyDistance = Mathf.Clamp((hit.distance - programmerSettings.collisionPadding), programmerSettings.minDistance, zoomedMax);
-              CamObj.localPosition = Vector3.Lerp(CamObj.localPosition, dollyDir * dollyDistance, Time.deltaTime * programmerSettings.smooth * 10);
+                dollyDistance = Mathf.Clamp((hit.distance - programmerSettings.collisionPadding), programmerSettings.minDistance, zoomedMax);
+                CamObj.localPosition = Vector3.Lerp(CamObj.localPosition, dollyDir * dollyDistance, Time.deltaTime * programmerSettings.smooth * 10);
             }
             else if (Physics.CheckSphere(CamObj.position, collisionSphereRadius, zoomToAvoidLayers))
             { //If the camera is VERY near or inside an object in specified layer(s), move in at a smooth speed.
@@ -249,7 +254,7 @@ public class CameraGimbal : MonoBehaviour
                 MR.enabled = false;
             targetInvisible = true;
         }
-        else 
+        else
         {
             if (targetInvisible)
             {
@@ -263,7 +268,7 @@ public class CameraGimbal : MonoBehaviour
     private void RotateToUnblockedPoint(float degPerMove)
     {
         //bool foundOpenSpace = false;
-        float interval = Mathf.Abs(degPerMove/2f);
+        float interval = Mathf.Abs(degPerMove / 2f);
         interval = Mathf.Max(interval, 0.5f);
         int i = 0;
         for (float offset = 0; offset < 90 && i < 20; offset += interval)
