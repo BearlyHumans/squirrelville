@@ -144,6 +144,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
         food.layer = LayerMask.NameToLayer("EatenFood");
         controller.CallEvents(SquirrelController.EventTrigger.eat);
         pickupEvent.Invoke(food);
+        food.GetComponent<Food>().pickupEvent.Invoke();
     }
 
     [ContextMenu("Throw food")]
@@ -175,6 +176,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
 
         controller.CallEvents(SquirrelController.EventTrigger.spit);
         throwEvent.Invoke(food);
+        food.GetComponent<Food>().throwEvent.Invoke();
     }
 
     public bool CanEatFood()
