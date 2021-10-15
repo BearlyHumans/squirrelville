@@ -113,12 +113,14 @@ namespace Player
 
             if(Input.GetButton("Jump"))
             {
+                
                 settings.J.jumpForce += Time.deltaTime * 4f;
                 if(settings.J.jumpForce > settings.J.maxJumpForce)
                 {
                     settings.J.jumpForce = settings.J.maxJumpForce;
                 }
                 
+                    
             }
             if(Input.GetButtonUp("Jump"))
             {
@@ -332,44 +334,39 @@ namespace Player
         /// <summary> Check for jump input, and do the appropriate jump for the situation (needs work). </summary>
         private void Jump()
         {
-            if (vals.inJumpAnimation)
+            if (vals.inJumpAnimation && jumpRelease)
             {
-                if(jumpRelease)
+                if (Time.time > vals.jumpAnimationStart + settings.J.jumpDelay)
                 {
+                    vals.jumping = true;
+                    vals.lastJump = Time.time;
+                    vals.inJumpAnimation = false;
+                    vals.animationSlow = false;
+                    vals.falling = true;
+                    //PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.falling);
                     
-                    if (Time.time > vals.jumpAnimationStart + settings.J.jumpDelay)
+                    bool forwardJump = vals.moving && settings.J.allowForwardJumps;
+                    if (forwardJump)
                     {
-                        vals.jumping = true;
-                        vals.lastJump = Time.time;
-                        vals.inJumpAnimation = false;
-                        vals.animationSlow = false;
-                        vals.falling = true;
-                        //PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.falling);
-                        
-                        bool forwardJump = vals.moving && settings.J.allowForwardJumps;
-                        if (forwardJump)
-                        {
-                            //Do a 'forward' jump relative to the character.
-                            ParentRefs.RB.velocity = ParentRefs.model.forward * (settings.J.forwardJumpForce + (settings.J.jumpForce / 2));
-                            ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * settings.J.forwardJumpHeightDiff;
-                        }
-                        else if (Vector3.Angle(transform.forward, Vector3.down) > settings.S.climbMinAngle)
-                        { //If player is rotated to face the ground.
-                        //Do a wall jump (biased towards up instead of out).
-                            ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * (1 - settings.J.WallJumpAngleEffect);
-                            ParentRefs.RB.velocity += Vector3.up * settings.J.jumpForce * settings.J.WallJumpAngleEffect;
-                        }
-                        else
-                        {
-                            //Do a normal jump.
-                            ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce;
-                        }
-                        settings.J.jumpForce = settings.J.baseJumpForce;
-                        jumpRelease = false; 
-                        PARENT.CallEvents(SquirrelController.EventTrigger.jump);
+                        //Do a 'forward' jump relative to the character.
+                        ParentRefs.RB.velocity = ParentRefs.model.forward * (settings.J.forwardJumpForce + (settings.J.jumpForce / 2));
+                        ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * settings.J.forwardJumpHeightDiff;
                     }
+                    else if (Vector3.Angle(transform.forward, Vector3.down) > settings.S.climbMinAngle)
+                    { //If player is rotated to face the ground.
+                    //Do a wall jump (biased towards up instead of out).
+                        ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * (1 - settings.J.WallJumpAngleEffect);
+                        ParentRefs.RB.velocity += Vector3.up * settings.J.jumpForce * settings.J.WallJumpAngleEffect;
+                    }
+                    else
+                    {
+                        //Do a normal jump.
+                        ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce;
+                    }
+                    settings.J.jumpForce = settings.J.baseJumpForce;
+                    jumpRelease = false;
+                    PARENT.CallEvents(SquirrelController.EventTrigger.jump);
                 }
-                
             }
             else
             {
@@ -385,7 +382,6 @@ namespace Player
                     vals.jumpAnimationStart = Time.time;
                     vals.inJumpAnimation = true;
                     vals.animationSlow = true;
-                    
                 }
                     
             }
@@ -469,7 +465,8 @@ namespace Player
                         vals.inLandingAnimation = true;
                         vals.landingAnimationStart = Time.time;
                         vals.animationSlow = true;
-                        settings.J.jumpForce = 1.5f;
+                        settings.J.jumpForce = 1f;
+
                         jumpRelease = false;
                     }
 
@@ -1203,9 +1200,9 @@ namespace Player
             {
                 [Header("Jump Force Settings")]
                 [Tooltip("Force applied upwards (or outwards) when the player jumps.")]
-                public float jumpForce = 1f;
+                public float jumpForce = 1.5f;
                 [Tooltip("Force jump gets set back to.")]
-                public float baseJumpForce = 1f;
+                public float baseJumpForce = 1.5f;
                 [Tooltip("Max Force.")]
                 public float maxJumpForce = 5f;
                 [Tooltip("Toggles if a burst of force is applied when jumping and moving.")]
