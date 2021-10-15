@@ -381,7 +381,6 @@ public class Humans : MonoBehaviour
     {
         human.speed = humanWalkSpeed;
         bool canSee = SeePlayer();
-        
         if(canSee)
         {
             // if friendly and see player then enter friendly state
@@ -405,7 +404,7 @@ public class Humans : MonoBehaviour
                 currentState = HumanStates.PathFollowing;
             }
         }
-        if(walking && human.remainingDistance <= 1.0f)
+        else if(walking && human.remainingDistance <= 1.0f)
         {
             walking = false;
                     
