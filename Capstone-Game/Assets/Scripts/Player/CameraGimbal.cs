@@ -18,8 +18,6 @@ public class CameraGimbal : MonoBehaviour
     [Tooltip("The new maximum distance when the zoom toggle is pressed - larger to zoom out (e.g. 2), smaller to zoom in (e.g. 0.3).")]
     public float buttonZoomMultiplier = 0.3f;
     public bool invertY = false;
-    [Tooltip("Multiplier for input.")]
-    public float inputSensitivity = 150.0f;
 
     [Header("Obstacle Avoidance Settings:")]
     [Tooltip("Should contain layers of objects which have small and fiddly hitboxes, or which the player often goes around or under (e.g. chairs, trees, people).")]
@@ -114,12 +112,12 @@ public class CameraGimbal : MonoBehaviour
         Vector3 oldPos = dollyCamera.transform.position;
 
         //Y (Left Right)
-        float deltaY = finalInputX * inputSensitivity * Time.deltaTime;
+        float deltaY = finalInputX * PlayerPrefs.GetFloat("mouseSensitivity") * Time.deltaTime;
         rotY += deltaY;
 
         //X (Up Down)
         //if (finalInputY > 0 || PlayerCanSeeBelowPoint())
-            rotX += finalInputY * inputSensitivity * Time.deltaTime;
+        rotX += finalInputY * PlayerPrefs.GetFloat("mouseSensitivity") * Time.deltaTime;
 
         if (useRelativeAngles)
             playerAngle = Vector3.Angle(Vector3.up, cameraTarget.up);
