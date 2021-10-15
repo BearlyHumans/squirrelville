@@ -114,12 +114,16 @@ namespace Player
 
             if(Input.GetButton("Jump"))
             {
-                settings.J.jumpForce += Time.deltaTime;
+                settings.J.jumpForce += Time.deltaTime * 4f;
+                if(settings.J.jumpForce > settings.J.maxJumpForce)
+                {
+                    settings.J.jumpForce = settings.J.maxJumpForce;
+                }
+                
             }
             if(Input.GetButtonUp("Jump"))
             {
                 jumpRelease = true;
-                print(settings.J.jumpForce);
             }
 
             if (Input.GetButton("CarefulMode"))
@@ -329,9 +333,10 @@ namespace Player
         /// <summary> Check for jump input, and do the appropriate jump for the situation (needs work). </summary>
         private void Jump()
         {
-            if(jumpRelease)
+            
+            if (vals.inJumpAnimation)
             {
-                if (vals.inJumpAnimation)
+                if(jumpRelease)
                 {
                     
                     if (Time.time > vals.jumpAnimationStart + settings.J.jumpDelay)
@@ -361,32 +366,31 @@ namespace Player
                             //Do a normal jump.
                             ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce;
                         }
-                        settings.J.jumpForce = 3.0f;
+                        settings.J.jumpForce = settings.J.baseJumpForce;
                         jumpRelease = false; 
                     }
-                    
                 }
-                else
-                {
-                    
-                    //If the player wants to and is able to jump, apply a force and set the last jump time.
-                    bool tryingToJump = Time.time < vals.jumpPressed + settings.J.checkJumpTime;
-                    bool offCooldown = Time.time > vals.lastJump + settings.J.jumpCooldown;
-                    bool groundedOrCoyotee = Grounded || Time.time < vals.lastOnSurface + settings.J.coyoteeTime;
-                    bool notAnimationLocked = (vals.inJumpAnimation == false && vals.inLandingAnimation == false);
-                    if (tryingToJump && groundedOrCoyotee && offCooldown && notAnimationLocked)
-                    {
-                        vals.jumpPressed = -5;
-
-                        vals.jumpAnimationStart = Time.time;
-                        vals.inJumpAnimation = true;
-                        vals.animationSlow = true;
-
-                        PARENT.CallEvents(SquirrelController.EventTrigger.jump);
-                    }
-                    
-                }
+                
             }
+            else
+            {
+                
+                //If the player wants to and is able to jump, apply a force and set the last jump time.
+                bool tryingToJump = Time.time < vals.jumpPressed + settings.J.checkJumpTime;
+                bool offCooldown = Time.time > vals.lastJump + settings.J.jumpCooldown;
+                bool groundedOrCoyotee = Grounded || Time.time < vals.lastOnSurface + settings.J.coyoteeTime;
+                bool notAnimationLocked = (vals.inJumpAnimation == false && vals.inLandingAnimation == false);
+                if (tryingToJump && groundedOrCoyotee && offCooldown && notAnimationLocked)
+                {
+                    vals.jumpPressed = -5;
+                    vals.jumpAnimationStart = Time.time;
+                    vals.inJumpAnimation = true;
+                    vals.animationSlow = true;
+                    //PARENT.CallEvents(SquirrelController.EventTrigger.jump);
+                }
+                    
+            }
+            
         }
 
         /// <summary> Rotate the player so their feet are aligned with the surface beneath them, based on a downwards raycast. </summary>
@@ -466,6 +470,8 @@ namespace Player
                         vals.inLandingAnimation = true;
                         vals.landingAnimationStart = Time.time;
                         vals.animationSlow = true;
+                        settings.J.jumpForce = 1.5f;
+                        jumpRelease = false;
                     }
 
                     //Teleport to the surface, and if its angle is too different eliminate the 'up force' to stop player flying off.
@@ -1198,9 +1204,11 @@ namespace Player
             {
                 [Header("Jump Force Settings")]
                 [Tooltip("Force applied upwards (or outwards) when the player jumps.")]
-                public float jumpForce = 3f;
-                [Tooltip("Force applied upwards (or outwards) when the player jumps.")]
-                public float bigjumpForce = 3f;
+                public float jumpForce = 1f;
+                [Tooltip("Force jump gets set back to.")]
+                public float baseJumpForce = 1f;
+                [Tooltip("Max Force.")]
+                public float maxJumpForce = 5f;
                 [Tooltip("Toggles if a burst of force is applied when jumping and moving.")]
                 public bool allowForwardJumps = true;
                 [Tooltip("Force applied in the direction of motion when the player jumps.")]
