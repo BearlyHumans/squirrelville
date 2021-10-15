@@ -2683,7 +2683,7 @@ MonoBehaviour:
     upperWorldClampAngle: 70
     lowerWorldClampAngle: -89
     upperRelativeClampAngle: 180
-    lowerRelativeClampAngle: 0
+    lowerRelativeClampAngle: -180
     relativeZoomAngle: 30
     minDistance: 0.5
     maxDistance: 1.6
