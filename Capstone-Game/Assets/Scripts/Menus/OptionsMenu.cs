@@ -7,17 +7,10 @@ using System.Linq;
 
 public class OptionsMenu : MonoBehaviour
 {
-    [Header("Audio")]
     public AudioMixer audioMixer;
     public Slider musicVolumeSlider;
     public Slider sfxVolumeSlider;
-
-    [Header("Mouse sensitivity")]
-    public Slider mouseSensSlider;
-    [Range(100, 200)]
-    public float initialMouseSens = 250.0f;
-
-    [Header("Miscellaneous")]
+    public Slider cameraSensSlider;
     public TMP_Dropdown resolutionDropdown;
     public Toggle fullscreenToggle;
     public Animation anim;
@@ -44,7 +37,7 @@ public class OptionsMenu : MonoBehaviour
         selectedResolution.width = PlayerPrefs.GetInt("resolutionWidth", Screen.currentResolution.width);
         selectedResolution.height = PlayerPrefs.GetInt("resolutionHeight", Screen.currentResolution.height);
 
-        mouseSensSlider.value = PlayerPrefs.GetFloat("mouseSensitivity", initialMouseSens);
+        cameraSensSlider.value = PlayerPrefs.GetFloat("cameraSensitivity", 250);
     }
 
     private void InitResolutionDropdown()
@@ -85,9 +78,9 @@ public class OptionsMenu : MonoBehaviour
         PlayerPrefs.SetFloat("sfxVolume", volume);
     }
 
-    public void SetMouseSensitivity(float sensitivity)
+    public void SetCameraSensitivity(float sensitivity)
     {
-        PlayerPrefs.SetFloat("mouseSensitivity", sensitivity);
+        PlayerPrefs.SetFloat("cameraSensitivity", sensitivity);
     }
 
     public void SetResolution(int index)

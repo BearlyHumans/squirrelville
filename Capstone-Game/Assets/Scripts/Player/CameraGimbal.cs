@@ -64,7 +64,7 @@ public class CameraGimbal : MonoBehaviour
         public float collisionPadding = 0.9f;
         public float largeSphereMultiplier = 2f;
     }
-    
+
     private Vector3 dollyDirAdjusted;
     private float dollyDistance;
     private float finalInputX;
@@ -112,12 +112,12 @@ public class CameraGimbal : MonoBehaviour
         Vector3 oldPos = dollyCamera.transform.position;
 
         //Y (Left Right)
-        float deltaY = finalInputX * PlayerPrefs.GetFloat("mouseSensitivity") * Time.deltaTime;
+        float deltaY = finalInputX * PlayerPrefs.GetFloat("cameraSensitivity", 250) * Time.deltaTime;
         rotY += deltaY;
 
         //X (Up Down)
         //if (finalInputY > 0 || PlayerCanSeeBelowPoint())
-        rotX += finalInputY * PlayerPrefs.GetFloat("mouseSensitivity") * Time.deltaTime;
+        rotX += finalInputY * PlayerPrefs.GetFloat("cameraSensitivity", 250) * Time.deltaTime;
 
         if (useRelativeAngles)
             playerAngle = Vector3.Angle(Vector3.up, cameraTarget.up);
@@ -203,8 +203,8 @@ public class CameraGimbal : MonoBehaviour
             //Move the camera closer if certain bad conditions are found:
             if (Physics.Linecast(transform.position, desiredCameraPos, out hit, zoomToAvoidLayers))
             { //If line of sight is blocked by the specified layer(s), move in quickly (10x smooth speed).
-              dollyDistance = Mathf.Clamp((hit.distance - programmerSettings.collisionPadding), programmerSettings.minDistance, zoomedMax);
-              CamObj.localPosition = Vector3.Lerp(CamObj.localPosition, dollyDir * dollyDistance, Time.deltaTime * programmerSettings.smooth * 10);
+                dollyDistance = Mathf.Clamp((hit.distance - programmerSettings.collisionPadding), programmerSettings.minDistance, zoomedMax);
+                CamObj.localPosition = Vector3.Lerp(CamObj.localPosition, dollyDir * dollyDistance, Time.deltaTime * programmerSettings.smooth * 10);
             }
             else if (Physics.CheckSphere(CamObj.position, collisionSphereRadius, zoomToAvoidLayers))
             { //If the camera is VERY near or inside an object in specified layer(s), move in at a smooth speed.
@@ -225,7 +225,7 @@ public class CameraGimbal : MonoBehaviour
                 MR.enabled = false;
             targetInvisible = true;
         }
-        else 
+        else
         {
             if (targetInvisible)
             {
@@ -239,7 +239,7 @@ public class CameraGimbal : MonoBehaviour
     private void RotateToUnblockedPoint(float degPerMove)
     {
         //bool foundOpenSpace = false;
-        float interval = Mathf.Abs(degPerMove/2f);
+        float interval = Mathf.Abs(degPerMove / 2f);
         interval = Mathf.Max(interval, 0.5f);
         int i = 0;
         for (float offset = 0; offset < 90 && i < 20; offset += interval)

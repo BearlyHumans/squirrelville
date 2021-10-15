@@ -1501,8 +1501,7 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: 34ca02f6309a2f549b4732abe7199d62, type: 2}
   musicVolumeSlider: {fileID: 5312333600681860371}
   sfxVolumeSlider: {fileID: 2052935724556199533}
-  mouseSensSlider: {fileID: 8284202758168972487}
-  initialMouseSens: 150
+  cameraSensSlider: {fileID: 8284202758168972487}
   resolutionDropdown: {fileID: 8991164254041300368}
   fullscreenToggle: {fileID: 5312333602534240904}
   anim: {fileID: 5312333601805722027}
@@ -1664,11 +1663,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5621617741639928826, guid: 9417372fd638b3744903b83b7714cfe8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -77.6
       objectReference: {fileID: 0}
     - target: {fileID: 5621617741639928826, guid: 9417372fd638b3744903b83b7714cfe8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -112.3
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: 5621617741639928826, guid: 9417372fd638b3744903b83b7714cfe8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1865,7 +1864,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6180149704458883061, guid: 6568fcdd22224c64497b0a58c25670d8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 94.1
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6180149704458883061, guid: 6568fcdd22224c64497b0a58c25670d8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2052,11 +2051,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7902723560452239592, guid: f4d31d855bd1fa549a69cf75dbabe738, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -119
       objectReference: {fileID: 0}
     - target: {fileID: 7902723560452239592, guid: f4d31d855bd1fa549a69cf75dbabe738, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -53.6
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 7902723560452239592, guid: f4d31d855bd1fa549a69cf75dbabe738, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2193,11 +2192,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6180149704458883061, guid: 6568fcdd22224c64497b0a58c25670d8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 221
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6180149704458883061, guid: 6568fcdd22224c64497b0a58c25670d8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -179.6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6180149704458883061, guid: 6568fcdd22224c64497b0a58c25670d8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2213,7 +2212,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6180149704458883062, guid: 6568fcdd22224c64497b0a58c25670d8, type: 3}
       propertyPath: m_Name
-      value: Mouse Sensitivity
+      value: Camera Sensitivity
       objectReference: {fileID: 0}
     - target: {fileID: 6180149704874831399, guid: 6568fcdd22224c64497b0a58c25670d8, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2273,7 +2272,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6180149705775515931, guid: 6568fcdd22224c64497b0a58c25670d8, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetMouseSensitivity
+      value: SetCameraSensitivity
       objectReference: {fileID: 0}
     - target: {fileID: 6180149705775515931, guid: 6568fcdd22224c64497b0a58c25670d8, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -2285,15 +2284,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6180149705775516389, guid: 6568fcdd22224c64497b0a58c25670d8, type: 3}
       propertyPath: m_Name
-      value: Mouse Sensitivity Slider
+      value: Camera Sensitivity Slider
       objectReference: {fileID: 0}
     - target: {fileID: 6180149706024456728, guid: 6568fcdd22224c64497b0a58c25670d8, type: 3}
       propertyPath: m_text
-      value: Mouse Sensitivity
+      value: Camera Sensitivity
       objectReference: {fileID: 0}
     - target: {fileID: 6180149706024456730, guid: 6568fcdd22224c64497b0a58c25670d8, type: 3}
       propertyPath: m_Name
-      value: Mouse Sensitivity Text
+      value: Camera Sensitivity Text
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6568fcdd22224c64497b0a58c25670d8, type: 3}
@@ -3776,7 +3775,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6180149704458883061, guid: 6568fcdd22224c64497b0a58c25670d8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.999992
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6180149704458883061, guid: 6568fcdd22224c64497b0a58c25670d8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
