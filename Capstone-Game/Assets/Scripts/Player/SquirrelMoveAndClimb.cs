@@ -1210,7 +1210,7 @@ namespace Player
                 public float baseJumpForce = 1.5f;
                 [Tooltip("Max Force.")]
                 public float maxJumpForce = 5f;
-                [Tooltip("Max Force.")]
+                [Tooltip("Toggle setting to allow player to jump automatically when at maxJumpForce.")]
                 public bool autoJump = true;
                 [Tooltip("Toggles if a burst of force is applied when jumping and moving.")]
                 public bool allowForwardJumps = true;
