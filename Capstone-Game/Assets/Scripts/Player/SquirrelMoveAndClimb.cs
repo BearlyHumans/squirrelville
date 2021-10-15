@@ -22,7 +22,7 @@ namespace Player
 
         private SCRunStoredValues vals = new SCRunStoredValues();
 
-        public bool jumpRelease = false;
+        private bool jumpRelease = false;
         //~~~~~~~~~~ PROPERTIES ~~~~~~~~~~
 
         private SquirrelController.SCReferences ParentRefs
@@ -50,7 +50,6 @@ namespace Player
         /// <summary> Call all the update steps for movement, climing and jumping. </summary>
         public override void ManualUpdate()
         {
-            print(jumpRelease);
             UpdInput();
             UpdMove(); 
             Jump();
