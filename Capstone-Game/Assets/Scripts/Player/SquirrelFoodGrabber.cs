@@ -106,9 +106,9 @@ public class SquirrelFoodGrabber : MonoBehaviour
             }
         }
 
-        if (nearestFood != null && Input.GetKey(KeyCode.Mouse0) && CanEatFood())
+        if (nearestFood != null && Input.GetButton("Eat") && CanEatFood())
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetButtonDown("Eat"))
             {
                 Instantiate(foodEaten, nearestFood.transform.position, nearestFood.transform.rotation);
             }
@@ -117,12 +117,12 @@ public class SquirrelFoodGrabber : MonoBehaviour
 
         if (CanThrowFood())
         {
-            if (Input.GetKeyDown(KeyCode.Mouse1))
+            if (Input.GetButtonDown("Spit"))
             {
                 throwDelay = initialThrowDelay;
             }
 
-            if (Input.GetKey(KeyCode.Mouse1))
+            if (Input.GetButton("Spit"))
             {
                 if (Time.time < throwTime) return;
 
