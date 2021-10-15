@@ -351,7 +351,7 @@ namespace Player
                         if (forwardJump)
                         {
                             //Do a 'forward' jump relative to the character.
-                            ParentRefs.RB.velocity = ParentRefs.model.forward * settings.J.forwardJumpForce;
+                            ParentRefs.RB.velocity = ParentRefs.model.forward * (settings.J.forwardJumpForce + (settings.J.jumpForce / 2));
                             ParentRefs.RB.velocity += -transform.forward * settings.J.jumpForce * settings.J.forwardJumpHeightDiff;
                         }
                         else if (Vector3.Angle(transform.forward, Vector3.down) > settings.S.climbMinAngle)
