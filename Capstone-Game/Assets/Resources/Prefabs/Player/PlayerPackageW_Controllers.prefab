@@ -3404,13 +3404,16 @@ MonoBehaviour:
       haltAtFractionOfMaxSpeed: 0.9
       turningThreshold: 0.2
     jump:
-      jumpForce: 4
+      jumpForce: 1.5
+      baseJumpForce: 1.5
+      maxJumpForce: 5
+      autoJump: 1
       allowForwardJumps: 1
       forwardJumpForce: 1
       forwardJumpHeightDiff: 1
       WallJumpAngleEffect: 0.5
       jumpCooldown: 0.2
-      checkJumpTime: 0.2
+      checkJumpTime: 40
       coyoteeTime: 0.2
       jumpDelay: 0.1
       landingDelay: 0.15

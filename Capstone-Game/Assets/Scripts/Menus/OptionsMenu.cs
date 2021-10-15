@@ -10,11 +10,13 @@ public class OptionsMenu : MonoBehaviour
     public AudioMixer audioMixer;
     public Slider musicVolumeSlider;
     public Slider sfxVolumeSlider;
+    public Slider cameraSensSlider;
     public TMP_Dropdown resolutionDropdown;
     public Toggle fullscreenToggle;
+    public Animation anim;
+
     private Resolution[] resolutions;
     private Resolution selectedResolution;
-    public Animation anim;
     private LoadAudioSettings audioSettings;
 
     private void Start()
@@ -34,6 +36,8 @@ public class OptionsMenu : MonoBehaviour
         selectedResolution = new Resolution();
         selectedResolution.width = PlayerPrefs.GetInt("resolutionWidth", Screen.currentResolution.width);
         selectedResolution.height = PlayerPrefs.GetInt("resolutionHeight", Screen.currentResolution.height);
+
+        cameraSensSlider.value = PlayerPrefs.GetFloat("cameraSensitivity", 250);
     }
 
     private void InitResolutionDropdown()
@@ -72,6 +76,11 @@ public class OptionsMenu : MonoBehaviour
     {
         audioMixer.SetFloat("sfxVolume", Mathf.Log10(volume * audioSettings.maxSfxVolume) * 20);
         PlayerPrefs.SetFloat("sfxVolume", volume);
+    }
+
+    public void SetCameraSensitivity(float sensitivity)
+    {
+        PlayerPrefs.SetFloat("cameraSensitivity", sensitivity);
     }
 
     public void SetResolution(int index)

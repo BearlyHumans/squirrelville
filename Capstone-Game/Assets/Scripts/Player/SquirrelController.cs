@@ -73,6 +73,9 @@ namespace Player
             vals.lastJump = -10;
             vals.jumping = false;
             vals.lastOnSurface = -10;
+            vals.preFreezeConstraints = refs.RB.constraints;
+
+            refs.fCam.SetSensitivity(PlayerPrefs.GetFloat("cameraSensitivity", 250));
 
             if (behaviourScripts.moveAndClimb == null)
                 behaviourScripts.moveAndClimb = GetComponent<SquirrelMoveAndClimb>();
@@ -99,14 +102,20 @@ namespace Player
             if (PauseMenu.paused)
             {
                 if (vals.wasPaused == false)
+                {
                     refs.SFXControl.Pause();
+                    OnPause();
+                }
                 vals.wasPaused = true;
                 return;
             }
             else
             {
                 if (vals.wasPaused)
+                {
                     refs.SFXControl.Resume();
+                    OnResume();
+                }
                 vals.wasPaused = false;
             }
 
@@ -114,7 +123,7 @@ namespace Player
                 return;
 
             CallEvents(EventTrigger.frameStart);
-			
+
             refs.fCam.UpdateCamRotFromInput();
 
             //Debug State Changes
@@ -148,7 +157,7 @@ namespace Player
 
         private void FixedUpdate()
         {
-            if (PauseMenu.paused || vals.frozen)
+            if (PauseMenu.paused)
                 return;
 
             if (updateInFixed)
@@ -198,15 +207,56 @@ namespace Player
             vals.mState = MovementState.moveAndClimb;
         }
 
-        public void FreezeMovement()
+        /// <summary> Freeze the squirrel and play the stunned animation and/or particle effects (call UnfreezeMovement to reverse). </summary>
+        public void FreezeAndStun()
         {
-            vals.frozen = true;
-            refs.RB.velocity = Vector3.zero;
+            if (vals.frozen == false)
+            {
+                vals.frozen = true;
+                vals.preFreezeConstraints = refs.RB.constraints;
+                refs.RB.velocity = Vector3.zero;
+                refs.RB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+                refs.RB.useGravity = true;
+                CallEvents(EventTrigger.notMoving);
+                CallEvents(EventTrigger.landJump);
+                //Change this to "Stunned" and play particle effects (or just call 'stunned' event):
+                refs.animator.CrossFade("Idle", 0f);
+                refs.animator.Update(1f);
+            }
         }
 
+        /// <summary> Freeze the squirrel and play the idle animation - for talking to NPCs (call UnfreezeMovement to reverse). </summary>
+        public void FreezeMovement()
+        {
+            if (vals.frozen == false)
+            {
+                vals.frozen = true;
+                vals.preFreezeConstraints = refs.RB.constraints;
+                refs.RB.velocity = Vector3.zero;
+                refs.RB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+                refs.RB.useGravity = true;
+                CallEvents(EventTrigger.notMoving);
+                CallEvents(EventTrigger.landJump);
+                refs.animator.CrossFade("Idle", 0f);
+                refs.animator.Update(1f);
+            }
+        }
+
+        /// <summary> Freeze the squirrel and play the stunned animation and/or particle effects (call UnfreezeMovement to reverse). </summary>
         public void UnfreezeMovement()
         {
             vals.frozen = false;
+            refs.RB.constraints = vals.preFreezeConstraints;
+        }
+
+        private void OnPause()
+        {
+
+        }
+
+        private void OnResume()
+        {
+            refs.fCam.SetSensitivity(PlayerPrefs.GetFloat("cameraSensitivity"));
         }
 
         public void CallEvents(EventTrigger trigger)
@@ -312,6 +362,7 @@ namespace Player
             public bool touchingSomething;
             public bool moving;
             public bool frozen;
+            public RigidbodyConstraints preFreezeConstraints;
             public float stamina;
             public bool usingStamina;
             public MovementState mState;
@@ -663,5 +714,5 @@ namespace Player
         }
     }
 
-    
+
 }

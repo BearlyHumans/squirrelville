@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Food : MonoBehaviour
 {
@@ -9,6 +10,10 @@ public class Food : MonoBehaviour
 
     public float respawnTimer;
     private Rigidbody rb;
+
+    [Header("Events")]
+    public UnityEvent pickupEvent;
+    public UnityEvent throwEvent;
 
 
     private void Awake()
@@ -44,6 +49,7 @@ public class Food : MonoBehaviour
     public void respawnSelf()
     {
         gameObject.SetActive(true);
+        gameObject.layer = LayerMask.NameToLayer("Food");
         gameObject.transform.position = spawnPoint;
         gameObject.transform.rotation = spawnRotation;
         rb.velocity = Vector3.zero;

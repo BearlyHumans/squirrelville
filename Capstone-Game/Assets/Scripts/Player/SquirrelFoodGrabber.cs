@@ -106,9 +106,9 @@ public class SquirrelFoodGrabber : MonoBehaviour
             }
         }
 
-        if (nearestFood != null && Input.GetKey(KeyCode.Mouse0) && CanEatFood())
+        if (nearestFood != null && Input.GetButton("Eat") && CanEatFood())
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetButtonDown("Eat"))
             {
                 Instantiate(foodEaten, nearestFood.transform.position, nearestFood.transform.rotation);
             }
@@ -117,16 +117,16 @@ public class SquirrelFoodGrabber : MonoBehaviour
 
         if (CanThrowFood())
         {
-            if (Input.GetKeyDown(KeyCode.Mouse1))
+            if (Input.GetButtonDown("Spit"))
             {
                 throwDelay = initialThrowDelay;
             }
 
-            if (Input.GetKey(KeyCode.Mouse1))
+            if (Input.GetButton("Spit"))
             {
                 if (Time.time < throwTime) return;
 
-                ThrowFood();
+                ThrowFood(0);
             }
         }
     }
@@ -141,13 +141,14 @@ public class SquirrelFoodGrabber : MonoBehaviour
         foodStack.Push(food);
         food.SetActive(false);
         pickupTime = Time.time + pickupDelay;
-
+        food.layer = LayerMask.NameToLayer("EatenFood");
         controller.CallEvents(SquirrelController.EventTrigger.eat);
         pickupEvent.Invoke(food);
+        food.GetComponent<Food>().pickupEvent.Invoke();
     }
 
     [ContextMenu("Throw food")]
-    public void ThrowFood()
+    public void ThrowFood(int mode)
     {
         if (foodStack.Count == 0) return;
 
@@ -161,11 +162,21 @@ public class SquirrelFoodGrabber : MonoBehaviour
 
         food.SetActive(true);
 
+        if(mode == 0)
+        {
+            food.layer = LayerMask.NameToLayer("Food");
+        }
+        else
+        {
+            food.layer = LayerMask.NameToLayer("EatenFood");
+        }
+
         throwTime = Time.time + throwDelay;
         throwDelay = Mathf.Max(throwDelay / throwDelayDivisor, minThrowDelay);
 
         controller.CallEvents(SquirrelController.EventTrigger.spit);
         throwEvent.Invoke(food);
+        food.GetComponent<Food>().throwEvent.Invoke();
     }
 
     public bool CanEatFood()
@@ -190,7 +201,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
     {
         List<GameObject> food = new List<GameObject>();
 
-        Collider[] colliders = Physics.OverlapSphere(squirrelrb.position, pickupRadius, LayerMask.GetMask("Food"));
+        Collider[] colliders = Physics.OverlapSphere(squirrelrb.position, pickupRadius, LayerMask.GetMask("Food", "EatenFood"));
         foreach (Collider collider in colliders)
         {
             food.Add(collider.gameObject);

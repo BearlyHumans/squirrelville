@@ -12,6 +12,7 @@ public enum HumanStates
     Chase,
     Catch,
     Friendly,
+    HandleFood,
 }
 
 //Modes the Npcs can be set to
@@ -27,6 +28,7 @@ public enum NpcModes
 
 public class Humans : MonoBehaviour
 {
+    [Tooltip("Animation events")]
     [SerializeField]
     private List<ParameterChangeEvent> animationEvents = new List<ParameterChangeEvent>();
     
@@ -40,28 +42,32 @@ public class Humans : MonoBehaviour
     private SquirrelController squirrelController;
     private GameObject sController;
 
-    //----------Path Following -----------//
-    [Tooltip("Do you want to npc to pause on each point?")]
-    [SerializeField]
-    bool walkingPause;
-    [Tooltip("added change for NPC to turn around")]
-    [SerializeField]
-    float turnAroundChance = 0.2f;
-    [Tooltip("Add ammount of path points for human to walk to")]
-    [SerializeField]
-    List<WayPoints> pathPoints;
-    [Tooltip("adds a home area that acts as boundary")]
-    public HomePoint homePoint;
+    NavMeshAgent human;
 
-    //---sphere cast ---//
-    private Vector3 origin;
-    private Vector3 sDirection;
-    public LayerMask layerMask;
+    public Stun stunScript;
 
-    // --- good object for friendly humans to give---- /
-    public GameObject foodToGive;
+    public ParticleSystem exclaim;
 
-    NavMeshAgent navMesh;
+    [Tooltip("Select the behavior for the NPC")]
+    [SerializeField]
+    public NpcModes npcCurrentMode;
+
+    [SerializeField]
+    private PathFollowingVarible pathFollowingVariables;
+
+    [SerializeField]
+    private FriendlyVarible friendlyVariables;
+
+    [SerializeField]
+    private CatchVarible catchVariables;
+
+    [SerializeField]
+    private ChaseVarible chaseVariables;
+
+    // layer mask for what layer humans check spat out food on
+    private LayerMask layerMask;
+
+    // path following variables
     float distance;
     int currentPathPt;
     bool walking;
@@ -69,84 +75,99 @@ public class Humans : MonoBehaviour
     bool walkForward;
     float waitTimer;
 
-
-    public int takeFoodAmmount;
-
+    // animator for controlling human animations 
     public Animator anim;
 
     [Tooltip("Angle in which the NPC can see player")]
     [SerializeField]
     public float detectionAngle = 70;
-
-    //--------------Friendly----------------//
-    [Tooltip("Select the behavior for the NPC")]
-    [SerializeField]
-    public NpcModes npcCurrentMode;
-    
-    bool givenfood = false;
-    float watchedFor = 0.0f;
-    float watchTimer = 5.0f;
-
-    float timeToFood = 0.0f;
-    [Tooltip("How long until humans give more food")]
-    [SerializeField]
-    public float foodTimer = 11.0f;
-
-    //--------------Chase----------------//
     [Tooltip("Detection Radius")]
     [SerializeField]
     public float range = 2f;
-    [Tooltip("How long does the human chase the player")]
-    [SerializeField]
-    float chaseTime = 10f;
+    
+    // bool check for if the friendly human has given player food
+    bool givenfood = false;
+
+    //Timers how long friendly humans stand to watch player for
+    float watchedFor = 0.0f;
+
+    // increment timer used to check if timer is above set time for humans to give food
+    float timeToFood = 0.0f;
+
+    // used to keep tracking of how long human has chased player
     float chaseTimer;
 
+    // bool check to make sure a check for food has been run after catching player
+    bool checkBeenRun = false;
 
-    float pickUpTimer;
+    // timer for stopping humans getting stuck walking to food if out of reach
+    float walkToFoodTimer = 0f;
+    float howLongCanWalkToFood = 10f;
 
-    // -----catching variables ------//
+    
+    // used to determine what action "handleFood" does
     int catchChoice;
-    bool stillFood = false;
-    bool hasFood = false;
 
-    float catchAgainTimer = 10;
-   
+    // boolean check for if spat out food is still in area
+    bool stillFood = false;
+    // bool check for if human picked up any food after catching player
+    bool pickedUpFood = false;
+
+    // used for only playing exclaim once
+    bool havntSpotted = false;
 
     //used to check if player has been caught recently 
     bool hasCaughtRecently = false;
 
-    [Tooltip("Time the Player is frozen")]
+    [Tooltip("speed of walking player")]
     [SerializeField]
-    public float unFreezeTime = 5.0f;
+    public float humanWalkSpeed = 2.0f;
+
+    [Tooltip("speed of running player")]
+    [SerializeField]
+    public float humanRunSpeed = 5.0f;
+
+
+    // walk to path wait times
+    float returnToPathWaitTime = 3.0f;
+    float returnToPathNoWaitTime = 0f;
+
+    //handle food single use check
+    bool returnedToPath = false;
 
     Transform target;
     GameObject squrrielTarget;
+    GameObject playerController;
 
     /// set the nav mesh agent for humans to walk on as well as set target (player) to chase.
     public void Start() 
     {
+        playerController = GameObject.FindWithTag("Player");
         
-        foodController = GameObject.FindWithTag("Player");
+        foodController = playerController;
         foodGraber = foodController.GetComponent<SquirrelFoodGrabber>();
 
-        sController = GameObject.FindWithTag("Player");
+        sController = playerController;
         squirrelController = sController.GetComponent<SquirrelController>();
 
-        navMesh = this.GetComponent<NavMeshAgent>();
+        human = this.GetComponent<NavMeshAgent>();
 
-        chaseTimer = chaseTime;
+        chaseTimer = chaseVariables.chaseTime;
 
-        target = GameObject.FindWithTag("Player").transform;
-        squrrielTarget = GameObject.FindWithTag("Player");
+        layerMask = LayerMask.GetMask("EatenFood");
+
+        target = playerController.transform;
+
+        squrrielTarget = playerController;
 
         currentState = HumanStates.PathFollowing;
-        if(navMesh == null)
+        if(human == null)
         {
-            Debug.Log("No nav mesh");
+            Debug.LogWarning("No nav mesh");
         }
         else
         {
-            if (pathPoints != null && pathPoints.Count >= 2)
+            if (pathFollowingVariables.pathPoints != null && pathFollowingVariables.pathPoints.Count >= 2)
             {
                 currentPathPt = 0;
                 SetDest();
@@ -154,7 +175,7 @@ public class Humans : MonoBehaviour
             else
             {
                 SetDest();
-                Debug.Log("Add more points to walk between");
+                Debug.LogWarning("Add more points to walk between");
             }
         }
     }
@@ -164,8 +185,8 @@ public class Humans : MonoBehaviour
     {
         distance = Vector3.Distance(target.position, transform.position);
         timeToFood += Time.deltaTime;
-    
         // -----States------
+
         switch(currentState)
         {
             case HumanStates.PathFollowing:
@@ -186,89 +207,107 @@ public class Humans : MonoBehaviour
             case HumanStates.Catch:
             {
                 CatchingState();
-                
+                break;
+            }
+            case HumanStates.HandleFood:
+            {
+                HandleFood();
                 break;
             }
         }
-        //UpdAnimator();
     }
 
     /// functionaility for catching behaviour 
     private void CatchingState()
     {  
+        human.speed = humanWalkSpeed; 
         if(!hasCaughtRecently)
         {
             hasCaughtRecently = true;  
-            // takes x ammount of food from the player when caught
-            takeFood(takeFoodAmmount);
-
-            stillFood = checkForFood();
-
+            checkBeenRun = false;
+            
             // animation stunning (not moving)
             CallAnimationEvents(AnimTriggers.stunning);
 
-            squirrelController.FreezeMovement();
-
-            Invoke("unFreezePlayer", unFreezeTime);
-            catchChoice = Random.Range(0,2);
+            catchChoice = UnityEngine.Random.Range(0, 2);
+            
+            StartCoroutine(stunPlayer());
         }
-
+        
         // checks to see if there is still food to pick up and if not then chose what to do with it
-        if(!stillFood)
+        if(checkBeenRun)
         {
-            // if food was picked up
-            if(hasFood)
+            //stillFood = checkForFood();
+            if(!stillFood)
             {
-                // option 1 = go to bin
-                if(catchChoice == 0)
+                if(pickedUpFood)
                 {
-                    Bin bin = homePoint.closestBin(transform.position);
-
-
-                    if(bin.radius <= Vector3.Distance(bin.transform.position, transform.position))
-                    {
-                        // animation walk (not moving)
-                        CallAnimationEvents(AnimTriggers.walking);
-                        navMesh.SetDestination(bin.transform.position);
-                    }
-                    // put food in bin
-                    else
-                    {
-                        CallAnimationEvents(AnimTriggers.dropping);
-                        
-                        navMesh.velocity = Vector3.zero;
-                        Invoke("canCatchAgain", catchAgainTimer);
-                        Invoke("returnToPath", 1f);
-                        //returnToPath();
-                    }
+                    currentState = HumanStates.HandleFood;
                 }
-                // option 2 - eat the food
                 else
                 {
-                    
-                    CallAnimationEvents(AnimTriggers.eating);
-                    Invoke("canCatchAgain", catchAgainTimer);
-                    Invoke("returnToPath", 2);
-                    //returnToPath();
+                    StartCoroutine(returnToPath(returnToPathNoWaitTime));
                 }
             }
-            else
-            {
-                Invoke("canCatchAgain", catchAgainTimer);
-                Invoke("returnToPath", 1.5f);
-                //returnToPath();
-            }
-        }
-        else
-        {
             stillFood = checkForFood();
         }
     }
 
+    private void HandleFood()
+    {
+        // option 1 = go to bin
+        if(catchChoice == 0)
+        {
+            
+            Bin bin = pathFollowingVariables.homePoint.closestBin(transform.position);
+
+
+            if(bin.radius <= Vector3.Distance(bin.transform.position, transform.position))
+            {
+                // animation walk (not moving)
+                CallAnimationEvents(AnimTriggers.walking);
+                human.SetDestination(bin.transform.position);
+            }
+            // put food in bin
+            else
+            {
+                
+                CallAnimationEvents(AnimTriggers.dropping);
+                            
+                human.velocity = Vector3.zero;
+                if(!returnedToPath)
+                {
+                    returnedToPath = true;
+                    StartCoroutine(returnToPath(returnToPathWaitTime));
+                }
+                
+            }
+        }    
+        else
+        {    
+            
+            CallAnimationEvents(AnimTriggers.eating);
+            
+            if(!returnedToPath)
+            {
+                returnedToPath = true;
+                StartCoroutine(returnToPath(returnToPathWaitTime));
+            }
+            
+        }
+        
+    }
+
     ///functionaility for chasing behaviour. Added checks to see if the npc leaves their boundry area or chases for 'x' ammount of time 
     private void ChaseState()
-    {  
+    { 
+        human.speed = humanRunSpeed;
         CallAnimationEvents(AnimTriggers.running);
+        if(!havntSpotted)
+        {
+            havntSpotted = true;
+            exclaim.Play();
+        }
 
         /// runs a check to see if the human is still within boundary
         if(checkBoundry() == true)
@@ -276,7 +315,7 @@ public class Humans : MonoBehaviour
             // runs a check to test if human can see the player 
             SeePlayer();
             // if can see player then target and move towards player
-            navMesh.SetDestination(target.position);
+            human.SetDestination(target.position);
             
             // if within boundary then chase while timer is above -
             if (chaseTimer > 0f)
@@ -286,17 +325,19 @@ public class Humans : MonoBehaviour
 
                 chaseTimer -= Time.deltaTime;
                 // checks to see if human is within range to "catch" player
-                if (distance < 1.0f)
+                if (distance < 1.5f)
                 {
+                    havntSpotted = false;
+                    
                     currentState = HumanStates.Catch;
                 }
                      
             }
             else
             {
-                chaseTimer = chaseTime;
-                        
+                chaseTimer = chaseVariables.chaseTime;
                 SetDest();
+                havntSpotted = false;
                 currentState = HumanStates.PathFollowing;
             }
         }
@@ -315,22 +356,22 @@ public class Humans : MonoBehaviour
         anim.SetInteger("HumanMove", 0);
         watchedFor += Time.deltaTime;
         facePlayer();
-        navMesh.SetDestination(transform.position);
+        human.SetDestination(transform.position);
         
         if (!givenfood)
         {
-           Instantiate(foodToGive, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
+           Instantiate(friendlyVariables.foodToGive, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
            givenfood = true;
            timeToFood = 0.0f;
         }
 
-        if(watchedFor > watchTimer)
+        if(watchedFor > friendlyVariables.watchTimer)
         {
             currentState = HumanStates.PathFollowing;
             watchedFor = 0.0f;
         }
 
-        if(timeToFood > foodTimer)
+        if(timeToFood > friendlyVariables.foodTimer)
         {
             givenfood = false;
         }
@@ -338,7 +379,7 @@ public class Humans : MonoBehaviour
     ///runs checks to find player, while cant see playing iterate through list of path points and walk between them
     private void PathFollowingState()
     {
-        
+        human.speed = humanWalkSpeed;
         bool canSee = SeePlayer();
         
         if(canSee)
@@ -364,11 +405,11 @@ public class Humans : MonoBehaviour
                 currentState = HumanStates.PathFollowing;
             }
         }
-        if(walking && navMesh.remainingDistance <= 1.0f)
+        if(walking && human.remainingDistance <= 1.0f)
         {
             walking = false;
                     
-            if(walkingPause)
+            if(pathFollowingVariables.walkingPause)
             {
                 waiting = true;
                 waitTimer = 2f;
@@ -383,7 +424,7 @@ public class Humans : MonoBehaviour
         {
             CallAnimationEvents(AnimTriggers.idle);
             waitTimer += Time.deltaTime;
-            if(waitTimer >= pathPoints[currentPathPt].waitForThisLong)
+            if(waitTimer >= pathFollowingVariables.pathPoints[currentPathPt].waitForThisLong)
             {
                 waiting = false;
                 ChangePathPt();
@@ -397,42 +438,65 @@ public class Humans : MonoBehaviour
     private bool checkForFood()
     {
         float radius = 5.0f;
-
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius, layerMask);
         
         
         if(hitColliders.Length != 0)
         {
-            
-            float bestDistance = 9999.0f;
             Collider bestCollider = null;
-
+            float bestDistance = Mathf.Infinity;
+            
             foreach (Collider hitCollider in hitColliders)
             {
-                
-                float distToFood = Vector3.Distance(hitCollider.transform.position, transform.position);
-                
-                if (distToFood < bestDistance)
+                Vector3 distToFood = hitCollider.transform.position - transform.position;
+                float distSq = distToFood.sqrMagnitude;
+
+                if (distSq < bestDistance)
                 {
-                   bestDistance = distToFood;
+                   bestDistance = distSq;
                    bestCollider = hitCollider;
                 }
             }
             CallAnimationEvents(AnimTriggers.walking);
-            navMesh.SetDestination(bestCollider.transform.position);
-
+            human.SetDestination(bestCollider.transform.position);
+            if (bestDistance < 5f)
+            {
+                walkToFoodTimer += Time.deltaTime;
+            }
+            
+            if(walkToFoodTimer > howLongCanWalkToFood)
+            {
+                bestCollider.gameObject.layer = LayerMask.NameToLayer("Food");
+                
+                walkToFoodTimer = 0f;
+            }
+          
             if(bestDistance < 1f)
             {
-                navMesh.velocity = Vector3.zero;
-               
+                human.velocity = Vector3.zero;
+                
                 CallAnimationEvents(AnimTriggers.pickup);
                 StartCoroutine(pickUpFood(bestCollider));
+
+                walkToFoodTimer = 0f;
             
             } 
-            hasFood = true;
+            pickedUpFood = true;
             return true;
         }
         return false;
+    }
+
+    IEnumerator stunPlayer()
+    {
+        yield return new WaitForSeconds(1.1f);
+        
+        stunScript.stompEffect(squirrelController, foodGraber, catchVariables.takeFoodAmmount);
+
+        yield return new WaitForSeconds(1.2f);
+        stillFood = checkForFood();
+        
+        checkBeenRun = true;
     }
     
     IEnumerator pickUpFood(Collider food)
@@ -444,22 +508,16 @@ public class Humans : MonoBehaviour
  
     }
 
-    // when caught forces the player to spit up an ammont of food
-    private void takeFood(int takeFoodAmmount)
+    IEnumerator returnToPath(float waitTime)
     {
-        int i = 0; 
-        while(i < takeFoodAmmount)
-        {
-            foodGraber.ThrowFood(); 
-            i++;
-        }
-    }
-
-    void returnToPath()
-    {
+        yield return new WaitForSeconds(waitTime);
         CallAnimationEvents(AnimTriggers.walking);
-        hasFood = false;
+        pickedUpFood = false;
         currentState = HumanStates.PathFollowing;
+
+        yield return new WaitForSeconds(catchVariables.catchResetTimer);
+        hasCaughtRecently = false;
+        returnedToPath = false;
     }
 
     /// turns to face player
@@ -475,7 +533,6 @@ public class Humans : MonoBehaviour
     /// runs a ray cast to check if the player is within a LOS.  
     bool SeePlayer()
     {
-        
         float distance = Vector3.Distance(target.position, transform.position);
         Vector3 targetDir = target.position - transform.position;
 
@@ -500,8 +557,8 @@ public class Humans : MonoBehaviour
     /// checks if the humans locations is outside of a set boundary
     bool checkBoundry()
     {
-        float dist = Vector3.Distance(homePoint.transform.position, transform.position);
-        if (dist > homePoint.boundary)
+        float dist = Vector3.Distance(pathFollowingVariables.homePoint.transform.position, transform.position);
+        if (dist > pathFollowingVariables.homePoint.boundary)
         {
             return false;
         }
@@ -510,27 +567,16 @@ public class Humans : MonoBehaviour
             return true;
         } 
     }
-    /// unfreezes player when run
-    void unFreezePlayer()
-    {
-        squirrelController.UnfreezeMovement();
-    }
-
-    void canCatchAgain()
-    {
-        
-        hasCaughtRecently = false;
-    }
      
     /// used within path following to move human to current path point
     private void SetDest()
     {
-        if (pathPoints != null)
+        if (pathFollowingVariables.pathPoints != null)
         {
             CallAnimationEvents(AnimTriggers.walking);
 
-            Vector3 targetVector = pathPoints[currentPathPt].transform.position;
-            navMesh.SetDestination(targetVector);
+            Vector3 targetVector = pathFollowingVariables.pathPoints[currentPathPt].transform.position;
+            human.SetDestination(targetVector);
             
             walking = true;
         }
@@ -539,14 +585,14 @@ public class Humans : MonoBehaviour
     private void ChangePathPt()
     {
         // if turn around chance is true. 
-        if (UnityEngine.Random.Range(0f, 1f) <= turnAroundChance)
+        if (UnityEngine.Random.Range(0f, 1f) <= pathFollowingVariables.turnAroundChance)
         {
             // selects the path point they just came from
             walkForward = !walkForward;
         }
         if (walkForward)
         {
-            currentPathPt = (currentPathPt + 1) % pathPoints.Count;
+            currentPathPt = (currentPathPt + 1) % pathFollowingVariables.pathPoints.Count;
             
         }
         else 
@@ -554,7 +600,7 @@ public class Humans : MonoBehaviour
             currentPathPt--;
             if (currentPathPt < 0)
             {
-                currentPathPt = pathPoints.Count - 1;
+                currentPathPt = pathFollowingVariables.pathPoints.Count - 1;
                 
             }
         }
@@ -607,5 +653,41 @@ public class Humans : MonoBehaviour
         [Tooltip("Use 0/1 for false/true.")]
         public float setToValue;
 
+    }
+
+    [System.Serializable]
+    private class PathFollowingVarible
+    {
+        
+        public bool walkingPause;
+        
+        public float turnAroundChance = 0.2f;
+        
+        public List<WayPoints> pathPoints;
+
+        public HomePoint homePoint;
+    }
+
+    [System.Serializable]
+    private class FriendlyVarible
+    {
+        public GameObject foodToGive;
+
+        public float foodTimer;
+
+        public float watchTimer = 5;
+    }
+
+    [System.Serializable]
+    private class ChaseVarible
+    {
+        public float chaseTime;
+    }
+
+    [System.Serializable]
+    private class CatchVarible
+    {
+        public float catchResetTimer;
+        public int takeFoodAmmount;
     }
 }
