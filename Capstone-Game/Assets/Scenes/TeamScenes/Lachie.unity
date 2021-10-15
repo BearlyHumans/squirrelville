@@ -608,18 +608,6 @@ PrefabInstance:
       propertyPath: foodEaten
       value: 
       objectReference: {fileID: 6705387753241196898, guid: 30c54d705f6f7b24b88b6c85ee03b7e8, type: 3}
-    - target: {fileID: 4583522463626215678, guid: c5699ce4a87a11141a3d66c7e7c7a422, type: 3}
-      propertyPath: settings.jump.jumpForce
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4583522463626215678, guid: c5699ce4a87a11141a3d66c7e7c7a422, type: 3}
-      propertyPath: settings.jump.maxJumpForce
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4583522463626215678, guid: c5699ce4a87a11141a3d66c7e7c7a422, type: 3}
-      propertyPath: settings.jump.baseJumpForce
-      value: 1.5
-      objectReference: {fileID: 0}
     - target: {fileID: 5118868844233355933, guid: c5699ce4a87a11141a3d66c7e7c7a422, type: 3}
       propertyPath: m_Name
       value: PlayerPackageW/Controllers

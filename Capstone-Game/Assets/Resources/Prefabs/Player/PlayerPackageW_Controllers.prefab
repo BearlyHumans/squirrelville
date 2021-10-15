@@ -3412,7 +3412,7 @@ MonoBehaviour:
       forwardJumpHeightDiff: 1
       WallJumpAngleEffect: 0.5
       jumpCooldown: 0.2
-      checkJumpTime: 0.2
+      checkJumpTime: 2
       coyoteeTime: 0.2
       jumpDelay: 0.1
       landingDelay: 0.15

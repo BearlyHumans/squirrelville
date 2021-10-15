@@ -465,7 +465,7 @@ namespace Player
                         vals.inLandingAnimation = true;
                         vals.landingAnimationStart = Time.time;
                         vals.animationSlow = true;
-                        settings.J.jumpForce = 1f;
+                        settings.J.jumpForce = settings.J.baseJumpForce;
 
                         jumpRelease = false;
                     }
