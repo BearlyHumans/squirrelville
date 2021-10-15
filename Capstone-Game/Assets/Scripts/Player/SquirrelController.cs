@@ -75,6 +75,8 @@ namespace Player
             vals.lastOnSurface = -10;
             vals.preFreezeConstraints = refs.RB.constraints;
 
+            refs.fCam.SetSensitivity(PlayerPrefs.GetFloat("cameraSensitivity", 250));
+
             if (behaviourScripts.moveAndClimb == null)
                 behaviourScripts.moveAndClimb = GetComponent<SquirrelMoveAndClimb>();
             if (behaviourScripts.ball == null)
@@ -100,14 +102,20 @@ namespace Player
             if (PauseMenu.paused)
             {
                 if (vals.wasPaused == false)
+                {
                     refs.SFXControl.Pause();
+                    OnPause();
+                }
                 vals.wasPaused = true;
                 return;
             }
             else
             {
                 if (vals.wasPaused)
+                {
                     refs.SFXControl.Resume();
+                    OnResume();
+                }
                 vals.wasPaused = false;
             }
 
@@ -115,7 +123,7 @@ namespace Player
                 return;
 
             CallEvents(EventTrigger.frameStart);
-			
+
             refs.fCam.UpdateCamRotFromInput();
 
             //Debug State Changes
@@ -239,6 +247,16 @@ namespace Player
         {
             vals.frozen = false;
             refs.RB.constraints = vals.preFreezeConstraints;
+        }
+
+        private void OnPause()
+        {
+
+        }
+
+        private void OnResume()
+        {
+            refs.fCam.SetSensitivity(PlayerPrefs.GetFloat("cameraSensitivity"));
         }
 
         public void CallEvents(EventTrigger trigger)
@@ -696,5 +714,5 @@ namespace Player
         }
     }
 
-    
+
 }

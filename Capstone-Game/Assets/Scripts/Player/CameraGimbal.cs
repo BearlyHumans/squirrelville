@@ -34,6 +34,8 @@ public class CameraGimbal : MonoBehaviour
     [SerializeField, Range(0.0f, 1.0f)]
     public float translationSmoothing = 0.1f;
     public bool cameraSmoothThreshold = false;
+    [Tooltip("How fast the camera rotates when you move your mouse/joystick")]
+    public float cameraSensitivity = 250.0f;
 
     private Transform CamObj
     {
@@ -112,12 +114,12 @@ public class CameraGimbal : MonoBehaviour
         Vector3 oldPos = dollyCamera.transform.position;
 
         //Y (Left Right)
-        float deltaY = finalInputX * PlayerPrefs.GetFloat("cameraSensitivity", 250) * Time.deltaTime;
+        float deltaY = finalInputX * cameraSensitivity * Time.deltaTime;
         rotY += deltaY;
 
         //X (Up Down)
         //if (finalInputY > 0 || PlayerCanSeeBelowPoint())
-        rotX += finalInputY * PlayerPrefs.GetFloat("cameraSensitivity", 250) * Time.deltaTime;
+        rotX += finalInputY * cameraSensitivity * Time.deltaTime;
 
         if (useRelativeAngles)
             playerAngle = Vector3.Angle(Vector3.up, cameraTarget.up);
@@ -131,6 +133,11 @@ public class CameraGimbal : MonoBehaviour
 
         Quaternion localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
         transform.rotation = localRotation;
+    }
+
+    public void SetSensitivity(float sensitivity)
+    {
+        cameraSensitivity = sensitivity;
     }
 
     /// <summary> Move the camera gameobject towards the target at the move speed. </summary>
