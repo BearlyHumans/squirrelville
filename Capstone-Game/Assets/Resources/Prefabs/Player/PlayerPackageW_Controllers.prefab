@@ -706,6 +706,19 @@ MonoBehaviour:
   Axis2D: 0
   Tangle: 0
   AnimateRoll: 0
+--- !u!135 &1334204015
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2763867003330711692}
+  m_Material: {fileID: 13400000, guid: 6d4e17a75e9fd9745933903707532927, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.77
+  m_Center: {x: 2, y: 0, z: 0}
 --- !u!1 &2786271618007056498
 GameObject:
   m_ObjectHideFlags: 0
@@ -1295,7 +1308,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3127635604349996229
 Transform:
   m_ObjectHideFlags: 0
@@ -1303,12 +1316,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3127635604349996228}
-  m_LocalRotation: {x: -0, y: 0.000000018272663, z: -0, w: 1}
-  m_LocalPosition: {x: 2.1, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1.0000005, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.0999665, y: 0, z: 0.000047536592}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 5411422496533394295}
-  m_RootOrder: 1
+  m_Father: {fileID: 3247353483585849910}
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &3127635604349996234
 SphereCollider:
@@ -1319,7 +1332,7 @@ SphereCollider:
   m_GameObject: {fileID: 3127635604349996228}
   m_Material: {fileID: 13400000, guid: 6d4e17a75e9fd9745933903707532927, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 1.9
   m_Center: {x: 0, y: 0, z: 0}
@@ -3408,7 +3421,7 @@ MonoBehaviour:
       minJumpForce: 1.5
       baseJumpForce: 1.5
       maxJumpForce: 5
-      autoJump: 1
+      autoJump: 0
       allowForwardJumps: 1
       forwardJumpForce: 1
       forwardJumpHeightDiff: 1
@@ -3424,13 +3437,13 @@ MonoBehaviour:
     wallClimbing:
       climableLayers:
         serializedVersion: 2
-        m_Bits: 4233
+        m_Bits: 129
       rotateToLayers:
         serializedVersion: 2
         m_Bits: 5001
       headbuttLayers:
         serializedVersion: 2
-        m_Bits: 777
+        m_Bits: 897
       minAngleDiffToClimb: 20
       stopFlowerOnEZClimb: 1
       stopAllOnEZClimb: 0
@@ -3593,7 +3606,7 @@ MonoBehaviour:
   pickupDelay: 0.5
   pickupRadius: 0.4
   maxFoodInInventory: 10
-  foodCountBallForm: 3
+  foodCountBallForm: 0
   highlightMaterial: {fileID: 2100000, guid: 73bed7dbf5548254bb64a23da6fda468, type: 2}
   throwVelocity: 1
   initialThrowDelay: 0.6
@@ -4112,7 +4125,6 @@ Transform:
   m_LocalScale: {x: 0.05658082, y: 0.056580808, z: 0.05658082}
   m_Children:
   - {fileID: 3247353483585849910}
-  - {fileID: 3127635604349996229}
   m_Father: {fileID: 4583522462795349137}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
