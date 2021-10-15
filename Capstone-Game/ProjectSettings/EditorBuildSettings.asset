@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/MENU.unity
     guid: 6b8db7adb60313a4cb6b6511565d20cd
   - enabled: 1
-    path: Assets/Scenes/ISLAND.unity
+    path: Assets/Scenes/TeamScenes/ISLAND LUKE.unity
     guid: f19782a9b89114c469b6256db82615f5
   m_configObjects: {}

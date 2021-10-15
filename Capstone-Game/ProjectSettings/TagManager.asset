@@ -15,16 +15,16 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - CameraHard
   - Water
   - UI
   - Player
-  - Tree
+  - CameraSoft
   - Ground
   - Buildings
   - Food
   - Triggers
-  - Stumps
+  - CameraIgnore
   - NPC
   - PlayerDetection
   - EatenFood
