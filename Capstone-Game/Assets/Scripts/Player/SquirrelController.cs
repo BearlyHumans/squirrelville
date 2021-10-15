@@ -52,23 +52,6 @@ namespace Player
             refs.RB.useGravity = false;
 
             Initialize();
-
-            StartCoroutine(FreezeAfterTime());
-        }
-
-        private IEnumerator FreezeAfterTime()
-        {
-            for (int i = 0; i < 20; ++i)
-            {
-                yield return new WaitForSeconds(3);
-                FreezeMovement();
-                yield return new WaitForSeconds(3);
-                UnfreezeMovement();
-                yield return new WaitForSeconds(3);
-                FreezeAndStun();
-                yield return new WaitForSeconds(3);
-                UnfreezeMovement();
-            }
         }
 
         void OnCollisionStay(Collision collision)
