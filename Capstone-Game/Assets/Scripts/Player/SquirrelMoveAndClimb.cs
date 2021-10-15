@@ -333,7 +333,6 @@ namespace Player
         /// <summary> Check for jump input, and do the appropriate jump for the situation (needs work). </summary>
         private void Jump()
         {
-            
             if (vals.inJumpAnimation)
             {
                 if(jumpRelease)
@@ -368,6 +367,7 @@ namespace Player
                         }
                         settings.J.jumpForce = settings.J.baseJumpForce;
                         jumpRelease = false; 
+                        PARENT.CallEvents(SquirrelController.EventTrigger.jump);
                     }
                 }
                 
@@ -386,7 +386,7 @@ namespace Player
                     vals.jumpAnimationStart = Time.time;
                     vals.inJumpAnimation = true;
                     vals.animationSlow = true;
-                    //PARENT.CallEvents(SquirrelController.EventTrigger.jump);
+                    
                 }
                     
             }
