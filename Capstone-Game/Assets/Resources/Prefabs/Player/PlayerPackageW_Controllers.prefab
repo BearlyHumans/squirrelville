@@ -3404,7 +3404,9 @@ MonoBehaviour:
       haltAtFractionOfMaxSpeed: 0.9
       turningThreshold: 0.2
     jump:
-      jumpForce: 4
+      jumpForce: 0
+      baseJumpForce: 1
+      maxJumpForce: 4
       allowForwardJumps: 1
       forwardJumpForce: 1
       forwardJumpHeightDiff: 1
@@ -3463,6 +3465,7 @@ MonoBehaviour:
   triggers:
     feet: {fileID: 4583522462575261954}
   debugString: null
+  jumpRelease: 0
 --- !u!114 &4583522463626215665
 MonoBehaviour:
   m_ObjectHideFlags: 0
