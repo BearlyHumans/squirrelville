@@ -45,7 +45,7 @@ public class NPCInteractionManager : MonoBehaviour
             }
             else
             {
-                if (Input.GetButton("Interact"))
+                if (Input.GetButtonDown("Interact"))
                 {
                     GameObject npc = GetNearestNPC();
                     if (npc != null)
