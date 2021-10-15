@@ -2667,7 +2667,7 @@ MonoBehaviour:
   angleRelativeZoom: 0
   buttonZoomMultiplier: 0.3
   invertY: 1
-  inputSensitivity: 150
+  alternateFOV: 65
   zoomToAvoidLayers:
     serializedVersion: 2
     m_Bits: 129
@@ -2678,6 +2678,7 @@ MonoBehaviour:
   targetInvisibleRadius: 0.15
   translationSmoothing: 0.01
   cameraSmoothThreshold: 0
+  cameraSensitivity: 250
   programmerSettings:
     smooth: 0.5
     upperWorldClampAngle: 70
@@ -3404,7 +3405,7 @@ MonoBehaviour:
       haltAtFractionOfMaxSpeed: 0.9
       turningThreshold: 0.2
     jump:
-      jumpForce: 1.5
+      minJumpForce: 1.5
       baseJumpForce: 1.5
       maxJumpForce: 5
       autoJump: 1
