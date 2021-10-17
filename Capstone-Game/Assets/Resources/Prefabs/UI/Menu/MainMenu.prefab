@@ -71,20 +71,19 @@ MonoBehaviour:
 
     Jump
 
-    Sprint
-
     Switch to ball
 
     Interact
-
-    Eat
-    food
+    / Eat food
 
     Spit out food
 
     Climb
 
-    Zoom in camera'
+    Sprint / Climb over edges
+
+    Zoom
+    in camera'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 12f0761038c6a4e4c9a9c48c8658a200, type: 2}
   m_sharedMaterial: {fileID: -1030747350335122999, guid: 12f0761038c6a4e4c9a9c48c8658a200, type: 2}
@@ -224,20 +223,18 @@ MonoBehaviour:
 
     Spacebar
 
-    Shift
-
     Q
 
     E
 
-    Left-click
-    (hold)
-
-    Right-click (hold)
+    F
 
     Left-click (hold)
 
-    Right-click (hold)'
+    Shift
+
+    Right-click
+    (hold)'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 12f0761038c6a4e4c9a9c48c8658a200, type: 2}
   m_sharedMaterial: {fileID: -1030747350335122999, guid: 12f0761038c6a4e4c9a9c48c8658a200, type: 2}

@@ -256,7 +256,7 @@ namespace Player
 
         private void OnResume()
         {
-            refs.fCam.SetSensitivity(PlayerPrefs.GetFloat("cameraSensitivity"));
+            refs.fCam.SetSensitivity(PlayerPrefs.GetFloat("cameraSensitivity", 250));
         }
 
         public void CallEvents(EventTrigger trigger)

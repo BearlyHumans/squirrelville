@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1806307190050584231}
   - component: {fileID: 1806307190050584230}
   - component: {fileID: 1806307190050584229}
-  - component: {fileID: 1806307190050584228}
+  - component: {fileID: 8166269957173009862}
   m_Layer: 0
   m_Name: RockPillar4
   m_TagString: Untagged
@@ -95,7 +95,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 8680053210673091830}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.0064944024
   m_Height: 0.015591313
   m_Direction: 2
@@ -109,7 +109,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 8680053210673091830}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.002033996
   m_Height: 0.018987656
   m_Direction: 2
@@ -123,7 +123,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 8680053210673091830}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.0061459257
   m_Height: 0.024628134
   m_Direction: 2
@@ -137,13 +137,13 @@ CapsuleCollider:
   m_GameObject: {fileID: 8680053210673091830}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.006289545
   m_Height: 0.019696642
   m_Direction: 2
   m_Center: {x: 0.000037333983, y: 0.0024400707, z: 0.050702482}
---- !u!65 &1806307190050584228
-BoxCollider:
+--- !u!64 &8166269957173009862
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -152,6 +152,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.021499537, y: 0.015134185, z: 0.002612673}
-  m_Center: {x: 0.0002941841, y: 0.008668268, z: 0.06101072}
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7994650926060863905, guid: 086cd3a7233c7a84ab0ce995b0ad7d09, type: 3}
