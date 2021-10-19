@@ -18,6 +18,7 @@ namespace Player
         public SCTriggers triggers = new SCTriggers();
 
         public string debugString = "null";
+        public bool startLogging = false;
 
         private SCRunStoredValues vals = new SCRunStoredValues();
         //~~~~~~~~~~ PROPERTIES ~~~~~~~~~~
@@ -40,6 +41,7 @@ namespace Player
                 PARENT = GetComponentInParent<SquirrelController>();
 
             vals.lastRotationDir = Vector3.down;
+            vals.jumpPressed = -settings.J.checkJumpTime;
         }
 
         //~~~~~~~~~~ MAIN UPDATE FUNCTIONS ~~~~~~~~~~
@@ -402,7 +404,6 @@ namespace Player
                     //Set variables to trigger a jump as soon as possible (can be delayed to help animations).
                     vals.jumpPressed = -5;
                     vals.jumpAnimationStart = Time.time;
-                    vals.lastJump = Time.time;
                     vals.inJumpAnimation = true;
                     vals.animationSlow = true;
                     PARENT.CallEvents(SquirrelController.EventTrigger.jump);
@@ -418,6 +419,8 @@ namespace Player
                 vals.animationSlow = false;
                 vals.falling = true;
 
+                startLogging = true; //DEBUG print
+
                 if (vals.climbing)
                 {
                     //Apply force up and away from the camera, or away from the surface if the camera is facing the object.
@@ -429,18 +432,32 @@ namespace Player
                     if (Vector2.Angle(noYCam, noYBody) > 180 - settings.J.facingWallAngle)
                     {
                         //Do a mostly vertical jump
-                        ParentRefs.RB.velocity += (-transform.forward * settings.J.facingWallOutForce) + (Vector3.up * settings.J.facingWallUpForce);
+                        if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.set)
+                            ParentRefs.RB.velocity = (-transform.forward * settings.J.facingWallOutForce) + (Vector3.up * settings.J.facingWallUpForce);
+                        else //if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.added)
+                            ParentRefs.RB.velocity += (-transform.forward * settings.J.facingWallOutForce) + (Vector3.up * settings.J.facingWallUpForce);
                     }
                     else
                     {
                         //Do a mostly away-from-camera jump
-                        ParentRefs.RB.velocity += (new Vector3(noYCam.x, 0, noYCam.y) * settings.J.climbingAwayFromCameraForce) + (Vector3.up * settings.J.climbingUpForce);
+                        if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.set)
+                            ParentRefs.RB.velocity = (new Vector3(noYCam.x, 0, noYCam.y) * settings.J.climbingAwayFromCameraForce) + (Vector3.up * settings.J.climbingUpForce);
+                        else //if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.added)
+                            ParentRefs.RB.velocity += (new Vector3(noYCam.x, 0, noYCam.y) * settings.J.climbingAwayFromCameraForce) + (Vector3.up * settings.J.climbingUpForce);
                     }
                 }
                 else
                 {
                     //Just apply a force upwards
-                    ParentRefs.RB.velocity += Vector3.up * settings.J.groundedJumpForce;
+                    if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.set)
+                        ParentRefs.RB.velocity = Vector3.up * settings.J.groundedJumpForce;
+                    else if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.added || ParentRefs.RB.velocity.y > 0)
+                        ParentRefs.RB.velocity += Vector3.up * settings.J.groundedJumpForce;
+                    else
+                    {
+                        ParentRefs.RB.velocity -= new Vector3(0, ParentRefs.RB.velocity.y, 0);
+                        ParentRefs.RB.velocity += Vector3.up * settings.J.groundedJumpForce;
+                    }
                 }
             }
         }
@@ -448,20 +465,21 @@ namespace Player
         /// <summary> Rotate the player so their feet are aligned with the surface beneath them, based on a downwards raycast. </summary>
         private void FindAndRotateToSurface() // AKA Climb
         {
-            if (Time.time < vals.lastJump + settings.J.jumpCooldown)
-                return;
-
-            //Raycasts:
-            RaycastHit hitSurface;
-            bool FoundSurface = Physics.Raycast(refs.climbRotateCheckRay.position, -refs.climbRotateCheckRay.up, out hitSurface, settings.WC.programmerSettings.surfaceDetectRange, settings.WC.rotateToLayers);
-
-            Vector3 dir = Vector3.down;
-
             ParentRefs.RB.useGravity = true;
+            bool FoundSurface = false;
+            Vector3 dir = Vector3.down;
             vals.climbing = false;
+            RaycastHit hitSurface = new RaycastHit();
+
+            debugString = "Jumping: " + vals.jumping + ", Touching: " + PARENT.TouchingSomething;
+            if (startLogging)
+                print(debugString);
+            if ((!vals.jumping || PARENT.TouchingSomething) && Time.time > vals.lastJump + settings.J.jumpCooldown)
+                FoundSurface = Physics.Raycast(refs.climbRotateCheckRay.position, -refs.climbRotateCheckRay.up, out hitSurface, settings.WC.programmerSettings.surfaceDetectRange, settings.WC.rotateToLayers);
 
             if (FoundSurface)
             {
+                startLogging = false; //DEBUG print
                 dir = hitSurface.normal;
                 
                 //Get the angle of this surface.
@@ -528,12 +546,12 @@ namespace Player
                     Vector3 oldVel = transform.InverseTransformVector(ParentRefs.RB.velocity);
                     TeleportToSurface(hitSurface);
                     ParentRefs.RB.velocity = transform.TransformVector(oldVel);
-                    //if (Vector3.Angle(vals.lastRotationDir, dir) > settings.WC.programmerSettings.wallStickDangerAngle)
-                    //    vals.eliminateUpForce = true;
+                    vals.eliminateUpForce = true;
 
                     //Reset falling, jumping and OnSurface values.
                     vals.falling = false;
                     vals.jumping = false;
+                    vals.lastJump = -1000;
                     vals.lastOnSurface = Time.time;
                 }
 
@@ -605,7 +623,7 @@ namespace Player
                 if (ClimbCheck(1f, climbChecks.circle))
                     return;
             }
-            else if (vals.climbButtonHeld)
+            else if (vals.climbButtonHeld && Time.time > vals.lastJump + settings.J.climbCheckCooldown)
             {
                 if (vals.falling)
                 {
@@ -1266,11 +1284,16 @@ namespace Player
                 public float facingWallUpForce = 1f;
                 [Tooltip("Force applied outwards (away from feet) when the player jumps TOWARDS a wall while climbing.")]
                 public float facingWallOutForce = 0.5f;
+                [Tooltip("Angle between the camera and surface normal where the jump stops being based on the camera direction because it would collide with the surface being climbed.")]
                 public float facingWallAngle = 45;
+                public enum JumpForceType { added, set, moreWhenGoingDown };
+                public JumpForceType jumpForceIs = JumpForceType.added;
 
                 [Header("Jump Timing Settings")]
                 [Tooltip("Time after a jump before the player can jump again. Stops superjumps from pressing twice while trigger is still activated. ALSO USED to stop player from teleporting to the ground.")]
                 public float jumpCooldown = 0.2f;
+                [Tooltip("Time after a jump before the player can find climbables again. Lets player jump while climbing. Cooldown is skipped if climb is pressed during it.")]
+                public float climbCheckCooldown = 0.2f;
                 [Tooltip("Time in which jumps will still be triggered if conditions are met after the key is pressed.")]
                 public float checkJumpTime = 0.2f;
                 [Tooltip("Time in which jump will still be allowed after the player leaves the ground. Should always be less than jumpCooldown.")]

@@ -3418,17 +3418,19 @@ MonoBehaviour:
       haltAtFractionOfMaxSpeed: 0.9
       turningThreshold: 0.2
     jump:
-      groundedJumpForce: 3
+      groundedJumpForce: 4
       climbingUpForce: 0.5
       climbingAwayFromCameraForce: 2.5
       facingWallUpForce: 2.5
       facingWallOutForce: 0.5
       facingWallAngle: 45
-      jumpCooldown: 1
-      checkJumpTime: 0.2
+      jumpForceIs: 2
+      jumpCooldown: 0.2
+      climbCheckCooldown: 1
+      checkJumpTime: 0.45
       coyoteeTime: 0.2
       jumpDelay: 0.1
-      landingDelay: 0.15
+      landingDelay: 0.4
       stopWhenJumping: 0
       stopWhenLanding: 0
       carefulModeInAnimations: 1
@@ -3462,7 +3464,7 @@ MonoBehaviour:
         sphereDetectDistance: 1
         flowerDetectDistance: 0.8
         headbuttDist: 0.2
-        surfaceDetectRange: 0.31
+        surfaceDetectRange: 0.2
         basicGizmos: 0
         flowerCheckGizmos: 0
         edgeStopLatRadius: 0.15
@@ -3478,6 +3480,7 @@ MonoBehaviour:
   triggers:
     feet: {fileID: 4583522462575261954}
   debugString: null
+  startLogging: 0
 --- !u!114 &4583522463626215665
 MonoBehaviour:
   m_ObjectHideFlags: 0
