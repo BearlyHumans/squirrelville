@@ -1,13 +1,13 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CanvasGroup))]
-public class HideAfterDelay : MonoBehaviour
+public class HideUIElementAfterDelay : MonoBehaviour
 {
-    [Tooltip("How long should the object be visible for in seconds")]
+    [Tooltip("How long should the UI element be visible for in seconds")]
     [Min(0)]
     public float delay;
 
-    [Tooltip("How long should the object fade out for in seconds (0 to disable)")]
+    [Tooltip("How long should the UI element fade out for in seconds (0 to disable)")]
     [Min(0)]
     public float fadeOutTime;
 
