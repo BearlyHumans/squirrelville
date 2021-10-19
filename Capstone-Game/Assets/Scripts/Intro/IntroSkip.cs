@@ -5,17 +5,31 @@ using UnityEngine.Video;
 [RequireComponent(typeof(VideoPlayer))]
 public class IntroSkip : MonoBehaviour
 {
+    private VideoPlayer videoPlayer;
+
     private void Start()
     {
-        GetComponent<VideoPlayer>().loopPointReached += VideoEnded;
+        videoPlayer = GetComponent<VideoPlayer>();
+        videoPlayer.loopPointReached += VideoEnded;
         Cursor.visible = false;
     }
 
     private void Update()
     {
-        if (Input.anyKeyDown)
+        if (PauseMenu.paused)
         {
-            NextScene();
+            if (videoPlayer.isPlaying)
+                videoPlayer.Pause();
+        }
+        else
+        {
+            if (videoPlayer.isPaused)
+                videoPlayer.Play();
+
+            if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape))
+            {
+                NextScene();
+            }
         }
     }
 
