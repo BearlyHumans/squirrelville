@@ -69,7 +69,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
         if (PauseMenu.paused) return;
 
         GameObject prevNearestFood = nearestFood;
-        nearestFood = GetNearestFood();
+        nearestFood = CanEatFood() ? GetNearestFood() : null;
 
         if (prevNearestFood != nearestFood)
         {
