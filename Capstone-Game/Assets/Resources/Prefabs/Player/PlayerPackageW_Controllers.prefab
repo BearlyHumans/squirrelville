@@ -2774,7 +2774,7 @@ GameObject:
   - component: {fileID: 4583522462603621255}
   m_Layer: 6
   m_Name: Front
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3295,6 +3295,22 @@ MonoBehaviour:
     type: 2
     paramName: ClimbAngle
     setToValue: 0
+  - trigger: 20
+    type: 1
+    paramName: StunState
+    setToValue: 1
+  - trigger: 20
+    type: 1
+    paramName: StunState
+    setToValue: 1
+  - trigger: 18
+    type: 1
+    paramName: EatState
+    setToValue: 1
+  - trigger: 22
+    type: 1
+    paramName: EatState
+    setToValue: 0
   soundEvents:
   - trigger: 1
     action: 1
@@ -3683,7 +3699,7 @@ GameObject:
   - component: {fileID: 4583522463679236191}
   m_Layer: 6
   m_Name: Colliders
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3860,7 +3876,7 @@ GameObject:
   - component: {fileID: 4583522463923977484}
   m_Layer: 6
   m_Name: Back
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5098,6 +5114,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 7bf21d0194c9f0c44aa4a9fde090bcf0, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7bf21d0194c9f0c44aa4a9fde090bcf0, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 1137768910365588200, guid: 7bf21d0194c9f0c44aa4a9fde090bcf0, type: 3}
       propertyPath: m_Materials.Array.data[0]
