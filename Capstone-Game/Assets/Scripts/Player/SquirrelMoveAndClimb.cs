@@ -19,7 +19,7 @@ namespace Player
 
         public string debugString = "null";
         public bool startLogging = false;
-
+        
         private SCRunStoredValues vals = new SCRunStoredValues();
         //~~~~~~~~~~ PROPERTIES ~~~~~~~~~~
 
@@ -127,13 +127,16 @@ namespace Player
                 vals.carefulModePressed = false;
 
             vals.climbButtonPressed = false;
-            if (Input.GetButtonDown("ClimbVault") || Input.GetAxis("ClimbVault") > 0)
+            if (Input.GetButton("ClimbVault") || Input.GetAxis("ClimbVault") > 0)
             {
-                vals.climbButtonPressed = true;
-                vals.climbButtonDown = Time.time;
-                vals.climbButtonHeld = true;
+                if (vals.climbButtonHeld == false)
+                {
+                    vals.climbButtonPressed = true;
+                    vals.climbButtonDown = Time.time;
+                    vals.climbButtonHeld = true;
+                }
             }
-            if (!Input.GetButton("ClimbVault") && Input.GetAxis("ClimbVault") <= 0)
+            else
                 vals.climbButtonHeld = false;
 
             if (Input.GetButton("Zoom"))
@@ -1049,7 +1052,8 @@ namespace Player
             public MovementTrigger feet;
         }
 
-        private struct SCRunStoredValues
+        [System.Serializable]
+        public struct SCRunStoredValues
         {
             //INPUT RELATED:
             /// <summary> A player-relative vector representing the movement inputs.
