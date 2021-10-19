@@ -300,7 +300,7 @@ namespace Player
             //-----PHASE FIVE: CHECK OR EDIT RELATIVE AND LATERAL VELOCITY-----//
 
             //Delete the 'upwards' force (relative to player rotation), if requested by the climbing system.
-            if (vals.eliminateUpForce)
+            if (vals.eliminateUpForce && !vals.jumping)
             {
                 vals.eliminateUpForce = false;
                 TransformedNewVelocity.z = 0;
@@ -429,7 +429,7 @@ namespace Player
                     //Apply force up and away from the camera, or away from the surface if the camera is facing the object.
 
                     //Remove the vertical component of the vectors (and simplify maths by using v2s).
-                    Vector2 noYCam = new Vector2(ParentRefs.camera.transform.forward.x, ParentRefs.camera.transform.forward.y);
+                    Vector2 noYCam = new Vector2(ParentRefs.camera.transform.forward.x, ParentRefs.camera.transform.forward.z);
                     Vector2 noYBody = new Vector2(-transform.forward.x, -transform.forward.z);
                     //If the camera is facing the surface (i.e. body-up is almost 180 degs away from camera-forwards)
                     if (Vector2.Angle(noYCam, noYBody) > 180 - settings.J.facingWallAngle)
@@ -474,9 +474,6 @@ namespace Player
             vals.climbing = false;
             RaycastHit hitSurface = new RaycastHit();
 
-            debugString = "Jumping: " + vals.jumping + ", Touching: " + PARENT.TouchingSomething;
-            if (startLogging)
-                print(debugString);
             if ((!vals.jumping || PARENT.TouchingSomething) && Time.time > vals.lastJump + settings.J.jumpCooldown)
                 FoundSurface = Physics.Raycast(refs.climbRotateCheckRay.position, -refs.climbRotateCheckRay.up, out hitSurface, settings.WC.programmerSettings.surfaceDetectRange, settings.WC.rotateToLayers);
 
@@ -614,11 +611,17 @@ namespace Player
         private void Abilities()
         {
             //Cancel climb checks if currently jumping or landing ('save' button press until finished like jump?)
-            if (vals.inJumpAnimation || vals.inLandingAnimation || Time.time < vals.lastJump + settings.J.jumpCooldown)
+            if (vals.inJumpAnimation || vals.inLandingAnimation)
                 return;
-            
+
+            //debugString = "Time: " + Time.time + ", LastJump: " + vals.lastJump + ", ClimbPressed: " + vals.climbButtonPressed;
+            //if (startLogging)
+            //    print(debugString);
+
             if (vals.climbButtonPressed)
             {
+                if (startLogging)
+                    print("Got here");
                 if (ClimbCheck(1f, climbChecks.headbutt))
                     return;
                 if (ClimbCheck(1f, climbChecks.forwards))
@@ -628,6 +631,7 @@ namespace Player
             }
             else if (vals.climbButtonHeld && Time.time > vals.lastJump + settings.J.climbCheckCooldown)
             {
+
                 if (vals.falling)
                 {
                     if (ClimbCheck(1.2f, climbChecks.forwards))
@@ -684,6 +688,7 @@ namespace Player
                 Quaternion oldRot = ParentRefs.model.rotation;
                 TeleportToSurface(mainHit);
                 ParentRefs.model.localRotation = oldRot;
+                vals.jumping = false;
                 vals.lastJumpToWall = Time.time;
                 vals.eliminateUpForce = true;
 
