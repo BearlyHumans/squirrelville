@@ -614,14 +614,8 @@ namespace Player
             if (vals.inJumpAnimation || vals.inLandingAnimation)
                 return;
 
-            //debugString = "Time: " + Time.time + ", LastJump: " + vals.lastJump + ", ClimbPressed: " + vals.climbButtonPressed;
-            //if (startLogging)
-            //    print(debugString);
-
             if (vals.climbButtonPressed)
             {
-                if (startLogging)
-                    print("Got here");
                 if (ClimbCheck(1f, climbChecks.headbutt))
                     return;
                 if (ClimbCheck(1f, climbChecks.forwards))
