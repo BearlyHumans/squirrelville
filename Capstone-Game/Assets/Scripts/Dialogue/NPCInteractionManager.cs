@@ -45,7 +45,7 @@ public class NPCInteractionManager : MonoBehaviour
             }
             else
             {
-                if (Input.GetKeyDown(KeyCode.E))
+                if (Input.GetButtonDown("Interact"))
                 {
                     GameObject npc = GetNearestNPC();
                     if (npc != null)
@@ -53,9 +53,9 @@ public class NPCInteractionManager : MonoBehaviour
                         isInteracting = true;
                         squirrelController.FreezeMovement();
                         interactionStart?.Invoke();
-                        if (npc.TryGetComponent<Dialogue>(out Dialogue dialogue))
+                        if (npc.TryGetComponent<NPCDialogue>(out NPCDialogue npcDialogue) && npcDialogue.HasDialogue())
                         {
-                            dialogueBox.SetDialogue(dialogue);
+                            dialogueBox.SetDialogue(npcDialogue);
                         }
                     }
                 }

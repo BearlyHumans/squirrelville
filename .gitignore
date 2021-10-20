@@ -12,7 +12,7 @@
 Library/
 Logs/
 Temp/
-Builds/*
+*/Builds/*
 UserSettings/
 Debug/
 
@@ -48,6 +48,7 @@ ExportedObj/
 *.mdb
 *.opendb
 *.VC.db
+*.zip
 
 # Unity3D generated meta files
 *.pidb.meta
@@ -66,3 +67,4 @@ crashlytics-build.properties
 
 # Project Specific
 EXAMPLES/
+Capstone-Game/SquirrelvilleController.zip

@@ -5,27 +5,29 @@ TagManager:
   serializedVersion: 2
   tags:
   - CameraSolid
-  - CanClimb
-  - HardClimb
-  - NoClimb
   - EZClimb
+  - Climbable
+  - NonClimbable
+  - Slippery
+  - NoClimb
+  - NPCFood
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - CameraHard
   - Water
   - UI
   - Player
-  - Tree
+  - CameraSoft
   - Ground
   - Buildings
   - Food
   - Triggers
-  - Stumps
+  - CameraIgnore
   - NPC
-  - 
-  - 
+  - PlayerDetection
+  - EatenFood
   - 
   - 
   - 

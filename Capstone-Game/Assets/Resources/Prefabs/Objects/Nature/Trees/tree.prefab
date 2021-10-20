@@ -14,9 +14,10 @@ GameObject:
   - component: {fileID: 136000012089129746}
   - component: {fileID: 1865260435743676329}
   - component: {fileID: 2098420199193711030}
+  - component: {fileID: 2352507330757869131}
   m_Layer: 0
   m_Name: tree
-  m_TagString: Untagged
+  m_TagString: Climbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -62,8 +63,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8bebfd6b3d650e44994f128b0eedd972, type: 2}
-  - {fileID: 2100000, guid: d17f25220dbc74f4caf62d1e6bf73150, type: 2}
+  - {fileID: 2100000, guid: deb62e6d41547b2478959bc1d65e0045, type: 2}
+  - {fileID: 2100000, guid: 59f793fc4e4819b44b61b5982cd11eef, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -132,3 +133,21 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23000012599177960}
   m_Enabled: 1
+--- !u!114 &2352507330757869131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000014109055006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5340992767fd6904d8a8c79e20f1c9c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leaves: {fileID: 4998771388003460906, guid: 79d4aa33e71725b4ebe572745df2ac05, type: 3}
+  hasLeaves: 1
+  fallRate: 2
+  particleHeight: 4
+  fallingRadius: 0.4
+  leafColor: {r: 0.32156864, g: 0.38431376, b: 0.16470589, a: 1}

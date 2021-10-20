@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 3309302}
   - component: {fileID: 2340318}
   - component: {fileID: 6436836}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: palm
-  m_TagString: Untagged
+  m_TagString: Climbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

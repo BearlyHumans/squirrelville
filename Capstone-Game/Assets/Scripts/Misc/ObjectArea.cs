@@ -16,6 +16,12 @@ public class ObjectArea : MonoBehaviour
     private void Start()
     {
         trigger = GetComponent<Collider>();
+
+        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+        if (meshRenderer != null)
+        {
+            meshRenderer.enabled = false;
+        }
     }
 
     private void Update()
@@ -23,7 +29,7 @@ public class ObjectArea : MonoBehaviour
         // Detect when food is eaten from within the area
         foreach (GameObject obj in oldObjectsInArea)
         {
-            if (!obj.activeInHierarchy)
+            if (obj == null || !obj.activeInHierarchy)
             {
                 objectsInArea.Remove(obj);
 
@@ -39,7 +45,7 @@ public class ObjectArea : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (ObjectMatchesMask(other.gameObject))
+        if (ObjectMatchesMask(other.gameObject) && objectsInArea.IndexOf(other.gameObject) == -1)
         {
             objectsInArea.Add(other.gameObject);
 
@@ -52,7 +58,7 @@ public class ObjectArea : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (ObjectMatchesMask(other.gameObject))
+        if (ObjectMatchesMask(other.gameObject) && objectsInArea.IndexOf(other.gameObject) > -1)
         {
             objectsInArea.Remove(other.gameObject);
 

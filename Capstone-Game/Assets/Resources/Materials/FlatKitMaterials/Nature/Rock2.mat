@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Rock2
   m_Shader: {fileID: 4800000, guid: bee44b4a58655ee4cbff107302a3e131, type: 3}
-  m_ShaderKeywords: _CELPRIMARYMODE_SINGLE _TEXTUREBLENDINGMODE_MULTIPLY _UNITYSHADOWMODE_NONE
+  m_ShaderKeywords: _CELPRIMARYMODE_SINGLE _TEXTUREBLENDINGMODE_MULTIPLY _UNITYSHADOWMODE_MULTIPLY
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -89,7 +89,7 @@ Material:
     - _GradientCenterY: 0
     - _GradientEnabled: 0
     - _GradientSize: 10
-    - _LightContribution: 0
+    - _LightContribution: 1
     - _LightmapDirectionPitch: 0
     - _LightmapDirectionYaw: 0
     - _Metallic: 0
@@ -101,7 +101,7 @@ Material:
     - _RimEnabled: 0
     - _SelfShadingSize: 0.5
     - _SelfShadingSizeExtra: 0.6
-    - _ShadowEdgeSize: 0.05
+    - _ShadowEdgeSize: 0.4
     - _ShadowEdgeSizeExtra: 0.05
     - _SmoothnessTextureChannel: 0
     - _SpecularEnabled: 0
@@ -111,14 +111,14 @@ Material:
     - _TextureBlendingMode: 0
     - _TextureImpact: 1
     - _UVSec: 0
-    - _UnityShadowMode: 0
-    - _UnityShadowPower: 0.2
+    - _UnityShadowMode: 1
+    - _UnityShadowPower: 0.3
     - _UnityShadowSharpness: 1
     - _VertexColorsEnabled: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.6415094, g: 0.5216566, b: 0.33588463, a: 1}
-    - _ColorDim: {r: 0.2735849, g: 0.2393599, b: 0.18712175, a: 1}
+    - _Color: {r: 0.764151, g: 0.6271805, b: 0.42172483, a: 1}
+    - _ColorDim: {r: 0.5566038, g: 0.46870697, b: 0.35444108, a: 1}
     - _ColorDimCurve: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
     - _ColorDimExtra: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
     - _ColorDimSteps: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}

@@ -29,7 +29,7 @@ public class DialogueBox : MonoBehaviour
     [HideInInspector]
     public bool isDialogueOpen = false;
 
-    private Dialogue dialogue;
+    private NPCDialogue dialogue;
     private int index = -1;
     private bool isTyping = false;
     private Coroutine typingCoroutine;
@@ -54,7 +54,7 @@ public class DialogueBox : MonoBehaviour
 
         if (dialogue != null && wasDialogueOpen)
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape))
             {
                 if (isTyping)
                 {
@@ -62,7 +62,7 @@ public class DialogueBox : MonoBehaviour
                     {
                         StopCoroutine(typingCoroutine);
                         isTyping = false;
-                        text.text = dialogue.entries[index].text;
+                        text.text = dialogue.GetDialogue().entries[index].text;
                         nextText.enabled = true;
                     }
                 }
@@ -76,7 +76,7 @@ public class DialogueBox : MonoBehaviour
         wasDialogueOpen = isDialogueOpen;
     }
 
-    public void SetDialogue(Dialogue dialogue)
+    public void SetDialogue(NPCDialogue dialogue)
     {
         this.dialogue = dialogue;
         title.text = dialogue.name;
@@ -98,7 +98,7 @@ public class DialogueBox : MonoBehaviour
 
         float t = 0;
         int charIndex = 0;
-        string textToType = dialogue.entries[index].text;
+        string textToType = dialogue.GetDialogue().entries[index].text;
 
         while (charIndex < textToType.Length)
         {
@@ -135,7 +135,7 @@ public class DialogueBox : MonoBehaviour
         nextText.enabled = false;
         isDialogueOpen = false;
 
-        if (index < dialogue.entries.Length - 1)
+        if (index < dialogue.GetDialogue().entries.Length - 1)
         {
             index++;
 
@@ -147,7 +147,7 @@ public class DialogueBox : MonoBehaviour
             isDialogueOpen = true;
             typingCoroutine = StartCoroutine(Type());
 
-            Sprite sprite = dialogue.entries[index].sprite;
+            Sprite sprite = dialogue.GetDialogue().entries[index].sprite;
             if (sprite != null)
             {
                 image.enabled = true;

@@ -82,24 +82,24 @@ MonoBehaviour:
       m_Strength: 50
       m_RotationRangeMin: {x: 0, y: 0, z: 0}
       m_RotationRangeMax: {x: 0, y: 360, z: 0}
-      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
-      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
+      m_ScaleRangeMin: {x: 0.75, y: 0.75, z: 1}
+      m_ScaleRangeMax: {x: 1.25, y: 1.25, z: 1}
       m_UniformScale: {x: 1, y: 1}
       m_UniformBool: 0
       m_XRotationBool: 0
       m_YRotationBool: 1
       m_ZRotationBool: 0
-      m_XScaleBool: 0
+      m_XScaleBool: 1
       m_YScaleBool: 0
       m_ZScaleBool: 0
     name: tree_2
   - gameObject: {fileID: 519052635182701490, guid: 3a20843f67d9f7b42a460b5709511877, type: 3}
     settings:
-      m_Strength: 30
+      m_Strength: 57
       m_RotationRangeMin: {x: 0, y: 0, z: 0}
       m_RotationRangeMax: {x: 0, y: 360, z: 0}
-      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
-      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
+      m_ScaleRangeMin: {x: 0.7627119, y: 1, z: 1}
+      m_ScaleRangeMax: {x: 1.3728814, y: 1.2711865, z: 1}
       m_UniformScale: {x: 1, y: 1}
       m_UniformBool: 0
       m_XRotationBool: 0
@@ -114,15 +114,15 @@ MonoBehaviour:
       m_Strength: 50
       m_RotationRangeMin: {x: 0, y: 0, z: 0}
       m_RotationRangeMax: {x: 0, y: 360, z: 0}
-      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
-      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
+      m_ScaleRangeMin: {x: 0.75, y: 0.75, z: 1}
+      m_ScaleRangeMax: {x: 1.25, y: 1.25, z: 1}
       m_UniformScale: {x: 1, y: 1}
       m_UniformBool: 0
       m_XRotationBool: 0
       m_YRotationBool: 1
       m_ZRotationBool: 0
-      m_XScaleBool: 0
-      m_YScaleBool: 0
+      m_XScaleBool: 1
+      m_YScaleBool: 1
       m_ZScaleBool: 0
     name: BigTree 1
   - gameObject: {fileID: 145726, guid: 1be5e82b1cbc5d243947fbcf678997fa, type: 3}
@@ -143,7 +143,7 @@ MonoBehaviour:
     name: fence
   - gameObject: {fileID: 1000012376307238, guid: a082d0f34409cf54898f92b3e070758a, type: 3}
     settings:
-      m_Strength: 50
+      m_Strength: 59
       m_RotationRangeMin: {x: 0, y: 0, z: 0}
       m_RotationRangeMax: {x: 0, y: 360, z: 0}
       m_ScaleRangeMin: {x: 1, y: 1, z: 1}
@@ -164,7 +164,7 @@ MonoBehaviour:
       m_RotationRangeMax: {x: 226.82927, y: 229.7561, z: 0}
       m_ScaleRangeMin: {x: 1, y: 1, z: 1}
       m_ScaleRangeMax: {x: 1, y: 1, z: 1}
-      m_UniformScale: {x: 0.5, y: 1.5}
+      m_UniformScale: {x: 1, y: 2}
       m_UniformBool: 1
       m_XRotationBool: 0
       m_YRotationBool: 1
@@ -180,7 +180,7 @@ MonoBehaviour:
       m_RotationRangeMax: {x: 190.2439, y: 190.2439, z: 0}
       m_ScaleRangeMin: {x: 1, y: 1, z: 1}
       m_ScaleRangeMax: {x: 1, y: 1, z: 1}
-      m_UniformScale: {x: 0.5, y: 1.5}
+      m_UniformScale: {x: 1, y: 2}
       m_UniformBool: 1
       m_XRotationBool: 0
       m_YRotationBool: 1
@@ -205,3 +205,147 @@ MonoBehaviour:
       m_YScaleBool: 0
       m_ZScaleBool: 0
     name: BeachGrass
+  - gameObject: {fileID: 7240947560827918979, guid: ba40024b8ed5c1843be798c3c3c3ffd0, type: 3}
+    settings:
+      m_Strength: 100
+      m_RotationRangeMin: {x: 0, y: 0, z: 0}
+      m_RotationRangeMax: {x: 163.82024, y: 177.4648, z: 0}
+      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
+      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
+      m_UniformScale: {x: 0.5, y: 1}
+      m_UniformBool: 1
+      m_XRotationBool: 0
+      m_YRotationBool: 1
+      m_ZRotationBool: 0
+      m_XScaleBool: 0
+      m_YScaleBool: 0
+      m_ZScaleBool: 0
+    name: Rocks Climb
+  - gameObject: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+    settings:
+      m_Strength: 79.75
+      m_RotationRangeMin: {x: 0, y: 0, z: 160}
+      m_RotationRangeMax: {x: 0, y: 0, z: 180}
+      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
+      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
+      m_UniformScale: {x: 1, y: 1}
+      m_UniformBool: 1
+      m_XRotationBool: 1
+      m_YRotationBool: 1
+      m_ZRotationBool: 1
+      m_XScaleBool: 0
+      m_YScaleBool: 0
+      m_ZScaleBool: 0
+    name: Vine_001
+  - gameObject: {fileID: 6586619804469299257, guid: 9e4257d60baf0e34094709c1a0936fe0, type: 3}
+    settings:
+      m_Strength: 50
+      m_RotationRangeMin: {x: 0, y: 0, z: 180}
+      m_RotationRangeMax: {x: 0, y: 0, z: 180}
+      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
+      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
+      m_UniformScale: {x: 1, y: 1}
+      m_UniformBool: 1
+      m_XRotationBool: 1
+      m_YRotationBool: 1
+      m_ZRotationBool: 1
+      m_XScaleBool: 0
+      m_YScaleBool: 0
+      m_ZScaleBool: 0
+    name: Vine_Long_001
+  - gameObject: {fileID: 7289110310726518601, guid: 0980689bd6daa2d45b8c097393ede069, type: 3}
+    settings:
+      m_Strength: 60
+      m_RotationRangeMin: {x: 0, y: 0, z: 0}
+      m_RotationRangeMax: {x: 0, y: 360, z: 0}
+      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
+      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
+      m_UniformScale: {x: 0.3, y: 0.5}
+      m_UniformBool: 1
+      m_XRotationBool: 0
+      m_YRotationBool: 1
+      m_ZRotationBool: 0
+      m_XScaleBool: 0
+      m_YScaleBool: 0
+      m_ZScaleBool: 0
+    name: grass-basic
+  - gameObject: {fileID: 6428877858224272332, guid: da7b9e0669fa5e94794e10c0e4b2a019, type: 3}
+    settings:
+      m_Strength: 80
+      m_RotationRangeMin: {x: 0, y: 0, z: 0}
+      m_RotationRangeMax: {x: 0, y: 360, z: 0}
+      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
+      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
+      m_UniformScale: {x: 0.3, y: 0.5}
+      m_UniformBool: 1
+      m_XRotationBool: 0
+      m_YRotationBool: 1
+      m_ZRotationBool: 0
+      m_XScaleBool: 0
+      m_YScaleBool: 0
+      m_ZScaleBool: 0
+    name: grass-clumb
+  - gameObject: {fileID: 1592580129405344002, guid: 7aa672c1c7e55dc46b79353af47e3533, type: 3}
+    settings:
+      m_Strength: 40
+      m_RotationRangeMin: {x: 0, y: 0, z: 0}
+      m_RotationRangeMax: {x: 0, y: 360, z: 0}
+      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
+      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
+      m_UniformScale: {x: 0.3, y: 0.5}
+      m_UniformBool: 1
+      m_XRotationBool: 1
+      m_YRotationBool: 1
+      m_ZRotationBool: 1
+      m_XScaleBool: 0
+      m_YScaleBool: 0
+      m_ZScaleBool: 0
+    name: grass-tall
+  - gameObject: {fileID: 6488387626894039347, guid: d825e5c263abc254eb93e1967ad8ab19, type: 3}
+    settings:
+      m_Strength: 40
+      m_RotationRangeMin: {x: 0, y: 0, z: 0}
+      m_RotationRangeMax: {x: 0, y: 360, z: 0}
+      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
+      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
+      m_UniformScale: {x: 0.3, y: 0.5}
+      m_UniformBool: 1
+      m_XRotationBool: 1
+      m_YRotationBool: 1
+      m_ZRotationBool: 1
+      m_XScaleBool: 0
+      m_YScaleBool: 0
+      m_ZScaleBool: 0
+    name: grass
+  - gameObject: {fileID: 2701396504794906776, guid: 1c4a74ccbc6a03a4288a839910ca7851, type: 3}
+    settings:
+      m_Strength: 50
+      m_RotationRangeMin: {x: 0, y: 0, z: 0}
+      m_RotationRangeMax: {x: 0, y: 0, z: 0}
+      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
+      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
+      m_UniformScale: {x: 0.2, y: 0.6}
+      m_UniformBool: 1
+      m_XRotationBool: 1
+      m_YRotationBool: 1
+      m_ZRotationBool: 1
+      m_XScaleBool: 0
+      m_YScaleBool: 0
+      m_ZScaleBool: 0
+    name: BigTree
+  - gameObject: {fileID: 115064, guid: e249c30ff85e94249b2d74951bcbde63, type: 3}
+    settings:
+      m_Strength: 50
+      m_RotationRangeMin: {x: 0, y: 0, z: 0}
+      m_RotationRangeMax: {x: 0, y: 0, z: 0}
+      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
+      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
+      m_UniformScale: {x: 0.7, y: 1}
+      m_UniformBool: 1
+      m_XRotationBool: 1
+      m_YRotationBool: 1
+      m_ZRotationBool: 1
+      m_XScaleBool: 0
+      m_YScaleBool: 0
+      m_ZScaleBool: 0
+    name: Apple Tree

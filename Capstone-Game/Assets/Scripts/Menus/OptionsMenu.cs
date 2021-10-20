@@ -10,29 +10,34 @@ public class OptionsMenu : MonoBehaviour
     public AudioMixer audioMixer;
     public Slider musicVolumeSlider;
     public Slider sfxVolumeSlider;
+    public Slider cameraSensSlider;
     public TMP_Dropdown resolutionDropdown;
     public Toggle fullscreenToggle;
+    public Animation anim;
+
     private Resolution[] resolutions;
     private Resolution selectedResolution;
-    public Animation anim;
+    private LoadAudioSettings audioSettings;
 
     private void Start()
     {
+        audioSettings = GameObject.FindObjectOfType<LoadAudioSettings>();
+
         LoadSettings();
         InitResolutionDropdown();
     }
 
     private void LoadSettings()
     {
-        musicVolumeSlider.value = PlayerPrefs.GetFloat("musicVolume", 1.0f);
-        sfxVolumeSlider.value = PlayerPrefs.GetFloat("sfxVolume", 1.0f);
+        musicVolumeSlider.value = PlayerPrefs.GetFloat("musicVolume", audioSettings.initialMusicVolume);
+        sfxVolumeSlider.value = PlayerPrefs.GetFloat("sfxVolume", audioSettings.initialSfxVolume);
         fullscreenToggle.isOn = PlayerPrefs.GetInt("fullscreen", 1) == 1;
 
         selectedResolution = new Resolution();
         selectedResolution.width = PlayerPrefs.GetInt("resolutionWidth", Screen.currentResolution.width);
         selectedResolution.height = PlayerPrefs.GetInt("resolutionHeight", Screen.currentResolution.height);
 
-        Screen.SetResolution(selectedResolution.width, selectedResolution.height, fullscreenToggle.isOn);
+        cameraSensSlider.value = PlayerPrefs.GetFloat("cameraSensitivity", 250);
     }
 
     private void InitResolutionDropdown()
@@ -63,14 +68,19 @@ public class OptionsMenu : MonoBehaviour
 
     public void SetMusicVolume(float volume)
     {
-        audioMixer.SetFloat("musicVolume", Mathf.Log10(volume) * 20);
+        audioMixer.SetFloat("musicVolume", Mathf.Log10(volume * audioSettings.maxMusicVolume) * 20);
         PlayerPrefs.SetFloat("musicVolume", volume);
     }
 
     public void SetSFXVolume(float volume)
     {
-        audioMixer.SetFloat("sfxVolume", Mathf.Log10(volume) * 20);
+        audioMixer.SetFloat("sfxVolume", Mathf.Log10(volume * audioSettings.maxSfxVolume) * 20);
         PlayerPrefs.SetFloat("sfxVolume", volume);
+    }
+
+    public void SetCameraSensitivity(float sensitivity)
+    {
+        PlayerPrefs.SetFloat("cameraSensitivity", sensitivity);
     }
 
     public void SetResolution(int index)

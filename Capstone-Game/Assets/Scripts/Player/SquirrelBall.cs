@@ -11,6 +11,8 @@ namespace Player
         //~~~~~~~~~~ CLASS VARIABLES ~~~~~~~~~~
 
         public SquirrelController PARENT;
+
+        public Transform ballModel;
         
         public SCBallModeSettings settings = new SCBallModeSettings();
         
@@ -26,6 +28,11 @@ namespace Player
         private bool Grounded
         {
             get { return PARENT.TouchingSomething && vals.lastGrounded == Time.time; }
+        }
+
+        void Awake()
+        {
+            vals.normalScale = ballModel.localScale;
         }
 
         //~~~~~~~~~~ EVENTS ~~~~~~~~~~
@@ -69,7 +76,7 @@ namespace Player
             Vector3 addedVelocity;
             if (Grounded)
             {
-                if (Input.GetButton("Dash") && ParentRefs.stamina.UseStamina(settings.M.boostStaminaUse * Time.deltaTime))
+                if ((Input.GetButton("Dash") || Input.GetAxis("Dash") > 0) && ParentRefs.stamina.UseStamina(settings.M.boostStaminaUse * Time.deltaTime))
                     addedVelocity = (desiredDirection * settings.M.acceleration * settings.M.boostMultiplier * Time.deltaTime);
                 else
                     addedVelocity = (desiredDirection * settings.M.acceleration * Time.deltaTime);
@@ -88,6 +95,15 @@ namespace Player
 
 
             ParentRefs.RB.velocity += addedVelocity;
+
+            if (ParentRefs.RB.velocity.magnitude > 0.3f)
+            {
+                PARENT.CallEvents(SquirrelController.EventTrigger.rolling);
+            }
+            else
+            {
+                PARENT.CallEvents(SquirrelController.EventTrigger.stopRolling);
+            }
         }
 
         private void UpdJump()
@@ -128,6 +144,45 @@ namespace Player
             }
         }
 
+        private void OnCollisionEnter(Collision collision)
+        {
+            float force = collision.impulse.magnitude;
+            if (force > vals.lastSquishForce * 0.5f)
+            {
+                if (vals.squishAnimation != null)
+                    StopCoroutine(vals.squishAnimation);
+                vals.squishAnimation = StartCoroutine(SquishBall(collision.impulse.magnitude));
+            }
+        }
+
+        private IEnumerator SquishBall(float force)
+        {
+            vals.lastSquishForce = force;
+            ballModel.localScale = vals.normalScale;
+            float startTime = Time.time;
+            while (Time.time < startTime + settings.S.squishCurve.length)
+            {
+                float forceMultiplier = 1;
+                if (force < settings.S.squishForceRange.x)
+                    forceMultiplier = settings.S.squishMinForceMultiplier;
+                else if (force > settings.S.squishForceRange.y)
+                    forceMultiplier = 1;
+                else
+                {
+                    float a = settings.S.squishForceRange.y;
+                    float b = settings.S.squishForceRange.x;
+                    float m = settings.S.squishMinForceMultiplier;
+                    forceMultiplier = (force - b) * ((1 - m) / (a - b)) + m;
+                }
+                float scaling = (settings.S.squishCurve.Evaluate(Time.time - startTime) * forceMultiplier) + 1;
+
+                ballModel.localScale = vals.normalScale * scaling;
+                yield return new WaitForEndOfFrame();
+            }
+            ballModel.localScale = vals.normalScale;
+            vals.lastSquishForce = 0;
+        }
+
         //~~~~~~~~~~ DATA STRUCTURES ~~~~~~~~~~
 
         [System.Serializable]
@@ -144,16 +199,21 @@ namespace Player
             public float jumpPressed;
             public bool jumping;
             public bool moving;
+            public Vector3 normalScale;
+            public Coroutine squishAnimation;
+            public float lastSquishForce;
         }
 
         [System.Serializable]
         public class SCBallModeSettings
         {
             public SCMoveSettings movement = new SCMoveSettings();
+            public SCSquishinessSettings squishiness = new SCSquishinessSettings();
             public SCJumpSettings jump = new SCJumpSettings();
 
             public SCMoveSettings M { get { return movement; } }
             public SCJumpSettings J { get { return jump; } }
+            public SCSquishinessSettings S { get { return squishiness; } }
 
             [System.Serializable]
             public class SCMoveSettings
@@ -169,6 +229,21 @@ namespace Player
                 public float maxSpeed = 3f;
                 [Tooltip("Multiplier for the amount of acceleration applied while in the air.")]
                 public float airControlFactor = 0.5f;
+            }
+
+            [System.Serializable]
+            public class SCSquishinessSettings
+            {
+                [Header("Squishiness Settings")]
+                [Tooltip("Controls the ball models size during the squish animation. Value is a fraction of the normal size that should be added to the size during anmation, so value should start and end on 0." +
+                    "The curve will be smaller for smaller forces based on settings below, but what is shown here is the maximum change.")]
+                public AnimationCurve squishCurve;
+                [Tooltip("Minimum (x) and Maximum (y) range of forces that change how much squishing happens. If the force is >= y it will do the curve exactly," +
+                    "if it is <= x it will shrink the curve by the multiplier below, and if it is in between it will shrink it proportionally.")]
+                public Vector2 squishForceRange = new Vector2(0f, 5f);
+                [Tooltip("The multiplier on the squish effect that happens when the LOWEST force is encountered, and the bottom of the range controlled by the force.")]
+                [Range(0f, 1f)]
+                public float squishMinForceMultiplier = 0.2f;
             }
 
             [System.Serializable]

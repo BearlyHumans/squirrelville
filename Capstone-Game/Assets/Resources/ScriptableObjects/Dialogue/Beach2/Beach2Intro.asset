@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04273a48ccd3fc44983e66b6acdba9a3, type: 3}
+  m_Name: Beach2Intro
+  m_EditorClassIdentifier: 
+  entries:
+  - text: '*shock and awe*'
+    sprite: {fileID: 21300000, guid: 300dadbdf3fc5254d911a403452005c5, type: 3}
+  - text: "It\u2019s so HUGE! So much bigger up close...man!\r\n"
+    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
+  - text: "You\u2019ve been a really good help today. If you want you can stay around
+      for a bit? I\u2019m sure I can speak for the others when I say you can stay
+      here as long as you want."
+    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
+  - text: "Thank you so much, little guy. We\u2019re going to have the biggest feast
+      tonight!!\r\n"
+    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
+  - text: "Speaking of\u2026 I\u2019ve got some people to introduce you to who I
+      think will want to give you a big bloody hug!\r\n"
+    sprite: {fileID: 21300000, guid: f2b47b7936547f34689640c321e86f82, type: 3}
+  - text: "OI EVERYONE, GET OVER HERE\u2026 WE\u2019VE GOT A VERY SPECIAL GUEST FOR
+      A VERY SPECIAL DINNER TONIGHT!\r\n"
+    sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}

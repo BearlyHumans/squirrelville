@@ -1,12 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Player;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(NPCInteractionManager))]
+[RequireComponent(typeof(SquirrelController))]
 public class SquirrelFoodGrabber : MonoBehaviour
 {
     private Stack<GameObject> foodStack = new Stack<GameObject>();
     private Rigidbody squirrelrb;
+    private SquirrelController controller;
+    private NPCInteractionManager npcInteractionManager;
+
+    public ParticleSystem foodEaten;
 
     [Header("Mouth")]
 
@@ -53,6 +60,8 @@ public class SquirrelFoodGrabber : MonoBehaviour
     private void Awake()
     {
         squirrelrb = GetComponent<Rigidbody>();
+        npcInteractionManager = GetComponent<NPCInteractionManager>();
+        controller = GetComponent<SquirrelController>();
     }
 
     private void Update()
@@ -60,7 +69,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
         if (PauseMenu.paused) return;
 
         GameObject prevNearestFood = nearestFood;
-        nearestFood = GetNearestFood();
+        nearestFood = CanEatFood() ? GetNearestFood() : null;
 
         if (prevNearestFood != nearestFood)
         {
@@ -97,21 +106,28 @@ public class SquirrelFoodGrabber : MonoBehaviour
             }
         }
 
-        if (nearestFood != null && Input.GetKey(KeyCode.Mouse0) && CanEatFood())
+        if (nearestFood != null && Input.GetButton("Eat") && CanEatFood())
         {
+            if (Input.GetButtonDown("Eat"))
+            {
+                Instantiate(foodEaten, nearestFood.transform.position, nearestFood.transform.rotation);
+            }
             PickupFood(nearestFood);
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (CanThrowFood())
         {
-            throwDelay = initialThrowDelay;
-        }
+            if (Input.GetButtonDown("Spit"))
+            {
+                throwDelay = initialThrowDelay;
+            }
 
-        if (Input.GetKey(KeyCode.Mouse1))
-        {
-            if (Time.time < throwTime) return;
+            if (Input.GetButton("Spit"))
+            {
+                if (Time.time < throwTime) return;
 
-            ThrowFood();
+                ThrowFood(0);
+            }
         }
     }
 
@@ -125,12 +141,14 @@ public class SquirrelFoodGrabber : MonoBehaviour
         foodStack.Push(food);
         food.SetActive(false);
         pickupTime = Time.time + pickupDelay;
-
+        food.layer = LayerMask.NameToLayer("EatenFood");
+        controller.CallEvents(SquirrelController.EventTrigger.eat);
         pickupEvent.Invoke(food);
+        food.GetComponent<Food>().pickupEvent.Invoke();
     }
 
     [ContextMenu("Throw food")]
-    public void ThrowFood()
+    public void ThrowFood(int mode)
     {
         if (foodStack.Count == 0) return;
 
@@ -144,15 +162,34 @@ public class SquirrelFoodGrabber : MonoBehaviour
 
         food.SetActive(true);
 
+        if(mode == 0)
+        {
+            food.layer = LayerMask.NameToLayer("Food");
+        }
+        else
+        {
+            food.layer = LayerMask.NameToLayer("EatenFood");
+        }
+
         throwTime = Time.time + throwDelay;
         throwDelay = Mathf.Max(throwDelay / throwDelayDivisor, minThrowDelay);
 
+        controller.CallEvents(SquirrelController.EventTrigger.spit);
         throwEvent.Invoke(food);
+        food.GetComponent<Food>().throwEvent.Invoke();
     }
 
     public bool CanEatFood()
     {
-        return maxFoodInInventory < 0 || GetFoodCount() < maxFoodInInventory;
+        return (
+            (maxFoodInInventory < 0 || GetFoodCount() < maxFoodInInventory) &&
+            !npcInteractionManager.isInteracting
+        );
+    }
+
+    public bool CanThrowFood()
+    {
+        return !npcInteractionManager.isInteracting;
     }
 
     public int GetFoodCount()
@@ -164,7 +201,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
     {
         List<GameObject> food = new List<GameObject>();
 
-        Collider[] colliders = Physics.OverlapSphere(squirrelrb.position, pickupRadius, LayerMask.GetMask("Food"));
+        Collider[] colliders = Physics.OverlapSphere(squirrelrb.position, pickupRadius, LayerMask.GetMask("Food", "EatenFood"));
         foreach (Collider collider in colliders)
         {
             food.Add(collider.gameObject);
