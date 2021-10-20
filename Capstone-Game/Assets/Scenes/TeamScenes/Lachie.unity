@@ -1532,6 +1532,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 628919248}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: acornHolder
+      value: 
+      objectReference: {fileID: 7324272579097464694}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: walkingPause
       value: 1
       objectReference: {fileID: 0}
@@ -1622,6 +1626,14 @@ PrefabInstance:
     - target: {fileID: 8879912959433224634, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 9201156710929197574, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: m_Name
+      value: AcornHeld
+      objectReference: {fileID: 0}
+    - target: {fileID: 9201156710929197574, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8391098695642741264, guid: 29dda92717219af479073042bfc0d19f, type: 3}
@@ -2428,3 +2440,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1ac8912b3547864aa6b4beb55e938ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &7324272579097464694 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9201156710929197574, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+  m_PrefabInstance: {fileID: 1334460390}
+  m_PrefabAsset: {fileID: 0}
