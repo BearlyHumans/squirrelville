@@ -104,7 +104,6 @@ public class Humans : MonoBehaviour
     float walkToFoodTimer = 0f;
     float howLongCanWalkToFood = 10f;
 
-    
     // used to determine what action "handleFood" does
     int catchChoice;
 
@@ -119,6 +118,12 @@ public class Humans : MonoBehaviour
     //used to check if player has been caught recently 
     bool hasCaughtRecently = false;
 
+    // bool used to check if stun hit player
+    [HideInInspector]
+    public bool hitPlayerStun = false;
+
+    private bool pickUpFoodOnce = false;
+
     [Tooltip("speed of walking player")]
     [SerializeField]
     public float humanWalkSpeed = 2.0f;
@@ -132,18 +137,22 @@ public class Humans : MonoBehaviour
     float returnToPathWaitTime = 3.0f;
     float returnToPathNoWaitTime = 0f;
 
+    // timer delay for acorns disappearing on pick up
+    float pickUpTimer = 3f;
+
     //handle food single use check
     bool returnedToPath = false;
 
     Transform target;
     GameObject squrrielTarget;
     GameObject playerController;
+    public GameObject acornHolder;
 
     /// set the nav mesh agent for humans to walk on as well as set target (player) to chase.
     public void Start() 
     {
         playerController = GameObject.FindWithTag("Player");
-        
+
         foodController = playerController;
         foodGraber = foodController.GetComponent<SquirrelFoodGrabber>();
 
@@ -161,6 +170,7 @@ public class Humans : MonoBehaviour
         squrrielTarget = playerController;
 
         currentState = HumanStates.PathFollowing;
+
         if(human == null)
         {
             Debug.LogWarning("No nav mesh");
@@ -187,6 +197,7 @@ public class Humans : MonoBehaviour
         timeToFood += Time.deltaTime;
         // -----States------
 
+        print(currentState);
         switch(currentState)
         {
             case HumanStates.PathFollowing:
@@ -225,7 +236,7 @@ public class Humans : MonoBehaviour
         {
             hasCaughtRecently = true;  
             checkBeenRun = false;
-            
+            hitPlayerStun = false;
             // animation stunning (not moving)
             CallAnimationEvents(AnimTriggers.stunning);
 
@@ -246,7 +257,17 @@ public class Humans : MonoBehaviour
                 }
                 else
                 {
-                    StartCoroutine(returnToPath(returnToPathNoWaitTime));
+                    if(hitPlayerStun)
+                    {
+                        StartCoroutine(returnToPath(returnToPathNoWaitTime));
+                    }
+                    else
+                    {
+                        CallAnimationEvents(AnimTriggers.walking);
+                        currentState = HumanStates.Chase;
+                    }
+                    // if didnt get player enter chase state again
+                    
                 }
             }
             stillFood = checkForFood();
@@ -266,6 +287,7 @@ public class Humans : MonoBehaviour
             {
                 // animation walk (not moving)
                 CallAnimationEvents(AnimTriggers.walking);
+                acornHolder.SetActive(true);
                 human.SetDestination(bin.transform.position);
             }
             // put food in bin
@@ -273,10 +295,11 @@ public class Humans : MonoBehaviour
             {
                 
                 CallAnimationEvents(AnimTriggers.dropping);
-                            
+                acornHolder.SetActive(true); 
                 human.velocity = Vector3.zero;
                 if(!returnedToPath)
                 {
+                    
                     returnedToPath = true;
                     StartCoroutine(returnToPath(returnToPathWaitTime));
                 }
@@ -287,7 +310,7 @@ public class Humans : MonoBehaviour
         {    
             
             CallAnimationEvents(AnimTriggers.eating);
-            
+            acornHolder.SetActive(true);
             if(!returnedToPath)
             {
                 returnedToPath = true;
@@ -301,6 +324,7 @@ public class Humans : MonoBehaviour
     ///functionaility for chasing behaviour. Added checks to see if the npc leaves their boundry area or chases for 'x' ammount of time 
     private void ChaseState()
     { 
+        
         human.speed = humanRunSpeed;
         CallAnimationEvents(AnimTriggers.running);
         if(!havntSpotted)
@@ -308,7 +332,7 @@ public class Humans : MonoBehaviour
             havntSpotted = true;
             exclaim.Play();
         }
-
+        
         /// runs a check to see if the human is still within boundary
         if(checkBoundry() == true)
         {
@@ -328,7 +352,9 @@ public class Humans : MonoBehaviour
                 if (distance < 1.5f)
                 {
                     havntSpotted = false;
-                    
+
+                    hasCaughtRecently = false;
+
                     currentState = HumanStates.Catch;
                 }
                      
@@ -338,14 +364,14 @@ public class Humans : MonoBehaviour
                 chaseTimer = chaseVariables.chaseTime;
                 SetDest();
                 havntSpotted = false;
-                currentState = HumanStates.PathFollowing;
+                StartCoroutine(returnToPath(returnToPathNoWaitTime));
             }
         }
         /// if the human leaves the set area they will return to following their path
         else
         {
             SetDest();
-            currentState = HumanStates.PathFollowing;
+            StartCoroutine(returnToPath(returnToPathNoWaitTime));
         }
                 
     }
@@ -379,6 +405,7 @@ public class Humans : MonoBehaviour
     ///runs checks to find player, while cant see playing iterate through list of path points and walk between them
     private void PathFollowingState()
     {
+        
         human.speed = humanWalkSpeed;
         bool canSee = SeePlayer();
         if(canSee)
@@ -456,6 +483,7 @@ public class Humans : MonoBehaviour
                    bestCollider = hitCollider;
                 }
             }
+            
             CallAnimationEvents(AnimTriggers.walking);
             human.SetDestination(bestCollider.transform.position);
             if (bestDistance < 5f)
@@ -469,20 +497,26 @@ public class Humans : MonoBehaviour
                 
                 walkToFoodTimer = 0f;
             }
-          
+            
             if(bestDistance < 1f)
             {
                 human.velocity = Vector3.zero;
                 
                 CallAnimationEvents(AnimTriggers.pickup);
-                StartCoroutine(pickUpFood(bestCollider));
-
+                if(!pickUpFoodOnce)
+                {
+                    print(pickUpTimer);
+                    StartCoroutine(pickUpFood(bestCollider, pickUpTimer));
+                    pickUpFoodOnce = true;
+                }
+                
                 walkToFoodTimer = 0f;
             
             } 
             pickedUpFood = true;
             return true;
         }
+
         return false;
     }
 
@@ -497,19 +531,26 @@ public class Humans : MonoBehaviour
         
         checkBeenRun = true;
     }
+
     
-    IEnumerator pickUpFood(Collider food)
+    IEnumerator pickUpFood(Collider food, float timer)
     {
-        yield return new WaitForSeconds(2.8f);
-    
+        yield return new WaitForSeconds(timer);
+        pickUpTimer -= .15f;
         food.gameObject.SetActive(false);
+        acornHolder.SetActive(true);
+        pickUpFoodOnce = false;
         food.GetComponent<Food>().respawn();
- 
+
+        //yield return new WaitForSeconds(1.2f);
+        //acornHolder.SetActive(false);
     }
 
     IEnumerator returnToPath(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
+        acornHolder.SetActive(false);
+
         CallAnimationEvents(AnimTriggers.walking);
         pickedUpFood = false;
         currentState = HumanStates.PathFollowing;
