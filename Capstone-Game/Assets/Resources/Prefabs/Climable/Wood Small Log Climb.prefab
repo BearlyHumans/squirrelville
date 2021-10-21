@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1542759472649984103}
   m_Layer: 0
   m_Name: Wood Small Log Climb
-  m_TagString: CanClimb
+  m_TagString: Climbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
