@@ -911,6 +911,7 @@ MonoBehaviour:
   friendlyVariables:
     foodToGive: {fileID: 6834729697976214412, guid: 29a3643e9f57a5e43a8d43b2a06538be, type: 3}
     foodTimer: 10
+    watchTimer: 5
   catchVariables:
     catchResetTimer: 0
     takeFoodAmmount: 0
@@ -1176,7 +1177,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2678005943229891372}
-  - component: {fileID: 8391098695642741264}
   - component: {fileID: 3591709830310655803}
   m_Layer: 0
   m_Name: stun
@@ -1200,19 +1200,6 @@ Transform:
   m_Father: {fileID: 1194168816736872338}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &8391098695642741264
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4338684374575172170}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.8, y: 0.4, z: 0.8}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3591709830310655803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1226,8 +1213,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stomp: {fileID: 1529563150530141598}
-  stunRange: 0
-  stunTime: 0
+  stunRange: 1
+  stunTime: 2
 --- !u!1 &8516749792529396220
 GameObject:
   m_ObjectHideFlags: 0
