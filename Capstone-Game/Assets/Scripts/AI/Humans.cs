@@ -104,7 +104,6 @@ public class Humans : MonoBehaviour
     float walkToFoodTimer = 0f;
     float howLongCanWalkToFood = 10f;
 
-    
     // used to determine what action "handleFood" does
     int catchChoice;
 
@@ -137,6 +136,9 @@ public class Humans : MonoBehaviour
     // walk to path wait times
     float returnToPathWaitTime = 3.0f;
     float returnToPathNoWaitTime = 0f;
+
+    // timer delay for acorns disappearing on pick up
+    float pickUpTimer = 3f;
 
     //handle food single use check
     bool returnedToPath = false;
@@ -503,8 +505,8 @@ public class Humans : MonoBehaviour
                 CallAnimationEvents(AnimTriggers.pickup);
                 if(!pickUpFoodOnce)
                 {
-                    
-                    StartCoroutine(pickUpFood(bestCollider));
+                    print(pickUpTimer);
+                    StartCoroutine(pickUpFood(bestCollider, pickUpTimer));
                     pickUpFoodOnce = true;
                 }
                 
@@ -531,16 +533,17 @@ public class Humans : MonoBehaviour
     }
 
     
-    IEnumerator pickUpFood(Collider food)
+    IEnumerator pickUpFood(Collider food, float timer)
     {
-        yield return new WaitForSeconds(2.8f);
+        yield return new WaitForSeconds(timer);
+        pickUpTimer -= .15f;
         food.gameObject.SetActive(false);
         acornHolder.SetActive(true);
         pickUpFoodOnce = false;
         food.GetComponent<Food>().respawn();
 
-        yield return new WaitForSeconds(1f);
-        acornHolder.SetActive(false);
+        //yield return new WaitForSeconds(1.2f);
+        //acornHolder.SetActive(false);
     }
 
     IEnumerator returnToPath(float waitTime)
