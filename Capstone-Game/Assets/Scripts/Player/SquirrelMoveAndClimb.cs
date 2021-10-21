@@ -463,6 +463,17 @@ namespace Player
                     }
                 }
             }
+
+            //Apply an upwards force if still holding jump button.
+            if (vals.jumpHeld && vals.falling)
+            {
+                float timeSinceJump = Time.time - vals.lastJump;
+                if (timeSinceJump < settings.J.holdingJumpForceCurve.length)
+                {
+                    float holdForce = settings.J.holdingJumpForceCurve.Evaluate(timeSinceJump);
+                    ParentRefs.RB.velocity += Vector3.up * holdForce * Time.deltaTime;
+                }
+            }
         }
 
         /// <summary> Rotate the player so their feet are aligned with the surface beneath them, based on a downwards raycast. </summary>
@@ -1279,6 +1290,8 @@ namespace Player
                 [Header("Jump Force Settings")]
                 [Tooltip("Force applied upwards when the player jumps.")]
                 public float groundedJumpForce = 1.5f;
+                [Tooltip("Force applied upwards when the player holds the jump button after jumping. Value is per-second (i.e. * deltaTime)")]
+                public AnimationCurve holdingJumpForceCurve;
                 [Tooltip("Force applied upwards when the player jumps AWAY from a wall while climbing.")]
                 public float climbingUpForce = 1f;
                 [Tooltip("Force applied in the forwards direction of the camera when the player jumps AWAY from a wall while climbing.")]
