@@ -161,7 +161,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 2
+  m_Radius: 1.77
   m_Center: {x: 2, y: 0, z: 0}
 --- !u!114 &9180678922554019705
 MonoBehaviour:
@@ -3487,7 +3487,7 @@ MonoBehaviour:
     wallClimbing:
       climableLayers:
         serializedVersion: 2
-        m_Bits: 129
+        m_Bits: 137
       rotateToLayers:
         serializedVersion: 2
         m_Bits: 5001
@@ -3512,7 +3512,7 @@ MonoBehaviour:
         sphereDetectRadius: 0.01
         secondPassMultiplier: 5
         sphereDetectDistance: 1
-        flowerDetectDistance: 0.8
+        flowerDetectDistance: 1
         headbuttDist: 0.2
         surfaceDetectRange: 0.2
         basicGizmos: 0
@@ -3548,7 +3548,7 @@ MonoBehaviour:
   settings:
     movement:
       acceleration: 10
-      boostMultiplier: 18
+      boostMultiplier: 20
       boostStaminaUse: 700
       maxSpeed: 1.8
       airControlFactor: 0.5
