@@ -18,11 +18,9 @@ namespace Player
         public SCTriggers triggers = new SCTriggers();
 
         public string debugString = "null";
-        private bool DEBUGhere = false;
-
+        public bool startLogging = false;
+        
         private SCRunStoredValues vals = new SCRunStoredValues();
-
-        private bool jumpRelease = false;
         //~~~~~~~~~~ PROPERTIES ~~~~~~~~~~
 
         private SquirrelController.SCReferences ParentRefs
@@ -43,6 +41,7 @@ namespace Player
                 PARENT = GetComponentInParent<SquirrelController>();
 
             vals.lastRotationDir = Vector3.down;
+            vals.jumpPressed = -settings.J.checkJumpTime;
         }
 
         //~~~~~~~~~~ MAIN UPDATE FUNCTIONS ~~~~~~~~~~
@@ -117,25 +116,10 @@ namespace Player
             if (Input.GetButtonDown("Jump"))
                 vals.jumpPressed = Time.time;
 
-            if(Input.GetButton("Jump"))
-            {
-                
-                settings.J.minJumpForce += Time.deltaTime * 4f;
-                if(settings.J.minJumpForce > settings.J.maxJumpForce)
-                {
-                    settings.J.minJumpForce = settings.J.maxJumpForce;
-                    if(settings.J.autoJump)
-                    {
-                        jumpRelease = true;
-                    }
-                }
-                
-                    
-            }
-            if(Input.GetButtonUp("Jump"))
-            {
-                jumpRelease = true;
-            }
+            if (Input.GetButton("Jump"))
+                vals.jumpHeld = true;
+            else
+                vals.jumpHeld = false;
 
             if (Input.GetButton("CarefulMode"))
                 vals.carefulModePressed = true;
@@ -143,13 +127,16 @@ namespace Player
                 vals.carefulModePressed = false;
 
             vals.climbButtonPressed = false;
-            if (Input.GetButtonDown("ClimbVault") || Input.GetAxis("ClimbVault") > 0)
+            if (Input.GetButton("ClimbVault") || Input.GetAxis("ClimbVault") > 0)
             {
-                vals.climbButtonPressed = true;
-                vals.climbButtonDown = Time.time;
-                vals.climbButtonHeld = true;
+                if (vals.climbButtonHeld == false)
+                {
+                    vals.climbButtonPressed = true;
+                    vals.climbButtonDown = Time.time;
+                    vals.climbButtonHeld = true;
+                }
             }
-            if (!Input.GetButton("ClimbVault") && Input.GetAxis("ClimbVault") <= 0)
+            else
                 vals.climbButtonHeld = false;
 
             if (Input.GetButton("Zoom"))
@@ -313,7 +300,7 @@ namespace Player
             //-----PHASE FIVE: CHECK OR EDIT RELATIVE AND LATERAL VELOCITY-----//
 
             //Delete the 'upwards' force (relative to player rotation), if requested by the climbing system.
-            if (vals.eliminateUpForce)
+            if (vals.eliminateUpForce && !vals.jumping)
             {
                 vals.eliminateUpForce = false;
                 TransformedNewVelocity.z = 0;
@@ -341,77 +328,104 @@ namespace Player
             ParentRefs.RB.velocity = transform.TransformVector(LateralVelocityNew);
         }
 
-        /// <summary> Check for jump input, and do the appropriate jump for the situation (needs work). </summary>
+        /// <summary> Check for jump input, and do the appropriate jump for the situation. </summary>
         private void Jump()
         {
-            if (vals.inJumpAnimation && jumpRelease)
+            if (!vals.inJumpAnimation)
             {
-                if (Time.time > vals.jumpAnimationStart + settings.J.jumpDelay)
-                {
-                    vals.jumping = true;
-                    vals.lastJump = Time.time;
-                    vals.inJumpAnimation = false;
-                    vals.animationSlow = false;
-                    vals.falling = true;
-                    //PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.falling);
-                    
-                    bool forwardJump = vals.moving && settings.J.allowForwardJumps;
-                    if (forwardJump)
-                    {
-                        //Do a 'forward' jump relative to the character.
-                        ParentRefs.RB.velocity = ParentRefs.model.forward * (settings.J.forwardJumpForce + (settings.J.minJumpForce / 2));
-                        ParentRefs.RB.velocity += -transform.forward * settings.J.minJumpForce * settings.J.forwardJumpHeightDiff;
-                    }
-                    else if (Vector3.Angle(transform.forward, Vector3.down) > settings.S.climbMinAngle)
-                    { //If player is rotated to face the ground.
-                    //Do a wall jump (biased towards up instead of out).
-                        ParentRefs.RB.velocity += -transform.forward * settings.J.minJumpForce * (1 - settings.J.WallJumpAngleEffect);
-                        ParentRefs.RB.velocity += Vector3.up * settings.J.minJumpForce * settings.J.WallJumpAngleEffect;
-                    }
-                    else
-                    {
-                        //Do a normal jump.
-                        ParentRefs.RB.velocity += -transform.forward * settings.J.minJumpForce;
-                    }
-                    settings.J.minJumpForce = settings.J.baseJumpForce;
-                    jumpRelease = false;
-                    PARENT.CallEvents(SquirrelController.EventTrigger.jump);
-                }
-            }
-            else
-            {
-                
-                //If the player wants to and is able to jump, apply a force and set the last jump time.
+                //Check if the player wants to jump, and is allowed to jump:
+
+                //Button was pressed recently - fixes "not on ground this frame" problems.
                 bool tryingToJump = Time.time < vals.jumpPressed + settings.J.checkJumpTime;
+                //Jump is not in cooldown - fixes "spam jump on a slope" problems.
                 bool offCooldown = Time.time > vals.lastJump + settings.J.jumpCooldown;
+                //Player is on the ground, OR was on the ground recently - fixes "jump fails just after falling off edge" problems.
                 bool groundedOrCoyotee = Grounded || Time.time < vals.lastOnSurface + settings.J.coyoteeTime;
+                //Character is not in a state that prevents jumping (such as the landing animation).
                 bool notAnimationLocked = (vals.inJumpAnimation == false && vals.inLandingAnimation == false);
                 if (tryingToJump && groundedOrCoyotee && offCooldown && notAnimationLocked)
                 {
+                    //Set variables to trigger a jump as soon as possible (can be delayed to help animations).
                     vals.jumpPressed = -5;
                     vals.jumpAnimationStart = Time.time;
                     vals.inJumpAnimation = true;
                     vals.animationSlow = true;
+                    PARENT.CallEvents(SquirrelController.EventTrigger.jump);
                 }
-                    
             }
-            
+
+            //If the animation has played for the required time (can be zero), perform the actual jump.
+            if (vals.inJumpAnimation && Time.time > vals.jumpAnimationStart + settings.J.jumpDelay)
+            {
+                vals.jumping = true;
+                vals.lastJump = Time.time;
+                vals.inJumpAnimation = false;
+                vals.animationSlow = false;
+                vals.falling = true;
+
+                if (vals.climbing)
+                {
+                    //Apply force up and away from the camera, or away from the surface if the camera is facing the object.
+
+                    //Remove the vertical component of the vectors (and simplify maths by using v2s).
+                    Vector2 noYCam = new Vector2(ParentRefs.camera.transform.forward.x, ParentRefs.camera.transform.forward.z);
+                    Vector2 noYBody = new Vector2(-transform.forward.x, -transform.forward.z);
+                    //If the camera is facing the surface (i.e. body-up is almost 180 degs away from camera-forwards)
+                    if (Vector2.Angle(noYCam, noYBody) > 180 - settings.J.facingWallAngle)
+                    {
+                        //Do a mostly vertical jump
+                        if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.set)
+                            ParentRefs.RB.velocity = (-transform.forward * settings.J.facingWallOutForce) + (Vector3.up * settings.J.facingWallUpForce);
+                        else //if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.added)
+                            ParentRefs.RB.velocity += (-transform.forward * settings.J.facingWallOutForce) + (Vector3.up * settings.J.facingWallUpForce);
+                    }
+                    else
+                    {
+                        //Do a mostly away-from-camera jump
+                        if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.set)
+                            ParentRefs.RB.velocity = (new Vector3(noYCam.x, 0, noYCam.y) * settings.J.climbingAwayFromCameraForce) + (Vector3.up * settings.J.climbingUpForce);
+                        else //if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.added)
+                            ParentRefs.RB.velocity += (new Vector3(noYCam.x, 0, noYCam.y) * settings.J.climbingAwayFromCameraForce) + (Vector3.up * settings.J.climbingUpForce);
+                    }
+                }
+                else
+                {
+                    //Just apply a force upwards
+                    if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.set)
+                        ParentRefs.RB.velocity = Vector3.up * settings.J.groundedJumpForce;
+                    else if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.added || ParentRefs.RB.velocity.y > 0)
+                        ParentRefs.RB.velocity += Vector3.up * settings.J.groundedJumpForce;
+                    else
+                    {
+                        ParentRefs.RB.velocity -= new Vector3(0, ParentRefs.RB.velocity.y, 0);
+                        ParentRefs.RB.velocity += Vector3.up * settings.J.groundedJumpForce;
+                    }
+                }
+            }
+
+            //Apply an upwards force if still holding jump button.
+            if (vals.jumpHeld && vals.falling)
+            {
+                float timeSinceJump = Time.time - vals.lastJump;
+                if (timeSinceJump < settings.J.holdingJumpForceCurve.length)
+                {
+                    float holdForce = settings.J.holdingJumpForceCurve.Evaluate(timeSinceJump);
+                    ParentRefs.RB.velocity += Vector3.up * holdForce * Time.deltaTime;
+                }
+            }
         }
 
         /// <summary> Rotate the player so their feet are aligned with the surface beneath them, based on a downwards raycast. </summary>
         private void FindAndRotateToSurface() // AKA Climb
         {
-            if (Time.time < vals.lastJump + settings.J.jumpCooldown)
-                return;
-
-            //Raycasts:
-            RaycastHit hitSurface;
-            bool FoundSurface = Physics.Raycast(refs.climbRotateCheckRay.position, -refs.climbRotateCheckRay.up, out hitSurface, settings.WC.programmerSettings.surfaceDetectRange, settings.WC.rotateToLayers);
-
-            Vector3 dir = Vector3.down;
-
             ParentRefs.RB.useGravity = true;
+            bool FoundSurface = false;
+            Vector3 dir = Vector3.down;
             vals.climbing = false;
+            RaycastHit hitSurface = new RaycastHit();
+
+            if ((!vals.jumping || PARENT.TouchingSomething) && Time.time > vals.lastJump + settings.J.jumpCooldown)
+                FoundSurface = Physics.Raycast(refs.climbRotateCheckRay.position, -refs.climbRotateCheckRay.up, out hitSurface, settings.WC.programmerSettings.surfaceDetectRange, settings.WC.rotateToLayers);
 
             if (FoundSurface)
             {
@@ -475,21 +489,18 @@ namespace Player
                         vals.inLandingAnimation = true;
                         vals.landingAnimationStart = Time.time;
                         vals.animationSlow = true;
-                        settings.J.minJumpForce = settings.J.baseJumpForce;
-
-                        jumpRelease = false;
                     }
 
                     //Teleport to the surface, and if its angle is too different eliminate the 'up force' to stop player flying off.
                     Vector3 oldVel = transform.InverseTransformVector(ParentRefs.RB.velocity);
                     TeleportToSurface(hitSurface);
                     ParentRefs.RB.velocity = transform.TransformVector(oldVel);
-                    //if (Vector3.Angle(vals.lastRotationDir, dir) > settings.WC.programmerSettings.wallStickDangerAngle)
-                    //    vals.eliminateUpForce = true;
+                    vals.eliminateUpForce = true;
 
                     //Reset falling, jumping and OnSurface values.
                     vals.falling = false;
                     vals.jumping = false;
+                    vals.lastJump = -1000;
                     vals.lastOnSurface = Time.time;
                 }
 
@@ -551,7 +562,7 @@ namespace Player
             //Cancel climb checks if currently jumping or landing ('save' button press until finished like jump?)
             if (vals.inJumpAnimation || vals.inLandingAnimation)
                 return;
-            
+
             if (vals.climbButtonPressed)
             {
                 if (ClimbCheck(1f, climbChecks.headbutt))
@@ -561,8 +572,9 @@ namespace Player
                 if (ClimbCheck(1f, climbChecks.circle))
                     return;
             }
-            else if (vals.climbButtonHeld)
+            else if (vals.climbButtonHeld && Time.time > vals.lastJump + settings.J.climbCheckCooldown)
             {
+
                 if (vals.falling)
                 {
                     if (ClimbCheck(1.2f, climbChecks.forwards))
@@ -619,6 +631,7 @@ namespace Player
                 Quaternion oldRot = ParentRefs.model.rotation;
                 TeleportToSurface(mainHit);
                 ParentRefs.model.localRotation = oldRot;
+                vals.jumping = false;
                 vals.lastJumpToWall = Time.time;
                 vals.eliminateUpForce = true;
 
@@ -987,7 +1000,8 @@ namespace Player
             public MovementTrigger feet;
         }
 
-        private struct SCRunStoredValues
+        [System.Serializable]
+        public struct SCRunStoredValues
         {
             //INPUT RELATED:
             /// <summary> A player-relative vector representing the movement inputs.
@@ -1046,6 +1060,9 @@ namespace Player
             public bool climbing;
 
             //MESSAGES AND MULTIPLE-UPDATE VALUES:
+            /// <summary> True if the jump button is being held.
+            /// Used to reduce gravity after a jump when holding the button. </summary>
+            public bool jumpHeld;
             /// <summary> The time.time value of the last time the player started a jump.
             /// Used for jump cooldown and to prevent movement forces cancelling the jump.  </summary>
             public float lastJump;
@@ -1209,28 +1226,28 @@ namespace Player
             public class SCJumpSettings
             {
                 [Header("Jump Force Settings")]
-                [Tooltip("Force applied upwards (or outwards) when the player jumps.")]
-                public float minJumpForce = 1.5f;
-                [Tooltip("Force jump gets set back to.")]
-                [HideInInspector]
-                public float baseJumpForce = 1.5f;
-                [Tooltip("Max Force.")]
-                public float maxJumpForce = 5f;
-                [Tooltip("Toggle setting to allow player to jump automatically when at maxJumpForce.")]
-                public bool autoJump = true;
-                [Tooltip("Toggles if a burst of force is applied when jumping and moving.")]
-                public bool allowForwardJumps = true;
-                [Tooltip("Force applied in the direction of motion when the player jumps.")]
-                public float forwardJumpForce = 5f;
-                [Tooltip("forwardJumpVerticalFraction: Fraction of the normal jump force which is also applied in a forward jump.")]
-                [Range(0, 1)]
-                public float forwardJumpHeightDiff = 1f;
-                [Range(0, 1)]
-                public float WallJumpAngleEffect = 0.5f;
+                [Tooltip("Force applied upwards when the player jumps.")]
+                public float groundedJumpForce = 1.5f;
+                [Tooltip("Force applied upwards when the player holds the jump button after jumping. Value is per-second (i.e. * deltaTime)")]
+                public AnimationCurve holdingJumpForceCurve;
+                [Tooltip("Force applied upwards when the player jumps AWAY from a wall while climbing.")]
+                public float climbingUpForce = 1f;
+                [Tooltip("Force applied in the forwards direction of the camera when the player jumps AWAY from a wall while climbing.")]
+                public float climbingAwayFromCameraForce = 0.5f;
+                [Tooltip("Force applied upwards when the player jumps TOWARDS a wall while climbing.")]
+                public float facingWallUpForce = 1f;
+                [Tooltip("Force applied outwards (away from feet) when the player jumps TOWARDS a wall while climbing.")]
+                public float facingWallOutForce = 0.5f;
+                [Tooltip("Angle between the camera and surface normal where the jump stops being based on the camera direction because it would collide with the surface being climbed.")]
+                public float facingWallAngle = 45;
+                public enum JumpForceType { added, set, moreWhenGoingDown };
+                public JumpForceType jumpForceIs = JumpForceType.added;
 
                 [Header("Jump Timing Settings")]
                 [Tooltip("Time after a jump before the player can jump again. Stops superjumps from pressing twice while trigger is still activated. ALSO USED to stop player from teleporting to the ground.")]
                 public float jumpCooldown = 0.2f;
+                [Tooltip("Time after a jump before the player can find climbables again. Lets player jump while climbing. Cooldown is skipped if climb is pressed during it.")]
+                public float climbCheckCooldown = 0.2f;
                 [Tooltip("Time in which jumps will still be triggered if conditions are met after the key is pressed.")]
                 public float checkJumpTime = 0.2f;
                 [Tooltip("Time in which jump will still be allowed after the player leaves the ground. Should always be less than jumpCooldown.")]
