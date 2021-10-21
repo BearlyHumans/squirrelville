@@ -54,7 +54,7 @@ namespace Player
             Initialize();
         }
 
-        void OnCollisionEnter(Collision collision)
+        void OnCollisionStay(Collision collision)
         {
             vals.touchingSomething = true;
         }
