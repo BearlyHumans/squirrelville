@@ -123,6 +123,8 @@ public class Humans : MonoBehaviour
     [HideInInspector]
     public bool hitPlayerStun = false;
 
+    private bool pickUpFoodOnce = false;
+
     [Tooltip("speed of walking player")]
     [SerializeField]
     public float humanWalkSpeed = 2.0f;
@@ -479,6 +481,7 @@ public class Humans : MonoBehaviour
                    bestCollider = hitCollider;
                 }
             }
+            
             CallAnimationEvents(AnimTriggers.walking);
             human.SetDestination(bestCollider.transform.position);
             if (bestDistance < 5f)
@@ -492,14 +495,19 @@ public class Humans : MonoBehaviour
                 
                 walkToFoodTimer = 0f;
             }
-          
+            
             if(bestDistance < 1f)
             {
                 human.velocity = Vector3.zero;
-                acornHolder.SetActive(true);
+                
                 CallAnimationEvents(AnimTriggers.pickup);
-                StartCoroutine(pickUpFood(bestCollider));
-
+                if(!pickUpFoodOnce)
+                {
+                    
+                    StartCoroutine(pickUpFood(bestCollider));
+                    pickUpFoodOnce = true;
+                }
+                
                 walkToFoodTimer = 0f;
             
             } 
@@ -521,14 +529,18 @@ public class Humans : MonoBehaviour
         
         checkBeenRun = true;
     }
+
     
     IEnumerator pickUpFood(Collider food)
     {
         yield return new WaitForSeconds(2.8f);
-    
         food.gameObject.SetActive(false);
+        acornHolder.SetActive(true);
+        pickUpFoodOnce = false;
         food.GetComponent<Food>().respawn();
- 
+
+        yield return new WaitForSeconds(1f);
+        acornHolder.SetActive(false);
     }
 
     IEnumerator returnToPath(float waitTime)
