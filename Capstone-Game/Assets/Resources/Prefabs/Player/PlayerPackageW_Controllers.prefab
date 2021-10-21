@@ -3434,7 +3434,7 @@ MonoBehaviour:
       haltAtFractionOfMaxSpeed: 0.9
       turningThreshold: 0.2
     jump:
-      groundedJumpForce: 4
+      groundedJumpForce: 3
       holdingJumpForceCurve:
         serializedVersion: 2
         m_Curve:
@@ -3478,8 +3478,8 @@ MonoBehaviour:
       climbCheckCooldown: 1
       checkJumpTime: 0.45
       coyoteeTime: 0.2
-      jumpDelay: 0.1
-      landingDelay: 0.4
+      jumpDelay: 0
+      landingDelay: 0.2
       stopWhenJumping: 0
       stopWhenLanding: 0
       carefulModeInAnimations: 1
