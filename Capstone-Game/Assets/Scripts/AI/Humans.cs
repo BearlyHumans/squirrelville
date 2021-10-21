@@ -197,7 +197,6 @@ public class Humans : MonoBehaviour
         timeToFood += Time.deltaTime;
         // -----States------
 
-        print(currentState);
         switch(currentState)
         {
             case HumanStates.PathFollowing:
