@@ -108,10 +108,6 @@ public class SquirrelFoodGrabber : MonoBehaviour
 
         if (nearestFood != null && Input.GetButton("Eat") && CanEatFood())
         {
-            if (Input.GetButtonDown("Eat"))
-            {
-                Instantiate(foodEaten, nearestFood.transform.position, nearestFood.transform.rotation);
-            }
             PickupFood(nearestFood);
         }
 
@@ -135,9 +131,6 @@ public class SquirrelFoodGrabber : MonoBehaviour
     {
         // Assumes GameObject is food
 
-        if (Time.time < pickupTime) return;
-        if (!normalMouth.gameObject.activeInHierarchy) return;
-
         foodStack.Push(food);
         food.SetActive(false);
         pickupTime = Time.time + pickupDelay;
@@ -145,13 +138,12 @@ public class SquirrelFoodGrabber : MonoBehaviour
         controller.CallEvents(SquirrelController.EventTrigger.eat);
         pickupEvent.Invoke(food);
         food.GetComponent<Food>().pickupEvent.Invoke();
+        Instantiate(foodEaten, food.transform.position, food.transform.rotation);
     }
 
     [ContextMenu("Throw food")]
     public void ThrowFood(int mode)
     {
-        if (foodStack.Count == 0) return;
-
         GameObject food = foodStack.Pop();
         Rigidbody foodrb = food.GetComponent<Rigidbody>();
         Transform activeMouth = normalMouth.gameObject.activeInHierarchy ? normalMouth : ballMouth;
@@ -162,7 +154,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
 
         food.SetActive(true);
 
-        if(mode == 0)
+        if (mode == 0)
         {
             food.layer = LayerMask.NameToLayer("Food");
         }
@@ -182,14 +174,25 @@ public class SquirrelFoodGrabber : MonoBehaviour
     public bool CanEatFood()
     {
         return (
+            // Player has room for more food
             (maxFoodInInventory < 0 || GetFoodCount() < maxFoodInInventory) &&
-            !npcInteractionManager.isInteracting
+            // Player isn't interacting with an NPC
+            !npcInteractionManager.isInteracting &&
+            // Pickup cooldown has ended
+            Time.time >= pickupTime &&
+            // In normal squirrel form
+            normalMouth.gameObject.activeInHierarchy
         );
     }
 
     public bool CanThrowFood()
     {
-        return !npcInteractionManager.isInteracting;
+        return (
+            // Player isn't interacting with an NPC
+            !npcInteractionManager.isInteracting &&
+            // Player has food to spit
+            foodStack.Count > 0
+        );
     }
 
     public int GetFoodCount()
