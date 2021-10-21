@@ -328,65 +328,6 @@ namespace Player
             ParentRefs.RB.velocity = transform.TransformVector(LateralVelocityNew);
         }
 
-        /// <summary> Check for jump input, and do the appropriate jump for the situation (needs work). </summary>
-        /*
-        private void OldJump()
-        {
-            if (vals.inJumpAnimation && jumpRelease)
-            {
-                if (Time.time > vals.jumpAnimationStart + settings.J.jumpDelay)
-                {
-                    vals.jumping = true;
-                    vals.lastJump = Time.time;
-                    vals.inJumpAnimation = false;
-                    vals.animationSlow = false;
-                    vals.falling = true;
-                    //PARENT.CallAnimationEvents(SquirrelController.AnimationTrigger.falling);
-                    
-                    bool forwardJump = vals.moving && settings.J.allowForwardJumps;
-                    if (forwardJump)
-                    {
-                        //Do a 'forward' jump relative to the character.
-                        ParentRefs.RB.velocity = ParentRefs.model.forward * (settings.J.forwardJumpForce + (settings.J.groundedJumpForce / 2));
-                        ParentRefs.RB.velocity += -transform.forward * settings.J.groundedJumpForce * settings.J.forwardJumpHeightDiff;
-                    }
-                    else if (Vector3.Angle(transform.forward, Vector3.down) > settings.S.climbMinAngle)
-                    { //If player is rotated to face the ground.
-                    //Do a wall jump (biased towards up instead of out).
-                        ParentRefs.RB.velocity += -transform.forward * settings.J.groundedJumpForce * (1 - settings.J.WallJumpAngleEffect);
-                        ParentRefs.RB.velocity += Vector3.up * settings.J.groundedJumpForce * settings.J.WallJumpAngleEffect;
-                    }
-                    else
-                    {
-                        //Do a normal jump.
-                        ParentRefs.RB.velocity += -transform.forward * settings.J.groundedJumpForce;
-                    }
-                    settings.J.groundedJumpForce = settings.J.groundedJumpForce;
-                    jumpRelease = false;
-                    PARENT.CallEvents(SquirrelController.EventTrigger.jump);
-                }
-            }
-            else
-            {
-                
-                //If the player wants to and is able to jump, apply a force and set the last jump time.
-                bool tryingToJump = Time.time < vals.jumpPressed + settings.J.checkJumpTime;
-                bool offCooldown = Time.time > vals.lastJump + settings.J.jumpCooldown;
-                bool groundedOrCoyotee = Grounded || Time.time < vals.lastOnSurface + settings.J.coyoteeTime;
-                bool notAnimationLocked = (vals.inJumpAnimation == false && vals.inLandingAnimation == false);
-                if (tryingToJump && groundedOrCoyotee && offCooldown && notAnimationLocked)
-                {
-                    vals.jumpPressed = -5;
-                    vals.jumpAnimationStart = Time.time;
-                    vals.inJumpAnimation = true;
-                    vals.animationSlow = true;
-                }
-                    
-            }
-
-        }
-        */
-
         /// <summary> Check for jump input, and do the appropriate jump for the situation. </summary>
         private void Jump()
         {
@@ -421,8 +362,6 @@ namespace Player
                 vals.inJumpAnimation = false;
                 vals.animationSlow = false;
                 vals.falling = true;
-
-                startLogging = true; //DEBUG print
 
                 if (vals.climbing)
                 {
@@ -490,7 +429,6 @@ namespace Player
 
             if (FoundSurface)
             {
-                startLogging = false; //DEBUG print
                 dir = hitSurface.normal;
                 
                 //Get the angle of this surface.
