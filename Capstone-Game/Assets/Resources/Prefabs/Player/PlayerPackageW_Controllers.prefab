@@ -2680,7 +2680,7 @@ MonoBehaviour:
   angleRelativeZoom: 0
   buttonZoomMultiplier: 0.3
   invertY: 1
-  alternateFOV: 65
+  alternateFOV: 60
   zoomToAvoidLayers:
     serializedVersion: 2
     m_Bits: 129
@@ -3434,19 +3434,52 @@ MonoBehaviour:
       haltAtFractionOfMaxSpeed: 0.9
       turningThreshold: 0.2
     jump:
-      minJumpForce: 1.5
-      baseJumpForce: 1.5
-      maxJumpForce: 5
-      autoJump: 0
-      allowForwardJumps: 1
-      forwardJumpForce: 1
-      forwardJumpHeightDiff: 1
-      WallJumpAngleEffect: 0.5
+      groundedJumpForce: 4
+      holdingJumpForceCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 8
+          inSlope: -2.7048836
+          outSlope: -2.7048836
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.29746237
+        - serializedVersion: 3
+          time: 0.2
+          value: 4
+          inSlope: -0.6096234
+          outSlope: -0.6096234
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.1331111
+        - serializedVersion: 3
+          time: 1
+          value: 0
+          inSlope: -8.47784
+          outSlope: -8.47784
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.0666756
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      climbingUpForce: 0.5
+      climbingAwayFromCameraForce: 2.5
+      facingWallUpForce: 2.5
+      facingWallOutForce: 0.5
+      facingWallAngle: 90
+      jumpForceIs: 2
       jumpCooldown: 0.2
-      checkJumpTime: 40
+      climbCheckCooldown: 1
+      checkJumpTime: 0.45
       coyoteeTime: 0.2
       jumpDelay: 0.1
-      landingDelay: 0.15
+      landingDelay: 0.4
       stopWhenJumping: 0
       stopWhenLanding: 0
       carefulModeInAnimations: 1
@@ -3480,7 +3513,7 @@ MonoBehaviour:
         sphereDetectDistance: 1
         flowerDetectDistance: 0.8
         headbuttDist: 0.2
-        surfaceDetectRange: 0.31
+        surfaceDetectRange: 0.2
         basicGizmos: 0
         flowerCheckGizmos: 0
         edgeStopLatRadius: 0.15
@@ -3496,6 +3529,7 @@ MonoBehaviour:
   triggers:
     feet: {fileID: 4583522462575261954}
   debugString: null
+  startLogging: 0
 --- !u!114 &4583522463626215665
 MonoBehaviour:
   m_ObjectHideFlags: 0
