@@ -193,6 +193,7 @@ public class Humans : MonoBehaviour
         timeToFood += Time.deltaTime;
         // -----States------
 
+        print(currentState);
         switch(currentState)
         {
             case HumanStates.PathFollowing:
@@ -231,7 +232,7 @@ public class Humans : MonoBehaviour
         {
             hasCaughtRecently = true;  
             checkBeenRun = false;
-            
+            hitPlayerStun = false;
             // animation stunning (not moving)
             CallAnimationEvents(AnimTriggers.stunning);
 
@@ -254,12 +255,11 @@ public class Humans : MonoBehaviour
                 {
                     if(hitPlayerStun)
                     {
-                        print("did catch");
                         StartCoroutine(returnToPath(returnToPathNoWaitTime));
                     }
                     else
                     {
-                        print("didnt catch");
+                        CallAnimationEvents(AnimTriggers.walking);
                         currentState = HumanStates.Chase;
                     }
                     // if didnt get player enter chase state again
@@ -328,7 +328,7 @@ public class Humans : MonoBehaviour
             havntSpotted = true;
             exclaim.Play();
         }
-
+        
         /// runs a check to see if the human is still within boundary
         if(checkBoundry() == true)
         {
@@ -360,14 +360,14 @@ public class Humans : MonoBehaviour
                 chaseTimer = chaseVariables.chaseTime;
                 SetDest();
                 havntSpotted = false;
-                currentState = HumanStates.PathFollowing;
+                StartCoroutine(returnToPath(returnToPathNoWaitTime));
             }
         }
         /// if the human leaves the set area they will return to following their path
         else
         {
             SetDest();
-            currentState = HumanStates.PathFollowing;
+            StartCoroutine(returnToPath(returnToPathNoWaitTime));
         }
                 
     }
