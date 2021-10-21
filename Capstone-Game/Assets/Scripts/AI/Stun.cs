@@ -9,6 +9,8 @@ public class Stun : MonoBehaviour
 
     private LayerMask layerMask;
 
+    public Humans human;
+
     public float stunRange;
     public float stunTime;
     void Start()
@@ -27,15 +29,19 @@ public class Stun : MonoBehaviour
         Collider[] thingsInBounds = Physics.OverlapSphere(transform.position, stunRange);
         foreach(var thing in thingsInBounds)
         {
+            
             if (thing.tag == playerController.tag) 
             {
                 playerController.FreezeMovement();
+
+                human.hitPlayerStun = true;
 
                 takeFood(foodController,takeFoodAmmount);
                 StartCoroutine(unfreezePlayer(playerController));
 
             }
         }
+       
     }
     private void takeFood(SquirrelFoodGrabber foodController, int takeFoodAmmount)
     {

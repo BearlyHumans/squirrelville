@@ -119,6 +119,10 @@ public class Humans : MonoBehaviour
     //used to check if player has been caught recently 
     bool hasCaughtRecently = false;
 
+    // bool used to check if stun hit player
+    [HideInInspector]
+    public bool hitPlayerStun = false;
+
     [Tooltip("speed of walking player")]
     [SerializeField]
     public float humanWalkSpeed = 2.0f;
@@ -248,7 +252,18 @@ public class Humans : MonoBehaviour
                 }
                 else
                 {
-                    StartCoroutine(returnToPath(returnToPathNoWaitTime));
+                    if(hitPlayerStun)
+                    {
+                        print("did catch");
+                        StartCoroutine(returnToPath(returnToPathNoWaitTime));
+                    }
+                    else
+                    {
+                        print("didnt catch");
+                        currentState = HumanStates.Chase;
+                    }
+                    // if didnt get player enter chase state again
+                    
                 }
             }
             stillFood = checkForFood();
@@ -333,7 +348,9 @@ public class Humans : MonoBehaviour
                 if (distance < 1.5f)
                 {
                     havntSpotted = false;
-                    
+
+                    hasCaughtRecently = false;
+
                     currentState = HumanStates.Catch;
                 }
                      
@@ -489,6 +506,7 @@ public class Humans : MonoBehaviour
             pickedUpFood = true;
             return true;
         }
+
         return false;
     }
 
@@ -517,6 +535,7 @@ public class Humans : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         acornHolder.SetActive(false);
+
         CallAnimationEvents(AnimTriggers.walking);
         pickedUpFood = false;
         currentState = HumanStates.PathFollowing;

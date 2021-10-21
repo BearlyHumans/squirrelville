@@ -1215,6 +1215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stomp: {fileID: 1529563150530141598}
+  human: {fileID: 6767587695065880796}
   stunRange: 1
   stunTime: 2
 --- !u!1 &8516749792529396220
