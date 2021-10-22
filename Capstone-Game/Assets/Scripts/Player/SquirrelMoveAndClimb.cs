@@ -18,8 +18,8 @@ namespace Player
         public SCTriggers triggers = new SCTriggers();
 
         public string debugString = "null";
-        public MultiFrameLogger debugList = new MultiFrameLogger();
-        public bool startLogging = false;
+       // public MultiFrameLogger debugList = new MultiFrameLogger();
+        //public bool startLogging = false;
         
         private SCRunStoredValues vals = new SCRunStoredValues();
         //~~~~~~~~~~ PROPERTIES ~~~~~~~~~~
@@ -51,22 +51,12 @@ namespace Player
         public override void ManualUpdate()
         {
             UpdInput();
-            Debug.DrawLine(refs.climbRotateCheckRay.position, refs.climbRotateCheckRay.position + vals.desiredDirection, new Color(1, 0, 0));
-            Debug.DrawLine(refs.climbRotateCheckRay.position, refs.climbRotateCheckRay.position + ParentRefs.model.forward, new Color(1, 1, 0));
-            Debug.DrawLine(refs.climbRotateCheckRay.position, refs.climbRotateCheckRay.position + ParentRefs.RB.velocity, new Color(1, 0, 1));
-            debugList.EndFrame();
             UpdMove();
-            if (startLogging)
-            {
-                startLogging = false;
-                Debug.Break();
-            }
             Jump();
             Abilities();
             FindAndRotateToSurface();
             RotateModel();
             UpdAnimator();
-            
         }
 
         private void UpdAnimator()
@@ -212,8 +202,6 @@ namespace Player
                 vals.animationSlow = false;
             }
 
-            debugList.AddLog("original Vel = " + ParentRefs.RB.velocity);
-
             //Calculate the ideal velocity from the input and the acceleration settings.
             Vector3 newVelocity;
             newVelocity = ParentRefs.RB.velocity + (vals.desiredDirection * alteredAcceleration * Time.deltaTime);
@@ -227,9 +215,6 @@ namespace Player
             //Get lateral speed by cutting out local-z component (Must be z for LookRotation function to work. Would otherwise be y).
             Vector3 LateralVelocityOld = new Vector3(TransformedOldVelocity.x, TransformedOldVelocity.y, 0);
             Vector3 LateralVelocityNew = new Vector3(TransformedNewVelocity.x, TransformedNewVelocity.y, 0);
-
-            debugList.AddLog("Lat Vel Old = " + LateralVelocityOld);
-            debugList.AddLog("Lat Vel New = " + LateralVelocityNew);
 
             //-----PHASE THREE: AVOID EDGES AND SLOW TO MAX SPEED-----//
 
@@ -261,8 +246,6 @@ namespace Player
                 }
             }
 
-            debugList.AddLog("After limiting = " + LateralVelocityNew);
-
             //-----PHASE FOUR: STOPPING AND FRICTION-----//
 
             //If the player is not trying to move and not jumping, apply stopping force.
@@ -283,8 +266,6 @@ namespace Player
                         LateralVelocityNew = LateralVelocityNew.normalized * Mathf.Max(0, LateralVelocityNew.magnitude - (settings.M.airStoppingForce * Time.deltaTime));
                 }
             }
-
-            debugList.AddLog("After friction = " + LateralVelocityNew);
 
             //-----PHASE FIVE: CHECK OR EDIT RELATIVE AND LATERAL VELOCITY-----//
 
@@ -315,7 +296,6 @@ namespace Player
             LateralVelocityNew += new Vector3(0, 0, TransformedNewVelocity.z);
 
             ParentRefs.RB.velocity = transform.TransformVector(LateralVelocityNew);
-            debugList.AddLog("After everything = " + ParentRefs.RB.velocity);
         }
 
         /// <summary> Check for jump input, and do the appropriate jump for the situation. </summary>
@@ -356,13 +336,15 @@ namespace Player
                 if (vals.climbing)
                 {
                     //Apply force up and away from the camera, or away from the surface if the camera is facing the object.
+                    vals.lastClimbingJump = Time.time;
 
                     //Remove the vertical component of the vectors (and simplify maths by using v2s).
                     Vector2 noYCam = new Vector2(ParentRefs.camera.transform.forward.x, ParentRefs.camera.transform.forward.z);
                     Vector2 noYBody = new Vector2(-transform.forward.x, -transform.forward.z);
+
                     //If the camera is facing the surface (i.e. body-up is almost 180 degs away from camera-forwards)
                     if (Vector2.Angle(noYCam, noYBody) > 180 - settings.J.facingWallAngle)
-                    {
+                    {//FACING SURFACE
                         //Do a mostly vertical jump
                         if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.set)
                             ParentRefs.RB.velocity = (-transform.forward * settings.J.facingWallOutForce) + (Vector3.up * settings.J.facingWallUpForce);
@@ -370,7 +352,7 @@ namespace Player
                             ParentRefs.RB.velocity += (-transform.forward * settings.J.facingWallOutForce) + (Vector3.up * settings.J.facingWallUpForce);
                     }
                     else
-                    {
+                    {//NOT FACING SURFACE
                         //Do a mostly away-from-camera jump
                         if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.set)
                             ParentRefs.RB.velocity = (new Vector3(noYCam.x, 0, noYCam.y) * settings.J.climbingAwayFromCameraForce) + (Vector3.up * settings.J.climbingUpForce);
@@ -380,6 +362,8 @@ namespace Player
                 }
                 else
                 {
+                    vals.lastClimbingJump = -1000;
+
                     //Just apply a force upwards
                     if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.set)
                         ParentRefs.RB.velocity = Vector3.up * settings.J.groundedJumpForce;
@@ -491,6 +475,7 @@ namespace Player
                     vals.falling = false;
                     vals.jumping = false;
                     vals.lastJump = -1000;
+                    vals.lastClimbingJump = -1000;
                     vals.lastOnSurface = Time.time;
                 }
 
@@ -524,8 +509,7 @@ namespace Player
 
         private Vector3 Edgechecking(Vector3 startingLatVel)
         {
-
-            if (Grounded && (vals.carefulModePressed || vals.climbButtonHeld))
+            if (Grounded && (vals.carefulModePressed || vals.climbButtonHeld) && Time.time > vals.lastJump + settings.J.climbCheckCooldown)
             {
                 //Checks for edges (so that corner vaulting can work), but only actually stop at them if the button (Ctrl) is pressed.
                 Vector3 postEdgeCodeLatVel;
@@ -592,6 +576,8 @@ namespace Player
 
             if (vals.climbButtonPressed)
             {
+                vals.lastClimbingJump = -1000;
+
                 if (ClimbCheck(1f, climbChecks.headbutt))
                     return;
                 if (ClimbCheck(1f, climbChecks.forwards))
@@ -599,7 +585,7 @@ namespace Player
                 if (ClimbCheck(1f, climbChecks.circle))
                     return;
             }
-            else if (vals.climbButtonHeld && Time.time > vals.lastJump + settings.J.climbCheckCooldown)
+            else if (vals.climbButtonHeld && Time.time > vals.lastClimbingJump + settings.J.climbCheckCooldown)
             {
 
                 if (vals.falling)
@@ -934,6 +920,14 @@ namespace Player
                 //Down check range
                 Gizmos.color = Color.magenta;
                 Gizmos.DrawLine(refs.climbRotateCheckRay.position, refs.climbRotateCheckRay.position - refs.climbRotateCheckRay.up * settings.WC.programmerSettings.surfaceDetectRange);
+
+                //TEMP:
+
+                //Camera and body angles
+                Vector2 noYCam = new Vector2(ParentRefs.camera.transform.forward.x, ParentRefs.camera.transform.forward.z);
+                Vector2 noYBody = new Vector2(-transform.forward.x, -transform.forward.z);
+                Debug.DrawLine(refs.climbRotateCheckRay.position, refs.climbRotateCheckRay.position + new Vector3(noYCam.x, 0, noYCam.y), Color.cyan);
+                Debug.DrawLine(refs.climbRotateCheckRay.position, refs.climbRotateCheckRay.position + new Vector3(noYBody.x, 0, noYBody.y), Color.green);
             }
 
 
@@ -1092,6 +1086,9 @@ namespace Player
             /// <summary> The time.time value of the last time the player started a jump.
             /// Used for jump cooldown and to prevent movement forces cancelling the jump.  </summary>
             public float lastJump;
+            /// <summary> The time.time value of the last time the player jumped while climbing.
+            /// Used to stop climbing checks from cancelling jumps. </summary>
+            public float lastClimbingJump;
             /// <summary> The time.time value of the last time the player was close enough to a surface to climb on it.
             /// Used to check if jumps are allowed, and if 'air-control' modifiers should be used. </summary>
             public float lastOnSurface;
@@ -1272,7 +1269,7 @@ namespace Player
                 [Header("Jump Timing Settings")]
                 [Tooltip("Time after a jump before the player can jump again. Stops superjumps from pressing twice while trigger is still activated. ALSO USED to stop player from teleporting to the ground.")]
                 public float jumpCooldown = 0.2f;
-                [Tooltip("Time after a jump before the player can find climbables again. Lets player jump while climbing. Cooldown is skipped if climb is pressed during it.")]
+                [Tooltip("Time after a climbing jump before the player can find climbables again. Lets player jump while climbing. Cooldown is skipped if climb is pressed during it.")]
                 public float climbCheckCooldown = 0.2f;
                 [Tooltip("Time in which jumps will still be triggered if conditions are met after the key is pressed.")]
                 public float checkJumpTime = 0.2f;
