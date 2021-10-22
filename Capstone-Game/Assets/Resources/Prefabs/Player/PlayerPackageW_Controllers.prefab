@@ -3469,11 +3469,11 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-      climbingUpForce: 0.5
-      climbingAwayFromCameraForce: 2.5
-      facingWallUpForce: 2.5
+      climbingUpForce: 1.5
+      climbingAwayFromCameraForce: 4
+      facingWallUpForce: 3.5
       facingWallOutForce: 0.5
-      facingWallAngle: 90
+      facingWallAngle: 60
       jumpForceIs: 2
       jumpCooldown: 0.2
       climbCheckCooldown: 1
@@ -3529,14 +3529,6 @@ MonoBehaviour:
   triggers:
     feet: {fileID: 4583522462575261954}
   debugString: null
-  debugList:
-    thisFrame:
-      Name: Frame 0
-      log: []
-    loggedFrames: []
-    maxFramesTracked: 30
-    totalFrames: 0
-  startLogging: 0
 --- !u!114 &4583522463626215665
 MonoBehaviour:
   m_ObjectHideFlags: 0

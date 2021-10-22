@@ -348,16 +348,26 @@ namespace Player
                         //Do a mostly vertical jump
                         if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.set)
                             ParentRefs.RB.velocity = (-transform.forward * settings.J.facingWallOutForce) + (Vector3.up * settings.J.facingWallUpForce);
-                        else //if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.added)
+                        else if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.added)
                             ParentRefs.RB.velocity += (-transform.forward * settings.J.facingWallOutForce) + (Vector3.up * settings.J.facingWallUpForce);
+                        else
+                        {
+                            ParentRefs.RB.velocity -= new Vector3(0, ParentRefs.RB.velocity.y, 0);
+                            ParentRefs.RB.velocity += (-transform.forward * settings.J.facingWallOutForce) + (Vector3.up * settings.J.facingWallUpForce);
+                        }
                     }
                     else
                     {//NOT FACING SURFACE
                         //Do a mostly away-from-camera jump
                         if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.set)
                             ParentRefs.RB.velocity = (new Vector3(noYCam.x, 0, noYCam.y) * settings.J.climbingAwayFromCameraForce) + (Vector3.up * settings.J.climbingUpForce);
-                        else //if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.added)
+                        else if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.added)
                             ParentRefs.RB.velocity += (new Vector3(noYCam.x, 0, noYCam.y) * settings.J.climbingAwayFromCameraForce) + (Vector3.up * settings.J.climbingUpForce);
+                        else
+                        {
+                            ParentRefs.RB.velocity -= new Vector3(0, ParentRefs.RB.velocity.y, 0);
+                            ParentRefs.RB.velocity += (new Vector3(noYCam.x, 0, noYCam.y) * settings.J.climbingAwayFromCameraForce) + (Vector3.up * settings.J.climbingUpForce);
+                        }
                     }
                 }
                 else
@@ -1250,27 +1260,29 @@ namespace Player
             {
                 [Header("Jump Force Settings")]
                 [Tooltip("Force applied upwards when the player jumps.")]
-                public float groundedJumpForce = 1.5f;
+                public float groundedJumpForce = 3f;
                 [Tooltip("Force applied upwards when the player holds the jump button after jumping. Value is per-second (i.e. * deltaTime)")]
                 public AnimationCurve holdingJumpForceCurve;
                 [Tooltip("Force applied upwards when the player jumps AWAY from a wall while climbing.")]
-                public float climbingUpForce = 1f;
+                public float climbingUpForce = 1.5f;
                 [Tooltip("Force applied in the forwards direction of the camera when the player jumps AWAY from a wall while climbing.")]
-                public float climbingAwayFromCameraForce = 0.5f;
+                public float climbingAwayFromCameraForce = 4f;
                 [Tooltip("Force applied upwards when the player jumps TOWARDS a wall while climbing.")]
-                public float facingWallUpForce = 1f;
+                public float facingWallUpForce = 3.5f;
                 [Tooltip("Force applied outwards (away from feet) when the player jumps TOWARDS a wall while climbing.")]
                 public float facingWallOutForce = 0.5f;
                 [Tooltip("Angle between the camera and surface normal where the jump stops being based on the camera direction because it would collide with the surface being climbed.")]
-                public float facingWallAngle = 45;
+                public float facingWallAngle = 60;
                 public enum JumpForceType { added, set, moreWhenGoingDown };
-                public JumpForceType jumpForceIs = JumpForceType.added;
+                [Tooltip("Method for applying jump force: Set = the velocity becomes equal to the new value (only for comparison purposes), Add = jump force is added to the velocity," +
+                    "MoreWhenGoingDown = delete downwards velocity before adding (recommended).")]
+                public JumpForceType jumpForceIs = JumpForceType.moreWhenGoingDown;
 
                 [Header("Jump Timing Settings")]
                 [Tooltip("Time after a jump before the player can jump again. Stops superjumps from pressing twice while trigger is still activated. ALSO USED to stop player from teleporting to the ground.")]
                 public float jumpCooldown = 0.2f;
                 [Tooltip("Time after a climbing jump before the player can find climbables again. Lets player jump while climbing. Cooldown is skipped if climb is pressed during it.")]
-                public float climbCheckCooldown = 0.2f;
+                public float climbCheckCooldown = 0.5f;
                 [Tooltip("Time in which jumps will still be triggered if conditions are met after the key is pressed.")]
                 public float checkJumpTime = 0.2f;
                 [Tooltip("Time in which jump will still be allowed after the player leaves the ground. Should always be less than jumpCooldown.")]
@@ -1297,10 +1309,8 @@ namespace Player
                     "This layer should include the ground so that getting from (e.g.) trees to the ground is easy.")]
                 public LayerMask headbuttLayers = new LayerMask();
 
+                [Tooltip("Difference between the current and target surfaces angles below which climbing will fail.")]
                 public float minAngleDiffToClimb = 20;
-
-                public bool stopFlowerOnEZClimb = true;
-                public bool stopAllOnEZClimb = false;
 
                 [Space]
                 [Tooltip("Time away from a surface before the character rotates to face the ground.")]
@@ -1311,13 +1321,13 @@ namespace Player
                 public float moveUnitsPerSecond = 5f;
 
                 [Space]
-                [Tooltip("")]
+                [Tooltip("How long you have to walk into an edge before you vault it automatically.")]
                 public float autoVaultTime = 1f;
-                [Tooltip("")]
+                [Tooltip("How long you are slowed down for after completing a vault.")]
                 public float postVaultSlowTime = 0.2f;
-                [Tooltip("")]
+                [Tooltip("How much you are slowed down by after completing a vault (as a multiplier).")]
                 public float postVaultSpeedFactor = 0.2f;
-                [Tooltip("")]
+                [Tooltip("Wether the slow is applied at the top of objects or just when still climbing after the vault (i.e. around a tree).")]
                 public bool vaultSlowsWhenClimbing = false;
 
                 [Space]
