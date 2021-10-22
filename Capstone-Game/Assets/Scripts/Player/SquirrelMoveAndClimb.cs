@@ -777,7 +777,6 @@ namespace Player
             {
                 float mag = settings.WC.programmerSettings.edgeStopLatRadius;
                 pos = refs.climbRotateCheckRay.position + transform.TransformVector(points[i]) * mag;
-                Debug.DrawLine(pos, pos + transform.forward * settings.WC.programmerSettings.edgeStopDownDist);
                 if (Physics.Raycast(pos, transform.forward, out hit, settings.WC.programmerSettings.edgeStopDownDist, settings.WC.rotateToLayers))
                 {
                     if (Vector3.Angle(hit.normal, -transform.forward) < settings.WC.programmerSettings.EdgeDetectAngle)
@@ -932,12 +931,6 @@ namespace Player
                 Gizmos.DrawLine(refs.climbRotateCheckRay.position, refs.climbRotateCheckRay.position - refs.climbRotateCheckRay.up * settings.WC.programmerSettings.surfaceDetectRange);
 
                 //TEMP:
-
-                //Camera and body angles
-                Vector2 noYCam = new Vector2(ParentRefs.camera.transform.forward.x, ParentRefs.camera.transform.forward.z);
-                Vector2 noYBody = new Vector2(-transform.forward.x, -transform.forward.z);
-                Debug.DrawLine(refs.climbRotateCheckRay.position, refs.climbRotateCheckRay.position + new Vector3(noYCam.x, 0, noYCam.y), Color.cyan);
-                Debug.DrawLine(refs.climbRotateCheckRay.position, refs.climbRotateCheckRay.position + new Vector3(noYBody.x, 0, noYBody.y), Color.green);
             }
 
 
