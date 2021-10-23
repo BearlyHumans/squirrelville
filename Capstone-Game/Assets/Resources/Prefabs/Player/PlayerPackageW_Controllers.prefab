@@ -3469,11 +3469,11 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-      climbingUpForce: 0.5
-      climbingAwayFromCameraForce: 2.5
-      facingWallUpForce: 2.5
+      climbingUpForce: 1.5
+      climbingAwayFromCameraForce: 4
+      facingWallUpForce: 3.5
       facingWallOutForce: 0.5
-      facingWallAngle: 90
+      facingWallAngle: 60
       jumpForceIs: 2
       jumpCooldown: 0.2
       climbCheckCooldown: 1
@@ -3500,11 +3500,10 @@ MonoBehaviour:
       noSurfResetTime: 0.3
       rotateDegreesPerSecond: 720
       moveUnitsPerSecond: 5
-      onlyVaultOnDash: 1
+      autoVaultTime: 1
       postVaultSlowTime: 0.2
       postVaultSpeedFactor: 0.5
       vaultSlowsWhenClimbing: 0
-      autoVaultActivationTime: 0.2
       autoclimbCooldown: 0.33
       cornerVaultCooldown: 0.33
       teleportCooldown: 0.01
@@ -3519,18 +3518,17 @@ MonoBehaviour:
         flowerCheckGizmos: 0
         edgeStopLatRadius: 0.15
         edgeStopDownDist: 0.15
-        edgeSlideCheckDist: 0.1
+        edgeSlideCheckAngles: 10
         wallStickDangerAngle: 10
         edgeDetectGizmos: 1
         SJCheckHeight: 2
         EdgeDetectAngle: 70
         CornerJumpDepth: 0.7
-        CornerJumpBackDepth: 1
+        CornerJumpBackDepth: 2
         edgeVaultGizmos: 1
   triggers:
     feet: {fileID: 4583522462575261954}
   debugString: null
-  startLogging: 0
 --- !u!114 &4583522463626215665
 MonoBehaviour:
   m_ObjectHideFlags: 0

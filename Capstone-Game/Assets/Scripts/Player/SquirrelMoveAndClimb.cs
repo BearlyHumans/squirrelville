@@ -18,7 +18,8 @@ namespace Player
         public SCTriggers triggers = new SCTriggers();
 
         public string debugString = "null";
-        public bool startLogging = false;
+       // public MultiFrameLogger debugList = new MultiFrameLogger();
+        //public bool startLogging = false;
         
         private SCRunStoredValues vals = new SCRunStoredValues();
         //~~~~~~~~~~ PROPERTIES ~~~~~~~~~~
@@ -50,13 +51,12 @@ namespace Player
         public override void ManualUpdate()
         {
             UpdInput();
-            UpdMove(); 
+            UpdMove();
             Jump();
             Abilities();
             FindAndRotateToSurface();
             RotateModel();
             UpdAnimator();
-            
         }
 
         private void UpdAnimator()
@@ -218,37 +218,7 @@ namespace Player
 
             //-----PHASE THREE: AVOID EDGES AND SLOW TO MAX SPEED-----//
 
-            if (Grounded && (vals.carefulModePressed || vals.climbButtonHeld))
-            {
-                //Checks for edges (so that corner vaulting can work), but only actually stop at them if the button (Ctrl) is pressed.
-                Vector3 postEdgeCodeLatVel;
-                if (LateralVelocityNew != Vector3.zero)
-                    postEdgeCodeLatVel = AvoidEdgesLinear(LateralVelocityNew);
-                else
-                    postEdgeCodeLatVel = AvoidEdgesLinear(vals.desiredDirection);
-
-                if (vals.carefulModePressed)
-                    LateralVelocityNew = postEdgeCodeLatVel;
-                else if (vals.stoppedAtEdge && vals.climbButtonHeld)
-                {
-                    if (settings.WC.onlyVaultOnDash)
-                    {
-                        if (vals.dashing)
-                        {
-                            if (!JumpAroundCorners())
-                                LateralVelocityNew = postEdgeCodeLatVel;
-                        }
-                        else
-                            LateralVelocityNew = postEdgeCodeLatVel;
-                    }
-                    else
-                    {
-                        if (!JumpAroundCorners())
-                            LateralVelocityNew = postEdgeCodeLatVel;
-                    }
-                        
-                }
-            }
+            LateralVelocityNew = Edgechecking(LateralVelocityNew);
 
             //If the local lateral velocity of the player is above the max speed, do not allow any increases in speed due to input.
             if (LateralVelocityNew.magnitude > alteredMaxSpeed)
@@ -296,7 +266,7 @@ namespace Player
                         LateralVelocityNew = LateralVelocityNew.normalized * Mathf.Max(0, LateralVelocityNew.magnitude - (settings.M.airStoppingForce * Time.deltaTime));
                 }
             }
-            
+
             //-----PHASE FIVE: CHECK OR EDIT RELATIVE AND LATERAL VELOCITY-----//
 
             //Delete the 'upwards' force (relative to player rotation), if requested by the climbing system.
@@ -366,30 +336,44 @@ namespace Player
                 if (vals.climbing)
                 {
                     //Apply force up and away from the camera, or away from the surface if the camera is facing the object.
+                    vals.lastClimbingJump = Time.time;
 
                     //Remove the vertical component of the vectors (and simplify maths by using v2s).
                     Vector2 noYCam = new Vector2(ParentRefs.camera.transform.forward.x, ParentRefs.camera.transform.forward.z);
                     Vector2 noYBody = new Vector2(-transform.forward.x, -transform.forward.z);
+
                     //If the camera is facing the surface (i.e. body-up is almost 180 degs away from camera-forwards)
                     if (Vector2.Angle(noYCam, noYBody) > 180 - settings.J.facingWallAngle)
-                    {
+                    {//FACING SURFACE
                         //Do a mostly vertical jump
                         if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.set)
                             ParentRefs.RB.velocity = (-transform.forward * settings.J.facingWallOutForce) + (Vector3.up * settings.J.facingWallUpForce);
-                        else //if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.added)
+                        else if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.added)
                             ParentRefs.RB.velocity += (-transform.forward * settings.J.facingWallOutForce) + (Vector3.up * settings.J.facingWallUpForce);
+                        else
+                        {
+                            ParentRefs.RB.velocity -= new Vector3(0, ParentRefs.RB.velocity.y, 0);
+                            ParentRefs.RB.velocity += (-transform.forward * settings.J.facingWallOutForce) + (Vector3.up * settings.J.facingWallUpForce);
+                        }
                     }
                     else
-                    {
+                    {//NOT FACING SURFACE
                         //Do a mostly away-from-camera jump
                         if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.set)
                             ParentRefs.RB.velocity = (new Vector3(noYCam.x, 0, noYCam.y) * settings.J.climbingAwayFromCameraForce) + (Vector3.up * settings.J.climbingUpForce);
-                        else //if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.added)
+                        else if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.added)
                             ParentRefs.RB.velocity += (new Vector3(noYCam.x, 0, noYCam.y) * settings.J.climbingAwayFromCameraForce) + (Vector3.up * settings.J.climbingUpForce);
+                        else
+                        {
+                            ParentRefs.RB.velocity -= new Vector3(0, ParentRefs.RB.velocity.y, 0);
+                            ParentRefs.RB.velocity += (new Vector3(noYCam.x, 0, noYCam.y) * settings.J.climbingAwayFromCameraForce) + (Vector3.up * settings.J.climbingUpForce);
+                        }
                     }
                 }
                 else
                 {
+                    vals.lastClimbingJump = -1000;
+
                     //Just apply a force upwards
                     if (settings.J.jumpForceIs == SCRunModeSettings.SCJumpSettings.JumpForceType.set)
                         ParentRefs.RB.velocity = Vector3.up * settings.J.groundedJumpForce;
@@ -501,6 +485,7 @@ namespace Player
                     vals.falling = false;
                     vals.jumping = false;
                     vals.lastJump = -1000;
+                    vals.lastClimbingJump = -1000;
                     vals.lastOnSurface = Time.time;
                 }
 
@@ -531,6 +516,42 @@ namespace Player
         }
 
         //~~~~~~~~~~ HELPER/SUB-FUNCTIONS ~~~~~~~~~~
+
+        private Vector3 Edgechecking(Vector3 startingLatVel)
+        {
+            if (Grounded && (vals.carefulModePressed || vals.climbButtonHeld) && Time.time > vals.lastJump + settings.J.climbCheckCooldown)
+            {
+                //Checks for edges (so that corner vaulting can work), but only actually stop at them if the button (Ctrl) is pressed.
+                Vector3 postEdgeCodeLatVel;
+                bool stoppedBeforeCheck = vals.stoppedAtEdge;
+                if (startingLatVel != Vector3.zero)
+                    postEdgeCodeLatVel = AvoidEdgesLinear(startingLatVel);
+                else
+                    postEdgeCodeLatVel = AvoidEdgesLinear(vals.desiredDirection);
+                
+                if (vals.stoppedAtEdge)
+                {
+                    if (!stoppedBeforeCheck)
+                        vals.firstStoppedAtEdge = Time.time;
+                    else if (Time.time > vals.firstStoppedAtEdge + settings.WC.autoVaultTime)
+                    {
+                        if (vals.dashing)
+                            return startingLatVel;
+                        else
+                            JumpAroundCorners();
+                    }
+                }
+
+                if (vals.dashing)
+                {
+                    if (vals.stoppedAtEdge)
+                        JumpAroundCorners();
+                }
+                else
+                    return postEdgeCodeLatVel;
+            }
+            return startingLatVel;
+        }
 
         /// <summary> Rotate the players model each frame so it aligns with the body (used to smooth jumping animations). </summary>
         private void RotateModel()
@@ -565,6 +586,8 @@ namespace Player
 
             if (vals.climbButtonPressed)
             {
+                vals.lastClimbingJump = -1000;
+
                 if (ClimbCheck(1f, climbChecks.headbutt))
                     return;
                 if (ClimbCheck(1f, climbChecks.forwards))
@@ -572,7 +595,7 @@ namespace Player
                 if (ClimbCheck(1f, climbChecks.circle))
                     return;
             }
-            else if (vals.climbButtonHeld && Time.time > vals.lastJump + settings.J.climbCheckCooldown)
+            else if (vals.climbButtonHeld && Time.time > vals.lastClimbingJump + settings.J.climbCheckCooldown)
             {
 
                 if (vals.falling)
@@ -735,12 +758,11 @@ namespace Player
         {
             Vector3[] points = new Vector3[5];
             points[0] = lateralVelocity.normalized;
-            vals.edgeRayStart = points[0];
-
-            points[1] = points[0] + Vector3.Cross(points[0], Vector3.forward) * (settings.WC.programmerSettings.edgeSlideCheckDist / 2);
-            points[2] = points[0] - Vector3.Cross(points[0], Vector3.forward) * (settings.WC.programmerSettings.edgeSlideCheckDist / 2);
-            points[3] = points[0] + Vector3.Cross(points[0], Vector3.forward) * settings.WC.programmerSettings.edgeSlideCheckDist;
-            points[4] = points[0] - Vector3.Cross(points[0], Vector3.forward) * settings.WC.programmerSettings.edgeSlideCheckDist;
+            
+            points[1] = Quaternion.AngleAxis(settings.WC.programmerSettings.edgeSlideCheckAngles, Vector3.forward) * points[0];
+            points[2] = Quaternion.AngleAxis(-settings.WC.programmerSettings.edgeSlideCheckAngles, Vector3.forward) * points[0];
+            points[3] = Quaternion.AngleAxis(settings.WC.programmerSettings.edgeSlideCheckAngles * 2, Vector3.forward) * points[0];
+            points[4] = Quaternion.AngleAxis(-settings.WC.programmerSettings.edgeSlideCheckAngles * 2, Vector3.forward) * points[0];
 
             float[] multiplier = new float[5];
             multiplier[0] = 1;
@@ -907,6 +929,8 @@ namespace Player
                 //Down check range
                 Gizmos.color = Color.magenta;
                 Gizmos.DrawLine(refs.climbRotateCheckRay.position, refs.climbRotateCheckRay.position - refs.climbRotateCheckRay.up * settings.WC.programmerSettings.surfaceDetectRange);
+
+                //TEMP:
             }
 
 
@@ -951,12 +975,11 @@ namespace Player
 
             Vector3[] points = new Vector3[5];
             points[0] = lateralVelocity.normalized;
-            vals.edgeRayStart = points[0];
 
-            points[1] = points[0] + Vector3.Cross(points[0], Vector3.up) * (settings.WC.programmerSettings.edgeSlideCheckDist / 2);
-            points[2] = points[0] - Vector3.Cross(points[0], Vector3.up) * (settings.WC.programmerSettings.edgeSlideCheckDist / 2);
-            points[3] = points[0] + Vector3.Cross(points[0], Vector3.up) * settings.WC.programmerSettings.edgeSlideCheckDist;
-            points[4] = points[0] - Vector3.Cross(points[0], Vector3.up) * settings.WC.programmerSettings.edgeSlideCheckDist;
+            points[1] = Quaternion.AngleAxis(settings.WC.programmerSettings.edgeSlideCheckAngles, Vector3.up) * points[0];
+            points[2] = Quaternion.AngleAxis(-settings.WC.programmerSettings.edgeSlideCheckAngles, Vector3.up) * points[0];
+            points[3] = Quaternion.AngleAxis(settings.WC.programmerSettings.edgeSlideCheckAngles * 2, Vector3.up) * points[0];
+            points[4] = Quaternion.AngleAxis(-settings.WC.programmerSettings.edgeSlideCheckAngles * 2, Vector3.up) * points[0];
 
             float[] multiplier = new float[5];
             multiplier[0] = 1;
@@ -1066,6 +1089,9 @@ namespace Player
             /// <summary> The time.time value of the last time the player started a jump.
             /// Used for jump cooldown and to prevent movement forces cancelling the jump.  </summary>
             public float lastJump;
+            /// <summary> The time.time value of the last time the player jumped while climbing.
+            /// Used to stop climbing checks from cancelling jumps. </summary>
+            public float lastClimbingJump;
             /// <summary> The time.time value of the last time the player was close enough to a surface to climb on it.
             /// Used to check if jumps are allowed, and if 'air-control' modifiers should be used. </summary>
             public float lastOnSurface;
@@ -1084,12 +1110,12 @@ namespace Player
             /// <summary> True if the player detected an edge (no surface in front of the player with a relative angle less than 90deg).
             /// Used to allow a corner jump if an appropriate button (dash or jump) is also pressed </summary>
             public bool stoppedAtEdge;
+            /// <summary> Time of the first frame that the player stopped at this edge (i.e. wasn't stopped last frame).
+            /// Used to automatically vault (or when dashing just ignore a non-vaultable edge) after a duration. </summary>
+            public float firstStoppedAtEdge;
             /// <summary> True if the player is on a surface they are not allowed to climb.
             /// Disables control of movement but allows jumping still. </summary>
             public bool onSlippery;
-            /// <summary> The start position of the main edge detect ray.
-            /// Used as the starting point to detect corners for more efficiency and flexibility. </summary>
-            public Vector3 edgeRayStart;
             /// <summary> Message bool telling the UpdMovement function to remove up/down (z axis) forces on that frame.
             /// Used because this action needs to be done at a different point to when the action is requested (FindAndRotateToSurface). </summary>
             public bool eliminateUpForce;
@@ -1227,27 +1253,29 @@ namespace Player
             {
                 [Header("Jump Force Settings")]
                 [Tooltip("Force applied upwards when the player jumps.")]
-                public float groundedJumpForce = 1.5f;
+                public float groundedJumpForce = 3f;
                 [Tooltip("Force applied upwards when the player holds the jump button after jumping. Value is per-second (i.e. * deltaTime)")]
                 public AnimationCurve holdingJumpForceCurve;
                 [Tooltip("Force applied upwards when the player jumps AWAY from a wall while climbing.")]
-                public float climbingUpForce = 1f;
+                public float climbingUpForce = 1.5f;
                 [Tooltip("Force applied in the forwards direction of the camera when the player jumps AWAY from a wall while climbing.")]
-                public float climbingAwayFromCameraForce = 0.5f;
+                public float climbingAwayFromCameraForce = 4f;
                 [Tooltip("Force applied upwards when the player jumps TOWARDS a wall while climbing.")]
-                public float facingWallUpForce = 1f;
+                public float facingWallUpForce = 3.5f;
                 [Tooltip("Force applied outwards (away from feet) when the player jumps TOWARDS a wall while climbing.")]
                 public float facingWallOutForce = 0.5f;
                 [Tooltip("Angle between the camera and surface normal where the jump stops being based on the camera direction because it would collide with the surface being climbed.")]
-                public float facingWallAngle = 45;
+                public float facingWallAngle = 60;
                 public enum JumpForceType { added, set, moreWhenGoingDown };
-                public JumpForceType jumpForceIs = JumpForceType.added;
+                [Tooltip("Method for applying jump force: Set = the velocity becomes equal to the new value (only for comparison purposes), Add = jump force is added to the velocity," +
+                    "MoreWhenGoingDown = delete downwards velocity before adding (recommended).")]
+                public JumpForceType jumpForceIs = JumpForceType.moreWhenGoingDown;
 
                 [Header("Jump Timing Settings")]
                 [Tooltip("Time after a jump before the player can jump again. Stops superjumps from pressing twice while trigger is still activated. ALSO USED to stop player from teleporting to the ground.")]
                 public float jumpCooldown = 0.2f;
-                [Tooltip("Time after a jump before the player can find climbables again. Lets player jump while climbing. Cooldown is skipped if climb is pressed during it.")]
-                public float climbCheckCooldown = 0.2f;
+                [Tooltip("Time after a climbing jump before the player can find climbables again. Lets player jump while climbing. Cooldown is skipped if climb is pressed during it.")]
+                public float climbCheckCooldown = 0.5f;
                 [Tooltip("Time in which jumps will still be triggered if conditions are met after the key is pressed.")]
                 public float checkJumpTime = 0.2f;
                 [Tooltip("Time in which jump will still be allowed after the player leaves the ground. Should always be less than jumpCooldown.")]
@@ -1274,10 +1302,8 @@ namespace Player
                     "This layer should include the ground so that getting from (e.g.) trees to the ground is easy.")]
                 public LayerMask headbuttLayers = new LayerMask();
 
+                [Tooltip("Difference between the current and target surfaces angles below which climbing will fail.")]
                 public float minAngleDiffToClimb = 20;
-
-                public bool stopFlowerOnEZClimb = true;
-                public bool stopAllOnEZClimb = false;
 
                 [Space]
                 [Tooltip("Time away from a surface before the character rotates to face the ground.")]
@@ -1288,16 +1314,14 @@ namespace Player
                 public float moveUnitsPerSecond = 5f;
 
                 [Space]
-                [Tooltip("")]
-                public bool onlyVaultOnDash = true;
-                [Tooltip("")]
+                [Tooltip("How long you have to walk into an edge before you vault it automatically.")]
+                public float autoVaultTime = 1f;
+                [Tooltip("How long you are slowed down for after completing a vault.")]
                 public float postVaultSlowTime = 0.2f;
-                [Tooltip("")]
+                [Tooltip("How much you are slowed down by after completing a vault (as a multiplier).")]
                 public float postVaultSpeedFactor = 0.2f;
-                [Tooltip("")]
+                [Tooltip("Wether the slow is applied at the top of objects or just when still climbing after the vault (i.e. around a tree).")]
                 public bool vaultSlowsWhenClimbing = false;
-                [Tooltip("Time between pressing the auto-vault button and the system activating (so it doesn't conflict with the climb check).")]
-                public float autoVaultActivationTime = 0.2f;
 
                 [Space]
                 [Tooltip("Cooldown autoclimb teleport. Can help reduce buginess and improve performance.")]
@@ -1334,8 +1358,8 @@ namespace Player
                     [Tooltip("Maximum distance from the check point to a surface to count as not an edge.")]
                     public float edgeStopDownDist = 0.15f;
                     [Tooltip("Angle from the movement direction from which secondary edge checks are done (also checks half way between and on both sides).")]
-                    [Range(0.01f, 1f)]
-                    public float edgeSlideCheckDist = 0.1f;
+                    [Range(1f, 45f)]
+                    public float edgeSlideCheckAngles = 0.1f;
                     [Tooltip("If the angle between the current rotation and the new rotation when climbing is above this value, remove the vertical velocity to help the player stick to the wall.")]
                     public float wallStickDangerAngle = 10f;
                     public bool edgeDetectGizmos = false;

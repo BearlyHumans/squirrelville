@@ -45,6 +45,11 @@ public static class Utility
         return -1;
     }
 
+    public static float TwoFigures(this float value)
+    {
+        return Mathf.Round(value * 100f) / 100f;
+    }
+
     public static bool Outside(this float value, float lowerBounds, float upperBounds)
     {
         if (value < lowerBounds || value > upperBounds)
