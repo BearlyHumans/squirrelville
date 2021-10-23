@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -210, y: 0}
+  m_AnchoredPosition: {x: -240, y: 0}
   m_SizeDelta: {x: 400, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9110266149392813936
@@ -186,7 +186,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 209.99994, y: 0}
+  m_AnchoredPosition: {x: 180, y: 0}
   m_SizeDelta: {x: 400, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1355371135690368035
@@ -217,24 +217,25 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'WASD
+  m_text: 'WASD or Left stick
 
-    Mouse
+    Mouse or Right stick
 
-    Spacebar
+    Spacebar or (A)
 
     Q
+    or (Y)
 
-    E
+    E or RB
 
-    F
+    F or LB
 
-    Left-click (hold)
+    Left-click or RT (hold)
 
-    Shift
+    Shift or LT
 
     Right-click
-    (hold)'
+    or Right stick press (hold)'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 12f0761038c6a4e4c9a9c48c8658a200, type: 2}
   m_sharedMaterial: {fileID: -1030747350335122999, guid: 12f0761038c6a4e4c9a9c48c8658a200, type: 2}
