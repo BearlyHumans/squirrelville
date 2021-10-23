@@ -197,7 +197,6 @@ public class Humans : MonoBehaviour
         timeToFood += Time.deltaTime;
         // -----States------
 
-        print(currentState);
         switch(currentState)
         {
             case HumanStates.PathFollowing:
@@ -505,7 +504,6 @@ public class Humans : MonoBehaviour
                 CallAnimationEvents(AnimTriggers.pickup);
                 if(!pickUpFoodOnce)
                 {
-                    print(pickUpTimer);
                     StartCoroutine(pickUpFood(bestCollider, pickUpTimer));
                     pickUpFoodOnce = true;
                 }
