@@ -35,7 +35,10 @@ public class SquirrelFoodGrabber : MonoBehaviour
     [Tooltip("How much food does the squirrel need to swallow to be able to turn into a ball")]
     [Min(0)]
     public int foodCountBallForm = 0;
+    [Tooltip("The material added when food is in range and can be eaten")]
     public Material highlightMaterial;
+    [Tooltip("When disabled, picking up food is disabled")]
+    public bool pickupEnabledOverride = true;
 
     [Header("Throwing up food")]
 
@@ -48,6 +51,8 @@ public class SquirrelFoodGrabber : MonoBehaviour
     public float throwDelayDivisor = 1.5f;
     [Tooltip("What the shortest delay can be between spitting out food (in seconds)")]
     public float minThrowDelay = 0.2f;
+    [Tooltip("When disabled, throwing food is disabled")]
+    public bool throwEnabledOverride = true;
     private float throwTime = 0.0f;
     private float throwDelay;
 
@@ -174,6 +179,8 @@ public class SquirrelFoodGrabber : MonoBehaviour
     public bool CanEatFood()
     {
         return (
+            // Manual override
+            pickupEnabledOverride &&
             // Player has room for more food
             (maxFoodInInventory < 0 || GetFoodCount() < maxFoodInInventory) &&
             // Player isn't interacting with an NPC
@@ -188,6 +195,8 @@ public class SquirrelFoodGrabber : MonoBehaviour
     public bool CanThrowFood()
     {
         return (
+            // Manual override
+            throwEnabledOverride &&
             // Player isn't interacting with an NPC
             !npcInteractionManager.isInteracting &&
             // Player has food to spit
@@ -232,5 +241,15 @@ public class SquirrelFoodGrabber : MonoBehaviour
         }
 
         return closestObj;
+    }
+
+    public void SetPickupEnabled(bool enabled)
+    {
+        pickupEnabledOverride = enabled;
+    }
+
+    public void SetThrowEnabled(bool enabled)
+    {
+        throwEnabledOverride = enabled;
     }
 }
