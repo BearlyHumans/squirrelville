@@ -149,6 +149,8 @@ public class SquirrelFoodGrabber : MonoBehaviour
     [ContextMenu("Throw food")]
     public void ThrowFood(int mode)
     {
+        if (foodStack.Count == 0) return;
+
         GameObject food = foodStack.Pop();
         Rigidbody foodrb = food.GetComponent<Rigidbody>();
         Transform activeMouth = normalMouth.gameObject.activeInHierarchy ? normalMouth : ballMouth;
