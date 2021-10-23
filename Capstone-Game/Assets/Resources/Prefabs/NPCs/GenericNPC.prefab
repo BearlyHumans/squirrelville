@@ -921,6 +921,7 @@ MonoBehaviour:
   anim: {fileID: 1194168816744384584}
   detectionAngle: 70
   range: 8
+  hitPlayerStun: 0
   humanWalkSpeed: 2
   humanRunSpeed: 5
   acornHolder: {fileID: 9201156710929197574}
