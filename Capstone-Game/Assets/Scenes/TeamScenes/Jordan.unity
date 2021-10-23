@@ -1425,6 +1425,18 @@ MonoBehaviour:
           m_StringArgument: This is a test
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 396018516}
+        m_TargetAssemblyTypeName: SquirrelFoodGrabber, Assembly-CSharp
+        m_MethodName: SetPickupEnabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   foodCollected:
     m_PersistentCalls:
       m_Calls: []
@@ -2707,6 +2719,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1718130251}
     m_Modifications:
+    - target: {fileID: 1086128863157782398, guid: 0435ce9217d18b648a96da4dea4dd1f5, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 1128778952771703337, guid: 0435ce9217d18b648a96da4dea4dd1f5, type: 3}
       propertyPath: m_Name
       value: DialogueBox
