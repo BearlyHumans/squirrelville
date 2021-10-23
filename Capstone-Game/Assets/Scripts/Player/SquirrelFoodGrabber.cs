@@ -242,4 +242,14 @@ public class SquirrelFoodGrabber : MonoBehaviour
 
         return closestObj;
     }
+
+    public void SetPickupEnabled(bool enabled)
+    {
+        pickupEnabledOverride = enabled;
+    }
+
+    public void SetThrowEnabled(bool enabled)
+    {
+        throwEnabledOverride = enabled;
+    }
 }
