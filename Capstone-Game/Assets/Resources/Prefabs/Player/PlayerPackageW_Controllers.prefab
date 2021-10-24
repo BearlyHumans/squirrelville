@@ -3655,10 +3655,12 @@ MonoBehaviour:
   maxFoodInInventory: 10
   foodCountBallForm: 3
   highlightMaterial: {fileID: 2100000, guid: 73bed7dbf5548254bb64a23da6fda468, type: 2}
+  pickupEnabledOverride: 1
   throwVelocity: 1
   initialThrowDelay: 0.6
   throwDelayDivisor: 1.5
   minThrowDelay: 0.2
+  throwEnabledOverride: 1
   pickupEvent:
     m_PersistentCalls:
       m_Calls:
@@ -5674,6 +5676,10 @@ PrefabInstance:
     - target: {fileID: 11900000, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
       propertyPath: m_FieldOfView
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 11900000, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
+      propertyPath: m_NearClipPlane
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 11900000, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
       propertyPath: m_IgnoreLayers.m_Bits
