@@ -15,6 +15,9 @@ namespace Player
         public SCReferences refs = new SCReferences();
         public SCChildren behaviourScripts = new SCChildren();
 
+        public float giantBallSizeMultiplier = 8f;
+        public float giantBallCameraMultiplier = 3f;
+
         public bool debugMessages = false;
         public bool updateInFixed = false;
 
@@ -126,24 +129,26 @@ namespace Player
 
             refs.fCam.UpdateCamRotFromInput();
 
-            //Debug State Changes
-            if (Input.GetButtonDown("BallToggle"))
+            if (vals.mState == MovementState.giantBall)
             {
-                if (vals.mState == MovementState.ball)
-                    EnterRunState();
-                else if (CanEnterBallState())
-                    EnterBallState();
-            }
+                if (Input.GetButtonDown("BallToggle"))
+                {
+                    if (vals.mState == MovementState.ball)
+                        EnterRunState();
+                    else if (CanEnterBallState())
+                        EnterBallState();
+                }
 
-            if (!CanEnterBallState())
-                EnterRunState();
+                if (!behaviourScripts.foodGrabber.CanBeBall())
+                    EnterRunState();
+            }
 
             //State Machine
             if (vals.mState == MovementState.moveAndClimb)
             {
                 behaviourScripts.moveAndClimb.ManualUpdate();
             }
-            else if (vals.mState == MovementState.ball)
+            else if (vals.mState == MovementState.ball || vals.mState == MovementState.giantBall)
             {
                 behaviourScripts.ball.ManualUpdate();
             }
@@ -192,6 +197,45 @@ namespace Player
             refs.fCam.cameraTarget = refs.ballModel;
 
             vals.mState = MovementState.ball;
+        }
+
+        public void EnterGiantBallState()
+        {
+            //Disable normal collider
+            //Enable ball collider
+            //Change model
+            refs.animator.CrossFade("Idle", 0f);
+            refs.animator.Update(1f);
+            refs.runBody.SetActive(false);
+            refs.ballBody.SetActive(true);
+            refs.ballBody.transform.rotation = refs.runBody.transform.rotation;
+            refs.ballBody.transform.localScale *= giantBallSizeMultiplier;
+            refs.fCam.programmerSettings.minDistance *= giantBallCameraMultiplier;
+            refs.fCam.programmerSettings.maxDistance *= giantBallCameraMultiplier;
+
+            refs.RB.constraints = RigidbodyConstraints.None;
+            refs.RB.useGravity = true;
+
+            refs.fCam.UseRelativeAngles = false;
+            refs.fCam.cameraTarget = refs.ballModel;
+
+            vals.mState = MovementState.giantBall;
+        }
+
+        public void LeaveGiantBallState()
+        {
+            refs.ballBody.transform.localScale /= giantBallSizeMultiplier;
+            refs.fCam.programmerSettings.minDistance /= giantBallCameraMultiplier;
+            refs.fCam.programmerSettings.maxDistance /= giantBallCameraMultiplier;
+            refs.runBody.SetActive(true);
+            refs.ballBody.SetActive(false);
+
+            refs.RB.constraints = RigidbodyConstraints.FreezeRotation;
+
+            refs.fCam.UseRelativeAngles = true;
+            refs.fCam.cameraTarget = refs.runCameraTarget;
+
+            vals.mState = MovementState.moveAndClimb;
         }
 
         private void EnterRunState()
@@ -373,7 +417,8 @@ namespace Player
         {
             moveAndClimb,
             ball,
-            glide
+            glide,
+            giantBall
         }
 
         public enum EventTrigger
