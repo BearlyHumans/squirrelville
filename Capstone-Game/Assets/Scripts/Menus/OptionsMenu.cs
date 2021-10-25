@@ -14,6 +14,7 @@ public class OptionsMenu : MonoBehaviour
     public TMP_Dropdown resolutionDropdown;
     public Toggle fullscreenToggle;
     public Animation anim;
+    public Button backButton;
 
     private Resolution[] resolutions;
     private Resolution selectedResolution;
@@ -23,7 +24,7 @@ public class OptionsMenu : MonoBehaviour
     {
         if (MenuManager.ButtonsEnabled() && Input.GetKey(KeyCode.Escape))
         {
-            Back();
+            backButton.onClick.Invoke();
         }
     }
 
