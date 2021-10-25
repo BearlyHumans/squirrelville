@@ -7,7 +7,7 @@ public class MainMenu : MonoBehaviour
 
     private void Update()
     {
-        if (MenuManager.ButtonsEnabled() && Input.GetKeyDown(KeyCode.Escape))
+        if (MenuManager.ButtonsEnabled() && Input.GetButtonDown("Pause"))
         {
             if (quitConfirmation.activeInHierarchy)
             {

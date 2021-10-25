@@ -22,7 +22,7 @@ public class OptionsMenu : MonoBehaviour
 
     private void Update()
     {
-        if (MenuManager.ButtonsEnabled() && Input.GetKey(KeyCode.Escape))
+        if (MenuManager.ButtonsEnabled() && Input.GetButton("Pause"))
         {
             backButton.onClick.Invoke();
         }
