@@ -826,7 +826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d89148ebcfd1a76478141f2843e07b64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 8
+  delay: 4
   fadeOutTime: 1
 --- !u!225 &1400406286
 CanvasGroup:

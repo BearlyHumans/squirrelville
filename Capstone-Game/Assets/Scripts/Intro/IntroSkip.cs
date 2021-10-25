@@ -29,11 +29,11 @@ public class IntroSkip : MonoBehaviour
             if (videoPlayer.isPaused)
                 videoPlayer.Play();
 
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetButtonDown("SkipIntro"))
             {
                 NextScene();
             }
-            else if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape))
+            else if (Input.anyKeyDown && !Input.GetButtonDown("Pause"))
             {
                 skipText.Show();
             }
