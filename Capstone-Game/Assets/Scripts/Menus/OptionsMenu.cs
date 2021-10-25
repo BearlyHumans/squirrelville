@@ -19,6 +19,14 @@ public class OptionsMenu : MonoBehaviour
     private Resolution selectedResolution;
     private LoadAudioSettings audioSettings;
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Back();
+        }
+    }
+
     private void Start()
     {
         audioSettings = GameObject.FindObjectOfType<LoadAudioSettings>();
