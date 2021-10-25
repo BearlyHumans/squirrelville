@@ -5,6 +5,9 @@ using UnityEngine.Video;
 [RequireComponent(typeof(VideoPlayer))]
 public class IntroSkip : MonoBehaviour
 {
+    [Tooltip("The skip text element")]
+    public HideUIElementAfterDelay skipText;
+
     private VideoPlayer videoPlayer;
 
     private void Start()
@@ -26,9 +29,13 @@ public class IntroSkip : MonoBehaviour
             if (videoPlayer.isPaused)
                 videoPlayer.Play();
 
-            if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 NextScene();
+            }
+            else if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape))
+            {
+                skipText.Show();
             }
         }
     }

@@ -12,6 +12,7 @@ public class HideUIElementAfterDelay : MonoBehaviour
     public float fadeOutTime;
 
     private CanvasGroup canvasGroup;
+    private float showTime = 0;
 
     private void Start()
     {
@@ -20,7 +21,7 @@ public class HideUIElementAfterDelay : MonoBehaviour
 
     private void Update()
     {
-        if (Time.timeSinceLevelLoad >= delay)
+        if (Time.timeSinceLevelLoad >= showTime + delay)
         {
             canvasGroup.alpha -= fadeOutTime > 0 ? Time.deltaTime / fadeOutTime : 1;
 
@@ -29,5 +30,12 @@ public class HideUIElementAfterDelay : MonoBehaviour
                 gameObject.SetActive(false);
             }
         }
+    }
+
+    public void Show()
+    {
+        showTime = Time.time;
+        gameObject.SetActive(true);
+        canvasGroup.alpha = 1.0f;
     }
 }
