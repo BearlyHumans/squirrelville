@@ -3,6 +3,22 @@ using UnityEngine;
 public class MainMenu : MonoBehaviour
 {
     public Animation anim;
+    public GameObject quitConfirmation;
+
+    private void Update()
+    {
+        if (MenuManager.ButtonsEnabled() && Input.GetButtonDown("Pause"))
+        {
+            if (quitConfirmation.activeInHierarchy)
+            {
+                quitConfirmation.SetActive(false);
+            }
+            else
+            {
+                Quit();
+            }
+        }
+    }
 
     public void Play()
     {
@@ -25,6 +41,11 @@ public class MainMenu : MonoBehaviour
     }
 
     public void Quit()
+    {
+        quitConfirmation.SetActive(true);
+    }
+
+    public void ActuallyQuit()
     {
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
