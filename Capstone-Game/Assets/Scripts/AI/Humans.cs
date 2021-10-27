@@ -36,11 +36,6 @@ public class Humans : MonoBehaviour
     private NpcModes npcMode;
 
     //---------Food Graber Script---------//
-    private SquirrelFoodGrabber foodGraber;
-    private GameObject foodController;
-
-    private SquirrelController squirrelController;
-    private GameObject sController;
 
     NavMeshAgent human;
 
@@ -143,31 +138,24 @@ public class Humans : MonoBehaviour
     //handle food single use check
     bool returnedToPath = false;
 
-    Transform target;
-    GameObject squrrielTarget;
-    GameObject playerController;
+    //Transform target;
+    //GameObject squrrielTarget;
+    //GameObject playerController;
     public GameObject acornHolder;
+
+    public SquirrelController Player
+    {
+        get { return AIManager.singleton.sController; }
+    }
 
     /// set the nav mesh agent for humans to walk on as well as set target (player) to chase.
     public void Start() 
     {
-        playerController = GameObject.FindWithTag("Player");
-
-        foodController = playerController;
-        foodGraber = foodController.GetComponent<SquirrelFoodGrabber>();
-
-        sController = playerController;
-        squirrelController = sController.GetComponent<SquirrelController>();
+        layerMask = LayerMask.GetMask("EatenFood");
 
         human = this.GetComponent<NavMeshAgent>();
 
         chaseTimer = chaseVariables.chaseTime;
-
-        layerMask = LayerMask.GetMask("EatenFood");
-
-        target = playerController.transform;
-
-        squrrielTarget = playerController;
 
         currentState = HumanStates.PathFollowing;
 
@@ -193,7 +181,7 @@ public class Humans : MonoBehaviour
     /// handles the main swaping of states for each person. Runs specific behaviour while in a certain state.
     public void Update() 
     {
-        distance = Vector3.Distance(target.position, transform.position);
+        distance = Vector3.Distance(Player.transform.position, transform.position);
         timeToFood += Time.deltaTime;
         // -----States------
 
@@ -340,13 +328,13 @@ public class Humans : MonoBehaviour
             // runs a check to test if human can see the player 
             SeePlayer();
             // if can see player then target and move towards player
-            human.SetDestination(target.position);
+            human.SetDestination(Player.transform.position);
             
             // if within boundary then chase while timer is above -
             if (chaseTimer > 0f)
             {   
                 
-                Debug.DrawLine(transform.position, target.position);
+                Debug.DrawLine(transform.position, Player.transform.position);
 
                 chaseTimer -= Time.deltaTime;
                 // checks to see if human is within range to "catch" player
@@ -525,7 +513,7 @@ public class Humans : MonoBehaviour
     {
         yield return new WaitForSeconds(1.1f);
         
-        stunScript.stompEffect(squirrelController, foodGraber, catchVariables.takeFoodAmmount);
+        stunScript.stompEffect(Player, Player.behaviourScripts.foodGrabber, catchVariables.takeFoodAmmount);
 
         yield return new WaitForSeconds(1.2f);
         stillFood = checkForFood();
@@ -565,7 +553,7 @@ public class Humans : MonoBehaviour
     public void facePlayer()
     {
 
-        Vector3 direction = (target.position - transform.position).normalized;
+        Vector3 direction = (Player.transform.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
@@ -574,8 +562,8 @@ public class Humans : MonoBehaviour
     /// runs a ray cast to check if the player is within a LOS.  
     bool SeePlayer()
     {
-        float distance = Vector3.Distance(target.position, transform.position);
-        Vector3 targetDir = target.position - transform.position;
+        float distance = Vector3.Distance(Player.transform.position, transform.position);
+        Vector3 targetDir = Player.transform.position - transform.position;
 
         // view angle
         float angleToPlayer = (Vector3.Angle(targetDir, transform.forward));
@@ -583,7 +571,7 @@ public class Humans : MonoBehaviour
  
         if ((angleToPlayer >= -detectionAngle && angleToPlayer <= detectionAngle) && (distance <= range))
         {
-            if(Physics.Linecast (transform.position, target.transform.position, out hit))
+            if(Physics.Linecast (transform.position, Player.transform.transform.position, out hit))
             {
                 if(hit.transform.tag == "Player")
                 {

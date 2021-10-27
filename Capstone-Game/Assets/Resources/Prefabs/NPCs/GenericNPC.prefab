@@ -944,6 +944,7 @@ MonoBehaviour:
   hitPlayerStun: 0
   humanWalkSpeed: 2
   humanRunSpeed: 5
+  playerController: {fileID: 0}
   acornHolder: {fileID: 9201156710929197574}
 --- !u!1 &1194168816736975858
 GameObject:
@@ -6118,7 +6119,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &640626398628486364
 Transform:
   m_ObjectHideFlags: 0
