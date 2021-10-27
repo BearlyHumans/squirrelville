@@ -385,8 +385,7 @@ AnimatorState:
   m_Name: Drop
   m_Speed: 1
   m_CycleOffset: 0
-  m_Transitions:
-  - {fileID: -3585553013408838686}
+  m_Transitions: []
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -891,43 +890,43 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: HumanWalk
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 5
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: HumanDrop
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 2
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: HumanStun
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 2
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: HumanPickup
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 2
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: HumanEating
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: HumanRun
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 2
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -1102,7 +1101,6 @@ AnimatorState:
   m_Transitions:
   - {fileID: -387545211909305001}
   - {fileID: -7575068668917998054}
-  - {fileID: -6480611958030262239}
   - {fileID: 8028636807537137522}
   - {fileID: 2410141475438866267}
   m_StateMachineBehaviours: []
@@ -1191,9 +1189,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.10258128
-  m_TransitionOffset: 0
-  m_ExitTime: 0.058558576
+  m_TransitionDuration: 0.15009642
+  m_TransitionOffset: 0.42044994
+  m_ExitTime: 0.19870849
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0

@@ -185,6 +185,7 @@ public class Humans : MonoBehaviour
         timeToFood += Time.deltaTime;
         // -----States------
 
+        print(currentState);
         switch(currentState)
         {
             case HumanStates.PathFollowing:
@@ -288,7 +289,6 @@ public class Humans : MonoBehaviour
                 human.velocity = Vector3.zero;
                 if(!returnedToPath)
                 {
-                    
                     returnedToPath = true;
                     StartCoroutine(returnToPath(returnToPathWaitTime));
                 }
@@ -421,33 +421,32 @@ public class Humans : MonoBehaviour
                 currentState = HumanStates.PathFollowing;
             }
         }
-        else if(walking && human.remainingDistance <= 1.0f)
+        SetDest();
+        print(human.remainingDistance);
+        if(walking && human.remainingDistance <= 1.0f)
         {
-            walking = false;
-                    
+            
             if(pathFollowingVariables.walkingPause)
             {
-                waiting = true;
-                waitTimer = 2f;
+                CallAnimationEvents(AnimTriggers.idle);
+                waitTimer += Time.deltaTime;
+                
+                if(waitTimer >= pathFollowingVariables.pathPoints[currentPathPt].waitForThisLong)
+                {
+                    waitTimer = 0;
+                    CallAnimationEvents(AnimTriggers.walking);
+                    ChangePathPt();
+                    SetDest();
+                }
             }
             else
             {
+                CallAnimationEvents(AnimTriggers.walking);
                 ChangePathPt();
                 SetDest();
             }
+
         }
-        if(waiting)
-        {
-            CallAnimationEvents(AnimTriggers.idle);
-            waitTimer += Time.deltaTime;
-            if(waitTimer >= pathFollowingVariables.pathPoints[currentPathPt].waitForThisLong)
-            {
-                waiting = false;
-                ChangePathPt();
-                SetDest();
-            }
-        }
-        
     }
 
     // checks for any food taken from player and attempts to pick it all up
@@ -539,7 +538,6 @@ public class Humans : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         acornHolder.SetActive(false);
-
         CallAnimationEvents(AnimTriggers.walking);
         pickedUpFood = false;
         currentState = HumanStates.PathFollowing;
