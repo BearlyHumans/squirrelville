@@ -14,12 +14,15 @@ public class GhostTimer : MonoBehaviour
     public float RecordingFPS = 10;
     [Header("True to Start, False to Save (Toggle W/ Backspace)")]
     public bool Record = false;
-    [IODescription("(Check in Inspector for legitimate speedrun recording.)")]
     private bool recording = false;
     private float startTime = 0f;
     private float endTime = 0f;
 
     private float lastFrameTime = 0f;
+
+    [Header("Leave blank for default path (usually .../appdata/LocalLow/...)")]
+    [Tooltip("Path should not include last slash (adds '/[GhostName].pth' automatically.")]
+    public string CustomPath = "";
 
     // Start is called before the first frame update
     void Start()
@@ -74,7 +77,11 @@ public class GhostTimer : MonoBehaviour
 
     public void Save()
     {
-        string path = Application.persistentDataPath + "/" + GhostName.Replace(" ", "_") + ".pth";
+        string path = "/" + GhostName.Replace(" ", "_") + ".pth";
+        if (CustomPath == "")
+            path = Application.persistentDataPath + path;
+        else
+            path = CustomPath + path;
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(path);
 

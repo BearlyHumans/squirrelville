@@ -17,6 +17,10 @@ public class GhostLeader : MonoBehaviour
     private GhostMode lockedMode = GhostMode.Timed;
     public bool Restart = false;
 
+    [Header("Leave blank for default path (usually .../appdata/LocalLow/...)")]
+    [Tooltip("Path should not include last slash (adds '/[GhostName].pth' automatically.")]
+    public string CustomPath = "";
+
     [SerializeField]
     private int currentFrame = 0;
     private float startTime = 0;
@@ -96,7 +100,11 @@ public class GhostLeader : MonoBehaviour
 
     public bool Load()
     {
-        string path = Application.persistentDataPath + "/" + GhostName.Replace(" ", "_") + ".pth";
+        string path = "/" + GhostName.Replace(" ", "_") + ".pth";
+        if (CustomPath == "")
+            path = Application.persistentDataPath + path;
+        else
+            path = CustomPath + path;
         if (File.Exists(path))
         {
             BinaryFormatter bf = new BinaryFormatter();
