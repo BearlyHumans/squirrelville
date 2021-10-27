@@ -70,6 +70,9 @@ public class CameraGimbal : MonoBehaviour
         public float maxDistance = 2f;
         public float collisionPadding = 0.9f;
         public float largeSphereMultiplier = 2f;
+
+        [Space]
+        public bool doUpdatesManually = false;
     }
 
     private Vector3 dollyDirAdjusted;
@@ -105,6 +108,21 @@ public class CameraGimbal : MonoBehaviour
 
         dollyDir = CamObj.localPosition.normalized;
         dollyDistance = CamObj.localPosition.magnitude;
+    }
+
+    void Update()
+    {
+        if (programmerSettings.doUpdatesManually)
+            UpdateCamRotFromInput();
+    }
+
+    void FixedUpdate()
+    {
+        if (programmerSettings.doUpdatesManually)
+        {
+            UpdateCamPos();
+            UpdateDolly();
+        }
     }
 
     public void SwapToAlternateFOV()

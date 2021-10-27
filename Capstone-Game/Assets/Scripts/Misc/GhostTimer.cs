@@ -9,6 +9,7 @@ public class GhostTimer : MonoBehaviour
     public Transform RecordTarget;
     public string GhostName = "A_Noob";
     private List<Vector3> allPoints = new List<Vector3>();
+    private List<Quaternion> allRots = new List<Quaternion>();
     private List<float> allTimes = new List<float>();
     [Min(1)]
     public float RecordingFPS = 10;
@@ -33,6 +34,13 @@ public class GhostTimer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if ((Record == true || recording == true) && RecordTarget == null)
+        {
+            Record = false;
+            recording = false;
+            Debug.LogError("Select a target before recording!");
+        }
+
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
             Record = !Record;
@@ -61,6 +69,7 @@ public class GhostTimer : MonoBehaviour
                 lastFrameTime = Time.time;
                 allPoints.Add(RecordTarget.position);
                 allTimes.Add(Time.time - startTime);
+                allRots.Add(RecordTarget.rotation);
                 endTime = Time.time;
             }
         }
@@ -89,11 +98,15 @@ public class GhostTimer : MonoBehaviour
 
         //Add variables here.
         data.PlayerName = GhostName;
+
         data.Path = new List<SerialPoint>();
         foreach (Vector3 p in allPoints)
-        {
             data.Path.Add(new SerialPoint(p));
-        }
+
+        data.Rotations = new List<SerialRot>();
+        foreach (Quaternion r in allRots)
+            data.Rotations.Add(new SerialRot(r));
+
         data.Times = allTimes;
 
         bf.Serialize(file, data);
@@ -174,9 +187,40 @@ public class SerialPoint
 }
 
 [System.Serializable]
+public class SerialRot
+{
+    public float _w;
+    public float _x;
+    public float _y;
+    public float _z;
+
+    public SerialRot(float x, float y, float z, float w)
+    {
+        _w = w;
+        _x = x;
+        _y = y;
+        _z = z;
+    }
+
+    public SerialRot(Quaternion Rot)
+    {
+        _w = Rot.w;
+        _x = Rot.x;
+        _y = Rot.y;
+        _z = Rot.z;
+    }
+
+    public Quaternion ToQuaternion()
+    {
+        return new Quaternion(_x, _y, _z, _w);
+    }
+}
+
+[System.Serializable]
 public class GhostData
 {
     public string PlayerName;
     public List<SerialPoint> Path;
+    public List<SerialRot> Rotations;
     public List<float> Times;
 }
