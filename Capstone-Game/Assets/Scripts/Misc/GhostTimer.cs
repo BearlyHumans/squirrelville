@@ -14,7 +14,10 @@ public class GhostTimer : MonoBehaviour
     public float RecordingFPS = 10;
     [Header("True to Start, False to Save (Toggle W/ Backspace)")]
     public bool Record = false;
+    [IODescription("(Check in Inspector for legitimate speedrun recording.)")]
     private bool recording = false;
+    private float startTime = 0f;
+    private float endTime = 0f;
 
     private float lastFrameTime = 0f;
 
@@ -44,6 +47,7 @@ public class GhostTimer : MonoBehaviour
             {
                 //If not recording and the toggle bool is now different, start recording.
                 recording = true;
+                startTime = Time.time;
             }
         }
 
@@ -53,20 +57,26 @@ public class GhostTimer : MonoBehaviour
             {
                 lastFrameTime = Time.time;
                 allPoints.Add(RecordTarget.position);
-                allTimes.Add(Time.time);
+                allTimes.Add(Time.time - startTime);
+                endTime = Time.time;
             }
         }
     }
 
     private void OnGUI()
     {
-        GUI.Label(new Rect(0, 0, 100, 50), TimeString);
+        GUI.Label(new Rect(0, -3, 100, 50), "Game Time");
+        GUI.Label(new Rect(0, 10, 100, 50), TimeString(Time.time));
+
+        GUI.Label(new Rect(80, -3, 100, 50), "Recording Time");
+        GUI.Label(new Rect(80, 10, 100, 50), TimeString(endTime - startTime));
     }
 
     public void Save()
     {
+        string path = Application.persistentDataPath + "/" + GhostName.Replace(" ", "_") + ".pth";
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create(Application.persistentDataPath + "/" + GhostName.Replace(" ", "_") + ".pth");
+        FileStream file = File.Create(path);
 
         GhostData data = new GhostData();
 
@@ -82,51 +92,50 @@ public class GhostTimer : MonoBehaviour
         bf.Serialize(file, data);
 
         file.Close();
+        float timeInS = allTimes[allTimes.Count - 1];
+        print("Saved recording to '" + path + "' with time: " + TimeString(timeInS) + " (" + timeInS + "s)");
     }
 
-    private string TimeString
+    public static string TimeString (float timeInSeconds)
     {
-        get
-        {
-            float allTime = Time.time;
-            float miliseconds = allTime - Mathf.Floor(allTime);
-            miliseconds = Mathf.Floor(miliseconds * 100f);
-            float minutes = Mathf.Floor(allTime / 60f);
-            float seconds = Mathf.Floor(allTime - minutes);
-            float hours = Mathf.Floor(minutes / 60f);
-            minutes = minutes % 60f;
+        float allTime = timeInSeconds;
+        float miliseconds = allTime - Mathf.Floor(allTime);
+        miliseconds = Mathf.Floor(miliseconds * 100f);
+        float minutes = Mathf.Floor(allTime / 60f);
+        float seconds = Mathf.Floor(allTime - (minutes * 60));
+        float hours = Mathf.Floor(minutes / 60f);
+        minutes = minutes % 60f;
 
-            string sMili;
-            if (miliseconds == 0)
-                sMili = "00";
-            else if (miliseconds < 10f)
-                sMili = "0" + miliseconds;
-            else
-                sMili = miliseconds.ToString();
+        string sMili;
+        if (miliseconds == 0)
+            sMili = "00";
+        else if (miliseconds < 10f)
+            sMili = "0" + miliseconds;
+        else
+            sMili = miliseconds.ToString();
 
-            string sSeconds;
-            if (seconds == 0)
-                sSeconds = "00";
-            else if (seconds < 10f)
-                sSeconds = "0" + seconds;
-            else
-                sSeconds = seconds.ToString();
+        string sSeconds;
+        if (seconds == 0)
+            sSeconds = "00";
+        else if (seconds < 10f)
+            sSeconds = "0" + seconds;
+        else
+            sSeconds = seconds.ToString();
 
-            string time = sSeconds + ":" + sMili;
+        string time = sSeconds + ":" + sMili;
 
-            if (minutes == 0f)
-                time = "00" + ":" + time;
-            else if (minutes < 10f)
-                time = "0" + minutes + ":" + time;
-            else
-                time = minutes + ":" + time;
+        if (minutes == 0f)
+            time = "00" + ":" + time;
+        else if (minutes < 10f)
+            time = "0" + minutes + ":" + time;
+        else
+            time = minutes + ":" + time;
 
-            if (hours != 0f)
-                time = hours + ":" + time;
+        if (hours != 0f)
+            time = hours + ":" + time;
 
 
-            return time;
-        }
+        return time;
     }
 }
 

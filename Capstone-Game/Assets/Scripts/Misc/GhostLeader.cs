@@ -30,6 +30,11 @@ public class GhostLeader : MonoBehaviour
 
         if (!Load())
             lockedMode = GhostMode.Off;
+        else
+        {
+            float totalTime = allTimes[allTimes.Count - 1];
+            print(GhostName + "'s time: " + GhostTimer.TimeString(totalTime) + "(" + totalTime + "s)");
+        }
     }
 
     // Update is called once per frame
