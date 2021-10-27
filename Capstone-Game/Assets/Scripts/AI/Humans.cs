@@ -262,7 +262,7 @@ public class Humans : MonoBehaviour
                     }
                     else
                     {
-                        CallAnimationEvents(AnimTriggers.walking);
+                        //CallAnimationEvents(AnimTriggers.running);
                         currentState = HumanStates.Chase;
                     }
                     // if didnt get player enter chase state again
@@ -276,6 +276,8 @@ public class Humans : MonoBehaviour
     private void HandleFood()
     {
         // option 1 = go to bin
+        catchChoice = 1;
+    
         if(catchChoice == 0)
         {
             
@@ -369,6 +371,7 @@ public class Humans : MonoBehaviour
         /// if the human leaves the set area they will return to following their path
         else
         {
+            CallAnimationEvents(AnimTriggers.walking);
             SetDest();
             StartCoroutine(returnToPath(returnToPathNoWaitTime));
         }

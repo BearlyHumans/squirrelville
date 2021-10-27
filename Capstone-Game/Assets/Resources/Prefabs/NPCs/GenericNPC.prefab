@@ -850,6 +850,10 @@ MonoBehaviour:
   animationEvents:
   - trigger: 0
     animsParameter:
+      paramName: HumanIdle
+      setToValue: 1
+  - trigger: 0
+    animsParameter:
       paramName: HumanWalk
       setToValue: 0
   - trigger: 1
@@ -858,48 +862,8 @@ MonoBehaviour:
       setToValue: 1
   - trigger: 1
     animsParameter:
-      paramName: HumanStun
+      paramName: HumanIdle
       setToValue: 0
-  - trigger: 1
-    animsParameter:
-      paramName: HumanRun
-      setToValue: 0
-  - trigger: 1
-    animsParameter:
-      paramName: HumanPickup
-      setToValue: 0
-  - trigger: 1
-    animsParameter:
-      paramName: HumanEating
-      setToValue: 0
-  - trigger: 1
-    animsParameter:
-      paramName: HumanDrop
-      setToValue: 0
-  - trigger: 2
-    animsParameter:
-      paramName: HumanRun
-      setToValue: 1
-  - trigger: 3
-    animsParameter:
-      paramName: HumanStun
-      setToValue: 1
-  - trigger: 3
-    animsParameter:
-      paramName: HumanWalk
-      setToValue: 1
-  - trigger: 4
-    animsParameter:
-      paramName: HumanPickup
-      setToValue: 1
-  - trigger: 5
-    animsParameter:
-      paramName: HumanEating
-      setToValue: 1
-  - trigger: 6
-    animsParameter:
-      paramName: HumanDrop
-      setToValue: 1
   stunScript: {fileID: 3591709830310655803}
   exclaim: {fileID: 3796121588914482114}
   npcCurrentMode: 1
