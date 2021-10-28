@@ -60,8 +60,6 @@ public class SquirrelFoodGrabber : MonoBehaviour
     [Header("Events")]
     public UnityEvent<GameObject> pickupEvent;
     public UnityEvent<GameObject> throwEvent;
-    public UnityEvent<GameObject> pickupGiantEvent;
-    public UnityEvent<GameObject> throwGiantEvent;
 
     private GameObject nearestFood = null;
 
@@ -144,7 +142,6 @@ public class SquirrelFoodGrabber : MonoBehaviour
             //Add food reference to stack
             giantAcorn = food;
             //Call giant acorn eating events in this script
-            pickupGiantEvent.Invoke(food);
             controller.EnterGiantBallState();
         }
         else
