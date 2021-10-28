@@ -47,7 +47,7 @@ namespace Player
         {
             if (PARENT.TouchingSomething)
             {
-                bool feetTouching = Physics.CheckSphere(ParentRefs.ballCollider.position + (Vector3.down + ParentRefs.RB.velocity.normalized) * settings.J.JumpTriggerOffset,
+                bool feetTouching = Physics.CheckSphere(ParentRefs.ballCollider.position + (Vector3.down * settings.J.JumpTriggerOffset),
                     settings.J.JumpTriggerRadius, settings.J.JumpableLayers);
 
                 if (feetTouching)
@@ -135,23 +135,18 @@ namespace Player
             if (settings.J.JumpTriggerGizmo)
             {
                 Gizmos.color = Color.blue;
-                /* Shhh - might add this later.
-                if (settings.J.JumpTriggerRelativeTo == SCBallModeSettings.SCJumpSettings.DownOrVel.down || ParentRefs.RB.velocity == Vector3.zero)
-                    Gizmos.DrawWireSphere(ParentRefs.ballCollider.position + Vector3.down * settings.J.JumpTriggerOffset, settings.J.JumpTriggerRadius);
-                else
-                */
-                Gizmos.DrawWireSphere(ParentRefs.ballCollider.position + ParentRefs.RB.velocity.normalized * settings.J.JumpTriggerOffset, settings.J.JumpTriggerRadius);
+                Gizmos.DrawWireSphere(ParentRefs.ballCollider.position + (Vector3.down * settings.J.JumpTriggerOffset), settings.J.JumpTriggerRadius);
             }
         }
 
-        private void OnCollisionEnter(Collision collision)
+        public void BallCollision(Vector3 impulse)
         {
-            float force = collision.impulse.magnitude;
+            float force = impulse.magnitude;
             if (force > vals.lastSquishForce * 0.5f)
             {
                 if (vals.squishAnimation != null)
                     StopCoroutine(vals.squishAnimation);
-                vals.squishAnimation = StartCoroutine(SquishBall(collision.impulse.magnitude));
+                vals.squishAnimation = StartCoroutine(SquishBall(force));
             }
         }
 
@@ -174,7 +169,7 @@ namespace Player
                     float m = settings.S.squishMinForceMultiplier;
                     forceMultiplier = (force - b) * ((1 - m) / (a - b)) + m;
                 }
-                float scaling = (settings.S.squishCurve.Evaluate(Time.time - startTime) * forceMultiplier) + 1;
+                float scaling = (settings.S.squishCurve.Evaluate(Time.time - startTime) * forceMultiplier * settings.S.squishAmount) + 1;
 
                 ballModel.localScale = vals.normalScale * scaling;
                 yield return new WaitForEndOfFrame();
@@ -244,6 +239,9 @@ namespace Player
                 [Tooltip("The multiplier on the squish effect that happens when the LOWEST force is encountered, and the bottom of the range controlled by the force.")]
                 [Range(0f, 1f)]
                 public float squishMinForceMultiplier = 0.2f;
+                [Tooltip("A pure multiplier on the squish effect. 0 is off, 0.5 is half, 1 is normal.")]
+                [Range(0f, 1f)]
+                public float squishAmount = 1;
             }
 
             [System.Serializable]

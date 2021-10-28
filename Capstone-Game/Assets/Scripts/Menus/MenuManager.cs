@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class MenuManager : MonoBehaviour
 {
     private Button[] buttons;
+    private static bool buttonsEnabled = true;
 
     private void Awake()
     {
@@ -16,6 +17,8 @@ public class MenuManager : MonoBehaviour
         {
             button.interactable = false;
         }
+
+        buttonsEnabled = false;
     }
 
     private void EnableButtons()
@@ -24,5 +27,12 @@ public class MenuManager : MonoBehaviour
         {
             button.interactable = true;
         }
+
+        buttonsEnabled = true;
+    }
+
+    public static bool ButtonsEnabled()
+    {
+        return buttonsEnabled;
     }
 }

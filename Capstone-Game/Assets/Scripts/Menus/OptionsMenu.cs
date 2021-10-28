@@ -14,10 +14,19 @@ public class OptionsMenu : MonoBehaviour
     public TMP_Dropdown resolutionDropdown;
     public Toggle fullscreenToggle;
     public Animation anim;
+    public Button backButton;
 
     private Resolution[] resolutions;
     private Resolution selectedResolution;
     private LoadAudioSettings audioSettings;
+
+    private void Update()
+    {
+        if (MenuManager.ButtonsEnabled() && Input.GetButton("Pause"))
+        {
+            backButton.onClick.Invoke();
+        }
+    }
 
     private void Start()
     {

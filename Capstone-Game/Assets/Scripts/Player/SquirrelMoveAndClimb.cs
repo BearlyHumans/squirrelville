@@ -651,9 +651,7 @@ namespace Player
                 }
 
                 //Teleport to the point, while maintaining the models position so it moves smoothly.
-                Quaternion oldRot = ParentRefs.model.rotation;
                 TeleportToSurface(mainHit);
-                ParentRefs.model.localRotation = oldRot;
                 vals.jumping = false;
                 vals.lastJumpToWall = Time.time;
                 vals.eliminateUpForce = true;
