@@ -71,6 +71,8 @@ public class Humans : MonoBehaviour
     [SerializeField]
     private ChaseVarible chaseVariables;
 
+
+
     // layer mask for what layer humans check spat out food on
     private LayerMask layerMask;
 
@@ -141,8 +143,6 @@ public class Humans : MonoBehaviour
 
     private int howManyAcornsLeft;
 
-
-
     // walk to path wait times
     float returnToPathWaitTime = 3.0f;
     float returnToPathNoWaitTime = 0f;
@@ -158,6 +158,10 @@ public class Humans : MonoBehaviour
     //GameObject playerController;
     public GameObject acornHolder;
 
+    private AudioSource audio;
+    [SerializeField]
+    private SoundEffects SoundEffectClips;
+
     public SquirrelController Player
     {
         get { return AIManager.singleton.sController; }
@@ -170,6 +174,7 @@ public class Humans : MonoBehaviour
 
         howManyAcornsLeft = friendlyVariables.howManyAcorns;
 
+        audio = GetComponent<AudioSource>();
 
         human = this.GetComponent<NavMeshAgent>();
 
@@ -238,6 +243,7 @@ public class Humans : MonoBehaviour
         human.speed = humanWalkSpeed; 
         if(!hasCaughtRecently)
         {
+            
             hasCaughtRecently = true;  
             checkBeenRun = false;
             hitPlayerStun = false;
@@ -281,7 +287,7 @@ public class Humans : MonoBehaviour
     private void HandleFood()
     {
         // option 1 = go to bin
-        catchChoice = 0;
+        catchChoice = 1;
         if(catchChoice == 0)
         {
             
@@ -317,8 +323,9 @@ public class Humans : MonoBehaviour
             acornHolder.SetActive(true);
             if(!returnedToPath)
             {
+                audio.PlayOneShot (SoundEffectClips.eating, 0.2f);
                 returnedToPath = true;
-                StartCoroutine(returnToPath(returnToPathWaitTime));
+                StartCoroutine(returnToPath(2.5f));
             }
             
         }
@@ -333,6 +340,7 @@ public class Humans : MonoBehaviour
         CallAnimationEvents(AnimTriggers.running);
         if(!havntSpotted)
         {
+            audio.PlayOneShot (SoundEffectClips.alert, 0.6f);
             havntSpotted = true;
             exclaim.Play();
         }
@@ -551,7 +559,7 @@ public class Humans : MonoBehaviour
         yield return new WaitForSeconds(1.1f);
         
         stunScript.stompEffect(Player, Player.behaviourScripts.foodGrabber, catchVariables.takeFoodAmmount);
-
+        audio.PlayOneShot(SoundEffectClips.stomp, 0.2f);
         //yield return new WaitForSeconds(1.2f);
         stillFood = checkForFood();
         
@@ -759,4 +767,13 @@ public class Humans : MonoBehaviour
         public float catchResetTimer;
         public int takeFoodAmmount;
     }
+
+    [System.Serializable]
+    private class SoundEffects
+    {
+        public AudioClip eating;
+        public AudioClip alert;
+        public AudioClip stomp;
+    }
+
 }
