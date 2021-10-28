@@ -15,6 +15,9 @@ namespace Player
         public SCReferences refs = new SCReferences();
         public SCChildren behaviourScripts = new SCChildren();
 
+        public SCGiantBallSettings giantSettings = new SCGiantBallSettings();
+        public SCShadowProjectionSettings shadowSettings = new SCShadowProjectionSettings();
+
         public bool debugMessages = false;
         public bool updateInFixed = false;
 
@@ -57,6 +60,12 @@ namespace Player
         void OnCollisionStay(Collision collision)
         {
             vals.touchingSomething = true;
+        }
+
+        void OnCollisionEnter(Collision collision)
+        {
+            if (vals.mState == MovementState.ball || vals.mState == MovementState.giantBall)
+                behaviourScripts.ball.BallCollision(collision.impulse);
         }
 
         void OnCollisionExit(Collision collision)
@@ -126,24 +135,26 @@ namespace Player
 
             refs.fCam.UpdateCamRotFromInput();
 
-            //Debug State Changes
-            if (Input.GetButtonDown("BallToggle"))
+            if (vals.mState != MovementState.giantBall)
             {
-                if (vals.mState == MovementState.ball)
-                    EnterRunState();
-                else if (CanEnterBallState())
-                    EnterBallState();
-            }
+                if (Input.GetButtonDown("BallToggle"))
+                {
+                    if (vals.mState == MovementState.ball)
+                        EnterRunState();
+                    else if (CanEnterBallState())
+                        EnterBallState();
+                }
 
-            if (!CanEnterBallState())
-                EnterRunState();
+                if (!behaviourScripts.foodGrabber.CanBeBall())
+                    EnterRunState();
+            }
 
             //State Machine
             if (vals.mState == MovementState.moveAndClimb)
             {
                 behaviourScripts.moveAndClimb.ManualUpdate();
             }
-            else if (vals.mState == MovementState.ball)
+            else if (vals.mState == MovementState.ball || vals.mState == MovementState.giantBall)
             {
                 behaviourScripts.ball.ManualUpdate();
             }
@@ -191,7 +202,62 @@ namespace Player
             refs.fCam.UseRelativeAngles = false;
             refs.fCam.cameraTarget = refs.ballModel;
 
+            refs.shadowProjector.fieldOfView = shadowSettings.ballShadowFOV;
+
             vals.mState = MovementState.ball;
+        }
+
+        public void EnterGiantBallState()
+        {
+            //Disable normal collider
+            //Enable ball collider
+            //Change model
+            refs.animator.CrossFade("Idle", 0f);
+            refs.animator.Update(1f);
+            refs.runBody.SetActive(false);
+            refs.ballBody.SetActive(true);
+            refs.ballBody.transform.rotation = refs.runBody.transform.rotation;
+            
+            //Change ball so it is giant:
+            refs.ballBody.transform.localScale *= giantSettings.sizeMultiplier;
+            refs.fCam.programmerSettings.minDistance *= giantSettings.cameraMultiplier;
+            refs.fCam.programmerSettings.maxDistance *= giantSettings.cameraMultiplier;
+            behaviourScripts.ball.settings.squishiness.squishAmount *= giantSettings.squishinessMultiplier;
+            if (giantSettings.allowBoosting)
+                behaviourScripts.ball.settings.jump.JumpTriggerRadius *= giantSettings.sizeMultiplier;
+
+            refs.RB.constraints = RigidbodyConstraints.None;
+            refs.RB.useGravity = true;
+
+            refs.fCam.UseRelativeAngles = false;
+            refs.fCam.cameraTarget = refs.ballModel;
+
+            refs.shadowProjector.fieldOfView = shadowSettings.giantShadowFOV;
+
+            vals.mState = MovementState.giantBall;
+        }
+
+        public void LeaveGiantBallState()
+        {
+            //Change ball so it is NOT giant:
+            refs.ballBody.transform.localScale /= giantSettings.sizeMultiplier;
+            refs.fCam.programmerSettings.minDistance /= giantSettings.cameraMultiplier;
+            refs.fCam.programmerSettings.maxDistance /= giantSettings.cameraMultiplier;
+            behaviourScripts.ball.settings.squishiness.squishAmount /= giantSettings.squishinessMultiplier;
+            if (giantSettings.allowBoosting)
+                behaviourScripts.ball.settings.jump.JumpTriggerRadius /= giantSettings.sizeMultiplier;
+
+            refs.runBody.SetActive(true);
+            refs.ballBody.SetActive(false);
+
+            refs.RB.constraints = RigidbodyConstraints.FreezeRotation;
+
+            refs.fCam.UseRelativeAngles = true;
+            refs.fCam.cameraTarget = refs.runCameraTarget;
+
+            refs.shadowProjector.fieldOfView = shadowSettings.runShadowFOV;
+
+            vals.mState = MovementState.moveAndClimb;
         }
 
         private void EnterRunState()
@@ -203,6 +269,8 @@ namespace Player
 
             refs.fCam.UseRelativeAngles = true;
             refs.fCam.cameraTarget = refs.runCameraTarget;
+
+            refs.shadowProjector.fieldOfView = shadowSettings.runShadowFOV;
 
             vals.mState = MovementState.moveAndClimb;
         }
@@ -341,6 +409,25 @@ namespace Player
             public Transform runCameraTarget;
             public SFXController SFXControl;
             public ParticlesController particlesController;
+            public Projector shadowProjector;
+        }
+
+        [System.Serializable]
+        public class SCGiantBallSettings
+        {
+            [Header("Warning: these only apply when transforming - changing in play mode will break things.")]
+            public bool allowBoosting = true;
+            public float sizeMultiplier = 8f;
+            public float cameraMultiplier = 3f;
+            public float squishinessMultiplier = 0.5f;
+        }
+
+        [System.Serializable]
+        public class SCShadowProjectionSettings
+        {
+            public float runShadowFOV = 20f;
+            public float ballShadowFOV = 30f;
+            public float giantShadowFOV = 100f;
         }
 
         [System.Serializable]
@@ -373,7 +460,8 @@ namespace Player
         {
             moveAndClimb,
             ball,
-            glide
+            glide,
+            giantBall
         }
 
         public enum EventTrigger
