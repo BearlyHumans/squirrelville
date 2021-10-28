@@ -265,8 +265,7 @@ public class Humans : MonoBehaviour
     private void HandleFood()
     {
         // option 1 = go to bin
-        catchChoice = 1;
-    
+        catchChoice = 0;
         if(catchChoice == 0)
         {
             
@@ -290,7 +289,7 @@ public class Humans : MonoBehaviour
                 if(!returnedToPath)
                 {
                     returnedToPath = true;
-                    StartCoroutine(returnToPath(returnToPathWaitTime));
+                    StartCoroutine(returnToPath(2.5f));
                 }
                 
             }
@@ -514,7 +513,7 @@ public class Humans : MonoBehaviour
         
         stunScript.stompEffect(Player, Player.behaviourScripts.foodGrabber, catchVariables.takeFoodAmmount);
 
-        yield return new WaitForSeconds(1.2f);
+        //yield return new WaitForSeconds(1.2f);
         stillFood = checkForFood();
         
         checkBeenRun = true;
