@@ -139,6 +139,9 @@ public class Humans : MonoBehaviour
     [SerializeField]
     public float humanRunSpeed = 5.0f;
 
+    private int howManyAcornsLeft;
+
+
 
     // walk to path wait times
     float returnToPathWaitTime = 3.0f;
@@ -164,6 +167,9 @@ public class Humans : MonoBehaviour
     public void Start() 
     {
         layerMask = LayerMask.GetMask("EatenFood");
+
+        howManyAcornsLeft = friendlyVariables.howManyAcorns;
+
 
         human = this.GetComponent<NavMeshAgent>();
 
@@ -194,7 +200,6 @@ public class Humans : MonoBehaviour
     public void Update() 
     {
         distance = Vector3.Distance(Player.transform.position, transform.position);
-        timeToFood += Time.deltaTime;
         // -----States------
 
         switch(currentState)
@@ -379,27 +384,42 @@ public class Humans : MonoBehaviour
     /// starts a timer to watch player food and offers 1 piece of food. ALso has internal timer to stop human from giving player too much food
     private void FriendlyState()
     {
-        anim.SetInteger("HumanMove", 0);
         watchedFor += Time.deltaTime;
-        facePlayer();
-        human.SetDestination(transform.position);
         
-        if (!givenfood)
+        facePlayer();
+        //human.SetDestination(transform.position);
+        
+        if(!givenfood)
         {
-           Instantiate(friendlyVariables.foodToGive, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
-           givenfood = true;
-           timeToFood = 0.0f;
+            Instantiate(friendlyVariables.foodToGive, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
+            howManyAcornsLeft -= 1;
+            timeToFood = 0.0f;
+            givenfood = true;
+
+        }
+        else
+        {
+            timeToFood += Time.deltaTime;
         }
 
         if(watchedFor > friendlyVariables.watchTimer)
         {
+            givenfood = false;
+            howManyAcornsLeft = friendlyVariables.howManyAcorns;
             currentState = HumanStates.PathFollowing;
             watchedFor = 0.0f;
         }
 
         if(timeToFood > friendlyVariables.foodTimer)
         {
-            givenfood = false;
+            if(howManyAcornsLeft != 0)
+            {
+                givenfood = false;
+            }
+            else
+            {
+                givenfood = true;
+            }
         }
     }
     ///runs checks to find player, while cant see playing iterate through list of path points and walk between them
@@ -723,6 +743,8 @@ public class Humans : MonoBehaviour
         public float foodTimer;
 
         public float watchTimer = 5;
+
+        public int howManyAcorns = 1;
     }
 
     [System.Serializable]
