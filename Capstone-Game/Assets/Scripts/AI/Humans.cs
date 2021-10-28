@@ -26,6 +26,13 @@ public enum NpcModes
     Passive,
 }
 
+public enum IdleMode
+{
+    Standing,
+    Sitting,
+    Lyingdown
+}
+
 public class Humans : MonoBehaviour
 {
     [Tooltip("Animation events")]
@@ -33,7 +40,8 @@ public class Humans : MonoBehaviour
     private List<ParameterChangeEvent> animationEvents = new List<ParameterChangeEvent>();
     
     private HumanStates currentState;
-    private NpcModes npcMode;
+    //private NpcModes npcMode;
+
 
     //---------Food Graber Script---------//
 
@@ -46,6 +54,10 @@ public class Humans : MonoBehaviour
     [Tooltip("Select the behavior for the NPC")]
     [SerializeField]
     public NpcModes npcCurrentMode;
+
+    [Tooltip("Select the behavior for the NPC")]
+    [SerializeField]
+    public IdleMode npcIdleAnim;
 
     [SerializeField]
     private PathFollowingVarible pathFollowingVariables;
@@ -185,7 +197,6 @@ public class Humans : MonoBehaviour
         timeToFood += Time.deltaTime;
         // -----States------
 
-        print(currentState);
         switch(currentState)
         {
             case HumanStates.PathFollowing:
@@ -421,13 +432,21 @@ public class Humans : MonoBehaviour
             }
         }
         SetDest();
-        print(human.remainingDistance);
+        
         if(walking && human.remainingDistance <= 1.0f)
         {
-            
+            CallAnimationEvents(AnimTriggers.idle);
             if(pathFollowingVariables.walkingPause)
             {
-                CallAnimationEvents(AnimTriggers.idle);
+
+                if(npcIdleAnim == IdleMode.Lyingdown)
+                {
+                    CallAnimationEvents(AnimTriggers.lying);
+                }
+                else if(npcIdleAnim == IdleMode.Sitting)
+                {
+                    CallAnimationEvents(AnimTriggers.sitting);
+                }
                 waitTimer += Time.deltaTime;
                 
                 if(waitTimer >= pathFollowingVariables.pathPoints[currentPathPt].waitForThisLong)
@@ -660,7 +679,9 @@ public class Humans : MonoBehaviour
         stunning,
         pickup,
         eating,
-        dropping
+        dropping,
+        sitting,
+        lying
 
     }
 

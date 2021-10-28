@@ -808,7 +808,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1194168816736975856}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.29139572
   m_Height: 1.8554463
   m_Direction: 1
@@ -932,9 +932,18 @@ MonoBehaviour:
     animsParameter:
       paramName: HumanWalk
       setToValue: 0
+  - trigger: 7
+    animsParameter:
+      paramName: HumanSitting
+      setToValue: 1
+  - trigger: 8
+    animsParameter:
+      paramName: HumanLying
+      setToValue: 1
   stunScript: {fileID: 3591709830310655803}
   exclaim: {fileID: 3796121588914482114}
   npcCurrentMode: 1
+  npcIdleAnim: 0
   pathFollowingVariables:
     walkingPause: 0
     turnAroundChance: 0.2
@@ -946,16 +955,16 @@ MonoBehaviour:
     foodTimer: 10
     watchTimer: 5
   catchVariables:
-    catchResetTimer: 0
-    takeFoodAmmount: 0
+    catchResetTimer: 10
+    takeFoodAmmount: 3
   chaseVariables:
-    chaseTime: 0
+    chaseTime: 30
   anim: {fileID: 1194168816744384584}
   detectionAngle: 70
-  range: 8
+  range: 5
   hitPlayerStun: 0
   humanWalkSpeed: 2
-  humanRunSpeed: 5
+  humanRunSpeed: 3
   acornHolder: {fileID: 9201156710929197574}
 --- !u!1 &1194168816736975858
 GameObject:
@@ -1072,7 +1081,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1194168816736975858}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.9211649
   m_Height: 1.9664057
   m_Direction: 1
