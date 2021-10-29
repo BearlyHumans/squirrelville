@@ -1,20 +1,23 @@
 fileFormatVersion: 2
-guid: 58b099ba25ce0894f91b7e9fe463b409
+guid: df0684a9be9d49641ac634946c3109a4
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
       74: -4912335311713971153
-    second: Squirrel Climbing
+    second: Squirrel Climbing NEW
   - first:
-      74: 797730396696941282
+      74: -7730824430625438494
     second: Squirrel Climbing 2
   - first:
-      74: -4912335311713971153
-    second: Squirrel Climbing
-  - first:
       74: 797730396696941282
-    second: Squirrel Armature|Squirrel Climbing 2
+    second: Squirrel Climbing NEW
+  - first:
+      74: -4912335311713971153
+    second: Squirrel Armature|Squirrel Climbing
+  - first:
+      74: 5950075969108225172
+    second: Squirrel Climb NEW
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -44,11 +47,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Squirrel Armature|Squirrel Climbing 2
+      name: Squirrel Climb NEW
       takeName: Squirrel Armature|Squirrel Climbing 2
       internalID: 0
       firstFrame: 0
-      lastFrame: 45
+      lastFrame: 50
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
