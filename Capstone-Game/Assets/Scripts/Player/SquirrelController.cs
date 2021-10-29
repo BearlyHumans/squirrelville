@@ -20,7 +20,7 @@ namespace Player
 
         [SerializeField]
 #if UNITY_EDITOR
-        [AnimationEvent.CustomListTitles("trigger", "paramName", "setToValue")]
+        [AnimationEvent.CustomListTitles("trigger", "paramName", "setToValue", "type")]
 #endif
         private List<AnimationEvent> animationEvents = new List<AnimationEvent>();
 
@@ -219,9 +219,7 @@ namespace Player
                 refs.RB.useGravity = true;
                 CallEvents(EventTrigger.notMoving);
                 CallEvents(EventTrigger.landJump);
-                //Change this to "Stunned" and play particle effects (or just call 'stunned' event):
-                refs.animator.CrossFade("Idle", 0f);
-                refs.animator.Update(1f);
+                CallEvents(EventTrigger.humanAttack);
             }
         }
 
@@ -286,6 +284,8 @@ namespace Player
                 refs.animator.SetInteger(AE.paramName, (int)AE.setToValue);
             else if (AE.type == AnimationEvent.ParamTypes.Float)
                 refs.animator.SetFloat(AE.paramName, AE.setToValue);
+            else if (AE.type == AnimationEvent.ParamTypes.PlayOnce)
+                refs.animator.Play(AE.paramName);
         }
 
         private void DoSoundEvent(SoundEvent SE)
@@ -403,7 +403,7 @@ namespace Player
             spit,
             stopRolling,
             gameStart,
-            stopDashing
+            stopDashing,
         }
 
         [System.Serializable]
@@ -414,9 +414,9 @@ namespace Player
                 "Multiple Events can be made for each trigger and they will all be called.")]
             public EventTrigger trigger;
             [Header("Parameter Change:")]
-            [Tooltip("Set this to the type of the parameter you want to change.")]
+            [Tooltip("Set this to the type of the parameter you want to change. PlayOnce is instead used to directly start an animation - put the animations name in the parameter slot.")]
             public ParamTypes type;
-            [Tooltip("Set this to the name of the parameter you want to change when the trigger occurs.")]
+            [Tooltip("Set this to the name of the parameter you want to change when the trigger occurs. If using 'PlayOnce' make this the name of the animation instead.")]
             public string paramName;
             [Tooltip("Use 0/1 for false/true.")]
             public float setToValue;
@@ -425,7 +425,8 @@ namespace Player
             {
                 Float,
                 Int,
-                Bool
+                Bool,
+                PlayOnce
             }
 
 #if UNITY_EDITOR
@@ -433,12 +434,22 @@ namespace Player
             {
                 public string TriggerName;
                 public string ParameterName;
+                public string ParamType;
                 public string ValueName;
+                public CustomListTitlesAttribute(string Trigger, string Parameter, string Value, string PType)
+                {
+                    TriggerName = Trigger;
+                    ParameterName = Parameter;
+                    ValueName = Value;
+                    ParamType = PType;
+                }
+
                 public CustomListTitlesAttribute(string Trigger, string Parameter, string Value)
                 {
                     TriggerName = Trigger;
                     ParameterName = Parameter;
                     ValueName = Value;
+                    ParamType = "Int";
                 }
             }
 
@@ -471,7 +482,15 @@ namespace Player
                     TitleNameProp = property.serializedObject.FindProperty(FullPathName);
                     string value = GetTitle();
 
-                    string combinedName = "After " + trigger + " set " + parameter + " to " + value;
+                    FullPathName = property.propertyPath + "." + Atribute.ParamType;
+                    TitleNameProp = property.serializedObject.FindProperty(FullPathName);
+                    string paramType = GetTitle();
+
+                    string combinedName;
+                    if (paramType == "PlayOnce")
+                        combinedName = "After " + trigger + " start playing " + parameter;
+                    else
+                        combinedName = "After " + trigger + " set " + parameter + " to " + value;
 
                     EditorGUI.PropertyField(position, property, new GUIContent(combinedName, label.tooltip), true);
                 }

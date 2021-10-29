@@ -32,7 +32,7 @@ public class Stun : MonoBehaviour
             
             if (thing.tag == playerController.tag) 
             {
-                playerController.FreezeMovement();
+                playerController.FreezeAndStun();
 
                 human.hitPlayerStun = true;
 
