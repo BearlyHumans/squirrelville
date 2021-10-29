@@ -9,6 +9,7 @@ using Player;
 public class SquirrelFoodGrabber : MonoBehaviour
 {
     private Stack<GameObject> foodStack = new Stack<GameObject>();
+    private GameObject giantAcorn = null;
     private Rigidbody squirrelrb;
     private SquirrelController controller;
     private NPCInteractionManager npcInteractionManager;
@@ -136,24 +137,56 @@ public class SquirrelFoodGrabber : MonoBehaviour
     {
         // Assumes GameObject is food
 
-        foodStack.Push(food);
+        if (food.CompareTag("Giant Acorn"))
+        {
+            //Add food reference to stack
+            giantAcorn = food;
+            //Call giant acorn eating events in this script
+            controller.EnterGiantBallState();
+        }
+        else
+        {
+            //Add food reference to stack
+            foodStack.Push(food);
+            //Call generic eating events in this script
+            pickupEvent.Invoke(food);
+            //Change the layer of the food for AI interaction
+            food.layer = LayerMask.NameToLayer("EatenFood");
+        }
+        //Make food invisible + not simulated
         food.SetActive(false);
+        //Set the pickup time so eating is delayed
         pickupTime = Time.time + pickupDelay;
-        food.layer = LayerMask.NameToLayer("EatenFood");
+        //Play any animations/particles/sounds setup in the controller
         controller.CallEvents(SquirrelController.EventTrigger.eat);
-        pickupEvent.Invoke(food);
+        //Call events set up specifically on the food
         food.GetComponent<Food>().pickupEvent.Invoke();
+        //Create particle effect
         Instantiate(foodEaten, food.transform.position, food.transform.rotation);
     }
 
     [ContextMenu("Throw food")]
     public void ThrowFood(int mode)
     {
+        Transform activeMouth = normalMouth.gameObject.activeInHierarchy ? normalMouth : ballMouth;
+
+        if (giantAcorn != null)
+        {
+            giantAcorn.transform.position = activeMouth.position;
+
+            giantAcorn.SetActive(true);
+            giantAcorn = null;
+            throwTime = Time.time + throwDelay;
+
+            controller.LeaveGiantBallState();
+
+            return;
+        }
+
         if (foodStack.Count == 0) return;
 
         GameObject food = foodStack.Pop();
         Rigidbody foodrb = food.GetComponent<Rigidbody>();
-        Transform activeMouth = normalMouth.gameObject.activeInHierarchy ? normalMouth : ballMouth;
 
         foodrb.transform.position = activeMouth.position;
         foodrb.velocity = squirrelrb.velocity + activeMouth.forward * throwVelocity;
@@ -190,7 +223,9 @@ public class SquirrelFoodGrabber : MonoBehaviour
             // Pickup cooldown has ended
             Time.time >= pickupTime &&
             // In normal squirrel form
-            normalMouth.gameObject.activeInHierarchy
+            normalMouth.gameObject.activeInHierarchy &&
+            // Not holding the giant acorn
+            giantAcorn == null
         );
     }
 
@@ -202,7 +237,17 @@ public class SquirrelFoodGrabber : MonoBehaviour
             // Player isn't interacting with an NPC
             !npcInteractionManager.isInteracting &&
             // Player has food to spit
-            foodStack.Count > 0
+            (foodStack.Count > 0 ||
+            // Player has giant acorn
+            giantAcorn != null)
+        );
+    }
+
+    public bool CanBeBall()
+    {
+        return (
+            giantAcorn != null ||
+            GetFoodCount() >= foodCountBallForm
         );
     }
 
