@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faf7db05d259ffb47b2b158a2e462d2a, type: 3}
   m_Name: Island ColorPalette
   m_EditorClassIdentifier: 
-  current: {r: 0.41568628, g: 0.48235294, b: 0.17254902, a: 1}
+  current: {r: 0.49056602, g: 0.27839294, b: 0.085617654, a: 1}
   colors:
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 0.866, g: 0.866, b: 0.866, a: 1}
