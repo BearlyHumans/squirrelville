@@ -32,11 +32,11 @@ public class Stun : MonoBehaviour
             
             if (thing.tag == playerController.tag) 
             {
-                playerController.FreezeAndStun();
 
                 human.hitPlayerStun = true;
 
                 takeFood(foodController,takeFoodAmmount);
+                playerController.FreezeAndStun();
                 StartCoroutine(unfreezePlayer(playerController));
 
             }
