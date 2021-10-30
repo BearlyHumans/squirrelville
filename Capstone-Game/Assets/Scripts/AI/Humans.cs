@@ -405,7 +405,7 @@ public class Humans : MonoBehaviour
     {
         watchedFor += Time.deltaTime;
         
-        facePlayer();
+        //facePlayer();
         //human.SetDestination(transform.position);
         
         if(!givenfood)
@@ -425,7 +425,7 @@ public class Humans : MonoBehaviour
         if(watchedFor > friendlyVariables.watchTimer)
         {
             givenfood = false;
-            howManyAcornsLeft = friendlyVariables.howManyAcorns;
+            //howManyAcornsLeft = friendlyVariables.howManyAcorns;
             currentState = HumanStates.PathFollowing;
             watchedFor = 0.0f;
         }
