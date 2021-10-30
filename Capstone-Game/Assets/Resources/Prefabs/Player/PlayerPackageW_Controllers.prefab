@@ -3340,9 +3340,9 @@ MonoBehaviour:
   - trigger: 21
     action: 1
     soundName: Dashing
-  - trigger: 25
+  - trigger: 10
     action: 1
-    soundName: Barking
+    soundName: Moving
   - trigger: 16
     action: 1
     soundName: Rolling
