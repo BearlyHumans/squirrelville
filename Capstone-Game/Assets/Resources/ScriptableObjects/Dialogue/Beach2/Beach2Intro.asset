@@ -17,12 +17,10 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 300dadbdf3fc5254d911a403452005c5, type: 3}
   - text: "It\u2019s so HUGE! So much bigger up close...man!\r"
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-  - text: "You\u2019ve been a really good help today. If you want you can stay around
-      for a bit? I\u2019m sure I can speak for the others when I say you can stay
-      here as long as you want."
-    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-  - text: "Thank you so much, little guy. We\u2019re going to have the biggest feast
-      tonight!!\r How do you like the setup??\n"
+  - text: 'Thank you so much, little guy. We''re going to have the biggest feast
+      tonight!! How do you like what I did with the place?
+
+'
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
   - text: "Speaking of\u2026 I\u2019ve got some people to introduce you to who I
       think will want to give you a big bloody hug!\r\n"
