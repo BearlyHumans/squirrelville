@@ -86,6 +86,10 @@ PrefabInstance:
       propertyPath: m_ReceiveGI
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e0bf94029f05a6149bcd96c668a1e63a, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: bd873b0a8dab16344b009de495514ae4, type: 2}
     - target: {fileID: 919132149155446097, guid: e0bf94029f05a6149bcd96c668a1e63a, type: 3}
       propertyPath: m_Name
       value: Banksia_coccinea

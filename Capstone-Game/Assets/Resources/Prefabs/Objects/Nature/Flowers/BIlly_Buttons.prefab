@@ -94,6 +94,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: c3914b70a2eb0e843a6010d05834e849, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 020a317e6b5805745971de8ba2840c39, type: 2}
     - target: {fileID: 919132149155446097, guid: c3914b70a2eb0e843a6010d05834e849, type: 3}
       propertyPath: m_Name
       value: BIlly_Buttons
