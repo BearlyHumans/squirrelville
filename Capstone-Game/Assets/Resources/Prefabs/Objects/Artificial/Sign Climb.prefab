@@ -42,7 +42,7 @@ GameObject:
   m_TagString: NonClimbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &2059309291963827576
 Transform:
@@ -119,6 +119,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sign_Climb
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 25abff0fa2b020541b8ffa6dab17eef2, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25abff0fa2b020541b8ffa6dab17eef2, type: 3}
 --- !u!1 &1176929556525688509 stripped
@@ -189,6 +193,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: f34de05fa274aca44802ddb767c7538a, type: 3}
       propertyPath: m_Name
       value: Sign_Pole
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f34de05fa274aca44802ddb767c7538a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f34de05fa274aca44802ddb767c7538a, type: 3}

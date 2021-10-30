@@ -17,7 +17,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &5854241846565897999
 Transform:
@@ -112,7 +112,7 @@ GameObject:
   m_TagString: Climbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &8946804157952085248
 Transform:
@@ -221,7 +221,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1349496285110257777
 Transform:
@@ -313,7 +313,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1349496285353947707
 Transform:
@@ -347,7 +347,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1349496285421314619
 Transform:
@@ -380,7 +380,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1349496285426447023
 Transform:
@@ -475,7 +475,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1349496285673151852
 Transform:
@@ -567,7 +567,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1349496286343455457
 Transform:
@@ -600,7 +600,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1349496286352512394
 Transform:
@@ -692,7 +692,7 @@ GameObject:
   m_TagString: Climbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1526974011292717323
 Transform:
@@ -791,7 +791,7 @@ GameObject:
   m_TagString: Climbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &7575450586890794551
 Transform:
@@ -887,7 +887,7 @@ GameObject:
   m_TagString: Climbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &6660574751217186521
 Transform:
@@ -983,7 +983,7 @@ GameObject:
   m_TagString: Climbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 0
 --- !u!4 &3031447093181820749
 Transform:
@@ -1079,7 +1079,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &5697403318853885668
 Transform:
@@ -1174,7 +1174,7 @@ GameObject:
   m_TagString: Climbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &2989856427434564497
 Transform:
@@ -1263,6 +1263,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vine_001 (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 4252859878732968037, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_RootOrder
       value: 34
@@ -1340,6 +1344,10 @@ PrefabInstance:
     - target: {fileID: 1099143834169784, guid: c35059bbd587c4c7c82bed959ef72cb2, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1099143834169784, guid: c35059bbd587c4c7c82bed959ef72cb2, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4048640662166370, guid: c35059bbd587c4c7c82bed959ef72cb2, type: 3}
       propertyPath: m_RootOrder
@@ -1432,6 +1440,10 @@ PrefabInstance:
     - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_Name
       value: Vine_001 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4252859878732968037, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_RootOrder
@@ -1589,6 +1601,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013451788436, guid: bec9726b8eaf54d9eb3f25cb70fc3b88, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 4000012650475178, guid: bec9726b8eaf54d9eb3f25cb70fc3b88, type: 3}
       propertyPath: m_RootOrder
       value: 15
@@ -1670,6 +1686,10 @@ PrefabInstance:
     - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_Name
       value: Vine_001 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4252859878732968037, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_RootOrder
@@ -1823,6 +1843,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fallen_Tree (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7139854138408160709, guid: b00cb293e7c02794d8bd28467017efb0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 7520460720914012031, guid: b00cb293e7c02794d8bd28467017efb0, type: 3}
       propertyPath: m_RootOrder
       value: 44
@@ -1896,6 +1920,10 @@ PrefabInstance:
     - target: {fileID: 1768021477997006, guid: 3316d5c6f07ad4ef5b957ede56827bad, type: 3}
       propertyPath: m_Name
       value: dungeon-wall-prison
+      objectReference: {fileID: 0}
+    - target: {fileID: 1768021477997006, guid: 3316d5c6f07ad4ef5b957ede56827bad, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4390558277776286, guid: 3316d5c6f07ad4ef5b957ede56827bad, type: 3}
       propertyPath: m_RootOrder
@@ -1975,6 +2003,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vine_001 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 4252859878732968037, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_RootOrder
       value: 50
@@ -2049,6 +2081,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vine_001 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 4252859878732968037, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_RootOrder
       value: 23
@@ -2122,6 +2158,10 @@ PrefabInstance:
     - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_Name
       value: Vine_001 (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4252859878732968037, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_RootOrder
@@ -2253,6 +2293,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Branch_2 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7756347594764295739, guid: 51af1fb192732e44cbfdbf8453bf1e18, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51af1fb192732e44cbfdbf8453bf1e18, type: 3}
 --- !u!4 &8238660550726472254 stripped
@@ -2270,6 +2314,10 @@ PrefabInstance:
     - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_Name
       value: Vine_001 (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4252859878732968037, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_RootOrder
@@ -2345,6 +2393,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vine_001 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 4252859878732968037, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_RootOrder
       value: 29
@@ -2419,6 +2471,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vine_001 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 4252859878732968037, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_RootOrder
       value: 32
@@ -2492,6 +2548,10 @@ PrefabInstance:
     - target: {fileID: 3752912752708987308, guid: 271763b38801f134d9153dc78e7c1178, type: 3}
       propertyPath: m_Name
       value: Wood Large Log Climb (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3752912752708987308, guid: 271763b38801f134d9153dc78e7c1178, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 3752912752709328154, guid: 271763b38801f134d9153dc78e7c1178, type: 3}
       propertyPath: m_RootOrder
@@ -2645,6 +2705,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: mail-box (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1738149863951698, guid: 40b973a78c2a24f9c9deec108921be8e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 4818242582996578, guid: 40b973a78c2a24f9c9deec108921be8e, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -2739,6 +2803,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Climbable
       objectReference: {fileID: 0}
+    - target: {fileID: 1053292802396856, guid: ec91ceda81c824e2db2ed1e317b1ed1e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 4630853170867848, guid: ec91ceda81c824e2db2ed1e317b1ed1e, type: 3}
       propertyPath: m_RootOrder
       value: 36
@@ -2821,6 +2889,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vine_001 (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 4252859878732968037, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_RootOrder
       value: 62
@@ -2894,6 +2966,10 @@ PrefabInstance:
     - target: {fileID: 3752912752708987308, guid: 271763b38801f134d9153dc78e7c1178, type: 3}
       propertyPath: m_Name
       value: Wood Large Log Climb (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3752912752708987308, guid: 271763b38801f134d9153dc78e7c1178, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 3752912752709328154, guid: 271763b38801f134d9153dc78e7c1178, type: 3}
       propertyPath: m_RootOrder
@@ -3051,6 +3127,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vine_001
       objectReference: {fileID: 0}
+    - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 4252859878732968037, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_RootOrder
       value: 24
@@ -3124,6 +3204,10 @@ PrefabInstance:
     - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_Name
       value: Vine_001 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4252859878732968037, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_RootOrder
@@ -3202,6 +3286,10 @@ PrefabInstance:
     - target: {fileID: 1901625249731166, guid: e689adb75b2a549c081579b590f20150, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901625249731166, guid: e689adb75b2a549c081579b590f20150, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4825477010116996, guid: e689adb75b2a549c081579b590f20150, type: 3}
       propertyPath: m_RootOrder
@@ -3282,6 +3370,10 @@ PrefabInstance:
     - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_Name
       value: Vine_001 (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4252859878732968037, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_RootOrder
@@ -3413,6 +3505,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Branch_2 (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 7756347594764295739, guid: 51af1fb192732e44cbfdbf8453bf1e18, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51af1fb192732e44cbfdbf8453bf1e18, type: 3}
 --- !u!4 &8238660550322995131 stripped
@@ -3430,6 +3526,10 @@ PrefabInstance:
     - target: {fileID: 7139854138408160709, guid: b00cb293e7c02794d8bd28467017efb0, type: 3}
       propertyPath: m_Name
       value: Fallen_Tree (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139854138408160709, guid: b00cb293e7c02794d8bd28467017efb0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 7520460720914012031, guid: b00cb293e7c02794d8bd28467017efb0, type: 3}
       propertyPath: m_RootOrder
@@ -3586,6 +3686,10 @@ PrefabInstance:
     - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_Name
       value: Vine_001 (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4252859878732968037, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_RootOrder
@@ -3861,6 +3965,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Climbable
       objectReference: {fileID: 0}
+    - target: {fileID: 1396157326604562, guid: a89fb4c5717e04af7b826dd5fa720ae3, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 4832627744815994, guid: a89fb4c5717e04af7b826dd5fa720ae3, type: 3}
       propertyPath: m_RootOrder
       value: 20
@@ -3943,6 +4051,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vine_001 (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 4252859878732968037, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_RootOrder
       value: 57
@@ -4016,6 +4128,10 @@ PrefabInstance:
     - target: {fileID: 7139854138408160709, guid: b00cb293e7c02794d8bd28467017efb0, type: 3}
       propertyPath: m_Name
       value: Fallen_Tree (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139854138408160709, guid: b00cb293e7c02794d8bd28467017efb0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 7520460720914012031, guid: b00cb293e7c02794d8bd28467017efb0, type: 3}
       propertyPath: m_RootOrder
@@ -4095,6 +4211,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1224550385178844, guid: 1ed82242ee4ea44a5bf1ba69defa1e46, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 4276395724719890, guid: 1ed82242ee4ea44a5bf1ba69defa1e46, type: 3}
       propertyPath: m_RootOrder
       value: 11
@@ -4168,6 +4288,10 @@ PrefabInstance:
     - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_Name
       value: Vine_001 (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4252859878732968037, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_RootOrder
@@ -4299,6 +4423,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Branch_2 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7756347594764295739, guid: 51af1fb192732e44cbfdbf8453bf1e18, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51af1fb192732e44cbfdbf8453bf1e18, type: 3}
 --- !u!4 &8238660549824611080 stripped
@@ -4316,6 +4444,10 @@ PrefabInstance:
     - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_Name
       value: Vine_001 (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4252859878732968037, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_RootOrder
@@ -4390,6 +4522,10 @@ PrefabInstance:
     - target: {fileID: 7139854138408160709, guid: b00cb293e7c02794d8bd28467017efb0, type: 3}
       propertyPath: m_Name
       value: Fallen_Tree
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139854138408160709, guid: b00cb293e7c02794d8bd28467017efb0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 7520460720914012031, guid: b00cb293e7c02794d8bd28467017efb0, type: 3}
       propertyPath: m_RootOrder
@@ -4521,6 +4657,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Branch_2 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7756347594764295739, guid: 51af1fb192732e44cbfdbf8453bf1e18, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51af1fb192732e44cbfdbf8453bf1e18, type: 3}
 --- !u!4 &8238660549738986830 stripped
@@ -4617,6 +4757,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vine_001 (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 4252859878732968037, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_RootOrder
       value: 55
@@ -4690,6 +4834,10 @@ PrefabInstance:
     - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_Name
       value: Vine_001 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4252859878732968037, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_RootOrder
@@ -4765,13 +4913,25 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1137074718164004, guid: 396e047ed643f4049803beede69fcb78, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 1149681889390748, guid: 396e047ed643f4049803beede69fcb78, type: 3}
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1149681889390748, guid: 396e047ed643f4049803beede69fcb78, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 1264115078029294, guid: 396e047ed643f4049803beede69fcb78, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1264115078029294, guid: 396e047ed643f4049803beede69fcb78, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 1330241434410046, guid: 396e047ed643f4049803beede69fcb78, type: 3}
       propertyPath: m_Name
@@ -4781,21 +4941,41 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 1330241434410046, guid: 396e047ed643f4049803beede69fcb78, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 1332997000534674, guid: 396e047ed643f4049803beede69fcb78, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332997000534674, guid: 396e047ed643f4049803beede69fcb78, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 1410970223192738, guid: 396e047ed643f4049803beede69fcb78, type: 3}
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1410970223192738, guid: 396e047ed643f4049803beede69fcb78, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 1524168229826992, guid: 396e047ed643f4049803beede69fcb78, type: 3}
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1524168229826992, guid: 396e047ed643f4049803beede69fcb78, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 1879339811994788, guid: 396e047ed643f4049803beede69fcb78, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1879339811994788, guid: 396e047ed643f4049803beede69fcb78, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4408639982446306, guid: 396e047ed643f4049803beede69fcb78, type: 3}
       propertyPath: m_RootOrder
@@ -4930,6 +5110,10 @@ PrefabInstance:
     - target: {fileID: 1849784546174058, guid: 340cf866e013c4103962fd68f4d452b5, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1849784546174058, guid: 340cf866e013c4103962fd68f4d452b5, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4711280694018668, guid: 340cf866e013c4103962fd68f4d452b5, type: 3}
       propertyPath: m_RootOrder
@@ -5073,6 +5257,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Branch_2
       objectReference: {fileID: 0}
+    - target: {fileID: 7756347594764295739, guid: 51af1fb192732e44cbfdbf8453bf1e18, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51af1fb192732e44cbfdbf8453bf1e18, type: 3}
 --- !u!4 &8238660549645024012 stripped
@@ -5090,6 +5278,10 @@ PrefabInstance:
     - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_Name
       value: Vine_001
+      objectReference: {fileID: 0}
+    - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4252859878732968037, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_RootOrder
@@ -5173,6 +5365,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Climbable
       objectReference: {fileID: 0}
+    - target: {fileID: 1087224731143642, guid: 73947d13d3a584f8abcc78f06817cdc2, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 4821234890701750, guid: 73947d13d3a584f8abcc78f06817cdc2, type: 3}
       propertyPath: m_RootOrder
       value: 21
@@ -5251,6 +5447,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood Large Log Climb (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 3752912752708987308, guid: 271763b38801f134d9153dc78e7c1178, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 3752912752709328154, guid: 271763b38801f134d9153dc78e7c1178, type: 3}
       propertyPath: m_RootOrder
       value: 38
@@ -5324,6 +5524,10 @@ PrefabInstance:
     - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_Name
       value: Vine_001 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3480967134485670623, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4252859878732968037, guid: ee8523e0f4e30a445ae6499770a97f54, type: 3}
       propertyPath: m_RootOrder
@@ -5407,6 +5611,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Climbable
       objectReference: {fileID: 0}
+    - target: {fileID: 1053292802396856, guid: ec91ceda81c824e2db2ed1e317b1ed1e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 4630853170867848, guid: ec91ceda81c824e2db2ed1e317b1ed1e, type: 3}
       propertyPath: m_RootOrder
       value: 22
@@ -5489,6 +5697,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood Large Log Climb
       objectReference: {fileID: 0}
+    - target: {fileID: 3752912752708987308, guid: 271763b38801f134d9153dc78e7c1178, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 3752912752709328154, guid: 271763b38801f134d9153dc78e7c1178, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -5567,33 +5779,65 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010981654694, guid: 36466779d2f154e8ca21bedd84a2039a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 1153756756795100, guid: 36466779d2f154e8ca21bedd84a2039a, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153756756795100, guid: 36466779d2f154e8ca21bedd84a2039a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 1560432585222322, guid: 36466779d2f154e8ca21bedd84a2039a, type: 3}
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1560432585222322, guid: 36466779d2f154e8ca21bedd84a2039a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 1661901250859940, guid: 36466779d2f154e8ca21bedd84a2039a, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1661901250859940, guid: 36466779d2f154e8ca21bedd84a2039a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 1710482067354638, guid: 36466779d2f154e8ca21bedd84a2039a, type: 3}
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1710482067354638, guid: 36466779d2f154e8ca21bedd84a2039a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 1746187384676892, guid: 36466779d2f154e8ca21bedd84a2039a, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1746187384676892, guid: 36466779d2f154e8ca21bedd84a2039a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 1794885270663028, guid: 36466779d2f154e8ca21bedd84a2039a, type: 3}
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1794885270663028, guid: 36466779d2f154e8ca21bedd84a2039a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 1870495941636550, guid: 36466779d2f154e8ca21bedd84a2039a, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1870495941636550, guid: 36466779d2f154e8ca21bedd84a2039a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4000011335421182, guid: 36466779d2f154e8ca21bedd84a2039a, type: 3}
       propertyPath: m_RootOrder

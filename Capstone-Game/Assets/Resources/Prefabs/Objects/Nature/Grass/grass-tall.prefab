@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1592580129405113342}
   - component: {fileID: 1592580129408426332}
   - component: {fileID: 1592580129407341524}
+  - component: {fileID: -6536290863085702182}
   m_Layer: 0
   m_Name: grass-tall
   m_TagString: Untagged
@@ -81,3 +82,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!205 &-6536290863085702182
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1592580129405344002}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: -0.04468113, y: 0.5341033, z: -0.09155959}
+  m_Size: 1.2521589
+  m_FadeMode: 1
+  m_AnimateCrossFading: 1
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.014252038
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 1592580129407341524}
+  - screenRelativeHeight: 0
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0
+    fadeTransitionWidth: 0
+    renderers: []
+  m_Enabled: 1
