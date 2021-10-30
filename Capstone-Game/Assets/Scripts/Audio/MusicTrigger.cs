@@ -124,4 +124,22 @@ public class MusicTrigger : MonoBehaviour
         yield return StartCoroutine(FadeOut());
         yield return musicTrigger.StartCoroutine(musicTrigger.FadeIn());
     }
+
+    public void ManualFadeOut()
+    {
+        if (activeMusicTrigger != null)
+        {
+            activeMusicTrigger.StopAllCoroutines();
+            activeMusicTrigger.StartCoroutine(activeMusicTrigger.FadeOut());
+        }
+    }
+
+    public void ManualFadeIn()
+    {
+        if (activeMusicTrigger != null)
+        {
+            activeMusicTrigger.StopAllCoroutines();
+            activeMusicTrigger.StartCoroutine(activeMusicTrigger.FadeIn());
+        }
+    }
 }

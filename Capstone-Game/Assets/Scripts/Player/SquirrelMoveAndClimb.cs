@@ -61,10 +61,18 @@ namespace Player
 
         private void UpdAnimator()
         {
-            if (vals.moving)
+            if (vals.moving && vals.dashing)
+                PARENT.CallEvents(SquirrelController.EventTrigger.dashing);
+            else if (vals.moving)
                 PARENT.CallEvents(SquirrelController.EventTrigger.moving);
             else if (vals.jumping == false)
+            {
+                if (Random.value < 0.01f)
+                    PARENT.CallEvents(SquirrelController.EventTrigger.randomIdle1);
+                else if (Random.value < 0.001f)
+                    PARENT.CallEvents(SquirrelController.EventTrigger.randomIdle2);
                 PARENT.CallEvents(SquirrelController.EventTrigger.notMoving);
+            }
 
             if (vals.climbing)
                 PARENT.CallEvents(SquirrelController.EventTrigger.climbing);
