@@ -837,7 +837,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 23f36212de0b4c0468a5f7436d99bfc7, type: 3}
     - {fileID: 8300000, guid: ed6b413857f356c42afa05ceb30d9f24, type: 3}
     - {fileID: 8300000, guid: 133c40ba3746c2a49944446bbf281247, type: 3}
-    volume: 0.7
+    volume: 0.5
     randomPitchRange: {x: 0.9, y: 1.1}
   - name: Jumping
     sounds:
@@ -847,23 +847,23 @@ MonoBehaviour:
   - name: Dashing
     sounds:
     - {fileID: 8300000, guid: 2ccd946e8ca3ca844a9683c7069973af, type: 3}
-    volume: 1
+    volume: 0.3
     randomPitchRange: {x: 1, y: 1}
   - name: Rolling
     sounds:
     - {fileID: 8300000, guid: 7c88b3c604b3df74aa0def3d91a4ae88, type: 3}
-    volume: 1
+    volume: 0.8
     randomPitchRange: {x: 1, y: 1}
   - name: Eating
     sounds:
     - {fileID: 8300000, guid: 2a1e10d457c7a974f990d4d68d5362ec, type: 3}
     - {fileID: 8300000, guid: 20aa4173398a74c44a82662782d4967f, type: 3}
-    volume: 1
+    volume: 0.7
     randomPitchRange: {x: 1, y: 1}
   - name: Spitting
     sounds:
     - {fileID: 8300000, guid: 9e9f1fee1c527e84ea1b725ab21c35e6, type: 3}
-    volume: 1
+    volume: 0.7
     randomPitchRange: {x: 0.9, y: 1.1}
 --- !u!82 &3127635603426240798
 AudioSource:
