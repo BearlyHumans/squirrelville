@@ -6,6 +6,15 @@ ModelImporter:
   - first:
       74: -4912335311713971153
     second: Squirrel Climbing
+  - first:
+      74: 797730396696941282
+    second: Squirrel Climbing 2
+  - first:
+      74: -4912335311713971153
+    second: Squirrel Climbing
+  - first:
+      74: 797730396696941282
+    second: Squirrel Armature|Squirrel Climbing 2
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -35,11 +44,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Squirrel Climbing
-      takeName: Squirrel Armature|Squirrel Climbing
+      name: Squirrel Armature|Squirrel Climbing 2
+      takeName: Squirrel Armature|Squirrel Climbing 2
       internalID: 0
       firstFrame: 0
-      lastFrame: 44
+      lastFrame: 45
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

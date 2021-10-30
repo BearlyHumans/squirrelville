@@ -3197,21 +3197,33 @@ MonoBehaviour:
     type: 2
     paramName: ClimbAngle
     setToValue: 0
-  - trigger: 20
+  - trigger: 10
     type: 1
-    paramName: StunState
-    setToValue: 1
-  - trigger: 20
+    paramName: MoveState
+    setToValue: 2
+  - trigger: 5
     type: 1
-    paramName: StunState
+    paramName: DanceState
+    setToValue: 0
+  - trigger: 6
+    type: 1
+    paramName: DanceState
     setToValue: 1
+  - trigger: 1
+    type: 1
+    paramName: DanceState
+    setToValue: 0
   - trigger: 18
-    type: 1
-    paramName: EatState
-    setToValue: 1
+    type: 3
+    paramName: Eating
+    setToValue: 0
   - trigger: 22
-    type: 1
-    paramName: EatState
+    type: 3
+    paramName: Spitting
+    setToValue: 0
+  - trigger: 20
+    type: 3
+    paramName: Stunned
     setToValue: 0
   soundEvents:
   - trigger: 1
@@ -3579,12 +3591,6 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   throwEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  pickupGiantEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  throwGiantEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &3452970906002354115
