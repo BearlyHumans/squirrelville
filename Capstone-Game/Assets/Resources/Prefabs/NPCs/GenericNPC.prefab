@@ -954,8 +954,8 @@ MonoBehaviour:
   friendlyVariables:
     foodToGive: {fileID: 6834729697976214412, guid: 29a3643e9f57a5e43a8d43b2a06538be, type: 3}
     foodTimer: 10
-    watchTimer: 5
-    howManyAcorns: 1
+    watchTimer: 20
+    howManyAcorns: 2
   catchVariables:
     catchResetTimer: 10
     takeFoodAmmount: 3
@@ -968,6 +968,7 @@ MonoBehaviour:
   humanWalkSpeed: 2
   humanRunSpeed: 3
   acornHolder: {fileID: 9201156710929197574}
+  NPCVolume: 0
   SoundEffectClips:
     eating: {fileID: 8300000, guid: 94cf6cb862736c4459ae378cd000678f, type: 3}
     alert: {fileID: 8300000, guid: c2c924f589554ef4e9b2a8a45e6b7cae, type: 3}
@@ -983,7 +984,7 @@ AudioSource:
   m_GameObject: {fileID: 1194168816736975856}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -3983698746238741912, guid: 34ca02f6309a2f549b4732abe7199d62, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.486

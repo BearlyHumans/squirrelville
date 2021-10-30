@@ -158,6 +158,8 @@ public class Humans : MonoBehaviour
     //GameObject playerController;
     public GameObject acornHolder;
 
+    public float NPCVolume = .1f;
+
     private AudioSource audio;
     [SerializeField]
     private SoundEffects SoundEffectClips;
@@ -323,7 +325,7 @@ public class Humans : MonoBehaviour
             acornHolder.SetActive(true);
             if(!returnedToPath)
             {
-                audio.PlayOneShot (SoundEffectClips.eating, 0.2f);
+                audio.PlayOneShot (SoundEffectClips.eating, 1f);
                 returnedToPath = true;
                 StartCoroutine(returnToPath(2.5f));
             }
@@ -343,11 +345,11 @@ public class Humans : MonoBehaviour
             int alertSound =  UnityEngine.Random.Range(0, 2);
             if(alertSound == 0)
             {
-                audio.PlayOneShot (SoundEffectClips.alert, 0.6f);
+                audio.PlayOneShot (SoundEffectClips.alert, 1f);
             }
             else
             {
-                audio.PlayOneShot (SoundEffectClips.alert2, 0.6f);
+                audio.PlayOneShot (SoundEffectClips.alert2, 1f);
             }
             
             havntSpotted = true;
@@ -408,7 +410,7 @@ public class Humans : MonoBehaviour
         
         if(!givenfood)
         {
-            audio.PlayOneShot (SoundEffectClips.friendly, 0.6f);
+            audio.PlayOneShot (SoundEffectClips.friendly, 1f);
             Instantiate(friendlyVariables.foodToGive, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
             howManyAcornsLeft -= 1;
             timeToFood = 0.0f;
@@ -569,7 +571,7 @@ public class Humans : MonoBehaviour
         yield return new WaitForSeconds(1.1f);
         
         stunScript.stompEffect(Player, Player.behaviourScripts.foodGrabber, catchVariables.takeFoodAmmount);
-        audio.PlayOneShot(SoundEffectClips.stomp, 0.2f);
+        audio.PlayOneShot(SoundEffectClips.stomp, 1f);
         //yield return new WaitForSeconds(1.2f);
         stillFood = checkForFood();
         
