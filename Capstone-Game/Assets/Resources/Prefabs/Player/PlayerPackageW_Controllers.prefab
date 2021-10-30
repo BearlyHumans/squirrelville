@@ -846,12 +846,12 @@ MonoBehaviour:
     randomPitchRange: {x: 0.95, y: 1.05}
   - name: Dashing
     sounds:
-    - {fileID: 8300000, guid: eb0c7b40382c9ab4c80ade0b3893233f, type: 3}
+    - {fileID: 8300000, guid: 2ccd946e8ca3ca844a9683c7069973af, type: 3}
     volume: 1
     randomPitchRange: {x: 1, y: 1}
   - name: Rolling
     sounds:
-    - {fileID: 8300000, guid: 96e41a9e5de4dc741a46a606e8e0d190, type: 3}
+    - {fileID: 8300000, guid: 7c88b3c604b3df74aa0def3d91a4ae88, type: 3}
     volume: 1
     randomPitchRange: {x: 1, y: 1}
   - name: Eating

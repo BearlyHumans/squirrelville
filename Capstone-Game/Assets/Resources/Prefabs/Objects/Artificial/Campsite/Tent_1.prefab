@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &918678621264148655
+--- !u!1 &1399296571283642475
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,46 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5091270104932687566}
-  - component: {fileID: 9093796134538435726}
-  - component: {fileID: 4196582263639759538}
-  - component: {fileID: 1391338435907247364}
-  m_Layer: 0
-  m_Name: sunflower
-  m_TagString: Untagged
+  - component: {fileID: 1738561520078996177}
+  - component: {fileID: 3427036905466219892}
+  - component: {fileID: 606772782166391230}
+  - component: {fileID: 2281676845879630788}
+  m_Layer: 3
+  m_Name: Tent_1
+  m_TagString: Slippery
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5091270104932687566
+--- !u!4 &1738561520078996177
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 918678621264148655}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -216.29167, y: -134.01645, z: 40.770355}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_GameObject: {fileID: 1399296571283642475}
+  m_LocalRotation: {x: 0.45373416, y: -0.54233336, z: -0.54233325, w: -0.45373404}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 167.86406, y: 167.86407, z: 167.86404}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &9093796134538435726
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: -259.83398}
+--- !u!33 &3427036905466219892
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 918678621264148655}
-  m_Mesh: {fileID: 4300002, guid: a2c0692d6e1922541ae3fd9e4136d5f7, type: 3}
---- !u!23 &4196582263639759538
+  m_GameObject: {fileID: 1399296571283642475}
+  m_Mesh: {fileID: -7771613508976059695, guid: e9df4a5172d1bf046b54497f97a49d14, type: 3}
+--- !u!23 &606772782166391230
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 918678621264148655}
+  m_GameObject: {fileID: 1399296571283642475}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -60,9 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4eaf32b738c58324ab4418e06e589453, type: 2}
-  - {fileID: 2100000, guid: 75d6549bd63778242ae7c0fb36ccf66f, type: 2}
-  - {fileID: 2100000, guid: 5eabc9d5dafebcd4ba82a2a21637ddba, type: 2}
+  - {fileID: 2100000, guid: 587434576568e9f4db9450768962b2b6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -75,7 +73,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 2
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -84,22 +82,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!205 &1391338435907247364
-LODGroup:
+--- !u!64 &2281676845879630788
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 918678621264148655}
-  serializedVersion: 2
-  m_LocalReferencePoint: {x: -0.027405024, y: 0.8560017, z: -0.014553428}
-  m_Size: 1.712758
-  m_FadeMode: 0
-  m_AnimateCrossFading: 0
-  m_LastLODIsBillboard: 0
-  m_LODs:
-  - screenRelativeHeight: 0.019549394
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 4196582263639759538}
+  m_GameObject: {fileID: 1399296571283642475}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7771613508976059695, guid: e9df4a5172d1bf046b54497f97a49d14, type: 3}

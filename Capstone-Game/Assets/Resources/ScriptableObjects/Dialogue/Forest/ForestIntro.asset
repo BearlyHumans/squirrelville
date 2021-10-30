@@ -15,11 +15,13 @@ MonoBehaviour:
   entries:
   - text: "I\u2019ve never seen anything move the way you do!"
     sprite: {fileID: 21300000, guid: 300dadbdf3fc5254d911a403452005c5, type: 3}
-  - text: "\rBut gosh\u2026 seems like there's a gate in the way. It\u2019s been
-      a while since I've been up here!\r"
+  - text: "\rBut gosh... seems like there's a gate in the way. It\u2019s been a while
+      since I've been up here!\r"
     sprite: {fileID: 21300000, guid: 48f9b57e80877e3499e629c7bcc247d0, type: 3}
-  - text: "I wish I had the energy you did\u2026 you remind me of my brother!\r\n"
+  - text: 'I wish I had the energy you did... you remind me of my brother!
+
+'
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-  - text: "Maybe if you bring me 7 more acorns I\u2019ll be able to move like you...or
-      maybe just give me the energy to break down this here gate! I\u2019m spent!!\r\n"
+  - text: "Maybe if you bring me 7 more acorns I\u2019ll be able to move like you...
+      or maybe just give me the energy to break down this here gate! I\u2019m spent!!\r\n"
     sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}

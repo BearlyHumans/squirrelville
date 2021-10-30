@@ -12,4 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04273a48ccd3fc44983e66b6acdba9a3, type: 3}
   m_Name: BeachPost
   m_EditorClassIdentifier: 
-  entries: []
+  entries:
+  - text: "I don\u2019t know why they taste so good, they just do! Our cousins back
+      home warned us about eating them, but I don\u2019t see the fuss. What, do they
+      hate good food or something? Hahaha!\r"
+    sprite: {fileID: 21300000, guid: f2b47b7936547f34689640c321e86f82, type: 3}
+  - text: "Now head on through this rock and get us some more, I\u2019m excited for
+      us!"
+    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
