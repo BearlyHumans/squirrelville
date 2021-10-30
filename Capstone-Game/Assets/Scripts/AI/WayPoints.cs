@@ -11,7 +11,7 @@ public class WayPoints : MonoBehaviour
     [SerializeField]
     public float waitForThisLong = 0f;
     
-    public virtual void OnDrawGizmos() 
+    public virtual void OnDrawGizmosSelected() 
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, radius); 

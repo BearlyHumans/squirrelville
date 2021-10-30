@@ -61,7 +61,7 @@ public class Stun : MonoBehaviour
 
     private void OnDrawGizmosSelected() 
     {
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.green;
         Gizmos.DrawWireSphere (transform.position, stunRange);
     }
 }
