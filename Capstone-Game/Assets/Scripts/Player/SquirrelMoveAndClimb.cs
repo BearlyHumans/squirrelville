@@ -546,6 +546,8 @@ namespace Player
                 {
                     if (vals.stoppedAtEdge)
                         JumpAroundCorners();
+                    else
+                        return postEdgeCodeLatVel;
                 }
                 else
                     return postEdgeCodeLatVel;
