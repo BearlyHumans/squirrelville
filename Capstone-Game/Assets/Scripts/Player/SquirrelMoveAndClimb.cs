@@ -545,9 +545,10 @@ namespace Player
                 if (vals.dashing)
                 {
                     if (vals.stoppedAtEdge)
-                        JumpAroundCorners();
-                    else
-                        return postEdgeCodeLatVel;
+                    {
+                        if (!JumpAroundCorners())
+                            return postEdgeCodeLatVel;
+                    }
                 }
                 else
                     return postEdgeCodeLatVel;
