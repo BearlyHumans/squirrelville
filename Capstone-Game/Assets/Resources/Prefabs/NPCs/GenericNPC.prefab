@@ -755,6 +755,7 @@ GameObject:
   - component: {fileID: 8104741259893103658}
   - component: {fileID: 8194542876997667122}
   - component: {fileID: 6767587695065880796}
+  - component: {fileID: 6634215346001527880}
   m_Layer: 0
   m_Name: GenericNPC
   m_TagString: Untagged
@@ -808,7 +809,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1194168816736975856}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.29139572
   m_Height: 1.8554463
   m_Direction: 1
@@ -850,6 +851,10 @@ MonoBehaviour:
   animationEvents:
   - trigger: 0
     animsParameter:
+      paramName: HumanIdle
+      setToValue: 1
+  - trigger: 0
+    animsParameter:
       paramName: HumanWalk
       setToValue: 0
   - trigger: 1
@@ -858,11 +863,15 @@ MonoBehaviour:
       setToValue: 1
   - trigger: 1
     animsParameter:
-      paramName: HumanStun
+      paramName: HumanIdle
       setToValue: 0
   - trigger: 1
     animsParameter:
       paramName: HumanRun
+      setToValue: 0
+  - trigger: 1
+    animsParameter:
+      paramName: HumanStun
       setToValue: 0
   - trigger: 1
     animsParameter:
@@ -880,29 +889,62 @@ MonoBehaviour:
     animsParameter:
       paramName: HumanRun
       setToValue: 1
+  - trigger: 2
+    animsParameter:
+      paramName: HumanWalk
+      setToValue: 0
+  - trigger: 2
+    animsParameter:
+      paramName: HumanStun
+      setToValue: 0
   - trigger: 3
     animsParameter:
       paramName: HumanStun
       setToValue: 1
   - trigger: 3
     animsParameter:
+      paramName: HumanRun
+      setToValue: 0
+  - trigger: 3
+    animsParameter:
       paramName: HumanWalk
-      setToValue: 1
+      setToValue: 0
   - trigger: 4
     animsParameter:
       paramName: HumanPickup
       setToValue: 1
+  - trigger: 4
+    animsParameter:
+      paramName: HumanWalk
+      setToValue: 0
   - trigger: 5
     animsParameter:
       paramName: HumanEating
       setToValue: 1
+  - trigger: 5
+    animsParameter:
+      paramName: HumanPickup
+      setToValue: 0
   - trigger: 6
     animsParameter:
       paramName: HumanDrop
       setToValue: 1
+  - trigger: 6
+    animsParameter:
+      paramName: HumanWalk
+      setToValue: 0
+  - trigger: 7
+    animsParameter:
+      paramName: HumanSitting
+      setToValue: 1
+  - trigger: 8
+    animsParameter:
+      paramName: HumanLying
+      setToValue: 1
   stunScript: {fileID: 3591709830310655803}
   exclaim: {fileID: 3796121588914482114}
   npcCurrentMode: 1
+  npcIdleAnim: 0
   pathFollowingVariables:
     walkingPause: 0
     turnAroundChance: 0.2
@@ -912,20 +954,123 @@ MonoBehaviour:
   friendlyVariables:
     foodToGive: {fileID: 6834729697976214412, guid: 29a3643e9f57a5e43a8d43b2a06538be, type: 3}
     foodTimer: 10
-    watchTimer: 5
+    watchTimer: 20
+    howManyAcorns: 2
   catchVariables:
-    catchResetTimer: 0
-    takeFoodAmmount: 0
+    catchResetTimer: 10
+    takeFoodAmmount: 3
   chaseVariables:
-    chaseTime: 0
+    chaseTime: 30
   anim: {fileID: 1194168816744384584}
   detectionAngle: 70
-  range: 8
+  range: 5
   hitPlayerStun: 0
   humanWalkSpeed: 2
-  humanRunSpeed: 5
-  playerController: {fileID: 0}
+  humanRunSpeed: 3
   acornHolder: {fileID: 9201156710929197574}
+  NPCVolume: 0
+  SoundEffectClips:
+    eating: {fileID: 8300000, guid: 94cf6cb862736c4459ae378cd000678f, type: 3}
+    alert: {fileID: 8300000, guid: c2c924f589554ef4e9b2a8a45e6b7cae, type: 3}
+    alert2: {fileID: 8300000, guid: dede58341300b5248bae779b26df1ab4, type: 3}
+    stomp: {fileID: 8300000, guid: 7f748e7ab48b0614381727504e5fc4f9, type: 3}
+    friendly: {fileID: 8300000, guid: 7ae7d15fef406c444aedb32dd7871854, type: 3}
+--- !u!82 &6634215346001527880
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194168816736975856}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -3983698746238741912, guid: 34ca02f6309a2f549b4732abe7199d62, type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.486
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1194168816736975858
 GameObject:
   m_ObjectHideFlags: 0
@@ -1041,7 +1186,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1194168816736975858}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.9211649
   m_Height: 1.9664057
   m_Direction: 1

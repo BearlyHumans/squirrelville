@@ -26,6 +26,13 @@ public enum NpcModes
     Passive,
 }
 
+public enum IdleMode
+{
+    Standing,
+    Sitting,
+    Lyingdown
+}
+
 public class Humans : MonoBehaviour
 {
     [Tooltip("Animation events")]
@@ -33,7 +40,8 @@ public class Humans : MonoBehaviour
     private List<ParameterChangeEvent> animationEvents = new List<ParameterChangeEvent>();
     
     private HumanStates currentState;
-    private NpcModes npcMode;
+    //private NpcModes npcMode;
+
 
     //---------Food Graber Script---------//
 
@@ -47,6 +55,10 @@ public class Humans : MonoBehaviour
     [SerializeField]
     public NpcModes npcCurrentMode;
 
+    [Tooltip("Select the behavior for the NPC")]
+    [SerializeField]
+    public IdleMode npcIdleAnim;
+
     [SerializeField]
     private PathFollowingVarible pathFollowingVariables;
 
@@ -58,6 +70,8 @@ public class Humans : MonoBehaviour
 
     [SerializeField]
     private ChaseVarible chaseVariables;
+
+
 
     // layer mask for what layer humans check spat out food on
     private LayerMask layerMask;
@@ -127,6 +141,7 @@ public class Humans : MonoBehaviour
     [SerializeField]
     public float humanRunSpeed = 5.0f;
 
+    private int howManyAcornsLeft;
 
     // walk to path wait times
     float returnToPathWaitTime = 3.0f;
@@ -143,6 +158,12 @@ public class Humans : MonoBehaviour
     //GameObject playerController;
     public GameObject acornHolder;
 
+    public float NPCVolume = .1f;
+
+    private AudioSource audio;
+    [SerializeField]
+    private SoundEffects SoundEffectClips;
+
     public SquirrelController Player
     {
         get { return AIManager.singleton.sController; }
@@ -152,6 +173,10 @@ public class Humans : MonoBehaviour
     public void Start() 
     {
         layerMask = LayerMask.GetMask("EatenFood");
+
+        howManyAcornsLeft = friendlyVariables.howManyAcorns;
+
+        audio = GetComponent<AudioSource>();
 
         human = this.GetComponent<NavMeshAgent>();
 
@@ -182,7 +207,6 @@ public class Humans : MonoBehaviour
     public void Update() 
     {
         distance = Vector3.Distance(Player.transform.position, transform.position);
-        timeToFood += Time.deltaTime;
         // -----States------
 
         switch(currentState)
@@ -221,6 +245,7 @@ public class Humans : MonoBehaviour
         human.speed = humanWalkSpeed; 
         if(!hasCaughtRecently)
         {
+            
             hasCaughtRecently = true;  
             checkBeenRun = false;
             hitPlayerStun = false;
@@ -250,7 +275,7 @@ public class Humans : MonoBehaviour
                     }
                     else
                     {
-                        CallAnimationEvents(AnimTriggers.walking);
+                        //CallAnimationEvents(AnimTriggers.running);
                         currentState = HumanStates.Chase;
                     }
                     // if didnt get player enter chase state again
@@ -264,6 +289,7 @@ public class Humans : MonoBehaviour
     private void HandleFood()
     {
         // option 1 = go to bin
+        catchChoice = 1;
         if(catchChoice == 0)
         {
             
@@ -286,9 +312,8 @@ public class Humans : MonoBehaviour
                 human.velocity = Vector3.zero;
                 if(!returnedToPath)
                 {
-                    
                     returnedToPath = true;
-                    StartCoroutine(returnToPath(returnToPathWaitTime));
+                    StartCoroutine(returnToPath(2.5f));
                 }
                 
             }
@@ -300,8 +325,9 @@ public class Humans : MonoBehaviour
             acornHolder.SetActive(true);
             if(!returnedToPath)
             {
+                audio.PlayOneShot (SoundEffectClips.eating, 1f);
                 returnedToPath = true;
-                StartCoroutine(returnToPath(returnToPathWaitTime));
+                StartCoroutine(returnToPath(2.5f));
             }
             
         }
@@ -316,6 +342,16 @@ public class Humans : MonoBehaviour
         CallAnimationEvents(AnimTriggers.running);
         if(!havntSpotted)
         {
+            int alertSound =  UnityEngine.Random.Range(0, 2);
+            if(alertSound == 0)
+            {
+                audio.PlayOneShot (SoundEffectClips.alert, 1f);
+            }
+            else
+            {
+                audio.PlayOneShot (SoundEffectClips.alert2, 1f);
+            }
+            
             havntSpotted = true;
             exclaim.Play();
         }
@@ -357,6 +393,7 @@ public class Humans : MonoBehaviour
         /// if the human leaves the set area they will return to following their path
         else
         {
+            CallAnimationEvents(AnimTriggers.walking);
             SetDest();
             StartCoroutine(returnToPath(returnToPathNoWaitTime));
         }
@@ -366,27 +403,43 @@ public class Humans : MonoBehaviour
     /// starts a timer to watch player food and offers 1 piece of food. ALso has internal timer to stop human from giving player too much food
     private void FriendlyState()
     {
-        anim.SetInteger("HumanMove", 0);
         watchedFor += Time.deltaTime;
-        facePlayer();
-        human.SetDestination(transform.position);
         
-        if (!givenfood)
+        facePlayer();
+        //human.SetDestination(transform.position);
+        
+        if(!givenfood)
         {
-           Instantiate(friendlyVariables.foodToGive, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
-           givenfood = true;
-           timeToFood = 0.0f;
+            audio.PlayOneShot (SoundEffectClips.friendly, 1f);
+            Instantiate(friendlyVariables.foodToGive, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
+            howManyAcornsLeft -= 1;
+            timeToFood = 0.0f;
+            givenfood = true;
+
+        }
+        else
+        {
+            timeToFood += Time.deltaTime;
         }
 
         if(watchedFor > friendlyVariables.watchTimer)
         {
+            givenfood = false;
+            howManyAcornsLeft = friendlyVariables.howManyAcorns;
             currentState = HumanStates.PathFollowing;
             watchedFor = 0.0f;
         }
 
         if(timeToFood > friendlyVariables.foodTimer)
         {
-            givenfood = false;
+            if(howManyAcornsLeft != 0)
+            {
+                givenfood = false;
+            }
+            else
+            {
+                givenfood = true;
+            }
         }
     }
     ///runs checks to find player, while cant see playing iterate through list of path points and walk between them
@@ -418,33 +471,40 @@ public class Humans : MonoBehaviour
                 currentState = HumanStates.PathFollowing;
             }
         }
-        else if(walking && human.remainingDistance <= 1.0f)
+        SetDest();
+        
+        if(walking && human.remainingDistance <= 1.0f)
         {
-            walking = false;
-                    
+            CallAnimationEvents(AnimTriggers.idle);
             if(pathFollowingVariables.walkingPause)
             {
-                waiting = true;
-                waitTimer = 2f;
+
+                if(npcIdleAnim == IdleMode.Lyingdown)
+                {
+                    CallAnimationEvents(AnimTriggers.lying);
+                }
+                else if(npcIdleAnim == IdleMode.Sitting)
+                {
+                    CallAnimationEvents(AnimTriggers.sitting);
+                }
+                waitTimer += Time.deltaTime;
+                
+                if(waitTimer >= pathFollowingVariables.pathPoints[currentPathPt].waitForThisLong)
+                {
+                    waitTimer = 0;
+                    CallAnimationEvents(AnimTriggers.walking);
+                    ChangePathPt();
+                    SetDest();
+                }
             }
             else
             {
+                CallAnimationEvents(AnimTriggers.walking);
                 ChangePathPt();
                 SetDest();
             }
+
         }
-        if(waiting)
-        {
-            CallAnimationEvents(AnimTriggers.idle);
-            waitTimer += Time.deltaTime;
-            if(waitTimer >= pathFollowingVariables.pathPoints[currentPathPt].waitForThisLong)
-            {
-                waiting = false;
-                ChangePathPt();
-                SetDest();
-            }
-        }
-        
     }
 
     // checks for any food taken from player and attempts to pick it all up
@@ -511,8 +571,8 @@ public class Humans : MonoBehaviour
         yield return new WaitForSeconds(1.1f);
         
         stunScript.stompEffect(Player, Player.behaviourScripts.foodGrabber, catchVariables.takeFoodAmmount);
-
-        yield return new WaitForSeconds(1.2f);
+        audio.PlayOneShot(SoundEffectClips.stomp, 1f);
+        //yield return new WaitForSeconds(1.2f);
         stillFood = checkForFood();
         
         checkBeenRun = true;
@@ -536,7 +596,6 @@ public class Humans : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         acornHolder.SetActive(false);
-
         CallAnimationEvents(AnimTriggers.walking);
         pickedUpFood = false;
         currentState = HumanStates.PathFollowing;
@@ -660,7 +719,9 @@ public class Humans : MonoBehaviour
         stunning,
         pickup,
         eating,
-        dropping
+        dropping,
+        sitting,
+        lying
 
     }
 
@@ -702,6 +763,8 @@ public class Humans : MonoBehaviour
         public float foodTimer;
 
         public float watchTimer = 5;
+
+        public int howManyAcorns = 1;
     }
 
     [System.Serializable]
@@ -716,4 +779,15 @@ public class Humans : MonoBehaviour
         public float catchResetTimer;
         public int takeFoodAmmount;
     }
+
+    [System.Serializable]
+    private class SoundEffects
+    {
+        public AudioClip eating;
+        public AudioClip alert;
+        public AudioClip alert2;
+        public AudioClip stomp;
+        public AudioClip friendly;
+    }
+
 }
