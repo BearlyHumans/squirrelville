@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6202249648825667621}
   - component: {fileID: 4255357075783475221}
   m_Layer: 0
-  m_Name: Background
+  m_Name: Ending Picture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,7 +67,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 137723a9ab37a1440a0e5632b2e4f308, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 7224998117479964688}
   - component: {fileID: 7224998117479964689}
   m_Layer: 5
-  m_Name: EndingPicture
+  m_Name: EndingPictureAndBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
