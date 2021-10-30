@@ -15,7 +15,12 @@ public class EasterEgg : MonoBehaviour
     public float destroyTime = 5f;
 
     private Vector3 objectRelPos = Vector3.zero;
-    private bool found = false;
+    public bool found = false;
+
+    void Awake()
+    {
+        objectRelPos = visibleObject.position;
+    }
 
     void Update()
     {
@@ -32,11 +37,17 @@ public class EasterEgg : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Collect();
+    }
+
+    private void Collect()
+    {
         if (!found)
         {
             found = true;
             numFound += 1;
             particleEffect.Play();
+            audioSource.Play();
             visibleObject.gameObject.SetActive(false);
             Destroy(gameObject, destroyTime);
         }
