@@ -340,7 +340,16 @@ public class Humans : MonoBehaviour
         CallAnimationEvents(AnimTriggers.running);
         if(!havntSpotted)
         {
-            audio.PlayOneShot (SoundEffectClips.alert, 0.6f);
+            int alertSound =  UnityEngine.Random.Range(0, 2);
+            if(alertSound == 0)
+            {
+                audio.PlayOneShot (SoundEffectClips.alert, 0.6f);
+            }
+            else
+            {
+                audio.PlayOneShot (SoundEffectClips.alert2, 0.6f);
+            }
+            
             havntSpotted = true;
             exclaim.Play();
         }
@@ -399,6 +408,7 @@ public class Humans : MonoBehaviour
         
         if(!givenfood)
         {
+            audio.PlayOneShot (SoundEffectClips.friendly, 0.6f);
             Instantiate(friendlyVariables.foodToGive, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
             howManyAcornsLeft -= 1;
             timeToFood = 0.0f;
@@ -773,7 +783,9 @@ public class Humans : MonoBehaviour
     {
         public AudioClip eating;
         public AudioClip alert;
+        public AudioClip alert2;
         public AudioClip stomp;
+        public AudioClip friendly;
     }
 
 }
