@@ -834,9 +834,7 @@ namespace Player
                 {
                     if (ValidClimb(hit))
                     {
-                        Quaternion oldRot = ParentRefs.model.rotation;
                         TeleportToSurface(hit);
-                        ParentRefs.model.localRotation = oldRot;
                         vals.lastCornerVault = Time.time;
                         vals.eliminateUpForce = true;
                         return true;
@@ -851,9 +849,7 @@ namespace Player
             {
                 if (ValidClimb(hit))
                 {
-                    Quaternion oldRot = ParentRefs.model.rotation;
                     TeleportToSurface(hit);
-                    ParentRefs.model.localRotation = oldRot;
                     vals.lastCornerVault = Time.time;
                     vals.eliminateUpForce = true;
                     return true;
