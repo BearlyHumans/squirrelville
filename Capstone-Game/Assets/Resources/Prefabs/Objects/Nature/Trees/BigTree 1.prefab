@@ -18,7 +18,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &7173376569599929043
 Transform:
@@ -125,12 +125,13 @@ GameObject:
   m_Component:
   - component: {fileID: 7753772136051326779}
   - component: {fileID: 2436588551875124957}
+  - component: {fileID: 1239865946375122234}
   m_Layer: 0
   m_Name: BigTree 1
   m_TagString: Climbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &7753772136051326779
 Transform:
@@ -166,6 +167,32 @@ MonoBehaviour:
   particleHeight: 7.5
   fallingRadius: 0.4
   leafColor: {r: 0.10588236, g: 0.30980393, b: 0.10980393, a: 1}
+--- !u!205 &1239865946375122234
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6976425474811061633}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: -0.44885254, y: 5.0292783, z: 0.074207306}
+  m_Size: 10.820472
+  m_FadeMode: 1
+  m_AnimateCrossFading: 1
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.19819148
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 1784924130717790638}
+    - renderer: {fileID: 8673607184865794643}
+  - screenRelativeHeight: 0
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0
+    fadeTransitionWidth: 0
+    renderers: []
+  m_Enabled: 0
 --- !u!1 &8125095664657757345
 GameObject:
   m_ObjectHideFlags: 0
@@ -183,7 +210,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &181101189277606704
 Transform:

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5091270104932687566}
   - component: {fileID: 9093796134538435726}
   - component: {fileID: 4196582263639759538}
-  - component: {fileID: 1391338435907247364}
+  - component: {fileID: 125388024359193238}
   m_Layer: 0
   m_Name: sunflower
   m_TagString: Untagged
@@ -60,9 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4eaf32b738c58324ab4418e06e589453, type: 2}
   - {fileID: 2100000, guid: 75d6549bd63778242ae7c0fb36ccf66f, type: 2}
-  - {fileID: 2100000, guid: 5eabc9d5dafebcd4ba82a2a21637ddba, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,7 +82,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!205 &1391338435907247364
+--- !u!205 &125388024359193238
 LODGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,12 +92,18 @@ LODGroup:
   serializedVersion: 2
   m_LocalReferencePoint: {x: -0.027405024, y: 0.8560017, z: -0.014553428}
   m_Size: 1.712758
-  m_FadeMode: 0
-  m_AnimateCrossFading: 0
+  m_FadeMode: 1
+  m_AnimateCrossFading: 1
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.019549394
+  - screenRelativeHeight: 0.014252038
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 4196582263639759538}
-  m_Enabled: 0
+  - screenRelativeHeight: 0
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0
+    fadeTransitionWidth: 0
+    renderers: []
+  m_Enabled: 1

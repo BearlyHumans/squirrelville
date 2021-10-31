@@ -405,16 +405,19 @@ public class Humans : MonoBehaviour
     {
         watchedFor += Time.deltaTime;
         
-        facePlayer();
+        //facePlayer();
         //human.SetDestination(transform.position);
         
         if(!givenfood)
         {
-            audio.PlayOneShot (SoundEffectClips.friendly, 1f);
-            Instantiate(friendlyVariables.foodToGive, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
-            howManyAcornsLeft -= 1;
-            timeToFood = 0.0f;
-            givenfood = true;
+            if(howManyAcornsLeft != 0)
+            {
+                audio.PlayOneShot (SoundEffectClips.friendly, 1f);
+                Instantiate(friendlyVariables.foodToGive, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
+                howManyAcornsLeft -= 1;
+                timeToFood = 0.0f;
+                givenfood = true;
+            }
 
         }
         else
@@ -425,21 +428,14 @@ public class Humans : MonoBehaviour
         if(watchedFor > friendlyVariables.watchTimer)
         {
             givenfood = false;
-            howManyAcornsLeft = friendlyVariables.howManyAcorns;
+            //howManyAcornsLeft = friendlyVariables.howManyAcorns;
             currentState = HumanStates.PathFollowing;
             watchedFor = 0.0f;
         }
 
         if(timeToFood > friendlyVariables.foodTimer)
         {
-            if(howManyAcornsLeft != 0)
-            {
-                givenfood = false;
-            }
-            else
-            {
-                givenfood = true;
-            }
+            givenfood = false;
         }
     }
     ///runs checks to find player, while cant see playing iterate through list of path points and walk between them

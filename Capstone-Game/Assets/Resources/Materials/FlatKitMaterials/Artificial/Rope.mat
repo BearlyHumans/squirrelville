@@ -11,7 +11,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: bee44b4a58655ee4cbff107302a3e131, type: 3}
   m_ShaderKeywords: _CELPRIMARYMODE_SINGLE _TEXTUREBLENDINGMODE_MULTIPLY _UNITYSHADOWMODE_NONE
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -99,9 +99,9 @@ Material:
     - _Parallax: 0.02
     - _QueueOffset: 0
     - _RimEnabled: 0
-    - _SelfShadingSize: 0.5
+    - _SelfShadingSize: 0.565
     - _SelfShadingSizeExtra: 0.6
-    - _ShadowEdgeSize: 0.05
+    - _ShadowEdgeSize: 0.293
     - _ShadowEdgeSizeExtra: 0.05
     - _SmoothnessTextureChannel: 0
     - _SpecularEnabled: 0
@@ -117,7 +117,7 @@ Material:
     - _VertexColorsEnabled: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.8018868, g: 0.5989374, b: 0.40472588, a: 1}
+    - _Color: {r: 0.6792453, g: 0.5061348, b: 0.33641866, a: 1}
     - _ColorDim: {r: 0.3773585, g: 0.27579316, b: 0.17621928, a: 1}
     - _ColorDimCurve: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
     - _ColorDimExtra: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}

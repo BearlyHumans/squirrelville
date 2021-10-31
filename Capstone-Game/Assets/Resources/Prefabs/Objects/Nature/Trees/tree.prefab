@@ -20,7 +20,7 @@ GameObject:
   m_TagString: Climbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4000013008321660
 Transform:
@@ -132,7 +132,7 @@ LODGroup:
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 23000012599177960}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!114 &2352507330757869131
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class SFXController : MonoBehaviour
 {
-    public int numberOfSources = 0;
-
+    private int numberOfSources = 0;
+    [Header("Change the max number of simultaneous sounds by duplicating one of the sources.")]
     public List<Sound> sounds = new List<Sound>();
 
     private List<AudioSource> sources = new List<AudioSource>();
-    public List<Sound> currentlyPlaying = new List<Sound>();
+    private List<Sound> currentlyPlaying = new List<Sound>();
     private int lastSourcePlayed = 0;
     private List<string> blockedSounds = new List<string>();
 
@@ -258,17 +258,7 @@ public class SFXController : MonoBehaviour
     {
         AudioSource[] existingSources = GetComponents<AudioSource>();
         sources.AddRange(existingSources);
-
-        if (sources.Count > numberOfSources)
-        {
-            numberOfSources = sources.Count;
-            Debug.Log("Number of sources increased to number found in SFX controller");
-        }
-        else
-        {
-            for (int i = sources.Count; i < numberOfSources; ++i)
-                sources.Add(gameObject.AddComponent<AudioSource>());
-        }
+        numberOfSources = sources.Count;
 
         foreach (AudioSource AS in sources)
         {

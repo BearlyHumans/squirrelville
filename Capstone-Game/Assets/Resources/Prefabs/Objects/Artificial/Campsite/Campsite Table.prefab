@@ -98,7 +98,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &8796293688384892030
 Transform:
@@ -184,13 +184,25 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 1c04d2ae4ee08264db346371a643e020, type: 2}
+    - target: {fileID: -4906838889796845047, guid: d57610749dff7c54084dff8310e00431, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: -1806680513116206669, guid: d57610749dff7c54084dff8310e00431, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: b7f985551b7030749a7b73a05d1e9d60, type: 2}
+    - target: {fileID: -1599826595754709761, guid: d57610749dff7c54084dff8310e00431, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d57610749dff7c54084dff8310e00431, type: 3}
       propertyPath: m_Name
       value: Tablechair
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d57610749dff7c54084dff8310e00431, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d57610749dff7c54084dff8310e00431, type: 3}
@@ -276,13 +288,25 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 1c04d2ae4ee08264db346371a643e020, type: 2}
+    - target: {fileID: -4906838889796845047, guid: d57610749dff7c54084dff8310e00431, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: -1806680513116206669, guid: d57610749dff7c54084dff8310e00431, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: b7f985551b7030749a7b73a05d1e9d60, type: 2}
+    - target: {fileID: -1599826595754709761, guid: d57610749dff7c54084dff8310e00431, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d57610749dff7c54084dff8310e00431, type: 3}
       propertyPath: m_Name
       value: Tablechair (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d57610749dff7c54084dff8310e00431, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d57610749dff7c54084dff8310e00431, type: 3}
@@ -367,6 +391,18 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 68956cd4485809c43a083e08a10f9187, type: 3}
       propertyPath: m_Name
       value: Tablebench
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 68956cd4485809c43a083e08a10f9187, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 4409376142294448354, guid: 68956cd4485809c43a083e08a10f9187, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 6178630930221601068, guid: 68956cd4485809c43a083e08a10f9187, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68956cd4485809c43a083e08a10f9187, type: 3}

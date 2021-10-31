@@ -1,5 +1,30 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!205 &5221363340980555079
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1421278445116260685}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: -0.000053966418, y: -0.00030728523, z: 0.02727481}
+  m_Size: 0.081035525
+  m_FadeMode: 1
+  m_AnimateCrossFading: 1
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.0047392105
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 628702153329647768}
+  - screenRelativeHeight: 0
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0
+    fadeTransitionWidth: 0
+    renderers: []
+  m_Enabled: 1
 --- !u!1 &7976198991047935689
 GameObject:
   m_ObjectHideFlags: 0
@@ -25,7 +50,7 @@ Transform:
   m_GameObject: {fileID: 7976198991047935689}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 88.535, y: 57.1372, z: 12.459}
-  m_LocalScale: {x: 0.037295707, y: 0.037295707, z: 0.037295707}
+  m_LocalScale: {x: 0.04926672, y: 0.04926672, z: 0.04926672}
   m_Children:
   - {fileID: 1797698881461640183}
   m_Father: {fileID: 0}
@@ -82,6 +107,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 0f6eb6977661a9147be5365392df4411, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2df9b4d4d63c6324db28f2eca45ad793, type: 2}
     - target: {fileID: 919132149155446097, guid: 0f6eb6977661a9147be5365392df4411, type: 3}
       propertyPath: m_Name
       value: Kangaroo_Grass
@@ -92,8 +121,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f6eb6977661a9147be5365392df4411, type: 3}
+--- !u!1 &1421278445116260685 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0f6eb6977661a9147be5365392df4411, type: 3}
+  m_PrefabInstance: {fileID: 2267576597921807388}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1797698881461640183 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0f6eb6977661a9147be5365392df4411, type: 3}
+  m_PrefabInstance: {fileID: 2267576597921807388}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &628702153329647768 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 0f6eb6977661a9147be5365392df4411, type: 3}
   m_PrefabInstance: {fileID: 2267576597921807388}
   m_PrefabAsset: {fileID: 0}
