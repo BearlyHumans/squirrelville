@@ -306,7 +306,7 @@ GameObject:
   - component: {fileID: 5048899680520585768}
   - component: {fileID: 5048899680520585749}
   m_Layer: 14
-  m_Name: EasterEggBaloon
+  m_Name: EasterEggBalloon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -319,7 +319,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5048899680520585769}
-  m_LocalRotation: {x: -0, y: 0.000000029802319, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 22.77, y: 22.959, z: 115.1}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
@@ -367,22 +367,22 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0.31247544
     - serializedVersion: 3
-      time: 0.5
-      value: 0.1
-      inSlope: -0.15745991
-      outSlope: -0.15745991
+      time: 1.4075464
+      value: 0.09741604
+      inSlope: 0.0005258618
+      outSlope: 0.0005258618
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.23976612
+      inWeight: 0.7861029
+      outWeight: 0.39014462
     - serializedVersion: 3
-      time: 1
+      time: 2.969479
       value: 0
-      inSlope: 0.023846336
-      outSlope: 0.023846336
+      inSlope: 0.0005085758
+      outSlope: 0.0005085758
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.29937407
+      inWeight: 0.56453574
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 1
