@@ -9,12 +9,16 @@ public class IntroSkip : MonoBehaviour
     public HideUIElementAfterDelay skipText;
 
     private VideoPlayer videoPlayer;
+    private AsyncOperation asyncLoad;
 
     private void Start()
     {
         videoPlayer = GetComponent<VideoPlayer>();
         videoPlayer.loopPointReached += VideoEnded;
         Cursor.visible = false;
+
+        asyncLoad = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+        asyncLoad.allowSceneActivation = false;
     }
 
     private void Update()
@@ -47,6 +51,6 @@ public class IntroSkip : MonoBehaviour
 
     private void NextScene()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        asyncLoad.allowSceneActivation = true;
     }
 }
