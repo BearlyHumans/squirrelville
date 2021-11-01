@@ -168,10 +168,12 @@ public class Humans : MonoBehaviour
     {
         get { return AIManager.singleton.sController; }
     }
+  
 
     /// set the nav mesh agent for humans to walk on as well as set target (player) to chase.
     public void Start() 
     {
+        
         layerMask = LayerMask.GetMask("EatenFood");
 
         howManyAcornsLeft = friendlyVariables.howManyAcorns;
@@ -208,7 +210,7 @@ public class Humans : MonoBehaviour
     {
         distance = Vector3.Distance(Player.transform.position, transform.position);
         // -----States------
-
+        print(Player.giantSettings.inGiantMode);
         switch(currentState)
         {
             case HumanStates.PathFollowing:
@@ -685,6 +687,12 @@ public class Humans : MonoBehaviour
                 
             }
         }
+    }
+    
+    public void humanSquash(bool bigSquirrel)
+    {
+        if(bigSquirrel)
+            print("test");
     }
 
     public void CallAnimationEvents(AnimTriggers trigger)
