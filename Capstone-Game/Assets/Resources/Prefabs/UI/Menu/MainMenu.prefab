@@ -73,17 +73,19 @@ MonoBehaviour:
 
     Switch to ball
 
-    Interact
-    / Eat food
+    Speak
+    with Koala
+
+    Eat food
 
     Spit out food
 
     Climb
 
-    Sprint / Climb over edges
+    Sprint / Climb over
+    edges
 
-    Zoom
-    in camera'
+    Zoom in camera'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 12f0761038c6a4e4c9a9c48c8658a200, type: 2}
   m_sharedMaterial: {fileID: -1030747350335122999, guid: 12f0761038c6a4e4c9a9c48c8658a200, type: 2}
@@ -226,16 +228,18 @@ MonoBehaviour:
     Q
     or (Y)
 
+    R or (X)
+
     E or RB
 
     F or LB
 
     Left-click or RT (hold)
 
-    Shift or LT
+    Shift
+    or LT
 
-    Right-click
-    or Right stick press (hold)'
+    Right-click or Right stick press (hold)'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 12f0761038c6a4e4c9a9c48c8658a200, type: 2}
   m_sharedMaterial: {fileID: -1030747350335122999, guid: 12f0761038c6a4e4c9a9c48c8658a200, type: 2}
