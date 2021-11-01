@@ -3407,9 +3407,9 @@ MonoBehaviour:
       slipperyAngle: 20
       maxRotatedSlidingTime: 1
     movement:
-      acceleration: 20
-      maxSpeed: 3
-      airAccelerationFactor: 1
+      acceleration: 10
+      maxSpeed: 2.5
+      airAccelerationFactor: 0.5
       airMaxSpeedFactor: 0.5
       climbingAccelerationFactor: 0.5
       climbingMaxSpeedFactor: 0.5
@@ -3417,8 +3417,8 @@ MonoBehaviour:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
-          time: 0
-          value: 1.5306702
+          time: 0.0059217215
+          value: 1.3991046
           inSlope: 0
           outSlope: 0
           tangentMode: 34
@@ -3426,8 +3426,8 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 1
-          value: 1.5306702
+          time: 1.0059217
+          value: 1.3991046
           inSlope: 0
           outSlope: 0
           tangentMode: 34
@@ -3444,7 +3444,7 @@ MonoBehaviour:
       haltAtFractionOfMaxSpeed: 0.9
       turningThreshold: 0.2
     jump:
-      groundedJumpForce: 3
+      groundedJumpForce: 3.5
       holdingJumpForceCurve:
         serializedVersion: 2
         m_Curve:
@@ -3458,16 +3458,16 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0.29746237
         - serializedVersion: 3
-          time: 0.2
-          value: 4
-          inSlope: -0.6096234
-          outSlope: -0.6096234
+          time: 0.16506189
+          value: 4.1194105
+          inSlope: -0.9568903
+          outSlope: -0.9568903
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
-          outWeight: 0.1331111
+          outWeight: 0.24446699
         - serializedVersion: 3
-          time: 1
+          time: 1.5
           value: 0
           inSlope: -8.47784
           outSlope: -8.47784
@@ -3489,7 +3489,7 @@ MonoBehaviour:
       checkJumpTime: 0.45
       coyoteeTime: 0.2
       jumpDelay: 0
-      landingDelay: 0.2
+      landingDelay: 0.1
       stopWhenJumping: 0
       stopWhenLanding: 0
       carefulModeInAnimations: 1
