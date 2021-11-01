@@ -3499,7 +3499,7 @@ MonoBehaviour:
         m_Bits: 137
       rotateToLayers:
         serializedVersion: 2
-        m_Bits: 5001
+        m_Bits: 70537
       headbuttLayers:
         serializedVersion: 2
         m_Bits: 897
