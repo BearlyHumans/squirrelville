@@ -11,17 +11,13 @@ GameObject:
   - component: {fileID: 8304196582804868684}
   - component: {fileID: 4940929682088903145}
   - component: {fileID: 7166707051987940643}
-  - component: {fileID: 1806307190050584232}
-  - component: {fileID: 1806307190050584231}
-  - component: {fileID: 1806307190050584230}
-  - component: {fileID: 1806307190050584229}
   - component: {fileID: 8166269957173009862}
   m_Layer: 0
   m_Name: RockPillar4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &8304196582804868684
 Transform:
@@ -32,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 8680053210673091830}
   m_LocalRotation: {x: -0.7069834, y: 0, z: 0, w: 0.7072302}
   m_LocalPosition: {x: 89.56004, y: 82.33222, z: 39.81106}
-  m_LocalScale: {x: 72.08216, y: 62.425, z: 183.05243}
+  m_LocalScale: {x: 95.321434, y: 82.550804, z: 242.06853}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -86,62 +82,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &1806307190050584232
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8680053210673091830}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.0064944024
-  m_Height: 0.015591313
-  m_Direction: 2
-  m_Center: {x: 0.0005901129, y: 5.3339198e-11, z: -0.0021378626}
---- !u!136 &1806307190050584231
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8680053210673091830}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.002033996
-  m_Height: 0.018987656
-  m_Direction: 2
-  m_Center: {x: 0.00003731079, y: 0.0000021073354, z: 0.0123347705}
---- !u!136 &1806307190050584230
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8680053210673091830}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.0061459257
-  m_Height: 0.024628134
-  m_Direction: 2
-  m_Center: {x: -0.00039415373, y: 0.0000021086794, z: 0.029042307}
---- !u!136 &1806307190050584229
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8680053210673091830}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.006289545
-  m_Height: 0.019696642
-  m_Direction: 2
-  m_Center: {x: 0.000037333983, y: 0.0024400707, z: 0.050702482}
 --- !u!64 &8166269957173009862
 MeshCollider:
   m_ObjectHideFlags: 0
