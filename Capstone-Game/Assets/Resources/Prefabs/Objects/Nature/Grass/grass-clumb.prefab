@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6428877858224000720}
   - component: {fileID: 6428877858225348232}
   - component: {fileID: 6428877858226207670}
-  - component: {fileID: 7761207572308500095}
+  - component: {fileID: 8228825178366368872}
   m_Layer: 0
   m_Name: grass-clumb
   m_TagString: Untagged
@@ -82,7 +82,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!205 &7761207572308500095
+--- !u!205 &8228825178366368872
 LODGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -90,13 +90,13 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6428877858224272332}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: -0.023136467, y: 0.19121349, z: -0.0733687}
-  m_Size: 0.90019894
+  m_LocalReferencePoint: {x: -0.023166984, y: 0.1912288, z: -0.07335347}
+  m_Size: 0.90019906
   m_FadeMode: 1
   m_AnimateCrossFading: 1
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.19819148
+  - screenRelativeHeight: 0.014252038
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 6428877858226207670}

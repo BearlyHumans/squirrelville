@@ -429,22 +429,6 @@ MonoBehaviour:
       m_YScaleBool: 0
       m_ZScaleBool: 0
     name: Rocks Small 2
-  - gameObject: {fileID: 3943892334238911162, guid: efc2121cef6711d48ae73931d3182025, type: 3}
-    settings:
-      m_Strength: 50
-      m_RotationRangeMin: {x: 0, y: 0, z: 0}
-      m_RotationRangeMax: {x: 15, y: 360, z: 15}
-      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
-      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
-      m_UniformScale: {x: 1, y: 1.5}
-      m_UniformBool: 1
-      m_XRotationBool: 1
-      m_YRotationBool: 1
-      m_ZRotationBool: 1
-      m_XScaleBool: 0
-      m_YScaleBool: 0
-      m_ZScaleBool: 0
-    name: Banksia_coccinea
   - gameObject: {fileID: 8291325681744042294, guid: 247b7926e1728e1449a1efb33d8703ee, type: 3}
     settings:
       m_Strength: 50
@@ -461,22 +445,6 @@ MonoBehaviour:
       m_YScaleBool: 0
       m_ZScaleBool: 0
     name: BIlly_Buttons
-  - gameObject: {fileID: 7976198991047935689, guid: 084c3e1ca202c6541bf4ee610663da0c, type: 3}
-    settings:
-      m_Strength: 50
-      m_RotationRangeMin: {x: 0, y: 0, z: 0}
-      m_RotationRangeMax: {x: 15, y: 360, z: 15}
-      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
-      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
-      m_UniformScale: {x: 1, y: 1.5}
-      m_UniformBool: 1
-      m_XRotationBool: 1
-      m_YRotationBool: 1
-      m_ZRotationBool: 1
-      m_XScaleBool: 0
-      m_YScaleBool: 0
-      m_ZScaleBool: 0
-    name: Kangaroo_Grass
   - gameObject: {fileID: 918678621264148655, guid: 98da2375de297c74196ac5ce00289d94, type: 3}
     settings:
       m_Strength: 50
