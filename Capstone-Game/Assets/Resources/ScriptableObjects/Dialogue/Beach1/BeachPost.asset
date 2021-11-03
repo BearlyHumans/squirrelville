@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: BeachPost
   m_EditorClassIdentifier: 
   entries:
+  - text: That felt goood!
+    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
   - text: "I don\u2019t know why they taste so good, they just do! Our cousins back
       home warned us about eating them, but I don\u2019t see the fuss. What, do they
       hate good food or something? Hahaha!\r"
