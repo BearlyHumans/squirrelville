@@ -1887,10 +1887,6 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
-      propertyPath: animationEvents.Array.data[31].trigger
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[32].trigger
       value: 1
       objectReference: {fileID: 0}
@@ -1918,10 +1914,6 @@ PrefabInstance:
       propertyPath: pathFollowingVariables.pathPoints.Array.data[1]
       value: 
       objectReference: {fileID: 1828673097}
-    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
-      propertyPath: animationEvents.Array.data[31].animsParameter.paramName
-      value: HumanSitting
-      objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[32].animsParameter.paramName
       value: HumanFalling
@@ -8440,7 +8432,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1630237733}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.37, z: 0}
+  m_LocalPosition: {x: 6.15, y: 2.37, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 349458393}
@@ -8546,7 +8538,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1733223640}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.3, y: 2.37, z: 0}
+  m_LocalPosition: {x: -0.07, y: 2.37, z: -8.53}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 349458393}
@@ -9232,7 +9224,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2058471014}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.28, y: 2.37, z: 0}
+  m_LocalPosition: {x: -8.03, y: 2.37, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 349458393}

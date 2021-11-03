@@ -224,6 +224,10 @@ MonoBehaviour:
       setToValue: 1
   - trigger: 9
     animsParameter:
+      paramName: HumanFalling
+      setToValue: 1
+  - trigger: 9
+    animsParameter:
       paramName: HumanRunning
       setToValue: 0
   - trigger: 9

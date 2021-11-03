@@ -164,7 +164,10 @@ public class Humans : MonoBehaviour
 
     public float NPCVolume = .1f;
 
+    // ending var
     private bool fallenOver = false;
+    private int i = 0;
+    private bool forwardIterator = true;
 
     //flee positions
     private Vector3 startingPos;
@@ -220,7 +223,7 @@ public class Humans : MonoBehaviour
         if(Player.giantSettings.inGiantMode)
         {
             currentState = HumanStates.Ending;
-            GetComponent<Collider>().enabled = false;
+            //GetComponent<Collider>().enabled = false;
         }
         else
         {
@@ -265,15 +268,44 @@ public class Humans : MonoBehaviour
     {
         
         // if near player run away
-        if(distanceToPlayer < 10.0f)
+        if(distanceToPlayer > 10.0f)
         {
-            RunFromPlayer();
+            if(!fallenOver)
+            {
+                CallAnimationEvents(AnimTriggers.walking);
+
+                int numOfPoints = endVariables.endPathPoints.Count - 1;
+           
+                Vector3 targetPos = endVariables.endPathPoints[i].transform.position;
+                Vector3 distToPoint = transform.position - targetPos;
+                float distTPSq = distToPoint.sqrMagnitude;
+
+                if(distTPSq < 1.5f)
+                {
+                    if(forwardIterator)
+                    {
+                        i++;
+                        if(i == numOfPoints)
+                        {
+                            forwardIterator = false;
+                        }
+                    }
+                    else
+                    {
+                        i--;
+                        if(i == 0)
+                        {
+                            forwardIterator = true;
+                        }
+                    }
+                }
+                human.SetDestination(targetPos); 
+            }
         }
         else
         {
-            CallAnimationEvents(AnimTriggers.walking);
-            Vector3 targetPos = endVariables.endPathPoints[0].transform.position;
-            human.SetDestination(targetPos); 
+
+            RunFromPlayer();
         }
     }
     /// functionaility for catching behaviour 
@@ -653,7 +685,7 @@ public class Humans : MonoBehaviour
 
     public void RunFromPlayer()
     {
-        if(distanceToPlayer > 3.0f)
+        if(distanceToPlayer > 2.5f && !fallenOver)
         {
             CallAnimationEvents(AnimTriggers.running);
             //transform.rotation = Quaternion.LookRotation((transform.position - Player.transform.position), Vector3.up);
@@ -673,7 +705,6 @@ public class Humans : MonoBehaviour
         {
             if(!fallenOver)
             {
-                print("hit");
                 CallAnimationEvents(AnimTriggers.falling);
                 fallenOver = true;
                 StartCoroutine(getUp());
@@ -686,9 +717,10 @@ public class Humans : MonoBehaviour
     }
     IEnumerator getUp()
     {
-        yield return new WaitForSeconds(5.0F);
+        yield return new WaitForSeconds(2.0F);
         CallAnimationEvents(AnimTriggers.getup);
-        yield return new WaitForSeconds(6.0F);
+        
+        yield return new WaitForSeconds(2.5F);
         fallenOver = false;
     }
 
