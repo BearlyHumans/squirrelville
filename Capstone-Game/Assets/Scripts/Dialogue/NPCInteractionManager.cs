@@ -40,7 +40,7 @@ public class NPCInteractionManager : MonoBehaviour
             if (isInteracting)
             {
                 isInteracting = false;
-                squirrelController.UnfreezeMovement();
+                //squirrelController.UnfreezeMovement();
                 interactionFinish?.Invoke();
             }
             else
@@ -51,7 +51,7 @@ public class NPCInteractionManager : MonoBehaviour
                     if (npc != null)
                     {
                         isInteracting = true;
-                        squirrelController.FreezeMovement();
+                        //squirrelController.FreezeMovement();
                         interactionStart?.Invoke();
                         if (npc.TryGetComponent<NPCDialogue>(out NPCDialogue npcDialogue) && npcDialogue.HasDialogue())
                         {
