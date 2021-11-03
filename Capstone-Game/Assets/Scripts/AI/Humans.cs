@@ -13,6 +13,7 @@ public enum HumanStates
     Catch,
     Friendly,
     HandleFood,
+    
 }
 
 //Modes the Npcs can be set to
@@ -29,7 +30,10 @@ public enum NpcModes
 public enum IdleMode
 {
     Standing,
-    Sitting,
+    WSittingTalk,
+    MSittingTalk,
+    WSitting,
+    MSitting,
     Lyingdown
 }
 
@@ -210,7 +214,14 @@ public class Humans : MonoBehaviour
     {
         distance = Vector3.Distance(Player.transform.position, transform.position);
         // -----States------
-        print(Player.giantSettings.inGiantMode);
+        if(Player.giantSettings.inGiantMode)
+        {
+            print("big ballmode");
+        }
+        else
+        {
+            print("little ballmode");
+        }
         switch(currentState)
         {
             case HumanStates.PathFollowing:
@@ -481,10 +492,23 @@ public class Humans : MonoBehaviour
                 {
                     CallAnimationEvents(AnimTriggers.lying);
                 }
-                else if(npcIdleAnim == IdleMode.Sitting)
+                else if(npcIdleAnim == IdleMode.WSitting)
                 {
-                    CallAnimationEvents(AnimTriggers.sitting);
+                    anim.SetInteger("HumanSitting", 1);
                 }
+                else if(npcIdleAnim == IdleMode.MSitting)
+                {
+                    anim.SetInteger("HumanSitting", 2);
+                }
+                else if(npcIdleAnim == IdleMode.WSittingTalk)
+                {
+                    anim.SetInteger("HumanSitting", 3);
+                }
+                else if(npcIdleAnim == IdleMode.MSittingTalk)
+                {
+                    anim.SetInteger("HumanSitting", 4);
+                }
+                
                 waitTimer += Time.deltaTime;
                 
                 if(waitTimer >= pathFollowingVariables.pathPoints[currentPathPt].waitForThisLong)
