@@ -13,6 +13,7 @@ public enum HumanStates
     Catch,
     Friendly,
     HandleFood,
+    Ending
     
 }
 
@@ -44,10 +45,6 @@ public class Humans : MonoBehaviour
     private List<ParameterChangeEvent> animationEvents = new List<ParameterChangeEvent>();
     
     private HumanStates currentState;
-    //private NpcModes npcMode;
-
-
-    //---------Food Graber Script---------//
 
     NavMeshAgent human;
 
@@ -75,13 +72,16 @@ public class Humans : MonoBehaviour
     [SerializeField]
     private ChaseVarible chaseVariables;
 
+    [SerializeField]
+    private EndingVariable endVariables;
+
 
 
     // layer mask for what layer humans check spat out food on
     private LayerMask layerMask;
 
     // path following variables
-    float distance;
+    float distanceToPlayer;
     int currentPathPt;
     bool walking;
     bool waiting;
@@ -164,6 +164,9 @@ public class Humans : MonoBehaviour
 
     public float NPCVolume = .1f;
 
+    //flee positions
+    private Vector3 startingPos;
+
     private AudioSource audio;
     [SerializeField]
     private SoundEffects SoundEffectClips;
@@ -188,8 +191,6 @@ public class Humans : MonoBehaviour
 
         chaseTimer = chaseVariables.chaseTime;
 
-        currentState = HumanStates.PathFollowing;
-
         if(human == null)
         {
             Debug.LogWarning("No nav mesh");
@@ -212,15 +213,18 @@ public class Humans : MonoBehaviour
     /// handles the main swaping of states for each person. Runs specific behaviour while in a certain state.
     public void Update() 
     {
-        distance = Vector3.Distance(Player.transform.position, transform.position);
+        distanceToPlayer = Vector3.Distance(Player.transform.position, transform.position);
         // -----States------
         if(Player.giantSettings.inGiantMode)
         {
             print("big ballmode");
+            currentState = HumanStates.Ending;
+            GetComponent<Collider>().enabled = false;
         }
         else
         {
             print("little ballmode");
+            GetComponent<Collider>().enabled = true;
         }
         switch(currentState)
         {
@@ -246,12 +250,30 @@ public class Humans : MonoBehaviour
             }
             case HumanStates.HandleFood:
             {
-                HandleFood();
+                HandleFoodState();
+                break;
+            }
+            case HumanStates.Ending:
+            {
+                EndingState();
                 break;
             }
         }
     }
 
+    private void EndingState()
+    {
+        //walking along path
+        Vector3 targetPos = endVariables.endPathPoints[0].transform.position;
+        human.SetDestination(targetPos);
+
+        // if near player run away
+        if(distanceToPlayer < 15.0f)
+        {
+            startingPos = transform.position;
+            RunFromPlayer(startingPos);
+        }
+    }
     /// functionaility for catching behaviour 
     private void CatchingState()
     {  
@@ -299,7 +321,7 @@ public class Humans : MonoBehaviour
         }
     }
 
-    private void HandleFood()
+    private void HandleFoodState()
     {
         // option 1 = go to bin
         catchChoice = 1;
@@ -385,7 +407,7 @@ public class Humans : MonoBehaviour
 
                 chaseTimer -= Time.deltaTime;
                 // checks to see if human is within range to "catch" player
-                if (distance < 1.5f)
+                if (distanceToPlayer < 1.5f)
                 {
                     havntSpotted = false;
 
@@ -454,9 +476,9 @@ public class Humans : MonoBehaviour
     ///runs checks to find player, while cant see playing iterate through list of path points and walk between them
     private void PathFollowingState()
     {
-        
         human.speed = humanWalkSpeed;
         bool canSee = SeePlayer();
+        print(canSee);
         if(canSee)
         {
             // if friendly and see player then enter friendly state
@@ -627,6 +649,24 @@ public class Humans : MonoBehaviour
         returnedToPath = false;
     }
 
+    public void RunFromPlayer(Vector3 startPos)
+    {
+        CallAnimationEvents(AnimTriggers.running);
+        //transform.rotation = Quaternion.LookRotation((transform.position - Player.transform.position), Vector3.up);
+        Quaternion LookAtRotation = Quaternion.LookRotation(transform.position - Player.transform.position);
+
+        Quaternion LookAtRotationOnly_Y = Quaternion.Euler(transform.rotation.eulerAngles.x, LookAtRotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+        transform.rotation = LookAtRotationOnly_Y;
+        
+        
+
+        Vector3 dirToPlaayer = transform.position - Player.transform.position;
+        Vector3 newPos = transform.position + dirToPlaayer;
+
+        human.SetDestination(newPos);
+        // look away from player
+    }
+
     /// turns to face player
     public void facePlayer()
     {
@@ -640,14 +680,13 @@ public class Humans : MonoBehaviour
     /// runs a ray cast to check if the player is within a LOS.  
     bool SeePlayer()
     {
-        float distance = Vector3.Distance(Player.transform.position, transform.position);
         Vector3 targetDir = Player.transform.position - transform.position;
 
         // view angle
         float angleToPlayer = (Vector3.Angle(targetDir, transform.forward));
         RaycastHit hit;
- 
-        if ((angleToPlayer >= -detectionAngle && angleToPlayer <= detectionAngle) && (distance <= range))
+
+        if ((angleToPlayer >= -detectionAngle && angleToPlayer <= detectionAngle) && (distanceToPlayer <= range))
         {
             if(Physics.Linecast (transform.position, Player.transform.transform.position, out hit))
             {
@@ -816,6 +855,12 @@ public class Humans : MonoBehaviour
         public AudioClip alert2;
         public AudioClip stomp;
         public AudioClip friendly;
+    }
+
+    [System.Serializable]
+    private class EndingVariable
+    {
+        public List<WayPoints> endPathPoints;
     }
 
 }
