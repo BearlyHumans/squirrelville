@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: CampsiteFood
   m_EditorClassIdentifier: 
   entries:
-  - text: "You ripper! I knew you could do it buddy! Alright, here we go\u2026\r\n"
+  - text: 'You ripper! I knew you could do it buddy!
+
+'
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-  - text: "Hahahaha! I\u2019ll be honest, I wasn't sure I\u2019d be able to handle
-      that one!\r\n"
+  - text: "Ok so, little guy - this will be the last climb before the summit. I\u2019ll
+      meet you further up... we\u2019re almost there!\n"
     sprite: {fileID: 21300000, guid: b8042a022772c244ca2c5433cbea3e51, type: 3}
-  - text: "Ok so, little guy - this is the last climb before the summit. I\u2019ll
-      meet you further up... we\u2019re almost there! Good luck mate!\r\n"
+  - text: " Alright, here we go\u2026\r"
     sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}
