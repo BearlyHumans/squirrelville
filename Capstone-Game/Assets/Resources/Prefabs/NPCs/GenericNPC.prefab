@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1194168816736872338}
   - component: {fileID: 1194168816744384584}
+  - component: {fileID: 8496597498792405513}
   - component: {fileID: 8104741259893103658}
   - component: {fileID: 8194542876997667122}
   - component: {fileID: 6767587695065880796}
@@ -58,7 +59,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!136 &8104741259893103658
+--- !u!136 &8496597498792405513
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -67,6 +68,20 @@ CapsuleCollider:
   m_GameObject: {fileID: 1194168816736975856}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.29139572
+  m_Height: 1.8554463
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.92494833, z: -0.038733833}
+--- !u!136 &8104741259893103658
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194168816736975856}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.29139572
   m_Height: 1.8554463
@@ -143,6 +158,10 @@ MonoBehaviour:
     animsParameter:
       paramName: HumanDrop
       setToValue: 0
+  - trigger: 1
+    animsParameter:
+      paramName: HumanGetup
+      setToValue: 0
   - trigger: 2
     animsParameter:
       paramName: HumanRun
@@ -154,6 +173,10 @@ MonoBehaviour:
   - trigger: 2
     animsParameter:
       paramName: HumanStun
+      setToValue: 0
+  - trigger: 2
+    animsParameter:
+      paramName: HumanFalling
       setToValue: 0
   - trigger: 3
     animsParameter:
@@ -199,6 +222,26 @@ MonoBehaviour:
     animsParameter:
       paramName: HumanLying
       setToValue: 1
+  - trigger: 9
+    animsParameter:
+      paramName: HumanFalling
+      setToValue: 1
+  - trigger: 9
+    animsParameter:
+      paramName: HumanRunning
+      setToValue: 0
+  - trigger: 9
+    animsParameter:
+      paramName: HumanGetup
+      setToValue: 0
+  - trigger: 10
+    animsParameter:
+      paramName: HumanGetup
+      setToValue: 1
+  - trigger: 10
+    animsParameter:
+      paramName: HumanFalling
+      setToValue: 0
   stunScript: {fileID: 3591709830310655803}
   exclaim: {fileID: 3796121588914482114}
   npcCurrentMode: 1
@@ -219,6 +262,8 @@ MonoBehaviour:
     takeFoodAmmount: 3
   chaseVariables:
     chaseTime: 30
+  endVariables:
+    endPathPoints: []
   anim: {fileID: 1194168816744384584}
   detectionAngle: 70
   range: 5

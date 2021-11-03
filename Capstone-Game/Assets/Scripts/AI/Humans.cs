@@ -164,6 +164,8 @@ public class Humans : MonoBehaviour
 
     public float NPCVolume = .1f;
 
+    private bool fallenOver = false;
+
     //flee positions
     private Vector3 startingPos;
 
@@ -217,13 +219,11 @@ public class Humans : MonoBehaviour
         // -----States------
         if(Player.giantSettings.inGiantMode)
         {
-            print("big ballmode");
             currentState = HumanStates.Ending;
             GetComponent<Collider>().enabled = false;
         }
         else
         {
-            print("little ballmode");
             GetComponent<Collider>().enabled = true;
         }
         switch(currentState)
@@ -263,15 +263,17 @@ public class Humans : MonoBehaviour
 
     private void EndingState()
     {
-        //walking along path
-        Vector3 targetPos = endVariables.endPathPoints[0].transform.position;
-        human.SetDestination(targetPos);
-
+        
         // if near player run away
-        if(distanceToPlayer < 15.0f)
+        if(distanceToPlayer < 10.0f)
         {
-            startingPos = transform.position;
-            RunFromPlayer(startingPos);
+            RunFromPlayer();
+        }
+        else
+        {
+            CallAnimationEvents(AnimTriggers.walking);
+            Vector3 targetPos = endVariables.endPathPoints[0].transform.position;
+            human.SetDestination(targetPos); 
         }
     }
     /// functionaility for catching behaviour 
@@ -478,7 +480,7 @@ public class Humans : MonoBehaviour
     {
         human.speed = humanWalkSpeed;
         bool canSee = SeePlayer();
-        print(canSee);
+        
         if(canSee)
         {
             // if friendly and see player then enter friendly state
@@ -649,22 +651,45 @@ public class Humans : MonoBehaviour
         returnedToPath = false;
     }
 
-    public void RunFromPlayer(Vector3 startPos)
+    public void RunFromPlayer()
     {
-        CallAnimationEvents(AnimTriggers.running);
-        //transform.rotation = Quaternion.LookRotation((transform.position - Player.transform.position), Vector3.up);
-        Quaternion LookAtRotation = Quaternion.LookRotation(transform.position - Player.transform.position);
+        if(distanceToPlayer > 3.0f)
+        {
+            CallAnimationEvents(AnimTriggers.running);
+            //transform.rotation = Quaternion.LookRotation((transform.position - Player.transform.position), Vector3.up);
+            Quaternion LookAtRotation = Quaternion.LookRotation(transform.position - Player.transform.position);
 
-        Quaternion LookAtRotationOnly_Y = Quaternion.Euler(transform.rotation.eulerAngles.x, LookAtRotation.eulerAngles.y, transform.rotation.eulerAngles.z);
-        transform.rotation = LookAtRotationOnly_Y;
+            Quaternion LookAtRotationOnly_Y = Quaternion.Euler(transform.rotation.eulerAngles.x, LookAtRotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+            transform.rotation = LookAtRotationOnly_Y;
+            
+            
+
+            Vector3 dirToPlaayer = transform.position - Player.transform.position;
+            Vector3 newPos = transform.position + dirToPlaayer;
+
+            human.SetDestination(newPos);
+        }
+        else
+        {
+            if(!fallenOver)
+            {
+                print("hit");
+                CallAnimationEvents(AnimTriggers.falling);
+                fallenOver = true;
+                StartCoroutine(getUp());
+            }
+            
+        }
         
-        
+        //Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius, layerMask);
 
-        Vector3 dirToPlaayer = transform.position - Player.transform.position;
-        Vector3 newPos = transform.position + dirToPlaayer;
-
-        human.SetDestination(newPos);
-        // look away from player
+    }
+    IEnumerator getUp()
+    {
+        yield return new WaitForSeconds(5.0F);
+        CallAnimationEvents(AnimTriggers.getup);
+        yield return new WaitForSeconds(6.0F);
+        fallenOver = false;
     }
 
     /// turns to face player
@@ -751,12 +776,6 @@ public class Humans : MonoBehaviour
             }
         }
     }
-    
-    public void humanSquash(bool bigSquirrel)
-    {
-        if(bigSquirrel)
-            print("test");
-    }
 
     public void CallAnimationEvents(AnimTriggers trigger)
     {
@@ -788,7 +807,9 @@ public class Humans : MonoBehaviour
         eating,
         dropping,
         sitting,
-        lying
+        lying,
+        falling,
+        getup,
 
     }
 
