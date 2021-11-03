@@ -1887,6 +1887,14 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[31].trigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[32].trigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: endVariables.endPathPoints.Array.data[0]
       value: 
       objectReference: {fileID: 1630237735}
@@ -1910,6 +1918,14 @@ PrefabInstance:
       propertyPath: pathFollowingVariables.pathPoints.Array.data[1]
       value: 
       objectReference: {fileID: 1828673097}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[31].animsParameter.paramName
+      value: HumanSitting
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[32].animsParameter.paramName
+      value: HumanFalling
+      objectReference: {fileID: 0}
     - target: {fileID: 8391098695642741264, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: m_Size.x
       value: 1

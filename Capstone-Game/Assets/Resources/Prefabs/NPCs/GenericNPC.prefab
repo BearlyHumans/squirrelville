@@ -214,17 +214,13 @@ MonoBehaviour:
     animsParameter:
       paramName: HumanWalk
       setToValue: 0
-  - trigger: 7
-    animsParameter:
-      paramName: HumanSitting
-      setToValue: 1
   - trigger: 8
     animsParameter:
       paramName: HumanLying
       setToValue: 1
-  - trigger: 9
+  - trigger: 8
     animsParameter:
-      paramName: HumanFalling
+      paramName: HumanLying
       setToValue: 1
   - trigger: 9
     animsParameter:
@@ -241,6 +237,14 @@ MonoBehaviour:
   - trigger: 10
     animsParameter:
       paramName: HumanFalling
+      setToValue: 0
+  - trigger: 1
+    animsParameter:
+      paramName: HumanLying
+      setToValue: 0
+  - trigger: 1
+    animsParameter:
+      paramName: HumanSitting
       setToValue: 0
   stunScript: {fileID: 3591709830310655803}
   exclaim: {fileID: 3796121588914482114}
