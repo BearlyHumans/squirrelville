@@ -19,7 +19,6 @@ namespace Player
         public SCShadowProjectionSettings shadowSettings = new SCShadowProjectionSettings();
 
         public bool debugMessages = false;
-        public bool updateInFixed = false;
 
         [SerializeField]
 #if UNITY_EDITOR
@@ -158,24 +157,15 @@ namespace Player
             {
                 behaviourScripts.ball.ManualUpdate();
             }
-
-            if (!updateInFixed)
-            {
-                refs.fCam.UpdateCamPos();
-                refs.fCam.UpdateDolly();
-            }
         }
 
         private void FixedUpdate()
         {
-            if (PauseMenu.paused)
+            if (PauseMenu.paused || vals.frozen)
                 return;
-
-            if (updateInFixed)
-            {
-                refs.fCam.UpdateCamPos();
-                refs.fCam.UpdateDolly();
-            }
+            
+            refs.fCam.UpdateCamPos();
+            refs.fCam.UpdateDolly();
         }
 
         private bool CanEnterBallState()
