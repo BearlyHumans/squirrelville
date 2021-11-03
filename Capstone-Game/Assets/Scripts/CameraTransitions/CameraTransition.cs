@@ -8,38 +8,49 @@ public class CameraTransition : MonoBehaviour
     public Camera playerCamera;
     [Header("Will search for child transforms to use if empty. Blue arrows in local are where camera points.")]
     public List<Transform> transitionPoints = new List<Transform>();
+    [Tooltip("The transition starts as soon as the script becomes active (or the scene loads).")]
     public bool playOnStart = false;
-    public bool startBlackIfSkipping = true;
     private Vector3 startingPoint = Vector3.zero;
     private Quaternion startingRot = new Quaternion();
     private bool doingTransition = false;
 
     [Min(0.01f)]
+    [Tooltip("Used to calculate the maximum speed between two points (but only if it is less than the overall max speed below).")]
     public float avgTimeBetweenPoints = 2f;
+    [Tooltip("How quickly the camera changes speed.")]
     public float acceleration = 1f;
-    public float startingSpeed = 0f;
+    [Tooltip("The absolute maximum speed of the camera.")]
     public float maxSpeed = 0f;
-    public float errorMargin = 0.1f;
-    public float cameraMoveSpeed = 0f;
+    private float cameraMoveSpeed = 0f;
 
     [Space()]
+    [Tooltip("If true the camera will teleport to the end-point when the transition starts.")]
     public bool skipMoveToPoint = false;
+    [Tooltip("If true the camera will cut to black instead of fading to black.")]
     public bool skipFadeOut = false;
+    [Tooltip("If true the camera will cut out of black instead of fading out of black.")]
     public bool skipFadeIn = false;
+    [Tooltip("If true the camera will teleport back to the player after the fade instead of moving back.")]
     public bool skipMoveBack = false;
 
     [Space()]
+    [Tooltip("The duration of both fade effects")]
     public float fadeDuration = 2f;
+    [Tooltip("This will be added to the fade out time for the script but not for the actual fade, so you can use it to make the movement start before the fade finishes by setting it to negative")]
     public float fadeMargins = 0f;
 
     [Space()]
     public bool testTransition = false;
-    public bool loadPoints = false;
+    public bool loadPointsOnStart = false;
 
     [Space()]
     public UnityEvent transitionStart;
     public UnityEvent screenIsBlack;
     public UnityEvent transitionEnd;
+
+    [Header("Rarely need changing:")]
+    public float startingSpeed = 0f;
+    public float errorMargin = 0.1f;
 
     private Vector3 Pos
     {
@@ -55,11 +66,16 @@ public class CameraTransition : MonoBehaviour
 
     private void Start()
     {
+        if (loadPointsOnStart)
+        {
+            transitionPoints.Clear();
+            transitionPoints.AddRange(GetComponentsInChildren<Transform>());
+            transitionPoints.RemoveAt(0);
+        }
+
         if (playOnStart)
         {
             StartTransition();
-            if (skipMoveToPoint && startBlackIfSkipping)
-                FadeToBlack.singleton.BecomeOpaque();
         }
     }
 
@@ -69,13 +85,6 @@ public class CameraTransition : MonoBehaviour
         {
             testTransition = false;
             StartTransition();
-        }
-
-        if (loadPoints)
-        {
-            transitionPoints.Clear();
-            transitionPoints.AddRange(GetComponentsInChildren<Transform>());
-            transitionPoints.RemoveAt(0);
         }
     }
 
