@@ -40,6 +40,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
     public Material highlightMaterial;
     [Tooltip("When disabled, picking up food is disabled")]
     public bool pickupEnabledOverride = true;
+    public bool canEatInBallForm = false;
 
     [Header("Throwing up food")]
 
@@ -224,7 +225,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
             // Pickup cooldown has ended
             Time.time >= pickupTime &&
             // In normal squirrel form
-            normalMouth.gameObject.activeInHierarchy &&
+            (canEatInBallForm || normalMouth.gameObject.activeInHierarchy) &&
             // Not holding the giant acorn
             giantAcorn == null
         );
