@@ -6,6 +6,9 @@ ModelImporter:
   - first:
       74: 2796165784277714549
     second: Squirrel Armature|Squirrel ArmatureAction
+  - first:
+      74: -3147710649415921182
+    second: Squirrel Armature|Squirrel Eyes.001Action
   externalObjects: {}
   materials:
     materialImportMode: 2
