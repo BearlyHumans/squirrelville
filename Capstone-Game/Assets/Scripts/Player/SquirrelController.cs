@@ -133,6 +133,7 @@ namespace Player
             CallEvents(EventTrigger.frameStart);
 
             refs.fCam.UpdateCamRotFromInput();
+            refs.fCam.UpdateDolly();
 
             if (vals.mState != MovementState.giantBall)
             {
@@ -165,7 +166,6 @@ namespace Player
                 return;
             
             refs.fCam.UpdateCamPos();
-            refs.fCam.UpdateDolly();
         }
 
         private bool CanEnterBallState()

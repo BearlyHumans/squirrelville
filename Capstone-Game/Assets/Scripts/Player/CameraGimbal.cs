@@ -155,6 +155,8 @@ public class CameraGimbal : MonoBehaviour
 
         Quaternion localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
         transform.rotation = localRotation;
+
+        ZoomToUnblockedPoint();
     }
 
     public void SetSensitivity(float sensitivity)
@@ -168,6 +170,8 @@ public class CameraGimbal : MonoBehaviour
         // Move towards target
         if (!cameraSmoothThreshold || (cameraTarget.position - transform.position).sqrMagnitude > 0.0005f)
             transform.position = Vector3.SmoothDamp(transform.position, cameraTarget.position, ref velocity, translationSmoothing);
+
+        ZoomToUnblockedPoint();
     }
 
     public float UpdateDollyToggleZoom()
@@ -262,6 +266,21 @@ public class CameraGimbal : MonoBehaviour
                     MR.enabled = true;
                 targetInvisible = false;
             }
+        }
+    }
+
+
+    private void ZoomToUnblockedPoint()
+    {
+        if (Physics.CheckSphere(CamObj.position, collisionSphereRadius, noClippingEverLayers))
+        { //If the camera is VERY near or inside an object in specified layer(s), move forward to the nearest unblocked point.
+            float currentDist = Vector3.Distance(CamObj.position, transform.position);
+            RaycastHit hit;
+            if (Physics.SphereCast(transform.position, collisionSphereRadius, CamObj.position + collisionSphereRadius * CamObj.forward, out hit, currentDist, noClippingEverLayers))
+                dollyDistance = hit.distance;
+            else
+                dollyDistance = programmerSettings.minDistance;
+            CamObj.localPosition = dollyDir * dollyDistance;
         }
     }
 
