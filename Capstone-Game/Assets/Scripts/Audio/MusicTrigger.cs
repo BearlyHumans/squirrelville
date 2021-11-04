@@ -138,8 +138,15 @@ public class MusicTrigger : MonoBehaviour
     {
         if (activeMusicTrigger != null)
         {
-            activeMusicTrigger.StopAllCoroutines();
-            activeMusicTrigger.StartCoroutine(activeMusicTrigger.FadeIn());
+            if (activeMusicTrigger != this)
+            {
+                activeMusicTrigger.StopAllCoroutines();
+                activeMusicTrigger.StartCoroutine(activeMusicTrigger.FadeTo(this));
+            }
+        }
+        else
+        {
+            StartCoroutine(FadeIn());
         }
     }
 }
