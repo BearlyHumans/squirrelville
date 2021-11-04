@@ -702,10 +702,8 @@ public class Humans : MonoBehaviour
 
     public void RunFromPlayer()
     {
-        print(distanceToPlayer);
         if(distanceToPlayer > 2.3f && !fallenOver)
         {
-            human.speed = 5;
             CallAnimationEvents(AnimTriggers.running);
             //transform.rotation = Quaternion.LookRotation((transform.position - Player.transform.position), Vector3.up);
             Quaternion LookAtRotation = Quaternion.LookRotation(transform.position - Player.transform.position);
