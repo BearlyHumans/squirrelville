@@ -688,6 +688,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4406374539086946, guid: 9fc6027299151c9458ffd62c2b09bd51, type: 3}
   m_PrefabInstance: {fileID: 1401098818}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &351300993 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2539479117871752537, guid: f2cf49596ef8c7e44854b1c316e180eb, type: 3}
+  m_PrefabInstance: {fileID: 507402410}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04b9b3f8cb897c345847c43903e7b73e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &396018516 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4583522463626215664, guid: c5699ce4a87a11141a3d66c7e7c7a422, type: 3}
@@ -1356,6 +1367,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1ac8912b3547864aa6b4beb55e938ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &917647383 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2539479117871752537, guid: f2cf49596ef8c7e44854b1c316e180eb, type: 3}
+  m_PrefabInstance: {fileID: 4199265582283747067}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04b9b3f8cb897c345847c43903e7b73e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1016545876 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4020120928952466, guid: d8dad9d2d761e460bb0a3f03ef8fccb8, type: 3}
@@ -1449,13 +1471,37 @@ MonoBehaviour:
   foodRequired: 3
   dialogueStart:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 917647383}
+        m_TargetAssemblyTypeName: MusicTrigger, Assembly-CSharp
+        m_MethodName: ManualFadeOut
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   dialogueNext:
     m_PersistentCalls:
       m_Calls: []
   dialogueFinish:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 351300993}
+        m_TargetAssemblyTypeName: MusicTrigger, Assembly-CSharp
+        m_MethodName: ManualFadeIn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   initialDialogueFinished:
     m_PersistentCalls:
       m_Calls: []
