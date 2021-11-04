@@ -143,8 +143,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1430135735424461573}
-  m_LocalRotation: {x: -0.7071068, y: 0.000000010536712, z: -0.000000010536712, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.228, z: -0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.01, y: 0.127, z: 0.122}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4583522462795349137}
@@ -3291,7 +3291,6 @@ MonoBehaviour:
     ballShadowFOV: 30
     giantShadowFOV: 100
   debugMessages: 0
-  updateInFixed: 1
   animationEvents:
   - trigger: 1
     type: 1
@@ -3524,7 +3523,7 @@ MonoBehaviour:
     wallClimbing:
       climableLayers:
         serializedVersion: 2
-        m_Bits: 137
+        m_Bits: 4233
       rotateToLayers:
         serializedVersion: 2
         m_Bits: 70537
@@ -3535,7 +3534,7 @@ MonoBehaviour:
       noSurfResetTime: 0.3
       rotateDegreesPerSecond: 720
       moveUnitsPerSecond: 5
-      autoVaultTime: 1
+      autoVaultTime: 0.2
       postVaultSlowTime: 0.2
       postVaultSpeedFactor: 0.5
       vaultSlowsWhenClimbing: 0
@@ -3553,7 +3552,7 @@ MonoBehaviour:
         flowerCheckGizmos: 0
         edgeStopLatRadius: 0.15
         edgeStopDownDist: 0.15
-        edgeSlideCheckAngles: 10
+        edgeSlideCheckAngles: 2
         wallStickDangerAngle: 10
         edgeDetectGizmos: 1
         SJCheckHeight: 2
