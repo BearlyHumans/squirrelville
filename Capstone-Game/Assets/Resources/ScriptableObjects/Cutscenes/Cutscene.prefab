@@ -47,7 +47,6 @@ MonoBehaviour:
   playerCamera: {fileID: 0}
   transitionPoints:
   - {fileID: 7424571410929561874}
-  - {fileID: 7424571410929561874}
   playOnStart: 0
   avgTimeBetweenPoints: 2
   acceleration: 30
