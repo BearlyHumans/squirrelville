@@ -83,7 +83,7 @@ namespace Player
             vals.lastOnSurface = -10;
             vals.preFreezeConstraints = refs.RB.constraints;
 
-            refs.fCam.SetSensitivity(PlayerPrefs.GetFloat("cameraSensitivity", 250));
+            refs.fCam.SetSensitivity(PlayerPrefs.GetFloat("cameraSensitivity", 150));
 
             if (behaviourScripts.moveAndClimb == null)
                 behaviourScripts.moveAndClimb = GetComponent<SquirrelMoveAndClimb>();
@@ -312,7 +312,7 @@ namespace Player
 
         private void OnResume()
         {
-            refs.fCam.SetSensitivity(PlayerPrefs.GetFloat("cameraSensitivity", 250));
+            refs.fCam.SetSensitivity(PlayerPrefs.GetFloat("cameraSensitivity", 150));
         }
 
         public void CallEvents(EventTrigger trigger)
