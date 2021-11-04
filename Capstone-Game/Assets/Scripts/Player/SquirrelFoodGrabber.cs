@@ -197,6 +197,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
         if (mode == 0)
         {
             food.layer = LayerMask.NameToLayer("Food");
+            controller.CallEvents(SquirrelController.EventTrigger.spit);
         }
         else
         {
@@ -206,7 +207,6 @@ public class SquirrelFoodGrabber : MonoBehaviour
         throwTime = Time.time + throwDelay;
         throwDelay = Mathf.Max(throwDelay / throwDelayDivisor, minThrowDelay);
 
-        controller.CallEvents(SquirrelController.EventTrigger.spit);
         throwEvent.Invoke(food);
         food.GetComponent<Food>().throwEvent.Invoke();
     }
