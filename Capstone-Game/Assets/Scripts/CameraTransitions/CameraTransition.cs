@@ -47,7 +47,8 @@ public class CameraTransition : MonoBehaviour
 
     [Space()]
     public UnityEvent transitionStart;
-    public UnityEvent screenIsBlack;
+    public UnityEvent screenBlackStarting;
+    public UnityEvent screenBlackEnding;
     public UnityEvent transitionEnd;
 
     [Header("Rarely need changing:")]
@@ -169,6 +170,7 @@ public class CameraTransition : MonoBehaviour
             yield return new WaitForSeconds(fadeDuration);
         }
 
+        screenBlackStarting?.Invoke();
         yield return new WaitForSeconds(blackScreenDuration);
         StartCoroutine(FadeIn());
     }
@@ -176,7 +178,7 @@ public class CameraTransition : MonoBehaviour
     private IEnumerator FadeIn()
     {
         print("Starting Fade In");
-        screenIsBlack?.Invoke();
+        screenBlackEnding?.Invoke();
         if (skipFadeIn)
             FadeToBlack.singleton.BecomeTransparent();
         else
@@ -243,7 +245,7 @@ public class CameraTransition : MonoBehaviour
                     yield return new WaitForEndOfFrame();
                 }
             }
-            
+
             Pos = startingPoint;
             Rot = startingRot;
             transitionEnd?.Invoke();
