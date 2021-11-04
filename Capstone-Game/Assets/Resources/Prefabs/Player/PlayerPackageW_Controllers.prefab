@@ -3286,12 +3286,12 @@ MonoBehaviour:
     sizeMultiplier: 8
     cameraMultiplier: 3
     squishinessMultiplier: 0.5
+    inGiantMode: 0
   shadowSettings:
     runShadowFOV: 20
     ballShadowFOV: 30
     giantShadowFOV: 100
   debugMessages: 0
-  updateInFixed: 1
   animationEvents:
   - trigger: 1
     type: 1
@@ -3699,6 +3699,7 @@ MonoBehaviour:
   throwDelayDivisor: 1.5
   minThrowDelay: 0.2
   throwEnabledOverride: 1
+  canThrowInBallForm: 1
   pickupEvent:
     m_PersistentCalls:
       m_Calls:

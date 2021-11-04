@@ -54,6 +54,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
     public float minThrowDelay = 0.2f;
     [Tooltip("When disabled, throwing food is disabled")]
     public bool throwEnabledOverride = true;
+    public bool canThrowInBallForm = false;
     private float throwTime = 0.0f;
     private float throwDelay;
 
@@ -236,6 +237,8 @@ public class SquirrelFoodGrabber : MonoBehaviour
             throwEnabledOverride &&
             // Player isn't interacting with an NPC
             !npcInteractionManager.isInteracting &&
+            // In normal squirrel form
+            (canThrowInBallForm || normalMouth.gameObject.activeInHierarchy) &&
             // Player has food to spit
             (foodStack.Count > 0 ||
             // Player has giant acorn
