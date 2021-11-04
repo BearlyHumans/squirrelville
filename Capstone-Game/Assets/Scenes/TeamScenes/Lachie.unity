@@ -1804,7 +1804,7 @@ PrefabInstance:
       objectReference: {fileID: 628919248}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: npcIdleAnim
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: walkingPause

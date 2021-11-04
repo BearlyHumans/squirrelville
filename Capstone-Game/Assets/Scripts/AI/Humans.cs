@@ -476,18 +476,21 @@ public class Humans : MonoBehaviour
         
         //facePlayer();
         //human.SetDestination(transform.position);
-        
+        bool canSee = SeePlayer();
         if(!givenfood)
         {
             if(howManyAcornsLeft != 0)
             {
-                CallAnimationEvents(AnimTriggers.kneel);
-                audio.PlayOneShot (SoundEffectClips.friendly, 1f);
-                StartCoroutine(giveFood());
-                //Instantiate(friendlyVariables.foodToGive, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
-                howManyAcornsLeft -= 1;
-                timeToFood = 0.0f;
-                givenfood = true;
+                if(canSee)
+                {
+                    CallAnimationEvents(AnimTriggers.kneel);
+                    audio.PlayOneShot (SoundEffectClips.friendly, 1f);
+                    StartCoroutine(giveFood());
+                    //Instantiate(friendlyVariables.foodToGive, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
+                    howManyAcornsLeft -= 1;
+                    timeToFood = 0.0f;
+                    givenfood = true;
+                }
             }
 
         }
