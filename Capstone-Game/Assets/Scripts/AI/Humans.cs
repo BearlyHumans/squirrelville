@@ -481,8 +481,10 @@ public class Humans : MonoBehaviour
         {
             if(howManyAcornsLeft != 0)
             {
+                CallAnimationEvents(AnimTriggers.kneel);
                 audio.PlayOneShot (SoundEffectClips.friendly, 1f);
-                Instantiate(friendlyVariables.foodToGive, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
+                StartCoroutine(giveFood());
+                //Instantiate(friendlyVariables.foodToGive, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
                 howManyAcornsLeft -= 1;
                 timeToFood = 0.0f;
                 givenfood = true;
@@ -683,9 +685,19 @@ public class Humans : MonoBehaviour
         returnedToPath = false;
     }
 
+    IEnumerator giveFood()
+    {
+        yield return new WaitForSeconds(1.5f);
+        Instantiate(friendlyVariables.foodToGive, new Vector3(transform.position.x , transform.position.y + 0.3f, transform.position.z ), Quaternion.identity);
+
+        yield return new WaitForSeconds(2.0f);
+        CallAnimationEvents(AnimTriggers.lying); 
+                
+    }
+
     public void RunFromPlayer()
     {
-        if(distanceToPlayer > 2.5f && !fallenOver)
+        if(distanceToPlayer > 2.2f && !fallenOver)
         {
             CallAnimationEvents(AnimTriggers.running);
             //transform.rotation = Quaternion.LookRotation((transform.position - Player.transform.position), Vector3.up);
@@ -842,7 +854,7 @@ public class Humans : MonoBehaviour
         lying,
         falling,
         getup,
-
+        kneel
     }
 
     [System.Serializable]

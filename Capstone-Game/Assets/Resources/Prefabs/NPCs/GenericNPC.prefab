@@ -250,6 +250,18 @@ MonoBehaviour:
     animsParameter:
       paramName: HumanSitting
       setToValue: 0
+  - trigger: 11
+    animsParameter:
+      paramName: HumanKneeldown
+      setToValue: 1
+  - trigger: 11
+    animsParameter:
+      paramName: HumanLying
+      setToValue: 0
+  - trigger: 8
+    animsParameter:
+      paramName: HumanKneeldown
+      setToValue: 0
   stunScript: {fileID: 3591709830310655803}
   exclaim: {fileID: 3796121588914482114}
   npcCurrentMode: 1
@@ -261,7 +273,7 @@ MonoBehaviour:
     - {fileID: 0}
     homePoint: {fileID: 0}
   friendlyVariables:
-    foodToGive: {fileID: 0}
+    foodToGive: {fileID: 6834729697976214412, guid: 29a3643e9f57a5e43a8d43b2a06538be, type: 3}
     foodTimer: 10
     watchTimer: 20
     howManyAcorns: 2

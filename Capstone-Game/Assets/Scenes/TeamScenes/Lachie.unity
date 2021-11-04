@@ -735,7 +735,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 1
-  waitForThisLong: 10
+  waitForThisLong: 15
 --- !u!1001 &692613235
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1804,7 +1804,7 @@ PrefabInstance:
       objectReference: {fileID: 628919248}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: npcIdleAnim
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: walkingPause
@@ -1812,7 +1812,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: npcCurrentMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: layerMask.m_Bits
@@ -1859,6 +1859,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.size
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: soundEffects.Array.data[0]
       value: 
       objectReference: {fileID: 0}
@@ -1880,7 +1884,7 @@ PrefabInstance:
       objectReference: {fileID: 628919248}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: pathFollowingVariables.walkingPause
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: endVariables.endPathPoints.Array.size
@@ -1888,7 +1892,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[32].trigger
-      value: 1
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[33].trigger
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[34].trigger
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[35].trigger
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: endVariables.endPathPoints.Array.data[0]
@@ -1916,7 +1932,23 @@ PrefabInstance:
       objectReference: {fileID: 1828673097}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[32].animsParameter.paramName
-      value: HumanFalling
+      value: HumanKneeldown
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[33].animsParameter.paramName
+      value: HumanLying
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[34].animsParameter.paramName
+      value: HumanKneeldown
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[35].animsParameter.paramName
+      value: HumanLying
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[32].animsParameter.setToValue
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8391098695642741264, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: m_Size.x
