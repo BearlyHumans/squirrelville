@@ -13,6 +13,8 @@ public enum HumanStates
     Catch,
     Friendly,
     HandleFood,
+    Ending
+    
 }
 
 //Modes the Npcs can be set to
@@ -29,7 +31,10 @@ public enum NpcModes
 public enum IdleMode
 {
     Standing,
-    Sitting,
+    WSittingTalk,
+    MSittingTalk,
+    WSitting,
+    MSitting,
     Lyingdown
 }
 
@@ -40,10 +45,6 @@ public class Humans : MonoBehaviour
     private List<ParameterChangeEvent> animationEvents = new List<ParameterChangeEvent>();
     
     private HumanStates currentState;
-    //private NpcModes npcMode;
-
-
-    //---------Food Graber Script---------//
 
     NavMeshAgent human;
 
@@ -71,13 +72,16 @@ public class Humans : MonoBehaviour
     [SerializeField]
     private ChaseVarible chaseVariables;
 
+    [SerializeField]
+    private EndingVariable endVariables;
+
 
 
     // layer mask for what layer humans check spat out food on
     private LayerMask layerMask;
 
     // path following variables
-    float distance;
+    float distanceToPlayer;
     int currentPathPt;
     bool walking;
     bool waiting;
@@ -160,6 +164,14 @@ public class Humans : MonoBehaviour
 
     public float NPCVolume = .1f;
 
+    // ending var
+    private bool fallenOver = false;
+    private int i = 0;
+    private bool forwardIterator = true;
+
+    //flee positions
+    private Vector3 startingPos;
+
     private AudioSource audio;
     [SerializeField]
     private SoundEffects SoundEffectClips;
@@ -168,10 +180,12 @@ public class Humans : MonoBehaviour
     {
         get { return AIManager.singleton.sController; }
     }
+  
 
     /// set the nav mesh agent for humans to walk on as well as set target (player) to chase.
     public void Start() 
     {
+        
         layerMask = LayerMask.GetMask("EatenFood");
 
         howManyAcornsLeft = friendlyVariables.howManyAcorns;
@@ -181,8 +195,6 @@ public class Humans : MonoBehaviour
         human = this.GetComponent<NavMeshAgent>();
 
         chaseTimer = chaseVariables.chaseTime;
-
-        currentState = HumanStates.PathFollowing;
 
         if(human == null)
         {
@@ -206,9 +218,13 @@ public class Humans : MonoBehaviour
     /// handles the main swaping of states for each person. Runs specific behaviour while in a certain state.
     public void Update() 
     {
-        distance = Vector3.Distance(Player.transform.position, transform.position);
+        distanceToPlayer = Vector3.Distance(Player.transform.position, transform.position);
         // -----States------
-
+        if(Player.giantSettings.inGiantMode)
+        {
+            currentState = HumanStates.Ending;
+            //GetComponent<Collider>().enabled = false;
+        }
         switch(currentState)
         {
             case HumanStates.PathFollowing:
@@ -233,12 +249,67 @@ public class Humans : MonoBehaviour
             }
             case HumanStates.HandleFood:
             {
-                HandleFood();
+                HandleFoodState();
+                break;
+            }
+            case HumanStates.Ending:
+            {
+                EndingState();
                 break;
             }
         }
     }
 
+    private void EndingState()
+    {
+        
+        // if near player run away
+        if(distanceToPlayer > 10.0f)
+        {
+            if(!fallenOver)
+            {
+                human.speed = humanWalkSpeed;
+                CallAnimationEvents(AnimTriggers.walking);
+
+                int numOfPoints = endVariables.endPathPoints.Count - 1;
+           
+                Vector3 targetPos = endVariables.endPathPoints[i].transform.position;
+                Vector3 distToPoint = transform.position - targetPos;
+                float distTPSq = distToPoint.sqrMagnitude;
+
+                if(distTPSq < 1.5f)
+                {
+                    if(forwardIterator)
+                    {
+                        i++;
+                        if(i == numOfPoints)
+                        {
+                            forwardIterator = false;
+                        }
+                    }
+                    else
+                    {
+                        i--;
+                        if(i == 0)
+                        {
+                            forwardIterator = true;
+                        }
+                    }
+                }
+                human.SetDestination(targetPos); 
+            }
+        }
+        else
+        {
+            human.speed = humanRunSpeed;
+            RunFromPlayer();
+        }
+
+        if(!Player.giantSettings.inGiantMode)
+        {
+             currentState = HumanStates.PathFollowing;
+        }
+    }
     /// functionaility for catching behaviour 
     private void CatchingState()
     {  
@@ -286,7 +357,7 @@ public class Humans : MonoBehaviour
         }
     }
 
-    private void HandleFood()
+    private void HandleFoodState()
     {
         // option 1 = go to bin
         catchChoice = 1;
@@ -372,7 +443,7 @@ public class Humans : MonoBehaviour
 
                 chaseTimer -= Time.deltaTime;
                 // checks to see if human is within range to "catch" player
-                if (distance < 1.5f)
+                if (distanceToPlayer < 1.5f)
                 {
                     havntSpotted = false;
 
@@ -407,16 +478,21 @@ public class Humans : MonoBehaviour
         
         //facePlayer();
         //human.SetDestination(transform.position);
-        
+        bool canSee = SeePlayer();
         if(!givenfood)
         {
             if(howManyAcornsLeft != 0)
             {
-                audio.PlayOneShot (SoundEffectClips.friendly, 1f);
-                Instantiate(friendlyVariables.foodToGive, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
-                howManyAcornsLeft -= 1;
-                timeToFood = 0.0f;
-                givenfood = true;
+                if(canSee)
+                {
+                    CallAnimationEvents(AnimTriggers.kneel);
+                    audio.PlayOneShot (SoundEffectClips.friendly, 1f);
+                    StartCoroutine(giveFood());
+                    //Instantiate(friendlyVariables.foodToGive, new Vector3(transform.position.x -1.0f, transform.position.y , transform.position.z ), Quaternion.identity); 
+                    howManyAcornsLeft -= 1;
+                    timeToFood = 0.0f;
+                    givenfood = true;
+                }
             }
 
         }
@@ -441,9 +517,9 @@ public class Humans : MonoBehaviour
     ///runs checks to find player, while cant see playing iterate through list of path points and walk between them
     private void PathFollowingState()
     {
-        
         human.speed = humanWalkSpeed;
         bool canSee = SeePlayer();
+        
         if(canSee)
         {
             // if friendly and see player then enter friendly state
@@ -479,10 +555,23 @@ public class Humans : MonoBehaviour
                 {
                     CallAnimationEvents(AnimTriggers.lying);
                 }
-                else if(npcIdleAnim == IdleMode.Sitting)
+                else if(npcIdleAnim == IdleMode.WSitting)
                 {
-                    CallAnimationEvents(AnimTriggers.sitting);
+                    anim.SetInteger("HumanSitting", 1);
                 }
+                else if(npcIdleAnim == IdleMode.MSitting)
+                {
+                    anim.SetInteger("HumanSitting", 2);
+                }
+                else if(npcIdleAnim == IdleMode.WSittingTalk)
+                {
+                    anim.SetInteger("HumanSitting", 3);
+                }
+                else if(npcIdleAnim == IdleMode.MSittingTalk)
+                {
+                    anim.SetInteger("HumanSitting", 4);
+                }
+                
                 waitTimer += Time.deltaTime;
                 
                 if(waitTimer >= pathFollowingVariables.pathPoints[currentPathPt].waitForThisLong)
@@ -601,6 +690,57 @@ public class Humans : MonoBehaviour
         returnedToPath = false;
     }
 
+    IEnumerator giveFood()
+    {
+        yield return new WaitForSeconds(1.5f);
+        Instantiate(friendlyVariables.foodToGive, new Vector3(transform.position.x , transform.position.y + 0.3f, transform.position.z ), Quaternion.identity);
+
+        yield return new WaitForSeconds(2.0f);
+        CallAnimationEvents(AnimTriggers.lying); 
+                
+    }
+
+    public void RunFromPlayer()
+    {
+        if(distanceToPlayer > 2.3f && !fallenOver)
+        {
+            CallAnimationEvents(AnimTriggers.running);
+            //transform.rotation = Quaternion.LookRotation((transform.position - Player.transform.position), Vector3.up);
+            Quaternion LookAtRotation = Quaternion.LookRotation(transform.position - Player.transform.position);
+
+            Quaternion LookAtRotationOnly_Y = Quaternion.Euler(transform.rotation.eulerAngles.x, LookAtRotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+            transform.rotation = LookAtRotationOnly_Y;
+            
+            
+
+            Vector3 dirToPlaayer = transform.position - Player.transform.position;
+            Vector3 newPos = transform.position + dirToPlaayer;
+
+            human.SetDestination(newPos);
+        }
+        else
+        {
+            if(!fallenOver)
+            {
+                CallAnimationEvents(AnimTriggers.falling);
+                fallenOver = true;
+                StartCoroutine(getUp());
+            }
+            
+        }
+        
+        //Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius, layerMask);
+
+    }
+    IEnumerator getUp()
+    {
+        yield return new WaitForSeconds(2.0F);
+        CallAnimationEvents(AnimTriggers.getup);
+        
+        yield return new WaitForSeconds(2.5F);
+        fallenOver = false;
+    }
+
     /// turns to face player
     public void facePlayer()
     {
@@ -614,14 +754,13 @@ public class Humans : MonoBehaviour
     /// runs a ray cast to check if the player is within a LOS.  
     bool SeePlayer()
     {
-        float distance = Vector3.Distance(Player.transform.position, transform.position);
         Vector3 targetDir = Player.transform.position - transform.position;
 
         // view angle
         float angleToPlayer = (Vector3.Angle(targetDir, transform.forward));
         RaycastHit hit;
- 
-        if ((angleToPlayer >= -detectionAngle && angleToPlayer <= detectionAngle) && (distance <= range))
+
+        if ((angleToPlayer >= -detectionAngle && angleToPlayer <= detectionAngle) && (distanceToPlayer <= range))
         {
             if(Physics.Linecast (transform.position, Player.transform.transform.position, out hit))
             {
@@ -717,8 +856,10 @@ public class Humans : MonoBehaviour
         eating,
         dropping,
         sitting,
-        lying
-
+        lying,
+        falling,
+        getup,
+        kneel
     }
 
     [System.Serializable]
@@ -784,6 +925,12 @@ public class Humans : MonoBehaviour
         public AudioClip alert2;
         public AudioClip stomp;
         public AudioClip friendly;
+    }
+
+    [System.Serializable]
+    private class EndingVariable
+    {
+        public List<WayPoints> endPathPoints;
     }
 
 }

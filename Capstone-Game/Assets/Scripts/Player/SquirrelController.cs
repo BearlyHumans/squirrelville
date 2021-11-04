@@ -202,6 +202,7 @@ namespace Player
             //Disable normal collider
             //Enable ball collider
             //Change model
+            
             refs.animator.CrossFade("Idle", 0f);
             refs.animator.Update(1f);
             refs.runBody.SetActive(false);
@@ -225,10 +226,13 @@ namespace Player
             refs.shadowProjector.fieldOfView = shadowSettings.giantShadowFOV;
 
             vals.mState = MovementState.giantBall;
+
+            giantSettings.inGiantMode = true;
         }
 
         public void LeaveGiantBallState()
         {
+            
             //Change ball so it is NOT giant:
             refs.ballBody.transform.localScale /= giantSettings.sizeMultiplier;
             refs.fCam.programmerSettings.minDistance /= giantSettings.cameraMultiplier;
@@ -248,6 +252,8 @@ namespace Player
             refs.shadowProjector.fieldOfView = shadowSettings.runShadowFOV;
 
             vals.mState = MovementState.moveAndClimb;
+
+            giantSettings.inGiantMode = false;
         }
 
         private void EnterRunState()
@@ -410,6 +416,8 @@ namespace Player
             public float sizeMultiplier = 8f;
             public float cameraMultiplier = 3f;
             public float squishinessMultiplier = 0.5f;
+            [HideInInspector]
+            public bool inGiantMode = false;
         }
 
         [System.Serializable]
