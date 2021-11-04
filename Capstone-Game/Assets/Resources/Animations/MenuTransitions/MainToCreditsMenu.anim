@@ -574,8 +574,15 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 10
+  - time: 8.916667
     functionName: EnableButtons
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 9.216666
+    functionName: FinishCredits
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
