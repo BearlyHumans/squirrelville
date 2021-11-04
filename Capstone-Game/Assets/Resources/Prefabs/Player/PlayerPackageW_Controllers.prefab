@@ -2707,7 +2707,7 @@ MonoBehaviour:
   targetInvisibleRadius: 0.15
   translationSmoothing: 0.01
   cameraSmoothThreshold: 0
-  cameraSensitivity: 250
+  cameraSensitivity: 150
   programmerSettings:
     smooth: 8.7
     upperWorldClampAngle: 70
@@ -3291,7 +3291,6 @@ MonoBehaviour:
     ballShadowFOV: 30
     giantShadowFOV: 100
   debugMessages: 0
-  updateInFixed: 1
   animationEvents:
   - trigger: 1
     type: 1

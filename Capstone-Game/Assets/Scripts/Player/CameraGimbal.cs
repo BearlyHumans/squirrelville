@@ -40,7 +40,7 @@ public class CameraGimbal : MonoBehaviour
     public float translationSmoothing = 0.1f;
     public bool cameraSmoothThreshold = false;
     [Tooltip("How fast the camera rotates when you move your mouse/joystick")]
-    public float cameraSensitivity = 250.0f;
+    public float cameraSensitivity = 150.0f;
 
     private Transform CamObj
     {
