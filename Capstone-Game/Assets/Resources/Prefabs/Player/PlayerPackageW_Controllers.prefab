@@ -3469,7 +3469,7 @@ MonoBehaviour:
       stoppingForce: 50
       airStoppingForce: 1
       haltAtFractionOfMaxSpeed: 0.9
-      turningThreshold: 0.2
+      turningThreshold: 0
     jump:
       groundedJumpForce: 3.5
       holdingJumpForceCurve:
@@ -3529,17 +3529,17 @@ MonoBehaviour:
         m_Bits: 70537
       headbuttLayers:
         serializedVersion: 2
-        m_Bits: 897
+        m_Bits: 5001
       minAngleDiffToClimb: 20
       noSurfResetTime: 0.3
       rotateDegreesPerSecond: 720
       moveUnitsPerSecond: 5
-      autoVaultTime: 0.2
+      autoVaultTime: 0.1
       postVaultSlowTime: 0.2
       postVaultSpeedFactor: 0.5
       vaultSlowsWhenClimbing: 0
-      autoclimbCooldown: 0.33
-      cornerVaultCooldown: 0.33
+      autoclimbCooldown: 0.1
+      cornerVaultCooldown: 0.1
       teleportCooldown: 0.01
       programmerSettings:
         sphereDetectRadius: 0.01
@@ -3552,7 +3552,7 @@ MonoBehaviour:
         flowerCheckGizmos: 0
         edgeStopLatRadius: 0.15
         edgeStopDownDist: 0.15
-        edgeSlideCheckAngles: 2
+        edgeSlideCheckAngles: 7
         wallStickDangerAngle: 10
         edgeDetectGizmos: 1
         SJCheckHeight: 2
