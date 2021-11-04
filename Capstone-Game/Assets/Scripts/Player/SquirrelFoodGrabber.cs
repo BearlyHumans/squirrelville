@@ -40,6 +40,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
     public Material highlightMaterial;
     [Tooltip("When disabled, picking up food is disabled")]
     public bool pickupEnabledOverride = true;
+    [Tooltip("Whether the player can pick up food while in ball form")]
     public bool canEatInBallForm = false;
 
     [Header("Throwing up food")]
@@ -55,6 +56,7 @@ public class SquirrelFoodGrabber : MonoBehaviour
     public float minThrowDelay = 0.2f;
     [Tooltip("When disabled, throwing food is disabled")]
     public bool throwEnabledOverride = true;
+    [Tooltip("Whether the player can throw food while in ball form")]
     public bool canThrowInBallForm = false;
     private float throwTime = 0.0f;
     private float throwDelay;
