@@ -36,6 +36,8 @@ public class CameraTransition : MonoBehaviour
     [Space()]
     [Tooltip("The duration of both fade effects")]
     public float fadeDuration = 2f;
+    [Tooltip("The duration of the screen being black")]
+    public float blackScreenDuration = 0f;
     [Tooltip("This will be added to the fade out time for the script but not for the actual fade, so you can use it to make the movement start before the fade finishes by setting it to negative")]
     public float fadeMargins = 0f;
 
@@ -167,6 +169,7 @@ public class CameraTransition : MonoBehaviour
             yield return new WaitForSeconds(fadeDuration);
         }
 
+        yield return new WaitForSeconds(blackScreenDuration);
         StartCoroutine(FadeIn());
     }
 
