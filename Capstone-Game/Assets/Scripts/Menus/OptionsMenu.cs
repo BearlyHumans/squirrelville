@@ -46,7 +46,7 @@ public class OptionsMenu : MonoBehaviour
         selectedResolution.width = PlayerPrefs.GetInt("resolutionWidth", Screen.currentResolution.width);
         selectedResolution.height = PlayerPrefs.GetInt("resolutionHeight", Screen.currentResolution.height);
 
-        cameraSensSlider.value = PlayerPrefs.GetFloat("cameraSensitivity", 250);
+        cameraSensSlider.value = PlayerPrefs.GetFloat("cameraSensitivity", 150);
     }
 
     private void InitResolutionDropdown()
