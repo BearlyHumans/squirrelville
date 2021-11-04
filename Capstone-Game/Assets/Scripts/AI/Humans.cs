@@ -225,10 +225,6 @@ public class Humans : MonoBehaviour
             currentState = HumanStates.Ending;
             //GetComponent<Collider>().enabled = false;
         }
-        else
-        {
-            GetComponent<Collider>().enabled = true;
-        }
         switch(currentState)
         {
             case HumanStates.PathFollowing:
@@ -272,6 +268,7 @@ public class Humans : MonoBehaviour
         {
             if(!fallenOver)
             {
+                human.speed = humanWalkSpeed;
                 CallAnimationEvents(AnimTriggers.walking);
 
                 int numOfPoints = endVariables.endPathPoints.Count - 1;
@@ -304,8 +301,13 @@ public class Humans : MonoBehaviour
         }
         else
         {
-
+            human.speed = humanRunSpeed;
             RunFromPlayer();
+        }
+
+        if(!Player.giantSettings.inGiantMode)
+        {
+             currentState = HumanStates.PathFollowing;
         }
     }
     /// functionaility for catching behaviour 
@@ -700,8 +702,10 @@ public class Humans : MonoBehaviour
 
     public void RunFromPlayer()
     {
-        if(distanceToPlayer > 2.2f && !fallenOver)
+        print(distanceToPlayer);
+        if(distanceToPlayer > 2.3f && !fallenOver)
         {
+            human.speed = 5;
             CallAnimationEvents(AnimTriggers.running);
             //transform.rotation = Quaternion.LookRotation((transform.position - Player.transform.position), Vector3.up);
             Quaternion LookAtRotation = Quaternion.LookRotation(transform.position - Player.transform.position);
