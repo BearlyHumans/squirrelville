@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -45,6 +46,8 @@ public class PauseMenu : MonoBehaviour
         paused = false;
     }
 
+    public UnityEvent PauseEvent;
+
     public void Pause()
     {
         pauseMenu.SetActive(true);
@@ -52,6 +55,7 @@ public class PauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         paused = true;
+        PauseEvent?.Invoke();
     }
 
     public void MainMenu()
