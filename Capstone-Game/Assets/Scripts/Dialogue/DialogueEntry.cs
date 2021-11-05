@@ -9,4 +9,7 @@ public class DialogueEntry
 
     [Tooltip("The character sprite to display above the dialogue box")]
     public Sprite sprite;
+
+    [Tooltip("The set of sounds to randomly pick from for every letter spoken in this dialogue")]
+    public AudioClipSet audioClipSet;
 }

@@ -1464,7 +1464,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialDialogue: {fileID: 11400000, guid: 17260d2744b001e499842b2d136078a4, type: 2}
-  preFoodDialogue: {fileID: 11400000, guid: ccc5feb1118d5134bb6c028e47a8841f, type: 2}
+  preFoodDialogue: {fileID: 11400000, guid: 17260d2744b001e499842b2d136078a4, type: 2}
   foodDialogue: {fileID: 11400000, guid: e5877839af0997d4a9975906be664fde, type: 2}
   postFoodDialogue: {fileID: 11400000, guid: 9bafeb87690de06469f4e805643168a3, type: 2}
   foodArea: {fileID: 720750694}
