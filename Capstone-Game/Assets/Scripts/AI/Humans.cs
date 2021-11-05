@@ -301,6 +301,7 @@ public class Humans : MonoBehaviour
         }
         else
         {
+            
             human.speed = humanRunSpeed;
             RunFromPlayer();
         }
@@ -704,15 +705,14 @@ public class Humans : MonoBehaviour
     {
         if(distanceToPlayer > 2.3f && !fallenOver)
         {
-            CallAnimationEvents(AnimTriggers.running);
+            CallAnimationEvents(AnimTriggers.scaredRunning);
+
             //transform.rotation = Quaternion.LookRotation((transform.position - Player.transform.position), Vector3.up);
             Quaternion LookAtRotation = Quaternion.LookRotation(transform.position - Player.transform.position);
 
             Quaternion LookAtRotationOnly_Y = Quaternion.Euler(transform.rotation.eulerAngles.x, LookAtRotation.eulerAngles.y, transform.rotation.eulerAngles.z);
             transform.rotation = LookAtRotationOnly_Y;
             
-            
-
             Vector3 dirToPlaayer = transform.position - Player.transform.position;
             Vector3 newPos = transform.position + dirToPlaayer;
 
@@ -737,7 +737,7 @@ public class Humans : MonoBehaviour
         yield return new WaitForSeconds(2.0F);
         CallAnimationEvents(AnimTriggers.getup);
         
-        yield return new WaitForSeconds(2.5F);
+        yield return new WaitForSeconds(2.3F);
         fallenOver = false;
     }
 
@@ -859,7 +859,9 @@ public class Humans : MonoBehaviour
         lying,
         falling,
         getup,
-        kneel
+        kneel,
+        scaredRunning,
+
     }
 
     [System.Serializable]

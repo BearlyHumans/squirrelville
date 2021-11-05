@@ -1859,6 +1859,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.size
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: soundEffects.Array.data[0]
       value: 
       objectReference: {fileID: 0}
@@ -1887,8 +1891,28 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[34].trigger
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[35].trigger
-      value: 8
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[36].trigger
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[37].trigger
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[38].trigger
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[39].trigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: endVariables.endPathPoints.Array.data[0]
@@ -1915,8 +1939,44 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1828673097}
     - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[34].animsParameter.paramName
+      value: HumanScaredrunning
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: animationEvents.Array.data[35].animsParameter.paramName
-      value: HumanLying
+      value: HumanWalk
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[36].animsParameter.paramName
+      value: HumanFalling
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[37].animsParameter.paramName
+      value: HumanScaredrunning
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[38].animsParameter.paramName
+      value: HumanScaredrunning
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[39].animsParameter.paramName
+      value: HumanScaredrunning
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[34].animsParameter.setToValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[35].animsParameter.setToValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[36].animsParameter.setToValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767587695065880796, guid: 29dda92717219af479073042bfc0d19f, type: 3}
+      propertyPath: animationEvents.Array.data[37].animsParameter.setToValue
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8391098695642741264, guid: 29dda92717219af479073042bfc0d19f, type: 3}
       propertyPath: m_Size.x
