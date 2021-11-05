@@ -188,6 +188,7 @@ namespace Player
 
             refs.RB.constraints = RigidbodyConstraints.None;
             refs.RB.useGravity = true;
+            refs.RB.angularVelocity = refs.model.right * 3f;
 
             refs.fCam.UseRelativeAngles = false;
             refs.fCam.cameraTarget = refs.ballModel;
