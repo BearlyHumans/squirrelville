@@ -3369,7 +3369,7 @@ MonoBehaviour:
     soundName: Dashing
   - trigger: 10
     action: 1
-    soundName: Moving
+    soundName: DashMove
   - trigger: 16
     action: 1
     soundName: Rolling
