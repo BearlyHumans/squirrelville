@@ -102,7 +102,8 @@ public class DialogueBox : MonoBehaviour
 
         float t = 0;
         int charIndex = 0;
-        DialogueEntry dialogueEntry = dialogue.GetDialogue().entries[index];
+        Dialogue currentDialogue = dialogue.GetDialogue();
+        DialogueEntry dialogueEntry = currentDialogue.entries[index];
         string textToType = dialogueEntry.text;
 
         while (charIndex < textToType.Length)
@@ -124,7 +125,12 @@ public class DialogueBox : MonoBehaviour
                 }
             }
 
-            PlaySpeakingSound(dialogueEntry);
+            if (!audioSource.isPlaying)
+            {
+                AudioClipSet audioClipSet = dialogueEntry.audioClipSet ?? currentDialogue.audioClipSet;
+                audioSource.pitch = audioClipSet.getRandomPitch();
+                audioSource.PlayOneShot(audioClipSet.GetRandomAudioClip());
+            }
 
             yield return null;
         }
@@ -132,16 +138,6 @@ public class DialogueBox : MonoBehaviour
         text.text = textToType;
         nextText.enabled = true;
         isTyping = false;
-    }
-
-    private void PlaySpeakingSound(DialogueEntry dialogueEntry)
-    {
-        if (!audioSource.isPlaying)
-        {
-            AudioClipSet audioClipSet = dialogueEntry.audioClipSet;
-            audioSource.pitch = audioClipSet.getRandomPitch();
-            audioSource.PlayOneShot(audioClipSet.GetRandomAudioClip());
-        }
     }
 
     public void NextSentence()
