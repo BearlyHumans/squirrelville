@@ -169,6 +169,17 @@ public class SFXController : MonoBehaviour
         }
     }
 
+    /// <summary> Pause the sound (can only be resumed by PlayOrContinue). </summary>
+    public void PauseSound(string soundName)
+    {
+        AudioSource AS = null;
+        int i = -1;
+        if (GetSourcePlayingSound(soundName, out AS, out i))
+        {
+            AS.Pause();
+        }
+    }
+
     /// <summary> Turn looping off for the sound so it stops after this playthrough (other half of loop). </summary>
     public void StopLoopingSound(string soundName)
     {
@@ -272,6 +283,7 @@ public class SFXController : MonoBehaviour
         }
     }
 
+    /// <summary> Pause sounds when the game is paused. </summary>
     public void Pause()
     {
         foreach (AudioSource s in sources)
@@ -284,6 +296,7 @@ public class SFXController : MonoBehaviour
         }
     }
 
+    /// <summary> Resume sounds when the game is un-paused. </summary>
     public void Resume()
     {
         foreach (AudioSource s in sources)
