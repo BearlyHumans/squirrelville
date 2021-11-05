@@ -944,11 +944,11 @@ MonoBehaviour:
   - name: Moving
     sounds:
     - {fileID: 8300000, guid: 7cd57814ff485464bbedd849dd4a4282, type: 3}
-    volume: 0.5
+    volume: 0.4
     randomPitchRange: {x: 0.9, y: 1.1}
   - name: Jumping
     sounds:
-    - {fileID: 8300000, guid: e3fecc40ee28ce24181f9a9c33afb2ab, type: 3}
+    - {fileID: 8300000, guid: de90770fad9a9a94eaf403d27dc03cdf, type: 3}
     volume: 1
     randomPitchRange: {x: 0.95, y: 1.05}
   - name: StartDashing
@@ -959,30 +959,35 @@ MonoBehaviour:
   - name: Dashing
     sounds:
     - {fileID: 8300000, guid: 8c10d71d6f5c9114dad6a139dcf930d8, type: 3}
-    volume: 0.3
+    volume: 0.4
     randomPitchRange: {x: 1, y: 1}
   - name: Rolling
     sounds:
     - {fileID: 8300000, guid: 7c88b3c604b3df74aa0def3d91a4ae88, type: 3}
-    volume: 0.8
+    volume: 1
     randomPitchRange: {x: 1, y: 1}
   - name: Eating
     sounds:
     - {fileID: 8300000, guid: 2a1e10d457c7a974f990d4d68d5362ec, type: 3}
     - {fileID: 8300000, guid: 20aa4173398a74c44a82662782d4967f, type: 3}
-    volume: 0.7
+    volume: 1
     randomPitchRange: {x: 1, y: 1}
   - name: Spitting
     sounds:
     - {fileID: 8300000, guid: 9e9f1fee1c527e84ea1b725ab21c35e6, type: 3}
-    volume: 0.7
+    volume: 1
     randomPitchRange: {x: 0.9, y: 1.1}
   - name: Bounce
     sounds:
     - {fileID: 8300000, guid: 93e98b4bbc8d29844981bc007e726a60, type: 3}
     - {fileID: 8300000, guid: f80e03740eb51ff4a90332dc540f8fa0, type: 3}
     - {fileID: 8300000, guid: 1e45ad0d9cea3c144a5072e8bf80bae9, type: 3}
-    volume: 0.7
+    volume: 1
+    randomPitchRange: {x: 0.9, y: 1.1}
+  - name: Climbing
+    sounds:
+    - {fileID: 8300000, guid: c573d7f60a100994887d7cd5c95e5bae, type: 3}
+    volume: 1
     randomPitchRange: {x: 0.9, y: 1.1}
 --- !u!82 &3127635603426240798
 AudioSource:
@@ -3484,6 +3489,9 @@ MonoBehaviour:
   - trigger: 28
     action: 1
     soundName: Bounce
+  - trigger: 13
+    action: 1
+    soundName: Climbing
   particleEvents:
   - trigger: 8
     action: 2
@@ -3817,7 +3825,7 @@ MonoBehaviour:
   pickupDelay: 0.5
   pickupRadius: 0.4
   maxFoodInInventory: 10
-  foodCountBallForm: 3
+  foodCountBallForm: 0
   highlightMaterial: {fileID: 2100000, guid: 73bed7dbf5548254bb64a23da6fda468, type: 2}
   pickupEnabledOverride: 1
   canEatInBallForm: 0
