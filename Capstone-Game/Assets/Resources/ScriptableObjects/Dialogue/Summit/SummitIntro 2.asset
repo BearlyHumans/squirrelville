@@ -16,26 +16,26 @@ MonoBehaviour:
   entries:
   - text: "Well, here we are. I can just TASTE that thing up there\r!\n"
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-    audioClipSet: {fileID: 11400000, guid: e1cbd7a840a844540b131778aec5d292, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: "Just another bloody boulder in the way, of course ahahaha! You know what
       mate, I think you\u2019ve done more than enough helping my lazy bum! Let me
       try...\n"
     sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}
-    audioClipSet: {fileID: 11400000, guid: c27ada6cead7e4949b40680cffb71e83, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: 'Aha, yes! SMASHED it!
 
 '
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-    audioClipSet: {fileID: 11400000, guid: e1cbd7a840a844540b131778aec5d292, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: "...It\u2019s so beautiful up here...I didn\u2019t think I would ever get
       to see this..."
     sprite: {fileID: 21300000, guid: 48f9b57e80877e3499e629c7bcc247d0, type: 3}
-    audioClipSet: {fileID: 11400000, guid: 8fa61db131036d94a84db21e3d85f2fb, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: "Little buddy - I wish I could go up with you, but something tells me you\u2019re
       going to get back down to the beach a lot faster than I will!\r\n"
     sprite: {fileID: 21300000, guid: c31dcd4e483e68d4dba2aad7039afdbd, type: 3}
-    audioClipSet: {fileID: 11400000, guid: c880acc321221394fb9ec6c1b162b352, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: "Just head on up there and eat that thing! You can tell me all about the
       view. I\u2019ll see you at the beach with the acorn!\r\n"
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-    audioClipSet: {fileID: 11400000, guid: e1cbd7a840a844540b131778aec5d292, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
