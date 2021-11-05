@@ -19,20 +19,20 @@ MonoBehaviour:
 
 '
     sprite: {fileID: 21300000, guid: c31dcd4e483e68d4dba2aad7039afdbd, type: 3}
-    audioClipSet: {fileID: 11400000, guid: c880acc321221394fb9ec6c1b162b352, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: "You alright? You look lost mate! Well... I am more than happy to show
       you around!\r \n"
     sprite: {fileID: 21300000, guid: 300dadbdf3fc5254d911a403452005c5, type: 3}
-    audioClipSet: {fileID: 11400000, guid: 6ab90eeef8d3e4240a6d6cde4b9ed107, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: "My dad has wanted me to get that... Giant Acorn... from the top of the
       mountain for a few... days, months, years? Sometimes it\u2019s hard to tell.
       Hahaha!\r\n"
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-    audioClipSet: {fileID: 11400000, guid: e1cbd7a840a844540b131778aec5d292, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: Wait... you want it too? Little guy!!! We can work together on this!! My
       family will be so chuffed!
     sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}
-    audioClipSet: {fileID: 11400000, guid: c27ada6cead7e4949b40680cffb71e83, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: "Problem is I don't have the energy to move these rocks that're blocking
       our way... I\u2019ve seen some acorns around the place here, but I\u2019m a
       little tired. You wouldn't happen to have any acorns already would you?\r\n"
