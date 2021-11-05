@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Thinking
   m_EditorClassIdentifier: 
   audioClips:
-  - {fileID: 8300000, guid: f267690ef0a69014baf918f5db2c2972, type: 3}
-  - {fileID: 8300000, guid: 8013e076a073ccb45a4c1b704f413d74, type: 3}
-  - {fileID: 8300000, guid: 9d0dc0a14deba8a4993f9118581b8133, type: 3}
-  minimumPitch: 0.9
-  maximumPitch: 1.1
+  - {fileID: 8300000, guid: 5c28d22db28d7684f9306b9ed047c836, type: 3}
+  - {fileID: 8300000, guid: b92bad03c16fcce4cbdf2f44a52b8ef8, type: 3}
+  - {fileID: 8300000, guid: f7e2505ce317bac45890d98083847eff, type: 3}
+  minimumPitch: 0.8
+  maximumPitch: 1

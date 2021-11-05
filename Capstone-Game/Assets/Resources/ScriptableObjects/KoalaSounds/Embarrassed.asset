@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Embarrassed
   m_EditorClassIdentifier: 
   audioClips:
-  - {fileID: 8300000, guid: 5cd25257f631f00449980792fdab0f90, type: 3}
-  - {fileID: 8300000, guid: 68269894fd34d4d46bdc33362422bf84, type: 3}
-  - {fileID: 8300000, guid: 16772a6ae5fa0cc409adef82aa3f0f74, type: 3}
-  minimumPitch: 0.9
-  maximumPitch: 1.1
+  - {fileID: 8300000, guid: 5c28d22db28d7684f9306b9ed047c836, type: 3}
+  - {fileID: 8300000, guid: b92bad03c16fcce4cbdf2f44a52b8ef8, type: 3}
+  - {fileID: 8300000, guid: f7e2505ce317bac45890d98083847eff, type: 3}
+  minimumPitch: 0.8
+  maximumPitch: 1

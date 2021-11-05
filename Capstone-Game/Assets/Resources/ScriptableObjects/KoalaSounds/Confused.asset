@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Confused
   m_EditorClassIdentifier: 
   audioClips:
-  - {fileID: 8300000, guid: b1b3394aaf364314d8af3c45db911016, type: 3}
-  - {fileID: 8300000, guid: c5ff347a78729ae4b986071bf1569ded, type: 3}
-  - {fileID: 8300000, guid: 450d737ae834c8848a716ec294458d40, type: 3}
-  minimumPitch: 0.9
-  maximumPitch: 1.1
+  - {fileID: 8300000, guid: 5c28d22db28d7684f9306b9ed047c836, type: 3}
+  - {fileID: 8300000, guid: b92bad03c16fcce4cbdf2f44a52b8ef8, type: 3}
+  - {fileID: 8300000, guid: f7e2505ce317bac45890d98083847eff, type: 3}
+  minimumPitch: 0.8
+  maximumPitch: 1

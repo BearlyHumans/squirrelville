@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Sad
   m_EditorClassIdentifier: 
   audioClips:
-  - {fileID: 8300000, guid: 83792ff6075d8b34e80449a09375a8e4, type: 3}
-  - {fileID: 8300000, guid: b8d9e9e8be2985b438288187e11123e7, type: 3}
-  - {fileID: 8300000, guid: cb8a2af28e123ef43943bb4c146abd47, type: 3}
-  minimumPitch: 0.9
-  maximumPitch: 1.1
+  - {fileID: 8300000, guid: 5c28d22db28d7684f9306b9ed047c836, type: 3}
+  - {fileID: 8300000, guid: b92bad03c16fcce4cbdf2f44a52b8ef8, type: 3}
+  - {fileID: 8300000, guid: f7e2505ce317bac45890d98083847eff, type: 3}
+  minimumPitch: 0.8
+  maximumPitch: 1
