@@ -15,6 +15,9 @@ namespace Player
         public Transform ballModel;
         
         public SCBallModeSettings settings = new SCBallModeSettings();
+
+        [HideInInspector]
+        public bool isGiant = false;
         
         private SCBallStoredValues vals = new SCBallStoredValues();
 
@@ -96,13 +99,19 @@ namespace Player
 
             ParentRefs.RB.velocity += addedVelocity;
 
-            if (ParentRefs.RB.velocity.magnitude > 0.3f)
+            if (Grounded && ParentRefs.RB.velocity.magnitude > 0.3f)
             {
-                PARENT.CallEvents(SquirrelController.EventTrigger.rolling);
+                if (isGiant)
+                    PARENT.CallEvents(SquirrelController.EventTrigger.giantRolling);
+                else
+                    PARENT.CallEvents(SquirrelController.EventTrigger.rolling);
             }
             else
             {
-                PARENT.CallEvents(SquirrelController.EventTrigger.stopRolling);
+                if (isGiant)
+                    PARENT.CallEvents(SquirrelController.EventTrigger.giantStopRolling);
+                else
+                    PARENT.CallEvents(SquirrelController.EventTrigger.stopRolling);
             }
         }
 
@@ -147,6 +156,13 @@ namespace Player
                 if (vals.squishAnimation != null)
                     StopCoroutine(vals.squishAnimation);
                 vals.squishAnimation = StartCoroutine(SquishBall(force));
+            }
+            if (force > settings.S.squishForceRange.x)
+            {
+                if (isGiant)
+                    PARENT.CallEvents(SquirrelController.EventTrigger.giantBounce);
+                else
+                    PARENT.CallEvents(SquirrelController.EventTrigger.ballBounce);
             }
         }
 

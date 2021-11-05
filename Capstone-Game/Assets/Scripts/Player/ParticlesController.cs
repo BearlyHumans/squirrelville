@@ -16,20 +16,62 @@ public class ParticlesController : MonoBehaviour
         foreach (ParticleSystem P in particles)
         {
             if (P.name == particleName)
+            {
+                P.gameObject.SetActive(true);
                 P.Play();
-            return;
+                return;
+            }
         }
     }
-    
+
+    public void PauseParticle(string particleName)
+    {
+        foreach (ParticleSystem P in particles)
+        {
+            if (P.name == particleName)
+            {
+                P.Pause();
+                return;
+            }
+        }
+    }
+
+    public void EnableParticle(string particleName)
+    {
+        foreach (ParticleSystem P in particles)
+        {
+            if (P.name == particleName)
+            {
+                P.gameObject.SetActive(true);
+                return;
+            }
+        }
+    }
+
+    public void DisableParticle(string particleName)
+    {
+        foreach (ParticleSystem P in particles)
+        {
+            if (P.name == particleName)
+            {
+                P.gameObject.SetActive(false);
+                return;
+            }
+        }
+    }
+
     public void PlayOrContinueParticle(string particleName)
     {
         foreach (ParticleSystem P in particles)
         {
             if (P.name == particleName)
             {
+                P.gameObject.SetActive(true);
                 if (!P.isPlaying)
+                {
                     P.Play();
-                return;
+                    return;
+                }
             }
         }
     }
@@ -41,15 +83,22 @@ public class ParticlesController : MonoBehaviour
             if (P.name == particleName)
             {
                 if (P.isPlaying)
+                {
                     P.Stop();
-                return;
+                    return;
+                }
             }
         }
     }
 
     private void Awake()
     {
-        particles.AddRange(GetComponentsInChildren<ParticleSystem>());
+        ParticleSystem[] childParticles = GetComponentsInChildren<ParticleSystem>();
+        foreach (ParticleSystem child in childParticles)
+        {
+            if (!particles.Contains(child))
+                particles.Add(child);
+        }
     }
 
 }
