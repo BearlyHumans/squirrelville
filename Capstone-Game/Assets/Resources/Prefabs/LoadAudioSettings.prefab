@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 24100000, guid: 34ca02f6309a2f549b4732abe7199d62, type: 2}
-  maxMusicVolume: 0.5
-  maxSfxVolume: 0.1
+  maxMusicVolume: 0.4
+  maxSfxVolume: 0.5
   initialMusicVolume: 0.5
   initialSfxVolume: 0.5
