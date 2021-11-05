@@ -16,21 +16,21 @@ MonoBehaviour:
   entries:
   - text: '*shock and awe*'
     sprite: {fileID: 21300000, guid: 300dadbdf3fc5254d911a403452005c5, type: 3}
-    audioClipSet: {fileID: 11400000, guid: 6ab90eeef8d3e4240a6d6cde4b9ed107, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: "It\u2019s so HUGE! YOU were so huge! So much bigger up close... man!\r"
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-    audioClipSet: {fileID: 11400000, guid: e1cbd7a840a844540b131778aec5d292, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: 'Thank you so much, little guy. We''re going to have the biggest feast
       tonight!! How do you like what I did with the place?
 
 '
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-    audioClipSet: {fileID: 11400000, guid: e1cbd7a840a844540b131778aec5d292, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: "Speaking of... I\u2019ve got some koalas to introduce you to who I think
       will want to give you a big bloody hug!\r\n"
     sprite: {fileID: 21300000, guid: f2b47b7936547f34689640c321e86f82, type: 3}
-    audioClipSet: {fileID: 11400000, guid: 44df477b3e162d440aebc244d7a394e1, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: "OI EVERYONE, GET OVER HERE\u2026 WE\u2019VE GOT A VERY SPECIAL GUEST FOR
       A VERY SPECIAL DINNER TONIGHT!\r\n"
     sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}
-    audioClipSet: {fileID: 11400000, guid: c27ada6cead7e4949b40680cffb71e83, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
