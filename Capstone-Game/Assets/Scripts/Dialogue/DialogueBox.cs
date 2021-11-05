@@ -35,6 +35,7 @@ public class DialogueBox : MonoBehaviour
     private Coroutine typingCoroutine;
 
     private CanvasGroup canvasGroup;
+    private AudioSource audioSource;
     private bool wasDialogueOpen = false;
     private Dictionary<HashSet<char>, float> punctuations = new Dictionary<HashSet<char>, float>()
     {
@@ -46,6 +47,9 @@ public class DialogueBox : MonoBehaviour
     {
         canvasGroup = GetComponent<CanvasGroup>();
         canvasGroup.alpha = 0;
+
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
     }
 
     private void Update()
@@ -98,7 +102,8 @@ public class DialogueBox : MonoBehaviour
 
         float t = 0;
         int charIndex = 0;
-        string textToType = dialogue.GetDialogue().entries[index].text;
+        DialogueEntry dialogueEntry = dialogue.GetDialogue().entries[index];
+        string textToType = dialogueEntry.text;
 
         while (charIndex < textToType.Length)
         {
@@ -114,6 +119,13 @@ public class DialogueBox : MonoBehaviour
                 text.text = textToType.Substring(0, i + 1);
 
                 bool isLast = i >= textToType.Length - 1;
+
+                if (!isLast && !audioSource.isPlaying)
+                {
+                    AudioClip audioClip = dialogueEntry.audioClipSet.GetRandomAudioClip();
+                    audioSource.PlayOneShot(audioClip);
+                }
+
                 if (i < textToType.Length - 1 && IsPunctuation(textToType[i], out float waitTime) && !IsPunctuation(textToType[i + 1], out _))
                 {
                     yield return new WaitForSeconds(waitTime);
