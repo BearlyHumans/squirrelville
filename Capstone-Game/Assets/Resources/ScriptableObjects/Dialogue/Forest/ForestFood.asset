@@ -16,21 +16,21 @@ MonoBehaviour:
   entries:
   - text: "You bloody ripper! That\u2019s a great amount of acorns, thanks mate."
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-    audioClipSet: {fileID: 11400000, guid: e1cbd7a840a844540b131778aec5d292, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: "Let\u2019s get into it! You want one? Hahahaha naaah! Wouldn\u2019t want
       to weigh you down!!"
     sprite: {fileID: 21300000, guid: b8042a022772c244ca2c5433cbea3e51, type: 3}
-    audioClipSet: {fileID: 11400000, guid: be619b7bafe379e4b85cdc27e595ad7f, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: "And just so you know, there are some HUMANS up there. They\u2019re nice
       enough, but they\u2019ll get a little irritated if you mess with their stuff!
       ... personal experience!\r"
     sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}
-    audioClipSet: {fileID: 11400000, guid: c27ada6cead7e4949b40680cffb71e83, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: "I\u2019ll meet you up there again then! I haven\u2019t been up there in
       a long time, so take a look around if you can\u2019t find me. You\u2019ll be
       right!"
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-    audioClipSet: {fileID: 11400000, guid: e1cbd7a840a844540b131778aec5d292, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: Here we go...
     sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}
-    audioClipSet: {fileID: 11400000, guid: c27ada6cead7e4949b40680cffb71e83, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}

@@ -19,14 +19,14 @@ MonoBehaviour:
 
 '
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-    audioClipSet: {fileID: 11400000, guid: e1cbd7a840a844540b131778aec5d292, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: 'Now let''s have a go at those acorns! ...mm! That hit the spot. I''m going
       to regret eating those later...
 
 '
     sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}
-    audioClipSet: {fileID: 11400000, guid: c27ada6cead7e4949b40680cffb71e83, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: "...Oh the boulder! Let me see what I can do. When I'm done meet me up
       in the forest on the top of this rock and we\u2019ll see where to go next!\n"
     sprite: {fileID: 21300000, guid: b8042a022772c244ca2c5433cbea3e51, type: 3}
-    audioClipSet: {fileID: 11400000, guid: be619b7bafe379e4b85cdc27e595ad7f, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}

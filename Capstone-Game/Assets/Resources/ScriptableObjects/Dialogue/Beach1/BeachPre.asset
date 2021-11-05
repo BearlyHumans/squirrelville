@@ -16,10 +16,10 @@ MonoBehaviour:
   entries:
   - text: Have you found those 5 acorns for me yet?
     sprite: {fileID: 21300000, guid: c31dcd4e483e68d4dba2aad7039afdbd, type: 3}
-    audioClipSet: {fileID: 11400000, guid: c880acc321221394fb9ec6c1b162b352, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: "I won\u2019t be able to move these rocks without those sweet things!"
     sprite: {fileID: 21300000, guid: f2b47b7936547f34689640c321e86f82, type: 3}
-    audioClipSet: {fileID: 11400000, guid: 44df477b3e162d440aebc244d7a394e1, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: Take a look around the beach and see if you can get me 5 acorns.
     sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}
-    audioClipSet: {fileID: 11400000, guid: c27ada6cead7e4949b40680cffb71e83, type: 2}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
