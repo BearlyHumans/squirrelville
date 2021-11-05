@@ -12,14 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04273a48ccd3fc44983e66b6acdba9a3, type: 3}
   m_Name: CampsitePost
   m_EditorClassIdentifier: 
+  audioClipSet: {fileID: 0}
   entries:
   - text: 'I actually wasn''t sure I''d be able to handle that one, hahaha!
 
 '
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
+    audioClipSet: {fileID: 11400000, guid: e1cbd7a840a844540b131778aec5d292, type: 2}
   - text: "I haven\u2019t actually been up there before, a bit nervous I am! My sister
       went up once when I was younger, we could barely see her!\r"
     sprite: {fileID: 21300000, guid: b8042a022772c244ca2c5433cbea3e51, type: 3}
+    audioClipSet: {fileID: 11400000, guid: be619b7bafe379e4b85cdc27e595ad7f, type: 2}
   - text: "If you head through the gate here I reckon you\u2019ll have some luck!
       Don\u2019t worry about me - I\u2019ll find my own way up. Go us!\n"
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
+    audioClipSet: {fileID: 11400000, guid: e1cbd7a840a844540b131778aec5d292, type: 2}
