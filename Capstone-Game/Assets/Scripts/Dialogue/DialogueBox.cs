@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 
 [RequireComponent(typeof(CanvasGroup))]
+[RequireComponent(typeof(AudioSource))]
 public class DialogueBox : MonoBehaviour
 {
     [Tooltip("Reference to the dialogue box title text element")]
@@ -48,8 +49,7 @@ public class DialogueBox : MonoBehaviour
         canvasGroup = GetComponent<CanvasGroup>();
         canvasGroup.alpha = 0;
 
-        audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.playOnAwake = false;
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -118,19 +118,13 @@ public class DialogueBox : MonoBehaviour
             {
                 text.text = textToType.Substring(0, i + 1);
 
-                bool isLast = i >= textToType.Length - 1;
-
-                if (!isLast && !audioSource.isPlaying)
-                {
-                    AudioClip audioClip = dialogueEntry.audioClipSet.GetRandomAudioClip();
-                    audioSource.PlayOneShot(audioClip);
-                }
-
                 if (i < textToType.Length - 1 && IsPunctuation(textToType[i], out float waitTime) && !IsPunctuation(textToType[i + 1], out _))
                 {
                     yield return new WaitForSeconds(waitTime);
                 }
             }
+
+            PlaySpeakingSound(dialogueEntry);
 
             yield return null;
         }
@@ -138,6 +132,16 @@ public class DialogueBox : MonoBehaviour
         text.text = textToType;
         nextText.enabled = true;
         isTyping = false;
+    }
+
+    private void PlaySpeakingSound(DialogueEntry dialogueEntry)
+    {
+        if (!audioSource.isPlaying)
+        {
+            AudioClipSet audioClipSet = dialogueEntry.audioClipSet;
+            audioSource.pitch = audioClipSet.getRandomPitch();
+            audioSource.PlayOneShot(audioClipSet.GetRandomAudioClip());
+        }
     }
 
     public void NextSentence()
