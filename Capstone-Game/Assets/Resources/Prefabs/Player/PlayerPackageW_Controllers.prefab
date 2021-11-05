@@ -944,7 +944,7 @@ MonoBehaviour:
   - name: Moving
     sounds:
     - {fileID: 8300000, guid: 7cd57814ff485464bbedd849dd4a4282, type: 3}
-    volume: 0.4
+    volume: 0.5
     randomPitchRange: {x: 0.9, y: 1.1}
   - name: Jumping
     sounds:
@@ -959,7 +959,7 @@ MonoBehaviour:
   - name: Dashing
     sounds:
     - {fileID: 8300000, guid: 8c10d71d6f5c9114dad6a139dcf930d8, type: 3}
-    volume: 0.4
+    volume: 0.5
     randomPitchRange: {x: 1, y: 1}
   - name: Rolling
     sounds:
@@ -3834,7 +3834,7 @@ MonoBehaviour:
   throwDelayDivisor: 1.5
   minThrowDelay: 0.2
   throwEnabledOverride: 1
-  canThrowInBallForm: 0
+  canThrowInBallForm: 1
   pickupEvent:
     m_PersistentCalls:
       m_Calls:
