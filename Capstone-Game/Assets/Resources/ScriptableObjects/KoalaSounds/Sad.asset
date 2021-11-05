@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d03b87e2599e1aa4cad9378dc813e3f0, type: 3}
+  m_Name: Sad
+  m_EditorClassIdentifier: 
+  audioClips:
+  - {fileID: 8300000, guid: 83792ff6075d8b34e80449a09375a8e4, type: 3}
+  - {fileID: 8300000, guid: b8d9e9e8be2985b438288187e11123e7, type: 3}
+  - {fileID: 8300000, guid: cb8a2af28e123ef43943bb4c146abd47, type: 3}
+  minimumPitch: 0.9
+  maximumPitch: 1.1
