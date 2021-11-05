@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class MenuManager : MonoBehaviour
 {
     private Button[] buttons;
     private static bool buttonsEnabled = true;
+
+    public UnityEvent creditsFinish;
 
     private void Awake()
     {
@@ -21,6 +24,11 @@ public class MenuManager : MonoBehaviour
         buttonsEnabled = false;
     }
 
+    private void FinishCredits()
+    {
+        creditsFinish?.Invoke();
+    }
+
     private void EnableButtons()
     {
         foreach (Button button in buttons)
@@ -30,6 +38,7 @@ public class MenuManager : MonoBehaviour
 
         buttonsEnabled = true;
     }
+
 
     public static bool ButtonsEnabled()
     {
