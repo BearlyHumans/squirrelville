@@ -948,7 +948,7 @@ MonoBehaviour:
     randomPitchRange: {x: 0.9, y: 1.1}
   - name: Jumping
     sounds:
-    - {fileID: 8300000, guid: de90770fad9a9a94eaf403d27dc03cdf, type: 3}
+    - {fileID: 8300000, guid: e3fecc40ee28ce24181f9a9c33afb2ab, type: 3}
     volume: 1
     randomPitchRange: {x: 0.95, y: 1.05}
   - name: StartDashing
@@ -963,7 +963,7 @@ MonoBehaviour:
     randomPitchRange: {x: 1, y: 1}
   - name: Rolling
     sounds:
-    - {fileID: 8300000, guid: 7c88b3c604b3df74aa0def3d91a4ae88, type: 3}
+    - {fileID: 8300000, guid: 7dcb6e9f572ba3f49b340338f9e2578c, type: 3}
     volume: 1
     randomPitchRange: {x: 1, y: 1}
   - name: Eating
@@ -979,16 +979,34 @@ MonoBehaviour:
     randomPitchRange: {x: 0.9, y: 1.1}
   - name: Bounce
     sounds:
-    - {fileID: 8300000, guid: 93e98b4bbc8d29844981bc007e726a60, type: 3}
-    - {fileID: 8300000, guid: f80e03740eb51ff4a90332dc540f8fa0, type: 3}
-    - {fileID: 8300000, guid: 1e45ad0d9cea3c144a5072e8bf80bae9, type: 3}
-    volume: 1
+    - {fileID: 8300000, guid: 4988063eb02b40641b45d9e46ef15a12, type: 3}
+    volume: 0.5
     randomPitchRange: {x: 0.9, y: 1.1}
   - name: Climbing
     sounds:
     - {fileID: 8300000, guid: c573d7f60a100994887d7cd5c95e5bae, type: 3}
     volume: 1
     randomPitchRange: {x: 0.9, y: 1.1}
+  - name: Landing
+    sounds:
+    - {fileID: 8300000, guid: 98b6927b1475e114a91beb04bd76193d, type: 3}
+    volume: 1
+    randomPitchRange: {x: 0.9, y: 1.1}
+  - name: LandSqueak
+    sounds:
+    - {fileID: 8300000, guid: 9efcd1e3cfdd545428885293c3bb0d4f, type: 3}
+    volume: 1
+    randomPitchRange: {x: 0.95, y: 1.05}
+  - name: GiantRoll
+    sounds:
+    - {fileID: 8300000, guid: 7dcb6e9f572ba3f49b340338f9e2578c, type: 3}
+    volume: 1
+    randomPitchRange: {x: 0.7, y: 0.7}
+  - name: GiantBallBounce
+    sounds:
+    - {fileID: 8300000, guid: 4988063eb02b40641b45d9e46ef15a12, type: 3}
+    volume: 1
+    randomPitchRange: {x: 0.95, y: 1.05}
 --- !u!82 &3127635603426240798
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3480,6 +3498,15 @@ MonoBehaviour:
   - trigger: 15
     action: 6
     soundName: Rolling
+  - trigger: 26
+    action: 1
+    soundName: GiantRoll
+  - trigger: 15
+    action: 6
+    soundName: GiantRoll
+  - trigger: 29
+    action: 1
+    soundName: GiantBallBounce
   - trigger: 18
     action: 1
     soundName: Eating
@@ -3492,6 +3519,15 @@ MonoBehaviour:
   - trigger: 13
     action: 1
     soundName: Climbing
+  - trigger: 9
+    action: 1
+    soundName: Landing
+  - trigger: 28
+    action: 1
+    soundName: SmallBallBounce
+  - trigger: 29
+    action: 1
+    soundName: GiantBallBounce
   particleEvents:
   - trigger: 8
     action: 2
