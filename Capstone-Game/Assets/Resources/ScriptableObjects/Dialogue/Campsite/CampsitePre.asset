@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04273a48ccd3fc44983e66b6acdba9a3, type: 3}
   m_Name: CampsitePre
   m_EditorClassIdentifier: 
+  audioClipSet: {fileID: 0}
   entries:
   - text: "Hey there! I think I\u2019ll need more than that..."
     sprite: {fileID: 21300000, guid: c31dcd4e483e68d4dba2aad7039afdbd, type: 3}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: "Be sure to grab 10 acorns for me - the camping humans have a whole heap!
       I\u2019m sure you\u2019d do a better job of stealing than I would mate!!"
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}

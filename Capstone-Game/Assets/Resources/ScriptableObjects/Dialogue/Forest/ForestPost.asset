@@ -12,17 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04273a48ccd3fc44983e66b6acdba9a3, type: 3}
   m_Name: ForestPost
   m_EditorClassIdentifier: 
+  audioClipSet: {fileID: 0}
   entries:
+  - text: 'Nice!
+
+'
+    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: 'I reckon the humans put this gate up because of my family, can you believe
       it?! We just wanted to say hi, maybe share some food, some good times...
 
 '
     sprite: {fileID: 21300000, guid: f2b47b7936547f34689640c321e86f82, type: 3}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: '...alright maybe we just wanted the food, but they do taste bloody good!
       You seem to know that better than anyone, hahaha!
 
 '
     sprite: {fileID: 21300000, guid: b8042a022772c244ca2c5433cbea3e51, type: 3}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: "Head on through this cave and maybe you\u2019ll have better luck befriending
       them than we did! Probably not, but who\u2019d blame you for trying! Good luck.\n"
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}

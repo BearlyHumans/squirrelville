@@ -188,11 +188,15 @@ namespace Player
 
             refs.RB.constraints = RigidbodyConstraints.None;
             refs.RB.useGravity = true;
+            refs.RB.angularVelocity = refs.model.right * 3f;
 
             refs.fCam.UseRelativeAngles = false;
             refs.fCam.cameraTarget = refs.ballModel;
 
             refs.shadowProjector.fieldOfView = shadowSettings.ballShadowFOV;
+            
+            CallEvents(EventTrigger.stopRunning);
+            CallEvents(EventTrigger.startBeingBall);
 
             vals.mState = MovementState.ball;
         }
@@ -216,6 +220,7 @@ namespace Player
             behaviourScripts.ball.settings.squishiness.squishAmount *= giantSettings.squishinessMultiplier;
             if (giantSettings.allowBoosting)
                 behaviourScripts.ball.settings.jump.JumpTriggerRadius *= giantSettings.sizeMultiplier;
+            behaviourScripts.ball.isGiant = true;
 
             refs.RB.constraints = RigidbodyConstraints.None;
             refs.RB.useGravity = true;
@@ -224,6 +229,10 @@ namespace Player
             refs.fCam.cameraTarget = refs.ballModel;
 
             refs.shadowProjector.fieldOfView = shadowSettings.giantShadowFOV;
+
+            CallEvents(EventTrigger.stopBeingBall);
+            CallEvents(EventTrigger.stopRunning);
+            CallEvents(EventTrigger.startGiantBall);
 
             vals.mState = MovementState.giantBall;
 
@@ -240,6 +249,7 @@ namespace Player
             behaviourScripts.ball.settings.squishiness.squishAmount /= giantSettings.squishinessMultiplier;
             if (giantSettings.allowBoosting)
                 behaviourScripts.ball.settings.jump.JumpTriggerRadius /= giantSettings.sizeMultiplier;
+            behaviourScripts.ball.isGiant = false;
 
             refs.runBody.SetActive(true);
             refs.ballBody.SetActive(false);
@@ -250,6 +260,10 @@ namespace Player
             refs.fCam.cameraTarget = refs.runCameraTarget;
 
             refs.shadowProjector.fieldOfView = shadowSettings.runShadowFOV;
+
+            CallEvents(EventTrigger.stopGiantBall);
+            CallEvents(EventTrigger.stopBeingBall);
+            CallEvents(EventTrigger.startRunning);
 
             vals.mState = MovementState.moveAndClimb;
 
@@ -267,6 +281,9 @@ namespace Player
             refs.fCam.cameraTarget = refs.runCameraTarget;
 
             refs.shadowProjector.fieldOfView = shadowSettings.runShadowFOV;
+            
+            CallEvents(EventTrigger.stopBeingBall);
+            CallEvents(EventTrigger.startRunning);
 
             vals.mState = MovementState.moveAndClimb;
         }
@@ -374,6 +391,8 @@ namespace Player
                 refs.SFXControl.BlockSound(SE.soundName);
             else if (SE.action == SoundEvent.Action.Unblock)
                 refs.SFXControl.UnBlockSound(SE.soundName);
+            else if (SE.action == SoundEvent.Action.Pause)
+                refs.SFXControl.PauseSound(SE.soundName);
         }
 
         private void DoParticleEvent(ParticleEvent PE)
@@ -384,6 +403,12 @@ namespace Player
                 refs.particlesController.PlayOrContinueParticle(PE.particleName);
             else if (PE.action == ParticleEvent.Action.Stop)
                 refs.particlesController.StopParticle(PE.particleName);
+            else if (PE.action == ParticleEvent.Action.Enable)
+                refs.particlesController.EnableParticle(PE.particleName);
+            else if (PE.action == ParticleEvent.Action.Disable)
+                refs.particlesController.DisableParticle(PE.particleName);
+            else if (PE.action == ParticleEvent.Action.Pause)
+                refs.particlesController.PauseParticle(PE.particleName);
         }
 
         //~~ DATA STRUCTURES ~~
@@ -490,6 +515,16 @@ namespace Player
             stopRolling,
             gameStart,
             stopDashing,
+            giantRolling,
+            giantStopRolling,
+            ballBounce,
+            giantBounce,
+            startBeingBall,
+            stopBeingBall,
+            startRunning,
+            stopRunning,
+            startGiantBall,
+            stopGiantBall
         }
 
         [System.Serializable]
@@ -636,7 +671,8 @@ namespace Player
                 StopImmediately,
                 PlayAswell,
                 Block,
-                Unblock
+                Unblock,
+                Pause
             }
 
 #if UNITY_EDITOR
@@ -735,7 +771,12 @@ namespace Player
             {
                 Play,
                 PlayOrContinue,
-                Stop
+                Stop,
+                Enable,
+                Disable,
+                Pause,
+                PauseEmission,
+                ResumeEmission
             }
 
 #if UNITY_EDITOR

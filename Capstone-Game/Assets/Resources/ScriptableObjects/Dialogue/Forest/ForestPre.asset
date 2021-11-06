@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04273a48ccd3fc44983e66b6acdba9a3, type: 3}
   m_Name: ForestPre
   m_EditorClassIdentifier: 
+  audioClipSet: {fileID: 0}
   entries:
   - text: "Hey mate! I don\u2019t reckon that\u2019s enough acorns there... sorry
       to be a hassle!"
     sprite: {fileID: 21300000, guid: b8042a022772c244ca2c5433cbea3e51, type: 3}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: 'I just need 7 acorns and I think I''ll be able to help us get through
       this gate!
 
 '
     sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
