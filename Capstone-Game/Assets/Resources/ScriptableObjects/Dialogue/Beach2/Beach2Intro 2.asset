@@ -12,22 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04273a48ccd3fc44983e66b6acdba9a3, type: 3}
   m_Name: Beach2Intro 2
   m_EditorClassIdentifier: 
-  speakSound: {fileID: 8300000, guid: 5c28d22db28d7684f9306b9ed047c836, type: 3}
+  audioClipSet: {fileID: 0}
   entries:
   - text: '*shock and awe*'
     sprite: {fileID: 21300000, guid: 300dadbdf3fc5254d911a403452005c5, type: 3}
-  - text: "It\u2019s so HUGE! So much bigger up close...man!\r\n"
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
+  - text: "It\u2019s so HUGE! YOU were so huge! So much bigger up close... man!\r"
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-  - text: "You\u2019ve been a really good help today. If you want you can stay around
-      for a bit? I\u2019m sure I can speak for the others when I say you can stay
-      here as long as you want."
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
+  - text: 'Thank you so much, little guy. We''re going to have the biggest feast
+      tonight!! How do you like what I did with the place?
+
+'
     sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-  - text: "Thank you so much, little guy. We\u2019re going to have the biggest feast
-      tonight!!\r\n"
-    sprite: {fileID: 21300000, guid: 201902786ebf009408126b60f49b39be, type: 3}
-  - text: "Speaking of\u2026 I\u2019ve got some people to introduce you to who I
-      think will want to give you a big bloody hug!\r\n"
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
+  - text: "Speaking of... I\u2019ve got some koalas to introduce you to who I think
+      will want to give you a big bloody hug!\r\n"
     sprite: {fileID: 21300000, guid: f2b47b7936547f34689640c321e86f82, type: 3}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
   - text: "OI EVERYONE, GET OVER HERE\u2026 WE\u2019VE GOT A VERY SPECIAL GUEST FOR
       A VERY SPECIAL DINNER TONIGHT!\r\n"
     sprite: {fileID: 21300000, guid: f523a4645592bb64486ae6c1dfe4fc8c, type: 3}
+    audioClipSet: {fileID: 11400000, guid: e1298efa90ebb7f4ab3fd6a28ed55225, type: 2}
