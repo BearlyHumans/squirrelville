@@ -88,7 +88,10 @@ namespace Player
                     addedVelocity = (desiredDirection * settings.M.acceleration * Time.deltaTime);
             }
             else
+            {
                 addedVelocity = (desiredDirection * settings.M.acceleration * settings.M.airControlFactor * Time.deltaTime);
+                PARENT.CallEvents(SquirrelController.EventTrigger.falling);
+            }
 
             Vector3 newVel = ParentRefs.RB.velocity + addedVelocity;
             float oldMag = ParentRefs.RB.velocity.magnitude;
@@ -160,13 +163,10 @@ namespace Player
                     StopCoroutine(vals.squishAnimation);
                 vals.squishAnimation = StartCoroutine(SquishBall(force));
             }
-            if (force > settings.S.squishForceRange.x)
-            {
-                if (isGiant)
-                    PARENT.CallEvents(SquirrelController.EventTrigger.giantBounce);
-                else
-                    PARENT.CallEvents(SquirrelController.EventTrigger.ballBounce);
-            }
+            if (isGiant)
+                PARENT.CallEvents(SquirrelController.EventTrigger.giantBounce);
+            else
+                PARENT.CallEvents(SquirrelController.EventTrigger.ballBounce);
         }
 
         private IEnumerator SquishBall(float force)
