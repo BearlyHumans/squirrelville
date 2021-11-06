@@ -274,9 +274,6 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: -6284604152572121405}
     m_Position: {x: 800, y: 90, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: -1962842609543985452}
-    m_Position: {x: 386.53458, y: 313.3004, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: -8602599607927822085}
@@ -1235,18 +1232,6 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
-  - serializedVersion: 5
-    m_Name: Cheeks
-    m_StateMachine: {fileID: 8138117210707973166}
-    m_Mask: {fileID: 0}
-    m_Motions: []
-    m_Behaviours: []
-    m_BlendingMode: 1
-    m_SyncedLayerIndex: -1
-    m_DefaultWeight: 1
-    m_IKPass: 0
-    m_SyncedLayerAffectsTiming: 0
-    m_Controller: {fileID: 9100000}
 --- !u!1101 &86882753656077895
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -1799,7 +1784,6 @@ AnimatorState:
   - {fileID: 5163151252610342119}
   - {fileID: -9017808589465646897}
   - {fileID: 1681002964252130889}
-  - {fileID: -3019566301927168688}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 1
