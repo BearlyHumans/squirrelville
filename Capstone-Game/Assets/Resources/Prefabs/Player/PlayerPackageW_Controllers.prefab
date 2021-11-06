@@ -948,7 +948,7 @@ MonoBehaviour:
     randomPitchRange: {x: 0.9, y: 1.1}
   - name: Jumping
     sounds:
-    - {fileID: 8300000, guid: e3fecc40ee28ce24181f9a9c33afb2ab, type: 3}
+    - {fileID: 8300000, guid: 39b292b3ed113dd4b92f09fc82976bdc, type: 3}
     volume: 1
     randomPitchRange: {x: 0.95, y: 1.05}
   - name: StartDashing
@@ -3528,6 +3528,15 @@ MonoBehaviour:
   - trigger: 29
     action: 1
     soundName: GiantBallBounce
+  - trigger: 13
+    action: 6
+    soundName: Moving
+  - trigger: 15
+    action: 6
+    soundName: Dashing
+  - trigger: 15
+    action: 6
+    soundName: StartDashing
   particleEvents:
   - trigger: 8
     action: 2
@@ -5490,11 +5499,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7170535863968396655, guid: 51c73e6155420384aa798d14a95c5850, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.6
       objectReference: {fileID: 0}
     - target: {fileID: 7170535863968396655, guid: 51c73e6155420384aa798d14a95c5850, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7170535863968396655, guid: 51c73e6155420384aa798d14a95c5850, type: 3}
       propertyPath: m_LocalRotation.w
