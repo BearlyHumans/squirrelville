@@ -16,8 +16,8 @@ GameObject:
   m_Name: Cube.246
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &5498805802523514096
 Transform:
@@ -91,9 +91,9 @@ MeshCollider:
   m_GameObject: {fileID: 22065067611078312}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -6646079298502681032, guid: 6a860e0e25ed7c748a23482b89b90370, type: 3}
 --- !u!1 &139895412559579229
@@ -112,8 +112,8 @@ GameObject:
   m_Name: Cube.244
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &4783882146186039950
 Transform:
@@ -187,9 +187,9 @@ MeshCollider:
   m_GameObject: {fileID: 139895412559579229}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -6999549474186355203, guid: 6a860e0e25ed7c748a23482b89b90370, type: 3}
 --- !u!1 &363068024786760607
@@ -208,8 +208,8 @@ GameObject:
   m_Name: Cube.242 (1)
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &1949868746855723236
 Transform:
@@ -283,7 +283,7 @@ MeshCollider:
   m_GameObject: {fileID: 363068024786760607}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
@@ -304,8 +304,8 @@ GameObject:
   m_Name: wooden_deck
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &5231175395268386068
 Transform:
@@ -400,8 +400,8 @@ GameObject:
   m_Name: Cube.249
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &690979708145287844
 Transform:
@@ -477,7 +477,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 0
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 5063605470269565029, guid: 6a860e0e25ed7c748a23482b89b90370, type: 3}
 --- !u!1 &2014749716763234080
@@ -496,8 +496,8 @@ GameObject:
   m_Name: Cube.248
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &1422471400238815981
 Transform:
@@ -571,9 +571,9 @@ MeshCollider:
   m_GameObject: {fileID: 2014749716763234080}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4210317163604666385, guid: 6a860e0e25ed7c748a23482b89b90370, type: 3}
 --- !u!1 &2153756143227427086
@@ -592,8 +592,8 @@ GameObject:
   m_Name: Cube.246 (1)
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &6065739176926126050
 Transform:
@@ -667,7 +667,7 @@ MeshCollider:
   m_GameObject: {fileID: 2153756143227427086}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
@@ -688,8 +688,8 @@ GameObject:
   m_Name: Cube.243 (1)
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &7632772901721088460
 Transform:
@@ -763,7 +763,7 @@ MeshCollider:
   m_GameObject: {fileID: 2483593421146496693}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
@@ -784,8 +784,8 @@ GameObject:
   m_Name: Cube.241 (1)
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &1830773730362642910
 Transform:
@@ -859,7 +859,7 @@ MeshCollider:
   m_GameObject: {fileID: 3531727504417668954}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
@@ -877,8 +877,8 @@ GameObject:
   m_Name: Ladder
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &6527703231554848059
 Transform:
@@ -918,8 +918,8 @@ GameObject:
   m_Name: Collider
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &2213014757811090574
 Transform:
@@ -964,8 +964,8 @@ GameObject:
   m_Name: Cube.243
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &3124022254219743909
 Transform:
@@ -1039,9 +1039,9 @@ MeshCollider:
   m_GameObject: {fileID: 4021561468995248120}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -208283458129146748, guid: 6a860e0e25ed7c748a23482b89b90370, type: 3}
 --- !u!1 &4967696798445001254
@@ -1060,8 +1060,8 @@ GameObject:
   m_Name: Cube.241
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &7663859897207773291
 Transform:
@@ -1135,9 +1135,9 @@ MeshCollider:
   m_GameObject: {fileID: 4967696798445001254}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -8075303110892776638, guid: 6a860e0e25ed7c748a23482b89b90370, type: 3}
 --- !u!1 &5018492603587585002
@@ -1156,8 +1156,8 @@ GameObject:
   m_Name: Cube.240 (1)
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &445262395497917868
 Transform:
@@ -1231,7 +1231,7 @@ MeshCollider:
   m_GameObject: {fileID: 5018492603587585002}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
@@ -1245,13 +1245,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5612064449152173846}
-  - component: {fileID: 7675646355188728263}
   m_Layer: 0
   m_Name: twirling_tube_slide_1.1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &5612064449152173846
 Transform:
@@ -1281,20 +1280,6 @@ Transform:
   m_Father: {fileID: 7191957726026185242}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &7675646355188728263
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5091845278007303596}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
 --- !u!1 &5769043844665718273
 GameObject:
   m_ObjectHideFlags: 0
@@ -1311,8 +1296,8 @@ GameObject:
   m_Name: Cube.242
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &721372329915604676
 Transform:
@@ -1386,9 +1371,9 @@ MeshCollider:
   m_GameObject: {fileID: 5769043844665718273}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -376743608157148433, guid: 6a860e0e25ed7c748a23482b89b90370, type: 3}
 --- !u!1 &5802618953143368217
@@ -1405,7 +1390,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &7191957726026185242
 Transform:
@@ -1416,7 +1401,7 @@ Transform:
   m_GameObject: {fileID: 5802618953143368217}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2344, y: 1.2344, z: 1.2344}
   m_Children:
   - {fileID: 5612064449152173846}
   m_Father: {fileID: 0}
@@ -1438,8 +1423,8 @@ GameObject:
   m_Name: Cube.247
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &6718478134911545842
 Transform:
@@ -1513,9 +1498,9 @@ MeshCollider:
   m_GameObject: {fileID: 5979349830304307482}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 2789071765000310327, guid: 6a860e0e25ed7c748a23482b89b90370, type: 3}
 --- !u!1 &6321212649390423221
@@ -1534,8 +1519,8 @@ GameObject:
   m_Name: Cube.245 (1)
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &3802115129784857840
 Transform:
@@ -1545,7 +1530,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6321212649390423221}
   m_LocalRotation: {x: -0.78433543, y: -0, z: -0, w: 0.62033695}
-  m_LocalPosition: {x: -0.0070031285, y: -1.6410065, z: -2.0029995}
+  m_LocalPosition: {x: -0.014, y: -1.641, z: -1.994}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children: []
   m_Father: {fileID: 6527703231554848059}
@@ -1609,7 +1594,7 @@ MeshCollider:
   m_GameObject: {fileID: 6321212649390423221}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
@@ -1630,8 +1615,8 @@ GameObject:
   m_Name: Cube.245
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &7621165849807304307
 Transform:
@@ -1641,7 +1626,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6494869100725720111}
   m_LocalRotation: {x: -0.78433543, y: 1.820747e-17, z: -1.8207466e-17, w: 0.62033695}
-  m_LocalPosition: {x: -0.004002978, y: -1.8899783, z: -1.8982772}
+  m_LocalPosition: {x: -0.011000406, y: -1.8899851, z: -1.8892796}
   m_LocalScale: {x: 100, y: 100.00001, z: 100.00001}
   m_Children: []
   m_Father: {fileID: 5612064449152173846}
@@ -1705,9 +1690,9 @@ MeshCollider:
   m_GameObject: {fileID: 6494869100725720111}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 699735903545472785, guid: 6a860e0e25ed7c748a23482b89b90370, type: 3}
 --- !u!1 &6524134759289207164
@@ -1726,8 +1711,8 @@ GameObject:
   m_Name: Cube.252
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &8895713644410395603
 Transform:
@@ -1801,9 +1786,9 @@ MeshCollider:
   m_GameObject: {fileID: 6524134759289207164}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -5031838498030353059, guid: 6a860e0e25ed7c748a23482b89b90370, type: 3}
 --- !u!1 &7678354865087446206
@@ -1822,8 +1807,8 @@ GameObject:
   m_Name: Cube.248 (1)
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &7893070214877773300
 Transform:
@@ -1897,7 +1882,7 @@ MeshCollider:
   m_GameObject: {fileID: 7678354865087446206}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
@@ -1918,8 +1903,8 @@ GameObject:
   m_Name: Cube.240
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &3840409017989301828
 Transform:
@@ -1993,9 +1978,9 @@ MeshCollider:
   m_GameObject: {fileID: 8300991551695890428}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 5109001457816012197, guid: 6a860e0e25ed7c748a23482b89b90370, type: 3}
 --- !u!1 &8484846145192466456
@@ -2010,12 +1995,12 @@ GameObject:
   - component: {fileID: 2586997511661619402}
   - component: {fileID: 5465998026760529429}
   - component: {fileID: 8945841920050216618}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cylinder.016
-  m_TagString: Slippery
+  m_TagString: NonClimbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &6871925400036353046
 Transform:
@@ -2110,8 +2095,8 @@ GameObject:
   m_Name: Cube.247 (1)
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &2006959621283750761
 Transform:
@@ -2185,7 +2170,7 @@ MeshCollider:
   m_GameObject: {fileID: 8834161018484855156}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
@@ -2206,8 +2191,8 @@ GameObject:
   m_Name: Cube.249 (1)
   m_TagString: Climbable
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 62
   m_IsActive: 1
 --- !u!4 &4508417934416016385
 Transform:
