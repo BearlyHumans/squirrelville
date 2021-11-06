@@ -49,7 +49,7 @@ MonoBehaviour:
   playerCamera: {fileID: 0}
   transitionPoints: []
   playOnStart: 1
-  avgTimeBetweenPoints: 3
+  avgTimeBetweenPoints: 2.3
   acceleration: 5
   maxSpeed: 13
   skipMoveToPoint: 1
