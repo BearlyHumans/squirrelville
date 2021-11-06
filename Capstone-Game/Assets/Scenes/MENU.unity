@@ -194,6 +194,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1250089800 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5312333602579949499, guid: f1ad784ca6024534895668913043967c, type: 3}
+  m_PrefabInstance: {fileID: 1851160693}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2774cdfee31355f43bcdb8ff636ecd24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1606544603
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -262,6 +273,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1168061626}
+    - target: {fileID: 1849232158549255662, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1400
+      objectReference: {fileID: 0}
     - target: {fileID: 2052935724777746868, guid: f1ad784ca6024534895668913043967c, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -289,6 +304,88 @@ PrefabInstance:
     - target: {fileID: 5312333600529844938, guid: f1ad784ca6024534895668913043967c, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312333601596203193, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_text
+      value: 'Director
+
+        Creative Director
+
+        3D Artist
+
+        Level
+        designer
+
+        2D Artist
+
+        Lead Programmer
+
+        Programmer
+
+        Programmer
+
+        Lead
+        Composer
+
+        Composer
+
+        Marketing
+
+        Marketing
+
+        Website
+
+        Andrew
+        Trevillain
+
+        Shaun Britton
+
+        Steven Conway
+
+        Clinton
+        Woodward
+
+        Charlotte Pierce'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312333601684618464, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_text
+      value: 'Luke Perry
+
+        Toby Amiel
+
+        Michael Theuy
+
+        Jet
+        Proposch
+
+        Saige Omernik
+
+        Jake Scott
+
+        Lachlan Hines
+
+        Jordan
+        Epstein
+
+        Callum Lee Gow
+
+        Andy Allardice
+
+        Nicholas
+        Dennis
+
+        Anita Cercarelli
+
+        Kanako Bouyer
+
+        Special
+        thanks
+
+
+
+
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 5312333601805722016, guid: f1ad784ca6024534895668913043967c, type: 3}
       propertyPath: m_Name
@@ -407,9 +504,57 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1168061626}
     - target: {fileID: 7796426562679573225, guid: f1ad784ca6024534895668913043967c, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7796426562679573225, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7796426562679573225, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7796426562679573225, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1168061626}
+    - target: {fileID: 7796426562679573225, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1250089800}
+    - target: {fileID: 7796426562679573225, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetSelectedGameObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 7796426562679573225, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Back
+      objectReference: {fileID: 0}
+    - target: {fileID: 7796426562679573225, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UnityEngine.EventSystems.EventSystem, UnityEngine.UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 7796426562679573225, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: ControlsMenu, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7796426562679573225, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 2075672768}
+    - target: {fileID: 7796426562679573225, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7796426562679573225, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7796426562679573225, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 7796426562867525637, guid: f1ad784ca6024534895668913043967c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -523,6 +668,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2075672768 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7796426562867521531, guid: f1ad784ca6024534895668913043967c, type: 3}
+  m_PrefabInstance: {fileID: 1851160693}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2102369200
 GameObject:
   m_ObjectHideFlags: 0
