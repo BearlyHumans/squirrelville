@@ -44,7 +44,7 @@ public class NPCDialogue : MonoBehaviour
 
     private void Update()
     {
-        dialogueParticle.gameObject.SetActive(IsIndicatorVisible() && !isSpeaking);
+        dialogueParticle.gameObject.SetActive(IsIndicatorVisible());
     }
 
     void OnDialogueStart()
@@ -113,6 +113,6 @@ public class NPCDialogue : MonoBehaviour
     public bool IsIndicatorVisible()
     {
         Dialogue dialogue = GetDialogue();
-        return dialogue == initialDialogue || dialogue == foodDialogue;
+        return (dialogue == initialDialogue || dialogue == foodDialogue) && !isSpeaking;
     }
 }
