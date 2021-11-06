@@ -105,7 +105,6 @@ namespace Player
                 else
                     ParentRefs.fCam.ResetToNormalFOV();
                 vals.dashing = true;
-                PARENT.CallEvents(SquirrelController.EventTrigger.dashing);
             }
             else
             {
