@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04273a48ccd3fc44983e66b6acdba9a3, type: 3}
   m_Name: Beach2Intro 1
   m_EditorClassIdentifier: 
+  speakSound: {fileID: 8300000, guid: 5c28d22db28d7684f9306b9ed047c836, type: 3}
   entries:
   - text: '*shock and awe*'
     sprite: {fileID: 21300000, guid: 300dadbdf3fc5254d911a403452005c5, type: 3}
