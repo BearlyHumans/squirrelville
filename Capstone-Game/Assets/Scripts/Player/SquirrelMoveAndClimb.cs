@@ -61,7 +61,7 @@ namespace Player
 
         private void UpdAnimator()
         {
-            if (vals.moving && vals.dashing)
+            if (vals.moving && vals.dashing && vals.lastOnSurface > Time.time - Time.deltaTime)
                 PARENT.CallEvents(SquirrelController.EventTrigger.dashing);
             else if (vals.moving)
                 PARENT.CallEvents(SquirrelController.EventTrigger.moving);
