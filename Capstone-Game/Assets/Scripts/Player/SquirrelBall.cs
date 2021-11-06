@@ -80,7 +80,10 @@ namespace Player
             if (Grounded)
             {
                 if ((Input.GetButton("Dash") || Input.GetAxis("Dash") > 0) && ParentRefs.stamina.UseStamina(settings.M.boostStaminaUse * Time.deltaTime))
+                {
+                    PARENT.CallEvents(SquirrelController.EventTrigger.startDashing);
                     addedVelocity = (desiredDirection * settings.M.acceleration * settings.M.boostMultiplier * Time.deltaTime);
+                }
                 else
                     addedVelocity = (desiredDirection * settings.M.acceleration * Time.deltaTime);
             }
