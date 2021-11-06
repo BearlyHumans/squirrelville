@@ -273,10 +273,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1168061626}
-    - target: {fileID: 1849232158549255662, guid: f1ad784ca6024534895668913043967c, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 1400
-      objectReference: {fileID: 0}
     - target: {fileID: 2052935724777746868, guid: f1ad784ca6024534895668913043967c, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -304,88 +300,6 @@ PrefabInstance:
     - target: {fileID: 5312333600529844938, guid: f1ad784ca6024534895668913043967c, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5312333601596203193, guid: f1ad784ca6024534895668913043967c, type: 3}
-      propertyPath: m_text
-      value: 'Director
-
-        Creative Director
-
-        3D Artist
-
-        Level
-        designer
-
-        2D Artist
-
-        Lead Programmer
-
-        Programmer
-
-        Programmer
-
-        Lead
-        Composer
-
-        Composer
-
-        Marketing
-
-        Marketing
-
-        Website
-
-        Andrew
-        Trevillain
-
-        Shaun Britton
-
-        Steven Conway
-
-        Clinton
-        Woodward
-
-        Charlotte Pierce'
-      objectReference: {fileID: 0}
-    - target: {fileID: 5312333601684618464, guid: f1ad784ca6024534895668913043967c, type: 3}
-      propertyPath: m_text
-      value: 'Luke Perry
-
-        Toby Amiel
-
-        Michael Theuy
-
-        Jet
-        Proposch
-
-        Saige Omernik
-
-        Jake Scott
-
-        Lachlan Hines
-
-        Jordan
-        Epstein
-
-        Callum Lee Gow
-
-        Andy Allardice
-
-        Nicholas
-        Dennis
-
-        Anita Cercarelli
-
-        Kanako Bouyer
-
-        Special
-        thanks
-
-
-
-
-
-'
       objectReference: {fileID: 0}
     - target: {fileID: 5312333601805722016, guid: f1ad784ca6024534895668913043967c, type: 3}
       propertyPath: m_Name

@@ -1,9 +1,16 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MainMenu : MonoBehaviour
 {
     public Animation anim;
     public GameObject quitConfirmation;
+    public GameObject beginButton;
+
+    private void Start()
+    {
+        FindObjectOfType<EventSystem>().SetSelectedGameObject(beginButton);
+    }
 
     private void Update()
     {

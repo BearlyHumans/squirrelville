@@ -386,6 +386,30 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 999
       objectReference: {fileID: 0}
+    - target: {fileID: 5312333601805722026, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: creditsFinish.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312333601805722026, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: creditsFinish.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312333601805722026, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: creditsFinish.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: GoToMainMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312333601805722026, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: creditsFinish.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ReturnToMainMenu, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312333601805722026, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: creditsFinish.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312333601805722026, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: creditsFinish.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 5312333602161715984, guid: f1ad784ca6024534895668913043967c, type: 3}
       propertyPath: m_IsActive
       value: 0
