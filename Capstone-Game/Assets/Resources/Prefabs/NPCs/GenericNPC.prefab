@@ -295,9 +295,9 @@ MonoBehaviour:
   NPCVolume: 0
   SoundEffectClips:
     eating: {fileID: 8300000, guid: 94cf6cb862736c4459ae378cd000678f, type: 3}
-    alert: {fileID: 8300000, guid: c2c924f589554ef4e9b2a8a45e6b7cae, type: 3}
-    alert2: {fileID: 8300000, guid: dede58341300b5248bae779b26df1ab4, type: 3}
-    stomp: {fileID: 8300000, guid: 7f748e7ab48b0614381727504e5fc4f9, type: 3}
+    alert: {fileID: 8300000, guid: 2ec81bf86f5633940bfb8210601ff53e, type: 3}
+    alert2: {fileID: 8300000, guid: 72f26d526e68fc345b082283f68cf582, type: 3}
+    stomp: {fileID: 8300000, guid: 434f27e6ca1b6964a8ee752381733f6b, type: 3}
     friendly: {fileID: 8300000, guid: 7ae7d15fef406c444aedb32dd7871854, type: 3}
 --- !u!82 &6634215346001527880
 AudioSource:
