@@ -948,7 +948,7 @@ MonoBehaviour:
     randomPitchRange: {x: 0.9, y: 1.1}
   - name: Jumping
     sounds:
-    - {fileID: 8300000, guid: e3fecc40ee28ce24181f9a9c33afb2ab, type: 3}
+    - {fileID: 8300000, guid: 39b292b3ed113dd4b92f09fc82976bdc, type: 3}
     volume: 1
     randomPitchRange: {x: 0.95, y: 1.05}
   - name: StartDashing
@@ -999,14 +999,14 @@ MonoBehaviour:
     randomPitchRange: {x: 0.95, y: 1.05}
   - name: GiantRoll
     sounds:
-    - {fileID: 8300000, guid: 7dcb6e9f572ba3f49b340338f9e2578c, type: 3}
-    volume: 1
+    - {fileID: 8300000, guid: 82f235227f9dee642938f186d6f9e0e4, type: 3}
+    volume: 0.5
     randomPitchRange: {x: 0.7, y: 0.7}
   - name: GiantBallBounce
     sounds:
     - {fileID: 8300000, guid: 4988063eb02b40641b45d9e46ef15a12, type: 3}
-    volume: 1
-    randomPitchRange: {x: 0.95, y: 1.05}
+    volume: 0.7
+    randomPitchRange: {x: 0.45, y: 0.55}
 --- !u!82 &3127635603426240798
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3528,6 +3528,15 @@ MonoBehaviour:
   - trigger: 29
     action: 1
     soundName: GiantBallBounce
+  - trigger: 13
+    action: 6
+    soundName: Moving
+  - trigger: 15
+    action: 6
+    soundName: Dashing
+  - trigger: 15
+    action: 6
+    soundName: StartDashing
   particleEvents:
   - trigger: 8
     action: 2

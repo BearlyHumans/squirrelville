@@ -270,7 +270,7 @@ public class Humans : MonoBehaviour
             {
                 human.speed = humanWalkSpeed;
                 CallAnimationEvents(AnimTriggers.walking);
-
+                
                 int numOfPoints = endVariables.endPathPoints.Count - 1;
            
                 Vector3 targetPos = endVariables.endPathPoints[i].transform.position;
@@ -558,18 +558,22 @@ public class Humans : MonoBehaviour
                 else if(npcIdleAnim == IdleMode.WSitting)
                 {
                     anim.SetInteger("HumanSitting", 1);
+                    anim.SetInteger("HumanIdle", 0);
                 }
                 else if(npcIdleAnim == IdleMode.MSitting)
                 {
                     anim.SetInteger("HumanSitting", 2);
+                    anim.SetInteger("HumanIdle", 0);
                 }
                 else if(npcIdleAnim == IdleMode.WSittingTalk)
                 {
                     anim.SetInteger("HumanSitting", 3);
+                    anim.SetInteger("HumanIdle", 0);
                 }
                 else if(npcIdleAnim == IdleMode.MSittingTalk)
                 {
                     anim.SetInteger("HumanSitting", 4);
+                    anim.SetInteger("HumanIdle", 0);
                 }
                 
                 waitTimer += Time.deltaTime;
