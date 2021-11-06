@@ -19,6 +19,11 @@ public class NPCDialogue : MonoBehaviour
     [Min(0)]
     public int foodRequired;
 
+    [Header("Particles")]
+
+    [Tooltip("The particle system to emit when the NPC has something important to say")]
+    public ParticleSystem dialogueParticle;
+
     [Header("Events")]
 
     public UnityEvent dialogueStart;
@@ -29,14 +34,38 @@ public class NPCDialogue : MonoBehaviour
 
     private bool firstTimeSpeaking = true;
     private bool foodTaken = false;
+    private bool isSpeaking = false;
 
     private void Start()
     {
+        dialogueStart.AddListener(() => OnDialogueStart());
         dialogueFinish.AddListener(() => OnDialogueFinish());
+    }
+
+    private void Update()
+    {
+        if (IsIndicatorVisible() && !isSpeaking)
+        {
+            if (!dialogueParticle.isPlaying)
+            {
+                dialogueParticle.Play();
+            }
+        }
+        else if (dialogueParticle.isPlaying)
+        {
+            dialogueParticle.Stop();
+        }
+    }
+
+    void OnDialogueStart()
+    {
+        isSpeaking = true;
     }
 
     void OnDialogueFinish()
     {
+        isSpeaking = false;
+
         if (GetDialogue() == foodDialogue)
         {
             foodCollected.Invoke();
@@ -89,5 +118,11 @@ public class NPCDialogue : MonoBehaviour
     public bool HasDialogue()
     {
         return GetDialogue() != null;
+    }
+
+    public bool IsIndicatorVisible()
+    {
+        Dialogue dialogue = GetDialogue();
+        return dialogue == initialDialogue || dialogue == foodDialogue;
     }
 }
