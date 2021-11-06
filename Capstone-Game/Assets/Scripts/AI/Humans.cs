@@ -154,6 +154,8 @@ public class Humans : MonoBehaviour
     // timer delay for acorns disappearing on pick up
     float pickUpTimer = 3f;
 
+    float lastStompTime = float.NegativeInfinity;
+
     //handle food single use check
     bool returnedToPath = false;
 
@@ -316,7 +318,7 @@ public class Humans : MonoBehaviour
         human.speed = humanWalkSpeed; 
         if(!hasCaughtRecently)
         {
-            
+            lastStompTime = Time.time;
             hasCaughtRecently = true;  
             checkBeenRun = false;
             hitPlayerStun = false;
@@ -443,7 +445,7 @@ public class Humans : MonoBehaviour
 
                 chaseTimer -= Time.deltaTime;
                 // checks to see if human is within range to "catch" player
-                if (distanceToPlayer < 1.5f)
+                if (distanceToPlayer < 1.5f && Time.time > lastStompTime + catchVariables.stunCooldown)
                 {
                     havntSpotted = false;
 
@@ -918,6 +920,7 @@ public class Humans : MonoBehaviour
     private class CatchVarible
     {
         public float catchResetTimer;
+        public float stunCooldown = 3f;
         public int takeFoodAmmount;
     }
 

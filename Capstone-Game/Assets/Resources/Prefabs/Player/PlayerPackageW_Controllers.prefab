@@ -964,7 +964,7 @@ MonoBehaviour:
   - name: Rolling
     sounds:
     - {fileID: 8300000, guid: 7dcb6e9f572ba3f49b340338f9e2578c, type: 3}
-    volume: 1
+    volume: 0.5
     randomPitchRange: {x: 1, y: 1}
   - name: Eating
     sounds:
