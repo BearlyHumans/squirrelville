@@ -44,17 +44,7 @@ public class NPCDialogue : MonoBehaviour
 
     private void Update()
     {
-        if (IsIndicatorVisible() && !isSpeaking)
-        {
-            if (!dialogueParticle.isPlaying)
-            {
-                dialogueParticle.Play();
-            }
-        }
-        else if (dialogueParticle.isPlaying)
-        {
-            dialogueParticle.Stop();
-        }
+        dialogueParticle.gameObject.SetActive(IsIndicatorVisible() && !isSpeaking);
     }
 
     void OnDialogueStart()
