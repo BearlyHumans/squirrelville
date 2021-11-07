@@ -3495,6 +3495,9 @@ MonoBehaviour:
   - trigger: 23
     action: 10
     soundName: Rolling
+  - trigger: 1
+    action: 6
+    soundName: Rolling
   - trigger: 15
     action: 6
     soundName: Rolling
@@ -3502,6 +3505,9 @@ MonoBehaviour:
     action: 1
     soundName: GiantRoll
   - trigger: 15
+    action: 6
+    soundName: GiantRoll
+  - trigger: 1
     action: 6
     soundName: GiantRoll
   - trigger: 29

@@ -301,6 +301,48 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5312333601596203193, guid: f1ad784ca6024534895668913043967c, type: 3}
+      propertyPath: m_text
+      value: 'Director
+
+        Creative Director
+
+        3D Artist
+
+        Level
+        Designer
+
+        2D Artist
+
+        Lead Programmer
+
+        Programmer
+
+        Programmer
+
+        Lead
+        Composer
+
+        Composer
+
+        Marketing
+
+        Marketing
+
+        Website
+
+        Andrew
+        Trevillain
+
+        Shaun Britton
+
+        Steven Conway
+
+        Clinton
+        Woodward
+
+        Charlotte Pierce'
+      objectReference: {fileID: 0}
     - target: {fileID: 5312333601805722016, guid: f1ad784ca6024534895668913043967c, type: 3}
       propertyPath: m_Name
       value: MainMenu
